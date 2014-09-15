@@ -68,13 +68,20 @@ ydn.crm.version = ydn.crm.base.VERSION_MAJOR + '.' +
 
 
 /**
+ * @const
+ * @type {string}
+ */
+ydn.crm.VER = '0.12.0';
+
+
+/**
  * @enum {string}
  */
 ydn.crm.Version = {
   PREVIOUS: '0.10.17',
-  STABLE: '0.12.0',
-  RC: '0.12.0',
-  BETA: '0.12.0',
+  STABLE: ydn.crm.VER,
+  RC: ydn.crm.VER,
+  BETA: ydn.crm.VER,
   EDGE: 'edge'
 };
 
