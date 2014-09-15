@@ -29,9 +29,6 @@
     <property name="outputwrapper.norun" value="(function(){%output%})();"/>
     <property name="outputwrapper.app" value="(function(){%output%})();app=runApp();"/>
     <property name="out.dir" location="${crm.dir}/jsc"/>
-    <property name="templ.dir" location="${crm.dir}/templ" />
-    <property name="css.dir" location="${crm.dir}/css" />
-    <property name="gss.dir" location="${crm.dir}/gss" />
 
     <macrodef name="generate-wedget-template">
         <attribute name="filename" />
@@ -197,26 +194,6 @@
                 output.fn="${crm.dir}/src/deps.js">
         </calc-deps>
     </target>
-
-
-
-    <target name="templ" description="compile templates">
-
-
-        <fileset dir="${crm.dir}/templ" id="templ.files">
-            <include name="**/*.soy"/>
-        </fileset>
-        <pathconvert pathsep="' '"  property="templfiles" refid="templ.files" dirsep="/">
-            <map from="${crm.dir}/templ/" to=""/>
-        </pathconvert>
-        <generate-wedget-template filename="${templfiles}"
-                                  input.dir="${templ.dir}"
-                                  output.dir="${crm.dir}/src/templ/">
-
-        </generate-wedget-template>
-
-    </target>
-
 
 
     <target name="build" description="build all distribution"
