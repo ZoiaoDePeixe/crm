@@ -165,6 +165,29 @@ ydn.crm.shared.install_id = '';
  */
 ydn.crm.shared.uptime = goog.now();
 
+/**
+ * Prepare font-end script.
+ */
+ydn.crm.shared.prepareFrontEndScript = function() {
+
+  var key = ydn.crm.base.LocalKey.TRACK;
+  var base_path = 'jsc/';
+  var fn_prefix = 'ydn.crm.sugarcrm-';
+  chrome.storage.local.get(key, function(data) {
+    var ver = data[key];
+    var fn = base_path + fn_prefix + ydn.crm.sugarcrm.Version.STABLE + '.js';
+    if (navigator.onLine && ver == ydn.crm.base.Track.EDGE) {
+      fn = 'https://ydn-src-1.storage.googleapis.com/jsc/' + fn_prefix + 'edge.js';
+    } else if (ver == ydn.crm.base.Track.BETA) {
+      fn = base_path + fn_prefix + ydn.crm.sugarcrm.Version.BETA + '.js';
+    } else if (ver == ydn.crm.base.Track.RC) {
+      fn = base_path + fn_prefix + ydn.crm.sugarcrm.Version.RC + '.js';
+    }
+    var obj = {};
+    obj[ydn.crm.base.LocalKey.APP_SRC] = fn;
+  });
+};
+
 
 /**
  * Initialize shared data.
