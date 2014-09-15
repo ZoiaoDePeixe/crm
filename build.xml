@@ -2,17 +2,16 @@
     <dirname property="crm.dir" file="${ant.file.crm}"/>
     <property name="work.dir" location="${crm.dir}/.." />
     <property name="home.dir" location="${user.home}"/>
-    <property name="db-work.dir" location="${work.dir}/../db-work"/>
+    <property name="db-work.dir" location="${home.dir}/db-work"/>
     <property name="sugarcrm.dir" location="${work.dir}/sugarcrm"/>
-    <import file="${work.dir}/ydn-base/build.xml"/>
-    <import file="${work.dir}/ydn/build.xml"/>
+    <import file="${db-work.dir}/ydn-base/build.xml"/>
+    <import file="${db-work.dir}/ydn/build.xml"/>
     <property name="crm-app-ver-major" value="1"/>
     <property name="crm-app-ver-minor" value="0"/>
     <property name="crm-app-ver-patch" value="0"/>
     <property name="crm-app-ver" value="${crm-app-ver-major}.${crm-app-ver-minor}.${crm-app-ver-patch}"/>
     <property name="out.fn" value="ydn.crm-${crm-app-ver}.js"/>
     <property location="${crm.dir}/scss" name="scss.dir"/>
-    <property name="flagfile" value="${ydn-base.dir}/flagfile.txt"/>
     <property name="publish.dir" location="${home.dir}/sugarcrm-gmail-chrome-extension" description="application package output location"/>
     <property name="src.bk" value="ydn-src-1" description="source code bucket"/>
     <property name="lib.dir" location="${work.dir}/../lib"/>
