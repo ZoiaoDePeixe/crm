@@ -1,0 +1,226 @@
+<project name="crm" basedir="." default="deps">
+    <dirname property="crm.dir" file="${ant.file.crm}"/>
+    <property name="work.dir" location="${crm.dir}/.." />
+    <property name="home.dir" location="${user.home}"/>
+    <property name="db-work.dir" location="${work.dir}/../db-work"/>
+    <property name="sugarcrm.dir" location="${work.dir}/sugarcrm"/>
+    <import file="${work.dir}/ydn-base/build.xml"/>
+    <import file="${work.dir}/ydn/build.xml"/>
+    <property name="crm-app-ver-major" value="1"/>
+    <property name="crm-app-ver-minor" value="0"/>
+    <property name="crm-app-ver-patch" value="0"/>
+    <property name="crm-app-ver" value="${crm-app-ver-major}.${crm-app-ver-minor}.${crm-app-ver-patch}"/>
+    <property name="out.fn" value="ydn.crm-${crm-app-ver}.js"/>
+    <property location="${crm.dir}/scss" name="scss.dir"/>
+    <property name="flagfile" value="${ydn-base.dir}/flagfile.txt"/>
+    <property name="publish.dir" location="${home.dir}/sugarcrm-gmail-chrome-extension" description="application package output location"/>
+    <property name="src.bk" value="ydn-src-1" description="source code bucket"/>
+    <property name="lib.dir" location="${work.dir}/../lib"/>
+    <property name="jtidy.jar" value="${lib.dir}/jtidy/target/jtidy-r938.jar"/>
+    <condition property="gsutil" value="D:/opt/gsutil/gsutil"><os family="windows"/></condition>
+    <condition property="gsutil" value="/Users/kyawtun/opt/gsutil/gsutil"><os family="unix"/></condition>
+    <property name="closure-library.dir" value="${work.dir}/closure-library"/>
+    <property name="closure-compiler.dir" value="${lib.dir}/closure-compiler"/>
+    <property name="closure-compiler.jar" value="${closure-compiler.dir}/build/compiler.jar"/>
+    <property name="closure-templates.dir" value="${lib.dir}/closure-templates"/>
+    <property name="closure-stylesheets.dir" value="${lib.dir}/closure-stylesheets"/>
+    <property name="google-sites-liberation.jar" value="${lib.dir}/google-sites-liberation/target/google-sites-liberation-1.0.4-SNAPSHOT-jar-with-dependencies.jar"/>
+    <property name="js-test-driver.jar" value="${lib.dir}/js-test-driver/JsTestDriver.jar"/>
+    <property name="outputwrapper.norun" value="(function(){%output%})();"/>
+    <property name="outputwrapper.app" value="(function(){%output%})();app=runApp();"/>
+    <property name="out.dir" location="${crm.dir}/jsc"/>
+    <property name="templ.dir" location="${crm.dir}/templ" />
+    <property name="css.dir" location="${crm.dir}/css" />
+    <property name="gss.dir" location="${crm.dir}/gss" />
+
+    <macrodef name="generate-wedget-template">
+        <attribute name="filename" />
+        <attribute name="input.dir" />
+        <attribute name="output.dir" default="@{input.dir}" />
+        <element name="templ-options" optional="true"/>
+        <sequential>
+            <java jar="${closure-templates.dir}/build/SoyToJsSrcCompiler.jar"
+                  fork="true" failonerror="true" logError="true" dir="@{input.dir}">
+                <arg line='--outputPathFormat "@{output.dir}/{INPUT_DIRECTORY}/{INPUT_FILE_NAME_NO_EXT}.soy.js"' />
+                <arg line="--cssHandlingScheme GOOG" />
+                <arg line="--shouldGenerateJsdoc" />
+                <templ-options/>
+                <arg line="--shouldProvideRequireSoyNamespaces" />
+                <arg line="'@{filename}'" />
+            </java>
+        </sequential>
+    </macrodef>
+
+
+    <macrodef name="backup-site" description="Backup Google Sites">
+        <attribute name="sitename"/>
+        <attribute name="out.dir"/>
+        <attribute name="domain" default="mechanobio.info"/>
+        <sequential>
+            <echo>Running backup ...</echo>
+            <mkdir dir="@{out.dir}"/>
+            <java classname="com.google.sites.liberation.imprt.Main">
+                <classpath>
+                    <pathelement location="${google-sites-liberation.jar}"/>
+                </classpath>
+                <arg line='-d @{domain}'/>
+                <arg line="-w https://sites.google.com/a/@{domain}/@{sitename}"/>
+                <arg line='-f "@{out.dir}"'/>
+                <arg line="-u agent102@blueprint.org"/>
+                <arg line="-p matrix*1"/>
+                <arg line="-r"/>
+            </java>
+            <echo>
+                Saved to "@{out.dir}"
+            </echo>
+        </sequential>
+    </macrodef>
+
+
+    <target name="jstd" description="print out jstd file for JS test driver">
+
+        <jstd-gen base.dir="${crm.dir}"
+                  test.dir="${crm.dir}/src"
+                  input.fn="${crm.dir}/src/main_deps.js">
+            <deps-options>
+                <arg line='--path "${work.dir}/ydn-base/src"'/>
+                <arg line='--path "${work.dir}/ydn/src"'/>
+                <arg line='--path "${work.dir}/ydn-db/src"'/>
+                <arg line='--path "${work.dir}/ydn-db-sync/src"'/>
+                <arg line='--path "${work.dir}/gdata/src"'/>
+                <arg line='--path "${work.dir}/crm/src"'/>
+                <arg line='--path "${work.dir}/crm-ex/src"'/>
+                <arg line='--path "${crm.dir}/src"'/>
+            </deps-options>
+        </jstd-gen>
+    </target>
+
+    <target name="jsdoc" description="generate js doc">
+        <exec executable="jsdoc" failonerror="true" logerror="true" dir="${basedir}">
+            <arg value="src"/>
+            <arg line='--recurse'/>
+            <arg line='--verbose'/>
+            <arg line='-t "${lib.dir}/jaguarjs-jsdoc"'/>
+            <arg line='-c "jsdoc.json"'/>
+            <arg line='-d "doc"'/>
+        </exec>
+    </target>
+
+    <macrodef name="comp-adved" description="compile JS">
+       <attribute name="input.fn" />
+       <attribute name="output.fn" />
+       <attribute name="entrypoint"/>
+       <element name="opt-arg" optional="true"/>
+       <sequential>
+        <closure-compile compilationlevel="ADVANCED_OPTIMIZATIONS"
+                         input="@{input.fn}"
+                         input.dir="${crm.dir}/src"
+                         output.fn="${out.dir}/@{output.fn}">
+            <options>
+                <opt-arg/>
+                <arg line='-i "${crm.dir}/src/exports.js"'/>
+                <arg line='-i "${crm.dir}/src/ui/exports.js"'/>
+                <arg line='-i "${work.dir}/ydn/src/msg/exports.js"'/>
+                <arg line='-f "--source_map_format=V3"'/>
+                <arg line='-f "--create_source_map=${out.dir}/@{output.fn}.map"'/>
+                <arg line='-p "${db-work.dir}/ydn-base/src"'/>
+                <arg line='-p "${db-work.dir}/ydn-db/src"'/>
+                <arg line='-p "${db-work.dir}/ydn-db-sync/src"'/>
+                <arg line='-p "${db-work.dir}/ydn/src"'/>
+                <arg line='-p "${work.dir}/ydn-api/js"'/>
+                <arg line='-p "${work.dir}/sync-app/js"'/>
+                <arg line='--path "${work.dir}/crm/src"'/>
+                <arg line='--path "${work.dir}/crm/src"'/>
+                <arg line='-p "${db-work.dir}/gdata/src"'/>
+                <arg line='-p "${db-work.dir}/ydn-db-fulltext/src"'/>
+                <arg line='-p "${db-work.dir}/fullproof/js"'/>
+                <arg line='-p "${db-work.dir}/natural/js"'/>
+                <arg line='-f "--externs=${work.dir}/fullproof/externs/unicode.js"'/>
+                <arg line='-f "--flagfile=${flagfile}"'/>
+                <arg line='-f "--define=goog.json.USE_NATIVE_JSON=true"'/>
+                <arg line='-f "--define=ydn.crm.base.VERSION_MAJOR=${crm-app-ver-major}"'/>
+                <arg line='-f "--define=ydn.crm.base.VERSION_MINOR=${crm-app-ver-minor}"'/>
+                <arg line='-f "--define=ydn.crm.base.VERSION_PATCH=${crm-app-ver-patch}"'/>
+                <arg line='-f "--externs=${closure-compiler.dir}/contrib/externs/chrome_extensions.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/misc.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/atom.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/gapi.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/aws.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/sugarcrm.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/opensocial.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/svg.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/kineticjs.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-api/externs/misc.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn/externs/ydn-server.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/misc.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/schema.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/websql.js"'/>
+                <arg line='-f "--externs=${crm.dir}/externs/misc.js"'/>
+                <arg line='-f "--externs=${db-work.dir}/gdata/externs/gdata.js"'/>
+                <arg line='-f "--output_wrapper=${outputwrapper.norun}"'/>
+            </options>
+        </closure-compile>
+        <concat destfile="${out.dir}/@{output.fn}" append="true">
+            //# sourceMappingURL=@{output.fn}.map
+        </concat>
+        <replace description="replace so with online repo path"
+                 file="${out.dir}/@{output.fn}.map"
+                 token="${work.dir}/"
+                 value="http://localhost/"/>
+       </sequential>
+    </macrodef>
+
+
+
+
+    <macrodef name="calc-deps" description="calculate dependency for testing">
+        <attribute name="output.fn"/>
+        <attribute name="input.dir"/>
+        <attribute name="output-mode" default="deps"/>
+        <element name="calc-options" optional="yes"/>
+        <sequential>
+            <exec executable="python" failonerror="true" logError="true">
+                <arg value="${closure-library.dir}/closure/bin/calcdeps.py"/>
+                <arg line='--dep "${closure-library.dir}"'/>
+                <arg line='--path "@{input.dir}"'/>
+                <arg line='--output_mode "@{output-mode}"'/>
+                <arg line='--output_file "@{output.fn}"'/>
+                <calc-options/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <target name="deps" description="list dependency files">
+        <delete file="${crm.dir}/src/deps.js"/>
+        <calc-deps
+                input.dir="${crm.dir}/src"
+                output.fn="${crm.dir}/src/deps.js">
+        </calc-deps>
+    </target>
+
+
+
+    <target name="templ" description="compile templates">
+
+
+        <fileset dir="${crm.dir}/templ" id="templ.files">
+            <include name="**/*.soy"/>
+        </fileset>
+        <pathconvert pathsep="' '"  property="templfiles" refid="templ.files" dirsep="/">
+            <map from="${crm.dir}/templ/" to=""/>
+        </pathconvert>
+        <generate-wedget-template filename="${templfiles}"
+                                  input.dir="${templ.dir}"
+                                  output.dir="${crm.dir}/src/templ/">
+
+        </generate-wedget-template>
+
+    </target>
+
+
+
+    <target name="build" description="build all distribution"
+            depends="deps">
+
+    </target>
+</project>
