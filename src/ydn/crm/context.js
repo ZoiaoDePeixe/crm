@@ -51,7 +51,21 @@ ydn.crm.inj.Context = function(gdata_account, email, full_name) {
    * @private
    */
   this.full_name_ = full_name;
+  /**
+   * Kind of context.
+   * @type {ydn.crm.inj.Context.Kind}
+   */
+  this.kind = ydn.crm.inj.Context.Kind.DEFAULT;
+};
 
+
+/**
+ * Kind of context.
+ * @enum {string}
+ */
+ydn.crm.inj.Context.Kind = {
+  SEARCH: 's',
+  DEFAULT: 'd'
 };
 
 
