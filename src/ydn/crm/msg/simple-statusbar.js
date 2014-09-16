@@ -19,7 +19,7 @@
  */
 
 
-goog.provide('ydn.app.msg.SimpleStatusBar');
+goog.provide('ydn.crm.msg.SimpleStatusBar');
 goog.require('ydn.crm.msg.Consumer');
 
 
@@ -29,7 +29,7 @@ goog.require('ydn.crm.msg.Consumer');
  * @constructor
  * @implements {ydn.crm.msg.Consumer}
  */
-ydn.app.msg.SimpleStatusBar = function() {
+ydn.crm.msg.SimpleStatusBar = function() {
   this.root = null;
 };
 
@@ -38,15 +38,15 @@ ydn.app.msg.SimpleStatusBar = function() {
  * @const
  * @type {string}
  */
-ydn.app.msg.SimpleStatusBar.CSS_CLASS = 'simple-status-bar';
+ydn.crm.msg.SimpleStatusBar.CSS_CLASS = 'simple-status-bar';
 
 
 /**
  * @param {Element} el
  */
-ydn.app.msg.SimpleStatusBar.prototype.render = function(el) {
+ydn.crm.msg.SimpleStatusBar.prototype.render = function(el) {
   this.root = document.createElement('div');
-  this.root.className = ydn.app.msg.SimpleStatusBar.CSS_CLASS;
+  this.root.className = ydn.crm.msg.SimpleStatusBar.CSS_CLASS;
   var title = document.createElement('span');
   var link = document.createElement('a');
   var update = document.createElement('span');
@@ -60,7 +60,7 @@ ydn.app.msg.SimpleStatusBar.prototype.render = function(el) {
 /**
  * @inheritDoc
  */
-ydn.app.msg.SimpleStatusBar.prototype.setMessage = function(id, msg) {
+ydn.crm.msg.SimpleStatusBar.prototype.setMessage = function(id, msg) {
   if (this.root) {
     this.root.children[0].textContent = msg.title + ' ';
     if (msg.linkHref) {

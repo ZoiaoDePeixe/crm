@@ -115,7 +115,7 @@ ydn.crm.base.APP_ID = 'cm'; // cm
  * @const
  * @type {string}
  */
-ydn.crm.base.BASE_PATH = !COMPILED ? 'crm-ex/' : '';
+ydn.crm.base.BASE_PATH = !COMPILED ? 'sugarcrm/' : '';
 
 
 /**
