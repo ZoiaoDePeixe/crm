@@ -35,7 +35,7 @@ ydn.crm.base.LocalKey = {
   WHAT: 'sd',
   USER_SETTING: 'st',
   TRACK: 'ydn-crm-track',
-  APP_SRC: 'ydn-crm-src',
+  SUGARCRM_SRC: 'sugarcrm-src',
   LAST_LOGIN_USER_ID: 'last-login'
 };
 

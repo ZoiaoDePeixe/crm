@@ -8,7 +8,7 @@
     <import file="${db-work.dir}/ydn/build.xml"/>
     <property name="crm-app-ver-major" value="1"/>
     <property name="crm-app-ver-minor" value="0"/>
-    <property name="crm-app-ver-patch" value="0"/>
+    <property name="crm-app-ver-patch" value="1"/>
     <property name="crm-app-ver" value="${crm-app-ver-major}.${crm-app-ver-minor}.${crm-app-ver-patch}"/>
     <property name="out.fn" value="ydn.crm-${crm-app-ver}.js"/>
     <property location="${crm.dir}/scss" name="scss.dir"/>
@@ -165,8 +165,6 @@
                  value="http://localhost/"/>
        </sequential>
     </macrodef>
-
-
 
 
     <macrodef name="calc-deps" description="calculate dependency for testing">

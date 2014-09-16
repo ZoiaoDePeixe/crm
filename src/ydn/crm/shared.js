@@ -165,27 +165,32 @@ ydn.crm.shared.install_id = '';
  */
 ydn.crm.shared.uptime = goog.now();
 
-/**
- * Prepare font-end script.
- */
-ydn.crm.shared.prepareFrontEndScript = function() {
 
+/**
+ * Get content script file name.
+ * @return {!goog.async.Deferred}
+ */
+ydn.crm.shared.getContentScriptName = function() {
+  var df = new goog.async.Deferred();
   var key = ydn.crm.base.LocalKey.TRACK;
   var base_path = 'jsc/';
   var fn_prefix = 'ydn.crm.sugarcrm-';
   chrome.storage.local.get(key, function(data) {
-    var ver = data[key];
+    var track = data[key];
     var fn = base_path + fn_prefix + ydn.crm.sugarcrm.Version.STABLE + '.js';
-    if (navigator.onLine && ver == ydn.crm.base.Track.EDGE) {
+    if (navigator.onLine && track == ydn.crm.base.Track.EDGE) {
       fn = 'https://ydn-src-1.storage.googleapis.com/jsc/' + fn_prefix + 'edge.js';
-    } else if (ver == ydn.crm.base.Track.BETA) {
+    } else if (track == ydn.crm.base.Track.BETA) {
       fn = base_path + fn_prefix + ydn.crm.sugarcrm.Version.BETA + '.js';
-    } else if (ver == ydn.crm.base.Track.RC) {
+    } else if (track == ydn.crm.base.Track.RC) {
       fn = base_path + fn_prefix + ydn.crm.sugarcrm.Version.RC + '.js';
     }
+    df.callback(fn);
     var obj = {};
-    obj[ydn.crm.base.LocalKey.APP_SRC] = fn;
+    obj[ydn.crm.base.LocalKey.SUGARCRM_SRC] = fn; // set for option page
+    chrome.storage.local.set(obj);
   });
+  return df;
 };
 
 
