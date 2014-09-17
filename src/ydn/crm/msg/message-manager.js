@@ -34,6 +34,7 @@ goog.require('ydn.crm.msg.Consumer');
  * Status message manager.
  * Do not instantiate this, but instead use static method.
  * @constructor
+ * @struct
  */
 ydn.crm.msg.Manager = function() {
   /**
@@ -60,7 +61,7 @@ ydn.crm.msg.Manager.MAX_BUFFER = 20;
 
 /**
  * Add message.
- * @param {ydn.crm.msg.Message} msg
+ * @param {ydn.crm.msg.Message} msg message.
  * @return {number} message id.
  * @protected
  */
@@ -87,11 +88,11 @@ ydn.crm.msg.Manager.addConsumer = function(con) {
 /**
  * Get last message id.
  * The follow example illustrate iterating all message from the last.
- * <pre>
- *   for (var i = ydn.crm.msg.Manager.getLastId(); i >= 0; i--) {
- *     var msg = ydn.crm.msg.Manager.getMessageAt(i);
- *   }
- * </pre>
+ *
+ *     for (var i = ydn.crm.msg.Manager.getLastId(); i >= 0; i--) {
+ *       var msg = ydn.crm.msg.Manager.getMessageAt(i);
+ *     }
+ *
  * @return {number} last message id.
  */
 ydn.crm.msg.Manager.getLastId = function() {
