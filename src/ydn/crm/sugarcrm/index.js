@@ -1,5 +1,5 @@
 /**
- * @fileoverview About this file
+ * @fileoverview Define SugarCRM meta data.
  */
 
 
