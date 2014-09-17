@@ -43,7 +43,7 @@ ydn.crm.sugarcrm.version = ydn.crm.sugarcrm.VERSION_MAJOR + '.' +
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.VER = '0.12.1';
+ydn.crm.sugarcrm.VER = '0.12.3';
 
 
 /**
