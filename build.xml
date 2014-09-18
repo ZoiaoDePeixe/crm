@@ -17,6 +17,7 @@
     <property name="out.fn" value="ydn.crm-${crm-app-ver}.js"/>
     <property location="${crm.dir}/scss" name="scss.dir"/>
     <property name="publish.dir" location="${home.dir}/sugarcrm-gmail-chrome-extension" description="application package output location"/>
+    <property name="flagfile" value="${ydn-base.dir}/flagfile.txt"/>
     <property name="src.bk" value="ydn-src-1" description="source code bucket"/>
     <property name="lib.dir" location="${work.dir}/../lib"/>
     <property name="jtidy.jar" value="${lib.dir}/jtidy/target/jtidy-r938.jar"/>

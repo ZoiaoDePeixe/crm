@@ -101,6 +101,7 @@ ydn.crm.Ch.SReq = {
   ABOUT: 'about', // return domain, username
   ACTIVITY_STREAM: 'activity-stream',
   ACTIVITY_UPCOMING: 'activity-upcoming',
+  DELETE_RECORD: 'delete-record', //
   DETAILS: 'details',
   FETCH_MODULE: 'fetch-module', // fetch module entries
   GET: 'get', // get module entry
