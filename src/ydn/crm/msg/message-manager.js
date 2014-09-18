@@ -197,20 +197,27 @@ ydn.crm.msg.Manager.updateStatus = function(id, update, opt_type) {
 /**
  * Set a link to the message.
  * @param {number} id message id.
- * @param {string} href
- * @param {string} text
+ * @param {?string} href null href will remove the link.
+ * @param {string=} opt_text
  * @param {string=} opt_title
  * @return {boolean} true if update the message, false if message no longer
  * applicable.
  */
-ydn.crm.msg.Manager.setLink = function(id, href, text, opt_title) {
+ydn.crm.msg.Manager.setLink = function(id, href, opt_text, opt_title) {
   var msg = ydn.crm.msg.Manager.instance_.messages_[id];
   if (!msg) {
     return false;
   }
-  msg.linkHref = href;
-  msg.linkText = text;
-  msg.linkTitle = opt_title;
+  if (!href) {
+    msg.linkHref = undefined;
+    msg.linkText = undefined;
+    msg.linkTitle = undefined;
+  } else {
+    msg.linkHref = href;
+    msg.linkText = opt_text;
+    msg.linkTitle = opt_title;
+  }
+
   ydn.crm.msg.Manager.instance_.dispatchMessage(id);
   return true;
 };
