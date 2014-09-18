@@ -15,7 +15,6 @@
     <property name="sugarcrm-ver-patch" value="4"/>
     <property name="sugarcrm-ver" value="${sugarcrm-ver-major}.${sugarcrm-ver-minor}.${sugarcrm-ver-patch}"/>
     <property name="out.fn" value="ydn.crm-${crm-app-ver}.js"/>
-    <property location="${crm.dir}/scss" name="scss.dir"/>
     <property name="publish.dir" location="${home.dir}/sugarcrm-gmail-chrome-extension" description="application package output location"/>
     <property name="flagfile" value="${ydn-base.dir}/flagfile.txt"/>
     <property name="src.bk" value="ydn-src-1" description="source code bucket"/>
