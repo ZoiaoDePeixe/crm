@@ -177,13 +177,14 @@ ydn.crm.shared.getContentScriptName = function() {
   var fn_prefix = 'ydn.crm.sugarcrm-';
   chrome.storage.local.get(key, function(data) {
     var track = data[key];
-    var fn = base_path + fn_prefix + ydn.crm.sugarcrm.Version.STABLE + '.js';
+    var Version = goog.global['CRMinInbox']['sugarcrm']['Version'];
+    var fn = base_path + fn_prefix + Version['release'] + '.js';
     if (navigator.onLine && track == ydn.crm.base.Track.EDGE) {
       fn = 'https://ydn-src-1.storage.googleapis.com/jsc/' + fn_prefix + 'edge.js';
-    } else if (track == ydn.crm.base.Track.BETA) {
-      fn = base_path + fn_prefix + ydn.crm.sugarcrm.Version.BETA + '.js';
-    } else if (track == ydn.crm.base.Track.RC) {
-      fn = base_path + fn_prefix + ydn.crm.sugarcrm.Version.RC + '.js';
+    } else if (track == ydn.crm.base.Track.BETA && Version['beta']) {
+      fn = base_path + fn_prefix + Version['beta'] + '.js';
+    } else if (track == ydn.crm.base.Track.RC && Version['rc']) {
+      fn = base_path + fn_prefix + Version['rc'] + '.js';
     }
     df.callback(fn);
     var obj = {};
