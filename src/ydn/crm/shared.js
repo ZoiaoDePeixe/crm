@@ -114,27 +114,23 @@ ydn.crm.shared.getValueBySyncKey = function(key) {
  */
 ydn.crm.shared.setupGoogleAnalytic = function(id) {
 
-  var r = 'googleAnalytic';
-  goog.global['GoogleAnalyticsObject'] = r; // Acts as a pointer to support renaming.
 
-  // Creates an initial ga() function.  The queued commands will be executed once analytics.js loads.
-  goog.global[r] = goog.global[r] || function() {
-    (goog.global[r].q = goog.global[r].q || []).push(arguments);
-  };
 
-  // Sets the time (as an integer) this tag was executed.  Used for timing hits.
-  goog.global[r].l = 1 * new Date();
-
-  // Insert the script tag asynchronously.  Inserts above current tag to prevent blocking in
-  // addition to using the async attribute.
+  // Insert the script tag asynchronously.
   var a = document.createElement('script');
   var m = document.getElementsByTagName('script')[0];
   a.async = 1;
   a.src = 'https://www.google-analytics.com/analytics.js';
   m.parentNode.insertBefore(a, m);
 
-  goog.global['googleAnalytic']('create', id, 'auto');
-  goog.global['googleAnalytic']('send', 'pageview');
+  var r = 'googleAnalytic';
+  goog.global[r] = function() {
+    (goog.global[r].q = goog.global[r].q || []).push(arguments);
+  };
+  goog.global[r].l = +new Date;
+
+  goog.global[r]('create', id, 'auto');
+  goog.global[r]('send', 'pageview');
 };
 
 
