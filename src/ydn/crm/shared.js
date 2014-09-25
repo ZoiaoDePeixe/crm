@@ -236,6 +236,7 @@ ydn.crm.shared.init = function() {
   if (goog.DEBUG) {
     title += ' (dev)';
     ydn.debug.log('ydn.crm', 'fine');
+    ydn.debug.log('ydn.crm.gmail.Template', 'finest');
     ydn.debug.log('ydn.crm.inj.App', 'finer');
     ydn.debug.log('ydn.ds', 'fine');
   }
