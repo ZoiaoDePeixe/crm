@@ -236,8 +236,9 @@ ydn.crm.shared.init = function() {
   if (goog.DEBUG) {
     title += ' (dev)';
     ydn.debug.log('ydn.crm', 'fine');
-    ydn.debug.log('ydn.crm.inj.App', 'finer');
+    // ydn.debug.log('ydn.crm.inj.App', 'finer');
     ydn.debug.log('ydn.ds', 'fine');
+    ydn.debug.log('ydn.crm.app.EventPage', 'finest');
   }
   goog.global.console.info(title);
   goog.global.console.info('API documentation: http://dev.yathit.com/\n' +
