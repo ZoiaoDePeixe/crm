@@ -59,9 +59,9 @@ ydn.crm.Ch.Req = {
   ECHO: 'echo',
   FEED_LOG: 'feed-log', // list of log
   FEED_LOG_INFO: 'feed-log-info', // list of info log
-  GDATA_FETCH: 'gdata-fetch',
+  GDATA_UPDATE: 'gdata-update',  // update from server
   GDATA_CONTACT_MERGE: 'gdcm', // merge contact data
-  GDATA_LIST_CONTACT_BY_EMAIL: 'gdata-list-contact-by-email',
+  GDATA_LIST_CONTACT: 'gdata-list-contact', // list by 'email' or 'externalid'
   GDATA_TOKEN: 'gdata-token', //
   GDATA_TOKEN_REVOKE: 'gdata-token-revoke',
   HOST_PERMISSION: 'host-permission',
