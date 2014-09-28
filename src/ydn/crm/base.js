@@ -115,42 +115,42 @@ ydn.crm.base.APP_ID = 'cm'; // cm
  * @const
  * @type {string}
  */
-ydn.crm.base.BASE_PATH = !COMPILED ? 'sugarcrm/' : '';
+ydn.crm.base.BASE_PATH = '';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.base.OPTION_PAGE = ydn.crm.base.BASE_PATH + 'option-page.html';
+ydn.crm.base.OPTION_PAGE = 'option-page.html';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.base.SETUP_PAGE = ydn.crm.base.BASE_PATH + 'setup.html';
+ydn.crm.base.SETUP_PAGE = 'setup.html';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.base.HOST_PERMISSION_PAGE = ydn.crm.base.BASE_PATH + 'host-permission.html';
+ydn.crm.base.HOST_PERMISSION_PAGE = 'host-permission.html';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.base.SVG_PAGE = ydn.crm.base.BASE_PATH + 'image/all-icons.svg';
+ydn.crm.base.SVG_PAGE = 'image/all-icons.svg';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.base.INJ_TEMPLATE = ydn.crm.base.BASE_PATH + 'inj-template.html';
+ydn.crm.base.INJ_TEMPLATE = 'inj-template.html';
 
 
 /**
