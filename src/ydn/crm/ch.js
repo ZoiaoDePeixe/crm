@@ -75,6 +75,7 @@ ydn.crm.Ch.Req = {
   NEW_SUGAR: 'new-sugarcrm', // create a new sugar channel, if not already exist.
   NUKE: 'nk', // clear db
   REMOVE_SUGAR: 'remove-sugar',
+  REQUEST: 'request', // send request to database
   SERVER_AUDIT_LOG: 'server-audit-log',
   SOCIAL_PROFILE: 'social-profile',
   SUGAR_SERVER_INFO: 'sugar-server-info'
