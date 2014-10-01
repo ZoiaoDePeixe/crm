@@ -113,6 +113,15 @@ ydn.crm.UserSetting.schema_gdata = /** @type {DatabaseSchema} */ (/** @type {Obj
       }
     }
     ]
+  }, {
+    name: 'AccessRecord',
+    keyPath: 'path',
+    indexes: [{
+      name: 'created'
+    }, {
+      name: 'recipients',
+      multiEntry: true
+    }]
   }]
 }));
 
