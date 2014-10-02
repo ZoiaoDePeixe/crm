@@ -78,7 +78,9 @@ ydn.crm.Ch.Req = {
   REQUEST: 'request', // send request to database
   SERVER_AUDIT_LOG: 'server-audit-log',
   SOCIAL_PROFILE: 'social-profile',
-  SUGAR_SERVER_INFO: 'sugar-server-info'
+  SUGAR_SERVER_INFO: 'sugar-server-info',
+  TRACKING_LIST_BEACON: 'tracking-list-beacon',
+  TRACKING_LIST_ACCESS: 'tracking-list-access'
 };
 
 
@@ -90,7 +92,8 @@ ydn.crm.Ch.BReq = {
   LIST_DOMAINS: 'list-sugarcrm-domains', // list of domain name of sugarcrm
   HOST_PERMISSION: 'host-permission',
   LOGGED_OUT: 'logout',
-  LOGGED_IN: 'login'
+  LOGGED_IN: 'login',
+  NEW_TRACKING_POINT: 'new-tracing-point'
 };
 
 

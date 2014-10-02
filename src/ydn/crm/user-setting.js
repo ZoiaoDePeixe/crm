@@ -69,7 +69,9 @@ ydn.crm.UserSetting.schema = /** @type {DatabaseSchema} */ (/** @type {Object} *
     name: ydn.crm.UserSetting.STORE_GENERAL
   }, {
     name: ydn.crm.UserSetting.STORE_SUGAR
-  }]
+  }, ydn.db.sync.Entity.schema,
+    ydn.api.TrackingService.trackSchema,
+    ydn.api.TrackingService.accessSchema]
 }));
 
 
@@ -113,15 +115,6 @@ ydn.crm.UserSetting.schema_gdata = /** @type {DatabaseSchema} */ (/** @type {Obj
       }
     }
     ]
-  }, {
-    name: 'AccessRecord',
-    keyPath: 'path',
-    indexes: [{
-      name: 'created'
-    }, {
-      name: 'recipients',
-      multiEntry: true
-    }]
   }]
 }));
 
