@@ -74,14 +74,16 @@ TrackingApp.prototype.fetchTrack = function(e) {
 
 TrackingApp.prototype.listTrack = function(e) {
   this.db.values(ydn.api.TrackingService.SN_BEACON).addCallback(function(json) {
-    document.getElementById('list-panel').textContent = JSON.stringify(json);
+    // document.getElementById('list-panel').textContent = JSON.stringify(json);
+    window.console.log(json);
   });
 };
 
 
 TrackingApp.prototype.listAccess = function(e) {
   this.db.values(ydn.api.TrackingService.SN_ACCESS).addCallback(function(json) {
-    document.getElementById('list-panel').textContent = JSON.stringify(json);
+    // document.getElementById('list-panel').textContent = JSON.stringify(json);
+    window.console.log(json);
   });
 };
 
@@ -110,6 +112,14 @@ TrackingApp.prototype.displayMockData = function() {
     clicks: 32,
     cities: 2,
     lastOpen: new Date(1351599200000)
+  }, {
+    recipients: 'C@sere.com',
+    subject: 'Comain',
+    sentDate: new Date(1351699200000),
+    opens: 6,
+    clicks: 32,
+    cities: 2,
+    lastOpen: new Date(1351599200000)
   }];
   panel.setData(data);
 }
@@ -125,7 +135,10 @@ TrackingApp.prototype.run = function() {
     document.getElementById('list-track').onclick = this.listTrack.bind(this);
     document.getElementById('list-access').onclick = this.listAccess.bind(this);
 
-    this.displayMockData();
+    var me = this;
+    setTimeout(function() {
+      me.displayMockData();
+    }, 10);
   }, false, this);
 };
 

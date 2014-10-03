@@ -84,10 +84,21 @@ ydn.crm.TrackingPanel.prototype.getContentElement = function() {
  * @param {Array} data
  */
 ydn.crm.TrackingPanel.prototype.setData = function(data) {
-  var ex = this.removeChildAt(0, true);
-  ex.dispose();
-  var beacon_table = this.createGrid(data);
-  this.addChild(beacon_table, true);
+  var grid = this.getGrid();
+  if (!data || data.length == 0) {
+    if (grid) {
+      this.removeChild(grid, true);
+      grid.dispose();
+    }
+  } else {
+    if (!grid) {
+      grid = this.createGrid(data);
+      this.addChild(grid, true);
+    } else {
+      grid.setDataRows(data);
+      grid.refresh();
+    }
+  }
 };
 
 
@@ -158,8 +169,6 @@ ydn.crm.TrackingPanel.prototype.createDom = function() {
   }
   head.appendChild(dom.createDom('div', 'stats', slots));
 
-  var beacon_table = this.createGrid([]);
-  this.addChild(beacon_table, true);
 };
 
 
