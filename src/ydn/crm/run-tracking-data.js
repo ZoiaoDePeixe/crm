@@ -15,33 +15,16 @@
 
 
 /**
- * @fileoverview Demo for tracking panel.
+ * @fileoverview Tracking data test.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
 
+var app = new TrackingApp();
+app.run();
+
 var panel = new ydn.crm.TrackingPanel();
 
-var div = document.createElement('div');
-document.body.appendChild(div);
-panel.render(div);
+panel.render(document.getElementById('tracking-panel'));
 
-var data = [{
-  recipients: 'A@sere.com',
-  subject: 'OK',
-  sentDate: new Date(1384963200000),
-  opens: 3,
-  clicks: 5,
-  cities: 2,
-  lastOpen: new Date(1351689200000)
-}, {
-  recipients: 'B@sere.com',
-  subject: 'Re: new',
-  sentDate: new Date(1351699200000),
-  opens: 6,
-  clicks: 32,
-  cities: 2,
-  lastOpen: new Date(1351599200000)
-}];
-panel.setData(data);

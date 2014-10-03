@@ -38,10 +38,6 @@ goog.require('pear.ui.Grid');
 ydn.crm.TrackingPanel = function(opt_dom) {
   goog.base(this, opt_dom);
 
-  /**
-   * @type {pear.ui.Grid}
-   */
-  this.beacon_table = new pear.ui.Grid();
 
 };
 goog.inherits(ydn.crm.TrackingPanel, goog.ui.Component);
@@ -77,6 +73,69 @@ ydn.crm.TrackingPanel.SLOT_LABELS = ['Emails Tracked', 'Emails Opened',
 
 
 /**
+ * @inheritDoc
+ */
+ydn.crm.TrackingPanel.prototype.getContentElement = function() {
+  return this.getElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_CONTENT);
+};
+
+
+/**
+ * @param {Array} data
+ */
+ydn.crm.TrackingPanel.prototype.setData = function(data) {
+  var ex = this.removeChildAt(0, true);
+  ex.dispose();
+  var beacon_table = this.createGrid(data);
+  this.addChild(beacon_table, true);
+};
+
+
+/**
+ * @return {pear.ui.Grid}
+ */
+ydn.crm.TrackingPanel.prototype.getGrid = function() {
+  return /** @type {pear.ui.Grid} */ (this.getChildAt(0));
+};
+
+
+/**
+ * @param {Array} data
+ * @return {pear.ui.Grid}
+ */
+ydn.crm.TrackingPanel.prototype.createGrid = function(data) {
+
+  var beacon_table = new pear.ui.Grid();
+  var config = {
+    AllowColumnResize: true,
+    AllowAlternateRowHighlight: true,
+    ShowCellBorder: false
+  };
+  beacon_table.setConfiguration(config);
+
+  var width = this.getContentElement().clientWidth || 1000;
+  width = width - 8;
+  var unit = (width - 8) / (4 + 4 + 2 + 3 + 2);
+
+  var columns = [
+    new pear.data.Column('Recipients', 'recipients', 'recipients', 4 * unit, pear.data.Column.DataType.TEXT),
+    new pear.data.Column('Subject', 'subject', 'subject', 4 * unit, pear.data.Column.DataType.TEXT),
+    new pear.data.Column('Sent Date', 'sentdate', 'sentDate', 2 * unit, pear.data.Column.DataType.DATETIME),
+    new pear.data.Column('Opens', 'opens', 'opens', unit, pear.data.Column.DataType.NUMBER),
+    new pear.data.Column('Clicks', 'clicks', 'clicks', unit, pear.data.Column.DataType.NUMBER),
+    new pear.data.Column('Cities', 'cities', 'cities', unit, pear.data.Column.DataType.NUMBER),
+    new pear.data.Column('Last Open', 'lastopen', 'lastOpen', 2 * unit, pear.data.Column.DataType.DATETIME)
+  ];
+
+  beacon_table.setWidth(width);
+  beacon_table.setHeight(200);
+  beacon_table.setColumns(columns);
+  beacon_table.setDataRows(data);
+  return beacon_table;
+};
+
+
+/**
  * @override
  */
 ydn.crm.TrackingPanel.prototype.createDom = function() {
@@ -84,6 +143,10 @@ ydn.crm.TrackingPanel.prototype.createDom = function() {
   var root = this.getElement();
   root.classList.add(ydn.crm.TrackingPanel.CSS_CLASS);
   var dom = this.getDomHelper();
+  var head = dom.createDom('div', ydn.crm.ui.CSS_CLASS_HEAD);
+  var content = dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT);
+  root.appendChild(head);
+  root.appendChild(content);
   var slots = [];
   for (var i = 0; i < ydn.crm.TrackingPanel.SLOT_LABELS.length; i++) {
     var value = dom.createDom('div', 'value-holder', [dom.createDom('span', 'value', '0')]);
@@ -93,42 +156,10 @@ ydn.crm.TrackingPanel.prototype.createDom = function() {
     }
     slots[i] = dom.createDom('div', {'class': 'slot', 'tabindex': i}, [value, label]);
   }
-  root.appendChild(dom.createDom('div', 'stats', slots));
+  head.appendChild(dom.createDom('div', 'stats', slots));
 
-  var config = {
-    AllowColumnResize: true,
-    AllowAlternateRowHighlight: true,
-    ShowCellBorder: false
-  };
-  this.beacon_table.setConfiguration(config);
-  var columns = [
-    new pear.data.Column('Recipients', 'recipients', 'recipients', 75, pear.data.Column.DataType.TEXT),
-    new pear.data.Column('Subject', 'subject', 'subject', 115, pear.data.Column.DataType.TEXT),
-    new pear.data.Column('Sent Date', 'sentdate', 'sentDate', 75, pear.data.Column.DataType.DATETIME),
-    new pear.data.Column('Opens', 'opens', 'opens', 75, pear.data.Column.DataType.NUMBER),
-    new pear.data.Column('Clicks', 'clicks', 'clicks', 75, pear.data.Column.DataType.NUMBER),
-    new pear.data.Column('Cities', 'cities', 'cities', 75, pear.data.Column.DataType.NUMBER),
-    new pear.data.Column('Last Open', 'lastopen', 'lastOpen', 75, pear.data.Column.DataType.DATETIME)
-  ];
-  this.beacon_table.setWidth(800);
-  this.beacon_table.setHeight(200);
-  this.beacon_table.setColumns(columns);
-  var div_table = dom.createDom('div');
-  root.appendChild(div_table);
-
-  var data = [{
-    recipients: 'A@sere.com',
-    subject: 'OK',
-    sentDate: '11/21/2013',
-    opens: 3,
-    clicks: 5,
-    cities: 2,
-    lastOpen: '11/21/2013'
-  }]
-  this.beacon_table.setDataRows(data);
-
-  this.beacon_table.render(div_table);
-
+  var beacon_table = this.createGrid([]);
+  this.addChild(beacon_table, true);
 };
 
 
