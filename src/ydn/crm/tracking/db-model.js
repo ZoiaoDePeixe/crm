@@ -56,5 +56,27 @@ ydn.crm.tracking.DbModel.prototype.getBeaconData = function() {
     // document.getElementById('list-panel').textContent = JSON.stringify(json);
     window.console.log(json);
   });
+};
 
+
+/**
+ * @override
+ */
+ydn.crm.tracking.DbModel.prototype.getAccessRecord = function(path) {
+  var kr = ydn.db.KeyRange.starts(path);
+  return this.db.valuesByIndexKeyRange(ydn.crm.tracking.Service.SN_ACCESS,
+      'Path', kr).addCallback(function(json) {
+    // document.getElementById('list-panel').textContent = JSON.stringify(json);
+    window.console.log(json);
+  });
+};
+
+
+/**
+ * @override
+ */
+ydn.crm.tracking.DbModel.prototype.fetch = function() {
+  var df1 = this.track_entity.update();
+  var df2 = this.access_entity.update();
+  return goog.async.DeferredList.gatherResults([df1, df2]);
 };

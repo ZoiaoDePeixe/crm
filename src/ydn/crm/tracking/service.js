@@ -201,7 +201,7 @@ ydn.crm.tracking.Service.SERVICE_PATHS = {
  */
 ydn.crm.tracking.Service.KEY_PATHS = {
   'BeaconTrack': 'path',
-  'AccessTokenRecord': 'Path'
+  'AccessTokenRecord': 'ID'
 };
 
 

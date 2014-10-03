@@ -136,3 +136,51 @@ YdnCrm.AccessRecord.prototype.UserAgent;
 
 
 
+/**
+ * @interface
+ */
+YdnCrm.TrackingData = function() {};
+
+
+/**
+ * @type {string}
+ */
+YdnCrm.TrackingData.prototype.recipients;
+
+
+/**
+ * @type {string}
+ */
+YdnCrm.TrackingData.prototype.subject;
+
+
+/**
+ * @type {Date}
+ */
+YdnCrm.TrackingData.prototype.sentDate;
+
+
+/**
+ * @type {number}
+ */
+YdnCrm.TrackingData.prototype.opens;
+
+
+/**
+ * @type {number}
+ */
+YdnCrm.TrackingData.prototype.clicks;
+
+
+/**
+ * @type {number}
+ */
+YdnCrm.TrackingData.prototype.cities;
+
+
+/**
+ * @type {Date}
+ */
+YdnCrm.TrackingData.prototype.lastOpen;
+
+

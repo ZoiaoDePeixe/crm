@@ -37,8 +37,45 @@ ydn.crm.tracking.Model = function() {
 
 /**
  * @return {!goog.async.Deferred.<Array.<YdnCrm.BeaconData>>}
+ * @protected
  */
 ydn.crm.tracking.Model.prototype.getBeaconData = goog.abstractMethod;
+
+
+/**
+ * @param {string} path beacon data primary key.
+ * @return {!goog.async.Deferred.<Array.<YdnCrm.AccessRecord>>}
+ * @protected
+ */
+ydn.crm.tracking.Model.prototype.getAccessRecord = goog.abstractMethod;
+
+
+/**
+ * Compile beacon data and access recor data.
+ * @param {YdnCrm.BeaconData} beacon
+ * @param {Array.<YdnCrm.AccessRecord>} records
+ * @return {YdnCrm.TrackingData} compile tracking data.
+ */
+ydn.crm.tracking.Model.compileTrackingData = function(beacon, records) {
+  window.console.log(JSON.stringify(beacon));
+  window.console.log(JSON.stringify(records));
+  return /** @type {YdnCrm.TrackingData} */ ({
+    recipients: beacon.recipients.join(', ')
+  });
+};
+
+
+/**
+ * Retrieve and compile tracking data.
+ * @param {YdnCrm.BeaconData} beacon
+ * @return {!goog.async.Deferred.<YdnCrm.TrackingData>} compile tracking data.
+ * @protected
+ */
+ydn.crm.tracking.Model.prototype.getTrackingData = function(beacon) {
+  return this.getAccessRecord(beacon.path).addCallback(function(records) {
+    return ydn.crm.tracking.Model.compileTrackingData(beacon, records);
+  }, this);
+};
 
 
 /**
@@ -86,6 +123,21 @@ ydn.crm.tracking.Model.prototype.getMockData = function() {
 /**
  * @return {!goog.async.Deferred.<!Array.<Object>>} get tracking data.
  */
-ydn.crm.tracking.Model.prototype.getData = function() {
-  return this.getMockData();
+ydn.crm.tracking.Model.prototype.getTrackingRowData = function() {
+  // return this.getMockData();
+  return this.getBeaconData().addCallbacks(function(data) {
+    var results = [];
+    for (var i = 0; i < data.length; i++) {
+      results[i] = this.getTrackingData(data[i]);
+    }
+    return goog.async.DeferredList.gatherResults(results);
+  }, function(e) {
+    window.console.error('Error tracking fetching ' + (e.message || e));
+  }, this);
 };
+
+
+/**
+ * Update data from server.
+ */
+ydn.crm.tracking.Model.prototype.fetch = goog.abstractMethod;

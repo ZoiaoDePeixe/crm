@@ -70,11 +70,8 @@ TrackingApp.prototype.createRecord = function(e) {
 };
 
 
-TrackingApp.prototype.fetchTrack = function(e) {
-  this.track_entity.update().addBoth(function(x) {
-    document.getElementById('status').textContent = x + ' new track fetched';
-    console.log(x);
-  });
+TrackingApp.prototype.update = function(e) {
+  this.model.fetch();
 };
 
 
@@ -93,13 +90,6 @@ TrackingApp.prototype.dumpAccess = function(e) {
   });
 };
 
-
-TrackingApp.prototype.fetchAccess = function(e) {
-  this.access_entity.update().addBoth(function(x) {
-    document.getElementById('status').textContent = x + ' new access fetched';
-    console.log(x);
-  });
-};
 
 TrackingApp.prototype.displayMockData = function() {
   var data = [{
@@ -146,8 +136,7 @@ TrackingApp.prototype.run = function() {
     document.getElementById('app-content').style.display = '';
     this.refreshNewRecord();
     document.getElementById('create').onclick = this.createRecord.bind(this);
-    document.getElementById('fetch-track').onclick = this.fetchTrack.bind(this);
-    document.getElementById('fetch-access').onclick = this.fetchAccess.bind(this);
+    document.getElementById('update').onclick = this.update.bind(this);
     document.getElementById('list-track').onclick = this.dumpTrack.bind(this);
     document.getElementById('list-access').onclick = this.dumpAccess.bind(this);
 

@@ -157,7 +157,7 @@ ydn.crm.tracking.Panel.prototype.createGrid = function(data) {
  * Load data.
  */
 ydn.crm.tracking.Panel.prototype.refreshTrackingData = function() {
-  this.getModel().getData().addCallbacks(function(json) {
+  this.getModel().getTrackingRowData().addCallbacks(function(json) {
     this.setData(json);
   }, function(e) {
     window.console.error(e);
