@@ -4,5 +4,5 @@
 
 
 ydn.debug.log('ydn.db.sync.Entity', 'finest');
-var app = new TrackingApp();
+var app = new TrackingDevApp();
 app.run();
