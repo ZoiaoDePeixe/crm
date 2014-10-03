@@ -23,6 +23,7 @@
 
 goog.provide('ydn.crm.TrackingPanel');
 goog.require('goog.ui.Component');
+goog.require('pear.ui.Grid');
 
 
 
@@ -36,6 +37,11 @@ goog.require('goog.ui.Component');
  */
 ydn.crm.TrackingPanel = function(opt_dom) {
   goog.base(this, opt_dom);
+
+  /**
+   * @type {pear.ui.Grid}
+   */
+  this.beacon_table = new pear.ui.Grid();
 
 };
 goog.inherits(ydn.crm.TrackingPanel, goog.ui.Component);
@@ -88,6 +94,41 @@ ydn.crm.TrackingPanel.prototype.createDom = function() {
     slots[i] = dom.createDom('div', {'class': 'slot', 'tabindex': i}, [value, label]);
   }
   root.appendChild(dom.createDom('div', 'stats', slots));
+
+  var config = {
+    AllowColumnResize: true,
+    AllowAlternateRowHighlight: true,
+    ShowCellBorder: false
+  };
+  this.beacon_table.setConfiguration(config);
+  var columns = [
+    new pear.data.Column('Recipients', 'recipients', 'recipients', 75, pear.data.Column.DataType.TEXT),
+    new pear.data.Column('Subject', 'subject', 'subject', 115, pear.data.Column.DataType.TEXT),
+    new pear.data.Column('Sent Date', 'sentdate', 'sentDate', 75, pear.data.Column.DataType.DATETIME),
+    new pear.data.Column('Opens', 'opens', 'opens', 75, pear.data.Column.DataType.NUMBER),
+    new pear.data.Column('Clicks', 'clicks', 'clicks', 75, pear.data.Column.DataType.NUMBER),
+    new pear.data.Column('Cities', 'cities', 'cities', 75, pear.data.Column.DataType.NUMBER),
+    new pear.data.Column('Last Open', 'lastopen', 'lastOpen', 75, pear.data.Column.DataType.DATETIME)
+  ];
+  this.beacon_table.setWidth(800);
+  this.beacon_table.setHeight(200);
+  this.beacon_table.setColumns(columns);
+  var div_table = dom.createDom('div');
+  root.appendChild(div_table);
+
+  var data = [{
+    recipients: 'A@sere.com',
+    subject: 'OK',
+    sentDate: '11/21/2013',
+    opens: 3,
+    clicks: 5,
+    cities: 2,
+    lastOpen: '11/21/2013'
+  }]
+  this.beacon_table.setDataRows(data);
+
+  this.beacon_table.render(div_table);
+
 };
 
 
