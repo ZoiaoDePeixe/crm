@@ -24,7 +24,7 @@
 var app = new TrackingApp();
 app.run();
 
-var panel = new ydn.crm.TrackingPanel();
+var panel = new ydn.crm.tracking.Panel();
 
 panel.render(document.getElementById('tracking-panel'));
 

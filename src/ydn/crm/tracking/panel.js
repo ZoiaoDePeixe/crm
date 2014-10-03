@@ -21,7 +21,7 @@
  */
 
 
-goog.provide('ydn.crm.TrackingPanel');
+goog.provide('ydn.crm.tracking.Panel');
 goog.require('goog.ui.Component');
 goog.require('pear.ui.Grid');
 
@@ -35,47 +35,47 @@ goog.require('pear.ui.Grid');
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.TrackingPanel = function(opt_dom) {
+ydn.crm.tracking.Panel = function(opt_dom) {
   goog.base(this, opt_dom);
 
 
 };
-goog.inherits(ydn.crm.TrackingPanel, goog.ui.Component);
+goog.inherits(ydn.crm.tracking.Panel, goog.ui.Component);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.TrackingPanel.DEBUG = false;
+ydn.crm.tracking.Panel.DEBUG = false;
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.crm.TrackingPanel.CSS_CLASS = 'tracking-panel';
+ydn.crm.tracking.Panel.CSS_CLASS = 'tracking-panel';
 
 
 /**
  * @protected
  * @type {goog.log.Logger}
  */
-ydn.crm.TrackingPanel.prototype.logger =
-    goog.log.getLogger('ydn.crm.TrackingPanel');
+ydn.crm.tracking.Panel.prototype.logger =
+    goog.log.getLogger('ydn.crm.tracking.Panel');
 
 
 /**
  * @const
  * @type {Array.<string>}
  */
-ydn.crm.TrackingPanel.SLOT_LABELS = ['Emails Tracked', 'Emails Opened',
+ydn.crm.tracking.Panel.SLOT_LABELS = ['Emails Tracked', 'Emails Opened',
   'Opened', 'with Multiple Opens', '# of Clicks', 'Avg. # Opens', 'Avg time to Open'];
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.TrackingPanel.prototype.getContentElement = function() {
+ydn.crm.tracking.Panel.prototype.getContentElement = function() {
   return this.getElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_CONTENT);
 };
 
@@ -83,7 +83,7 @@ ydn.crm.TrackingPanel.prototype.getContentElement = function() {
 /**
  * @param {Array} data
  */
-ydn.crm.TrackingPanel.prototype.setData = function(data) {
+ydn.crm.tracking.Panel.prototype.setData = function(data) {
   var grid = this.getGrid();
   if (!data || data.length == 0) {
     if (grid) {
@@ -105,7 +105,7 @@ ydn.crm.TrackingPanel.prototype.setData = function(data) {
 /**
  * @return {pear.ui.Grid}
  */
-ydn.crm.TrackingPanel.prototype.getGrid = function() {
+ydn.crm.tracking.Panel.prototype.getGrid = function() {
   return /** @type {pear.ui.Grid} */ (this.getChildAt(0));
 };
 
@@ -114,7 +114,7 @@ ydn.crm.TrackingPanel.prototype.getGrid = function() {
  * @param {Array} data
  * @return {pear.ui.Grid}
  */
-ydn.crm.TrackingPanel.prototype.createGrid = function(data) {
+ydn.crm.tracking.Panel.prototype.createGrid = function(data) {
 
   var beacon_table = new pear.ui.Grid();
   var config = {
@@ -149,19 +149,19 @@ ydn.crm.TrackingPanel.prototype.createGrid = function(data) {
 /**
  * @override
  */
-ydn.crm.TrackingPanel.prototype.createDom = function() {
+ydn.crm.tracking.Panel.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var root = this.getElement();
-  root.classList.add(ydn.crm.TrackingPanel.CSS_CLASS);
+  root.classList.add(ydn.crm.tracking.Panel.CSS_CLASS);
   var dom = this.getDomHelper();
   var head = dom.createDom('div', ydn.crm.ui.CSS_CLASS_HEAD);
   var content = dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT);
   root.appendChild(head);
   root.appendChild(content);
   var slots = [];
-  for (var i = 0; i < ydn.crm.TrackingPanel.SLOT_LABELS.length; i++) {
+  for (var i = 0; i < ydn.crm.tracking.Panel.SLOT_LABELS.length; i++) {
     var value = dom.createDom('div', 'value-holder', [dom.createDom('span', 'value', '0')]);
-    var label = dom.createDom('div', 'label', ydn.crm.TrackingPanel.SLOT_LABELS[i]);
+    var label = dom.createDom('div', 'label', ydn.crm.tracking.Panel.SLOT_LABELS[i]);
     if (i == 2 || i == 3) {
       value.appendChild(dom.createDom('span', 'percent', '%'));
     }

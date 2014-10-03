@@ -17,16 +17,16 @@ var TrackingDevApp = function() {
   this.user.setDisplay(display);
 
   this.db = new ydn.db.Storage('tracking-app', TrackingDevApp.schema);
-  var service = new ydn.crm.TrackingService(this.client, this.db);
-  this.track_entity = this.db.entity(service, ydn.crm.TrackingService.SN_BEACON);
-  this.access_entity = this.db.entity(service, ydn.crm.TrackingService.SN_ACCESS);
+  var service = new ydn.crm.tracking.Service(this.client, this.db);
+  this.track_entity = this.db.entity(service, ydn.crm.tracking.Service.SN_BEACON);
+  this.access_entity = this.db.entity(service, ydn.crm.tracking.Service.SN_ACCESS);
 };
 
 
 TrackingDevApp.schema = {
   stores: [ydn.db.sync.Entity.schema,
-    ydn.crm.TrackingService.trackSchema,
-    ydn.crm.TrackingService.accessSchema]
+    ydn.crm.tracking.Service.trackSchema,
+    ydn.crm.tracking.Service.accessSchema]
 };
 
 
@@ -72,14 +72,14 @@ TrackingDevApp.prototype.fetchTrack = function(e) {
 
 
 TrackingDevApp.prototype.listTrack = function(e) {
-  this.db.values(ydn.crm.TrackingService.SN_BEACON).addCallback(function(json) {
+  this.db.values(ydn.crm.tracking.Service.SN_BEACON).addCallback(function(json) {
     document.getElementById('list-panel').textContent = JSON.stringify(json);
   });
 };
 
 
 TrackingDevApp.prototype.listAccess = function(e) {
-  this.db.values(ydn.crm.TrackingService.SN_ACCESS).addCallback(function(json) {
+  this.db.values(ydn.crm.tracking.Service.SN_ACCESS).addCallback(function(json) {
     document.getElementById('list-panel').textContent = JSON.stringify(json);
   });
 };

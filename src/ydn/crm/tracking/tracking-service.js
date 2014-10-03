@@ -3,7 +3,7 @@
  */
 
 
-goog.provide('ydn.crm.TrackingService');
+goog.provide('ydn.crm.tracking.Service');
 goog.require('goog.crypt');
 goog.require('goog.crypt.Md5');
 goog.require('ydn.client.Client');
@@ -18,14 +18,14 @@ goog.require('ydn.db.sync.Entity');
  * <pre>
  *   var schema = {
  *     stores: [ydn.db.sync.Entity.schema,
- *       ydn.crm.TrackingService.trackSchema,
- *       ydn.crm.TrackingService.accessSchema
+ *       ydn.crm.tracking.Service.trackSchema,
+ *       ydn.crm.tracking.Service.accessSchema
  *     ]
  *   };
  *   var db = new ydn.db.Storage('tracking-app', schema);
- *   var service = new ydn.crm.TrackingService(ydn.client.getClient(), db);
- *   var track_entity = this.db.entity(service, ydn.crm.TrackingService.SN_BEACON);
- *   var access_entity = this.db.entity(service, ydn.crm.TrackingService.SN_ACCESS);
+ *   var service = new ydn.crm.tracking.Service(ydn.client.getClient(), db);
+ *   var track_entity = this.db.entity(service, ydn.crm.tracking.Service.SN_BEACON);
+ *   var access_entity = this.db.entity(service, ydn.crm.tracking.Service.SN_ACCESS);
  * </pre>
  * @param {ydn.client.Client} client
  * @param {ydn.db.crud.Storage} db
@@ -33,7 +33,7 @@ goog.require('ydn.db.sync.Entity');
  * @struct
  * @implements {ydn.db.sync.IService}
  */
-ydn.crm.TrackingService = function(client, db) {
+ydn.crm.tracking.Service = function(client, db) {
   /**
    * @final
    * @type {ydn.client.Client}
@@ -59,31 +59,31 @@ ydn.crm.TrackingService = function(client, db) {
  * @protected
  * @type {goog.debug.Logger}
  */
-ydn.crm.TrackingService.prototype.logger =
-    goog.log.getLogger('ydn.crm.TrackingService');
+ydn.crm.tracking.Service.prototype.logger =
+    goog.log.getLogger('ydn.crm.tracking.Service');
 
 
 /**
  * @override
  */
-ydn.crm.TrackingService.prototype.remove = function(callback, name, id, token) {
+ydn.crm.tracking.Service.prototype.remove = function(callback, name, id, token) {
 };
 
 
 /**
  * @override
  */
-ydn.crm.TrackingService.prototype.get = function(callback, name, id, token) {
+ydn.crm.tracking.Service.prototype.get = function(callback, name, id, token) {
 };
 
 
 /**
  * @override
  */
-ydn.crm.TrackingService.prototype.list = function(callback, name, token) {
-  var path = ydn.crm.TrackingService.SERVICE_PATHS[name];
-  var key_path = ydn.crm.TrackingService.KEY_PATHS[name];
-  var token_key_path = ydn.crm.TrackingService.VALIDATION_TOKEN_KEY_PATHS[name];
+ydn.crm.tracking.Service.prototype.list = function(callback, name, token) {
+  var path = ydn.crm.tracking.Service.SERVICE_PATHS[name];
+  var key_path = ydn.crm.tracking.Service.KEY_PATHS[name];
+  var token_key_path = ydn.crm.tracking.Service.VALIDATION_TOKEN_KEY_PATHS[name];
   var me = this;
   var doRequest = function(params) {
     var req = me.client_.request(new ydn.client.HttpRequestData(
@@ -107,7 +107,7 @@ ydn.crm.TrackingService.prototype.list = function(callback, name, token) {
   };
 
   var params = {};
-  if (name == ydn.crm.TrackingService.SN_ACCESS) {
+  if (name == ydn.crm.tracking.Service.SN_ACCESS) {
     var user = /** @type {ydn.api.User} */ (ydn.api.User.getInstance());
     if (!user.isLogin()) {
       goog.log.warning(this.logger, 'User not login');
@@ -120,7 +120,7 @@ ydn.crm.TrackingService.prototype.list = function(callback, name, token) {
       this.user_id_hash_ = goog.crypt.byteArrayToHex(md5.digest());
     }
     params['prefix'] = '/t/' + this.user_id_hash_ + '/';
-  } else if (name != ydn.crm.TrackingService.SN_BEACON) {
+  } else if (name != ydn.crm.tracking.Service.SN_BEACON) {
     throw new Error(name);
   }
   if (token) {
@@ -145,8 +145,8 @@ ydn.crm.TrackingService.prototype.list = function(callback, name, token) {
 /**
  * @override
  */
-ydn.crm.TrackingService.prototype.add = function(callback, name, obj) {
-  var path = ydn.crm.TrackingService.SERVICE_PATHS[name];
+ydn.crm.tracking.Service.prototype.add = function(callback, name, obj) {
+  var path = ydn.crm.tracking.Service.SERVICE_PATHS[name];
   var req = this.client_.request(new ydn.client.HttpRequestData(
       path, 'POST', null, null,
       JSON.stringify(obj)));
@@ -169,27 +169,27 @@ ydn.crm.TrackingService.prototype.add = function(callback, name, obj) {
 /**
  * @override
  */
-ydn.crm.TrackingService.prototype.put = function(callback, name, obj, id, token) {
+ydn.crm.tracking.Service.prototype.put = function(callback, name, obj, id, token) {
 };
 
 
 /**
  * @define {string} store name.
  */
-ydn.crm.TrackingService.SN_BEACON = 'BeaconTrack';
+ydn.crm.tracking.Service.SN_BEACON = 'BeaconTrack';
 
 
 /**
  * @define {string} store name.
  */
-ydn.crm.TrackingService.SN_ACCESS = 'AccessTokenRecord';
+ydn.crm.tracking.Service.SN_ACCESS = 'AccessTokenRecord';
 
 
 /**
  * @const
  * @type {Object.<string>}
  */
-ydn.crm.TrackingService.SERVICE_PATHS = {
+ydn.crm.tracking.Service.SERVICE_PATHS = {
   'BeaconTrack': '/track/',
   'AccessTokenRecord': '/track-access/'
 };
@@ -199,7 +199,7 @@ ydn.crm.TrackingService.SERVICE_PATHS = {
  * @const
  * @type {Object.<string>}
  */
-ydn.crm.TrackingService.KEY_PATHS = {
+ydn.crm.tracking.Service.KEY_PATHS = {
   'BeaconTrack': 'path',
   'AccessTokenRecord': 'Path'
 };
@@ -209,7 +209,7 @@ ydn.crm.TrackingService.KEY_PATHS = {
  * @const
  * @type {Object.<string>}
  */
-ydn.crm.TrackingService.VALIDATION_TOKEN_KEY_PATHS = {
+ydn.crm.tracking.Service.VALIDATION_TOKEN_KEY_PATHS = {
   'BeaconTrack': 'created',
   'AccessTokenRecord': 'Created'
 };
@@ -219,8 +219,8 @@ ydn.crm.TrackingService.VALIDATION_TOKEN_KEY_PATHS = {
  * @const
  * @type {StoreSchema}
  */
-ydn.crm.TrackingService.trackSchema = /** @type {StoreSchema} */ ({
-  name: ydn.crm.TrackingService.SN_BEACON,
+ydn.crm.tracking.Service.trackSchema = /** @type {StoreSchema} */ ({
+  name: ydn.crm.tracking.Service.SN_BEACON,
   autoIncrement: true,
   indexes: [
     {
@@ -236,8 +236,8 @@ ydn.crm.TrackingService.trackSchema = /** @type {StoreSchema} */ ({
  * @const
  * @type {StoreSchema}
  */
-ydn.crm.TrackingService.accessSchema = /** @type {StoreSchema} */ ({
-  name: ydn.crm.TrackingService.SN_ACCESS,
+ydn.crm.tracking.Service.accessSchema = /** @type {StoreSchema} */ ({
+  name: ydn.crm.tracking.Service.SN_ACCESS,
   autoIncrement: true,
   indexes: [
     {

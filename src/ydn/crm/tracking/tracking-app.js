@@ -22,16 +22,16 @@ var TrackingApp = function() {
    */
   this.db = db.branch(ydn.db.tr.Thread.Policy.SINGLE, true);
 
-  var service = new ydn.crm.TrackingService(this.client, db);
-  this.track_entity = db.entity(service, ydn.crm.TrackingService.SN_BEACON);
-  this.access_entity = db.entity(service, ydn.crm.TrackingService.SN_ACCESS);
+  var service = new ydn.crm.tracking.Service(this.client, db);
+  this.track_entity = db.entity(service, ydn.crm.tracking.Service.SN_BEACON);
+  this.access_entity = db.entity(service, ydn.crm.tracking.Service.SN_ACCESS);
 };
 
 
 TrackingApp.schema = {
   stores: [ydn.db.sync.Entity.schema,
-    ydn.crm.TrackingService.trackSchema,
-    ydn.crm.TrackingService.accessSchema]
+    ydn.crm.tracking.Service.trackSchema,
+    ydn.crm.tracking.Service.accessSchema]
 };
 
 
@@ -78,7 +78,7 @@ TrackingApp.prototype.fetchTrack = function(e) {
 
 
 TrackingApp.prototype.dumpTrack = function(e) {
-  this.db.valuesByKeyRange(ydn.crm.TrackingService.SN_BEACON).addCallback(function(json) {
+  this.db.valuesByKeyRange(ydn.crm.tracking.Service.SN_BEACON).addCallback(function(json) {
     // document.getElementById('list-panel').textContent = JSON.stringify(json);
     window.console.log(json);
   });
@@ -86,7 +86,7 @@ TrackingApp.prototype.dumpTrack = function(e) {
 
 
 TrackingApp.prototype.dumpAccess = function(e) {
-  this.db.valuesByKeyRange(ydn.crm.TrackingService.SN_ACCESS).addCallback(function(json) {
+  this.db.valuesByKeyRange(ydn.crm.tracking.Service.SN_ACCESS).addCallback(function(json) {
     // document.getElementById('list-panel').textContent = JSON.stringify(json);
     window.console.log(json);
   });

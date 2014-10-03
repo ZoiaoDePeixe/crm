@@ -70,8 +70,8 @@ ydn.crm.UserSetting.schema = /** @type {DatabaseSchema} */ (/** @type {Object} *
   }, {
     name: ydn.crm.UserSetting.STORE_SUGAR
   }, ydn.db.sync.Entity.schema,
-    ydn.crm.TrackingService.trackSchema,
-    ydn.crm.TrackingService.accessSchema]
+    ydn.crm.tracking.Service.trackSchema,
+    ydn.crm.tracking.Service.accessSchema]
 }));
 
 

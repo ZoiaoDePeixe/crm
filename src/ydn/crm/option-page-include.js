@@ -10,6 +10,6 @@ goog.require('ydn.crm.ui.SidebarPanel');
 goog.require('ydn.crm.sugarcrm.ui.SearchPanel');
 goog.require('ydn.debug');
 goog.require('ydn.msg.Pipe');
-goog.require('ydn.crm.TrackingPanel');
+goog.require('ydn.crm.tracking.Panel');
 
 

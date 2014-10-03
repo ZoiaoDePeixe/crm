@@ -21,7 +21,7 @@
  */
 
 
-var panel = new ydn.crm.TrackingPanel();
+var panel = new ydn.crm.tracking.Panel();
 
 var div = document.createElement('div');
 document.body.appendChild(div);
