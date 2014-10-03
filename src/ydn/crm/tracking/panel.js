@@ -24,21 +24,22 @@
 goog.provide('ydn.crm.tracking.Panel');
 goog.require('goog.ui.Component');
 goog.require('pear.ui.Grid');
+goog.require('ydn.crm.tracking.Model');
 
 
 
 /**
  * Stat for email tracking information.
+ * @param {ydn.crm.tracking.Model} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.tracking.Panel = function(opt_dom) {
+ydn.crm.tracking.Panel = function(model, opt_dom) {
   goog.base(this, opt_dom);
-
-
+  this.setModel(model);
 };
 goog.inherits(ydn.crm.tracking.Panel, goog.ui.Component);
 
@@ -54,6 +55,12 @@ ydn.crm.tracking.Panel.DEBUG = false;
  * @type {string}
  */
 ydn.crm.tracking.Panel.CSS_CLASS = 'tracking-panel';
+
+
+/**
+ * @return {ydn.crm.tracking.Model}
+ */
+ydn.crm.tracking.Panel.prototype.getModel;
 
 
 /**
@@ -143,6 +150,18 @@ ydn.crm.tracking.Panel.prototype.createGrid = function(data) {
   beacon_table.setColumns(columns);
   beacon_table.setDataRows(data);
   return beacon_table;
+};
+
+
+/**
+ * Load data.
+ */
+ydn.crm.tracking.Panel.prototype.refreshTrackingData = function() {
+  this.getModel().getData().addCallbacks(function(json) {
+    this.setData(json);
+  }, function(e) {
+    window.console.error(e);
+  }, this);
 };
 
 

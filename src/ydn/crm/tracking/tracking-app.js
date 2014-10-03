@@ -21,10 +21,11 @@ var TrackingApp = function() {
    * @type {ydn.db.core.DbOperator}
    */
   this.db = db.branch(ydn.db.tr.Thread.Policy.SINGLE, true);
+  this.model = new ydn.crm.tracking.DbModel(this.client, db);
 
-  var service = new ydn.crm.tracking.Service(this.client, db);
-  this.track_entity = db.entity(service, ydn.crm.tracking.Service.SN_BEACON);
-  this.access_entity = db.entity(service, ydn.crm.tracking.Service.SN_ACCESS);
+  this.panel = new ydn.crm.tracking.Panel(this.model);
+
+  this.panel.render(document.getElementById('tracking-panel'));
 };
 
 
@@ -126,7 +127,7 @@ TrackingApp.prototype.displayMockData = function() {
     cities: 2,
     lastOpen: new Date(1351599200000)
   }];
-  panel.setData(data);
+  this.panel.setData(data);
 };
 
 TrackingApp.prototype.loadData = function() {
@@ -153,7 +154,7 @@ TrackingApp.prototype.run = function() {
     TrackingApp.setStatus('Ready');
     var me = this;
     setTimeout(function() {
-      me.displayMockData();
+      me.panel.refreshTrackingData();
     }, 10);
   }, false, this);
 };

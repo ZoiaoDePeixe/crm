@@ -17,9 +17,11 @@ var TrackingDevApp = function() {
   this.user.setDisplay(display);
 
   this.db = new ydn.db.Storage('tracking-app', TrackingDevApp.schema);
-  var service = new ydn.crm.tracking.Service(this.client, this.db);
-  this.track_entity = this.db.entity(service, ydn.crm.tracking.Service.SN_BEACON);
-  this.access_entity = this.db.entity(service, ydn.crm.tracking.Service.SN_ACCESS);
+  this.model = new ydn.crm.tracking.DbModel(this.client, this.db);
+
+  var panel = new ydn.crm.tracking.Panel(this.model);
+
+  panel.render(document.getElementById('tracking-panel'));
 };
 
 
