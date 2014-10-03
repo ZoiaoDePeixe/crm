@@ -16,17 +16,22 @@ var TrackingApp = function() {
   var display = new ydn.shared.api.UserDisplayImpl();
   this.user.setDisplay(display);
 
-  this.db = new ydn.db.Storage('tracking-app', TrackingApp.schema);
-  var service = new ydn.api.TrackingService(this.client, this.db);
-  this.track_entity = this.db.entity(service, ydn.api.TrackingService.SN_BEACON);
-  this.access_entity = this.db.entity(service, ydn.api.TrackingService.SN_ACCESS);
+  var db = new ydn.db.core.Storage('tracking-app', TrackingApp.schema);
+  /**
+   * @type {ydn.db.core.DbOperator}
+   */
+  this.db = db.branch(ydn.db.tr.Thread.Policy.SINGLE, true);
+
+  var service = new ydn.crm.TrackingService(this.client, db);
+  this.track_entity = db.entity(service, ydn.crm.TrackingService.SN_BEACON);
+  this.access_entity = db.entity(service, ydn.crm.TrackingService.SN_ACCESS);
 };
 
 
 TrackingApp.schema = {
   stores: [ydn.db.sync.Entity.schema,
-    ydn.api.TrackingService.trackSchema,
-    ydn.api.TrackingService.accessSchema]
+    ydn.crm.TrackingService.trackSchema,
+    ydn.crm.TrackingService.accessSchema]
 };
 
 
@@ -72,16 +77,16 @@ TrackingApp.prototype.fetchTrack = function(e) {
 };
 
 
-TrackingApp.prototype.listTrack = function(e) {
-  this.db.values(ydn.api.TrackingService.SN_BEACON).addCallback(function(json) {
+TrackingApp.prototype.dumpTrack = function(e) {
+  this.db.valuesByKeyRange(ydn.crm.TrackingService.SN_BEACON).addCallback(function(json) {
     // document.getElementById('list-panel').textContent = JSON.stringify(json);
     window.console.log(json);
   });
 };
 
 
-TrackingApp.prototype.listAccess = function(e) {
-  this.db.values(ydn.api.TrackingService.SN_ACCESS).addCallback(function(json) {
+TrackingApp.prototype.dumpAccess = function(e) {
+  this.db.valuesByKeyRange(ydn.crm.TrackingService.SN_ACCESS).addCallback(function(json) {
     // document.getElementById('list-panel').textContent = JSON.stringify(json);
     window.console.log(json);
   });
@@ -122,7 +127,17 @@ TrackingApp.prototype.displayMockData = function() {
     lastOpen: new Date(1351599200000)
   }];
   panel.setData(data);
-}
+};
+
+TrackingApp.prototype.loadData = function() {
+  TrackingApp.setStatus('Loading data...');
+
+};
+
+
+TrackingApp.setStatus = function(msg) {
+  document.getElementById('status').textContent = msg;
+};
 
 TrackingApp.prototype.run = function() {
   this.user.refresh();
@@ -132,9 +147,10 @@ TrackingApp.prototype.run = function() {
     document.getElementById('create').onclick = this.createRecord.bind(this);
     document.getElementById('fetch-track').onclick = this.fetchTrack.bind(this);
     document.getElementById('fetch-access').onclick = this.fetchAccess.bind(this);
-    document.getElementById('list-track').onclick = this.listTrack.bind(this);
-    document.getElementById('list-access').onclick = this.listAccess.bind(this);
+    document.getElementById('list-track').onclick = this.dumpTrack.bind(this);
+    document.getElementById('list-access').onclick = this.dumpAccess.bind(this);
 
+    TrackingApp.setStatus('Ready');
     var me = this;
     setTimeout(function() {
       me.displayMockData();
