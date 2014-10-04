@@ -230,9 +230,9 @@ YdnCrm.TrackingAggregate.prototype.modified;
 
 
 /**
- * @type {number} Emails Tracked.
+ * @type {number} Emails Tracked, number of track in this aggregate.
  */
-YdnCrm.TrackingAggregate.prototype.emailTracked;
+YdnCrm.TrackingAggregate.prototype.count;
 
 
 /**
