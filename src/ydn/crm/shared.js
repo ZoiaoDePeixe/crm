@@ -241,7 +241,7 @@ ydn.crm.shared.init = function() {
     // ydn.debug.log('ydn.crm.app.EventPage', 'finest');
   }
   goog.global.console.info(title);
-  goog.global.console.info('API documentation: http://dev.yathit.com/\n' +
+  goog.global.console.info('API documentation: http://crm.yathit.com/\n' +
       'Feedback and suggestion: https://yathit.uservoice.com/\n' +
       'Bug report: https://github.com/yathit/sugarcrm-gmail-chrome-extension');
   ydn.debug.captureOnConsole(false);
