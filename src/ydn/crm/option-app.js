@@ -16,14 +16,19 @@
 
 /**
  * @fileoverview Option page app for CRMinInbox suite.
+ *
+ * All extensions in CRMinInbox suite use this generic app page, and hence
+ * same functionality. However each extension use different default
+ * configuration for the target application.
  */
 
 
 
 goog.provide('ydn.crm.OptionPageApp');
-goog.require('ydn.msg.Pipe');
-goog.require('ydn.crm.msg.StatusBar');
 goog.require('ydn.crm.msg.Manager');
+goog.require('ydn.crm.msg.StatusBar');
+goog.require('ydn.msg.Pipe');
+
 
 
 /**
@@ -67,6 +72,7 @@ ydn.crm.OptionPageApp = function() {
 ydn.crm.OptionPageApp.prototype.addPage = function(name, label, page) {
   this.pages_[name] = page;
   var main_menu = document.getElementById('main-menu');
+  var content = document.getElementById('app-content');
   var li = document.createElement('li');
   if (main_menu.childElementCount == 0) {
     li.setAttribute('selected', '');
@@ -76,8 +82,11 @@ ydn.crm.OptionPageApp.prototype.addPage = function(name, label, page) {
   a.textContent = label;
   li.appendChild(a);
   main_menu.appendChild(li);
-};
 
+  var div = document.createElement('div');
+  content.appendChild(div);
+  page.render(div);
+};
 
 
 /**
@@ -119,17 +128,15 @@ ydn.crm.OptionPageApp.prototype.updateUserInfo_ = function(user_info) {
  * Do silence login.
  * @protected
  * @param {Object?} context login context
- * @param {function(this: T, Object)=} opt_cb
- * @param {T=} opt_scope
- * @template T
+ * @return {!goog.async.Deferred}
  */
-ydn.crm.OptionPageApp.prototype.login = function(context, opt_cb, opt_scope) {
+ydn.crm.OptionPageApp.prototype.login = function(context) {
 
   var btn_login = document.getElementById('user-login');
-  ydn.msg.getChannel().send('echo').addCallbacks(function(ok) {
+  return ydn.msg.getChannel().send('echo').addCallbacks(function(ok) {
     this.setStatus('logging in...');
     var user = ydn.crm.ui.UserSetting.getInstance();
-    user.onReady().addCallbacks(function() {
+    return user.onReady().addCallbacks(function() {
       var user_info = user.getUserInfo();
       this.updateUserInfo_(user_info);
       for (var p in this.pages_) {
@@ -143,7 +150,7 @@ ydn.crm.OptionPageApp.prototype.login = function(context, opt_cb, opt_scope) {
       } else {
         this.setStatus('Not login');
       }
-
+      return user_info;
     }, function(e) {
       var msg = e.message ? e.message : e;
       this.setStatus('Error: ' + msg);
@@ -165,12 +172,12 @@ ydn.crm.OptionPageApp.prototype.login = function(context, opt_cb, opt_scope) {
 ydn.crm.OptionPageApp.prototype.showPanel_ = function(name) {
   name = name.trim().toLowerCase();
   var menu = document.getElementById('main-menu');
-  var content = document.getElementById('content');
+  var content = document.getElementById('app-content');
   var has_selected = false;
   for (var i = content.childElementCount - 1; i >= 0; i--) {
     var selected = content.children[i].id == name;
     has_selected |= selected;
-    this.panels[i].setVisible(selected);
+    this.pages_[name].showPage(selected);
     menu.children[i].className = selected ? 'selected' : '';
     content.children[i].style.display = selected ? '' : 'none';
   }
@@ -182,7 +189,17 @@ ydn.crm.OptionPageApp.prototype.showPanel_ = function(name) {
 };
 
 
+/**
+ * @param {string} msg
+ */
+ydn.crm.OptionPageApp.prototype.setStatus = function(msg) {
+  ydn.crm.msg.Manager.addStatus(msg);
+};
 
+
+/**
+ * Run the app.
+ */
 ydn.crm.OptionPageApp.prototype.run = function() {
   var me = this;
   var menu = document.getElementById('main-menu');
@@ -197,7 +214,7 @@ ydn.crm.OptionPageApp.prototype.run = function() {
       ydn.msg.getChannel().send('logged-out');
     }
 
-    OptionPage.openPageAsDialog_(e);
+    ydn.ui.openPageAsDialog(e);
   }, true);
 
   chrome.runtime.onMessageExternal.addListener(
@@ -208,12 +225,11 @@ ydn.crm.OptionPageApp.prototype.run = function() {
         }
       });
 
-
-  this.login(null, function() {
+  this.login(null).addCallback(function() {
     if (location.hash) {
-      setTimeout(function() {
-        me.showPanel_(location.hash.replace('#', ''));
-      }, 10);
+      goog.Timer.callOnce(function() {
+        this.showPanel_(location.hash.replace('#', ''));
+      }, 10, this);
     }
   }, this);
 };

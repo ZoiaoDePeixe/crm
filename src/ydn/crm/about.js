@@ -15,36 +15,49 @@
 
 
 /**
- * @fileoverview Option page app for CRMinInbox suite.
+ * @fileoverview About page.
  */
 
 
+goog.provide('ydn.crm.AboutPage');
 
-goog.provide('ydn.crm.IPage');
 
 
 /**
- * @interface
+ * About page that render content in 'about-template'.
+ * @param {Element} el
+ * @constructor
+ * @implements {ydn.crm.IPage}
+ * @struct
  */
-ydn.crm.IPage = function() {};
+ydn.crm.AboutPage = function(el) {
+  /**
+   * @final
+   * @type {Element}
+   * @private
+   */
+  this.root_ = el;
+};
 
 
 /**
- * Show or hide page.
- * @param {boolean} val
+ * @override
  */
-ydn.crm.IPage.prototype.showPage = function(val) {};
+ydn.crm.AboutPage.prototype.setUserInfo = function(info) {
+};
 
 
 /**
- * Invoke when user login or logout.
- * @param {?YdnApiUser} info `null` if logout.
+ * @override
  */
-ydn.crm.IPage.prototype.setUserInfo = function(info) {};
-
-
-/**
- * Render content.
- * @param {Element} el root element.
- */
-ydn.crm.IPage.prototype.render = function(el) {};
+ydn.crm.AboutPage.prototype.showPage = function(val) {
+  if (val) {
+    if (ydn.crm.AboutPage.prototype.childElementCount == 0) {
+      var temp = ydn.ui.getTemplateById('about-template');
+      this.root_.appendChild(temp);
+      this.root_.style.display = '';
+    } else {
+      this.root_.style.display = 'none';
+    }
+  }
+};
