@@ -44,6 +44,8 @@ ydn.crm.AboutPage = function(opt_tid) {
  * @override
  */
 ydn.crm.AboutPage.prototype.render = function(el) {
+  var temp = ydn.ui.getTemplateById(this.template_id_).content;
+  this.root_.appendChild(temp.cloneNode(true));
   el.appendChild(this.root_);
 };
 
@@ -58,11 +60,4 @@ ydn.crm.AboutPage.prototype.setUserInfo = function(info) {
 /**
  * @override
  */
-ydn.crm.AboutPage.prototype.showPage = function(val) {
-  if (val) {
-    if (this.root_.childElementCount == 0) {
-      var temp = ydn.ui.getTemplateById(this.template_id_).content;
-      this.root_.appendChild(temp.cloneNode(true));
-    }
-  }
-};
+ydn.crm.AboutPage.prototype.showPage = function(val) {};

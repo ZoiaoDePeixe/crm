@@ -60,7 +60,6 @@ ydn.crm.OptionPageApp = function() {
 };
 
 
-
 /**
  * @define {boolean} debug flag.
  */
