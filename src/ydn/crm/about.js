@@ -25,18 +25,26 @@ goog.provide('ydn.crm.AboutPage');
 
 /**
  * About page that render content in 'about-template'.
- * @param {Element} el
+ * @param {string=} opt_tid template element id.
  * @constructor
  * @implements {ydn.crm.IPage}
  * @struct
  */
-ydn.crm.AboutPage = function(el) {
+ydn.crm.AboutPage = function(opt_tid) {
+  this.template_id_ = opt_tid || 'about-template';
   /**
-   * @final
    * @type {Element}
    * @private
    */
-  this.root_ = el;
+  this.root_ = document.createElement('div');
+};
+
+
+/**
+ * @override
+ */
+ydn.crm.AboutPage.prototype.render = function(el) {
+  el.appendChild(this.root_);
 };
 
 
@@ -53,7 +61,7 @@ ydn.crm.AboutPage.prototype.setUserInfo = function(info) {
 ydn.crm.AboutPage.prototype.showPage = function(val) {
   if (val) {
     if (ydn.crm.AboutPage.prototype.childElementCount == 0) {
-      var temp = ydn.ui.getTemplateById('about-template');
+      var temp = ydn.ui.getTemplateById(this.template_id_);
       this.root_.appendChild(temp);
       this.root_.style.display = '';
     } else {

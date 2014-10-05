@@ -84,6 +84,7 @@ ydn.crm.OptionPageApp.prototype.addPage = function(name, label, page) {
   main_menu.appendChild(li);
 
   var div = document.createElement('div');
+  div.setAttribute('name', name);
   content.appendChild(div);
   page.render(div);
 };
@@ -175,11 +176,13 @@ ydn.crm.OptionPageApp.prototype.showPanel_ = function(name) {
   var content = document.getElementById('app-content');
   var has_selected = false;
   for (var i = content.childElementCount - 1; i >= 0; i--) {
-    var selected = content.children[i].id == name;
+    var page = content.children[i];
+    var page_name = page.getAttribute('name');
+    var selected = page_name == name;
     has_selected |= selected;
     this.pages_[name].showPage(selected);
     menu.children[i].className = selected ? 'selected' : '';
-    content.children[i].style.display = selected ? '' : 'none';
+    page.style.display = selected ? '' : 'none';
   }
   if (!has_selected) {
     // show home
