@@ -37,6 +37,10 @@ goog.require('ydn.msg.Pipe');
  * @struct
  */
 ydn.crm.OptionPageApp = function() {
+
+  ydn.msg.initPipe(ydn.msg.ChannelName.OPTIONS);
+  ydn.ui.setTemplateDocument(chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE));
+
   /**
    * @protected
    * @type {Object}
@@ -53,14 +57,14 @@ ydn.crm.OptionPageApp = function() {
   status.render(document.getElementById('status'));
   ydn.crm.msg.Manager.addConsumer(status);
 
-  chrome.runtime.onMessageExternal.addListener(
-      function(request, sender, sendResponse) {
-        if (request == 'closing') {
-          sendResponse('close');
-          location.reload();
-        }
-      });
 };
+
+
+
+/**
+ * @define {boolean} debug flag.
+ */
+ydn.crm.OptionPageApp.DEBUG = false;
 
 
 /**
@@ -100,7 +104,7 @@ ydn.crm.OptionPageApp.prototype.updateUserInfo_ = function(user_info) {
     var btn_login = document.getElementById('user-login');
     var ele_name = document.getElementById('user-name');
     var main_menu = document.getElementById('main-menu');
-    var content = document.getElementById('content');
+    var content = document.getElementById('app-content');
     if (user_info.is_login) {
       btn_login.href = user_info.logout_url;
       btn_login.textContent = 'logout';
@@ -109,7 +113,7 @@ ydn.crm.OptionPageApp.prototype.updateUserInfo_ = function(user_info) {
       content.style.display = '';
     } else {
       var url = user_info.login_url;
-      if (OptionPage.DEBUG && url.charAt(0) == '/') {
+      if (ydn.crm.OptionPageApp.DEBUG && url.charAt(0) == '/') {
         // Local dev server need convert relative to full url.
         url = 'http://127.0.0.1:8080' + url;
       }
@@ -141,14 +145,13 @@ ydn.crm.OptionPageApp.prototype.login = function(context) {
       var user_info = user.getUserInfo();
       this.updateUserInfo_(user_info);
       for (var p in this.pages_) {
-        this.pages_[i].setUserInfo(user_info);
+        this.pages_[p].setUserInfo(user_info);
       }
+      var content = document.getElementById('app-content');
       if (user.isLogin()) {
-
-        if (opt_cb) {
-          opt_cb.call(opt_scope, user_info);
-        }
+        content.style.display = '';
       } else {
+        content.style.display = 'none';
         this.setStatus('Not login');
       }
       return user_info;
