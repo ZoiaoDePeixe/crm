@@ -88,6 +88,7 @@ ydn.crm.OptionPageApp.prototype.addPage = function(name, label, page) {
 
   var div = document.createElement('div');
   div.setAttribute('name', name);
+  div.style.display = 'none';
   content.appendChild(div);
   page.render(div);
 };
