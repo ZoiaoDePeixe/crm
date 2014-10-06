@@ -236,9 +236,16 @@ YdnCrm.TrackingAggregate.prototype.count;
 
 
 /**
- * @type {number} Emails Opened.
+ * @type {number} Number of email opened.
  */
 YdnCrm.TrackingAggregate.prototype.numOpens;
+
+
+/**
+ * @type {number} Total number of email opened. An email can be opened by multiple
+ * times.
+ */
+YdnCrm.TrackingAggregate.prototype.totalOpens;
 
 
 /**
