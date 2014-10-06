@@ -13,6 +13,7 @@ goog.require('ydn.crm.sugarcrm.WidgetModel');
  * @param {ydn.crm.sugarcrm.WidgetModel} model
  * @param {boolean=} opt_hide_title
  * @constructor
+ * @struct
  */
 ydn.crm.sugarcrm.Widget = function(model, opt_hide_title) {
   /**
@@ -29,27 +30,13 @@ ydn.crm.sugarcrm.Widget = function(model, opt_hide_title) {
 
 
 /**
- * Trial credential from http://www.sugarcrm.com
- * @type {{domain: string, user_name: string, password: string}}
- */
-ydn.crm.sugarcrm.Widget.trialCredentials = {
-  domain: 'https://rflkda0265.trial.sugarcrm.com/index.php',
-  user_name: 'jane',
-  password: '!Jane1'
-};
-
-
-/**
  * @param {Element} ele
  */
 ydn.crm.sugarcrm.Widget.prototype.render = function(ele) {
   var div = document.createElement('div');
   ele.appendChild(div);
-  var sr = div.createShadowRoot();
-  var shadow = sr.appendChild(this.root);
-  var template = document.querySelector('#sugarcrm-template');
-  this.root.appendChild(document.importNode(template.content, true));
-  // this.root.appendChild(template.content);
+  var template = ydn.ui.getTemplateById('sugarcrm-template').content;
+  this.root.appendChild(template.cloneNode(true));
 
   var a_revoke = this.root.querySelector('a[name=remove]');
   a_revoke.addEventListener('click', this.remove_.bind(this), true);
@@ -59,7 +46,6 @@ ydn.crm.sugarcrm.Widget.prototype.render = function(ele) {
 
   var input_domain = this.root.querySelector('input[name=domain]');
   input_domain.onblur = this.onDomainBlur.bind(this);
-  input_domain.setAttribute('placeholder', ydn.crm.sugarcrm.Widget.trialCredentials.domain);
 
   var input_baseurl = this.root.querySelector('input[name=baseurl]');
   input_baseurl.value = '';
@@ -94,11 +80,7 @@ ydn.crm.sugarcrm.Widget.prototype.onDomainBlur = function(e) {
   if (!domain) {
     return;
   }
-  if (/\.trial\.sugarcrm\.[com|eu]/.test(domain)) {
-    // all trial password from trial.sugarcrm.com are same.
-    this.root.querySelector('input[name=username]').value = ydn.crm.sugarcrm.Widget.trialCredentials.user_name;
-    this.root.querySelector('input[name=password]').value = ydn.crm.sugarcrm.Widget.trialCredentials.password;
-  }
+
   this.model.setInstanceUrl(domain, function(info) {
     var input_baseurl = this.root.querySelector('input[name=baseurl]');
     input_baseurl.value = '';
@@ -225,14 +207,12 @@ ydn.crm.sugarcrm.Widget.prototype.handleLogin = function(e) {
   btn_new_sugar.textContent = 'logging in...';
   btn_new_sugar.setAttribute('disabled', '1');
 
-  this.model.login(url, username, password, function(info) {
-    if (info instanceof Error) {
-      btn_new_sugar.removeAttribute('disabled');
-      btn_new_sugar.textContent = 'Login';
-      ele_msg.textContent = info.name + ': ' + info.message;
-    } else {
-      window.location.reload();
-    }
+  this.model.login(url, username, password).addCallbacks(function(info) {
+    window.location.reload();
+  }, function(e) {
+    btn_new_sugar.removeAttribute('disabled');
+    btn_new_sugar.textContent = 'Login';
+    ele_msg.textContent = e.name + ': ' + e.message;
   }, this);
 };
 

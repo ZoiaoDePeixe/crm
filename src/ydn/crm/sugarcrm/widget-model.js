@@ -218,7 +218,7 @@ ydn.crm.sugarcrm.WidgetModel.list = function() {
       models[i] = new ydn.crm.sugarcrm.WidgetModel(about);
     }
     return models;
-  }, this);
+  });
 };
 
 
