@@ -141,6 +141,9 @@ ydn.crm.OptionPageApp.prototype.login = function(context) {
     var user = ydn.crm.ui.UserSetting.getInstance();
     return user.onReady().addCallbacks(function() {
       var user_info = user.getUserInfo();
+      if (ydn.crm.OptionPageApp.DEBUG) {
+        window.console.log('user ready', user_info);
+      }
       this.updateUserInfo_(user_info);
       for (var p in this.pages_) {
         this.pages_[p].setUserInfo(user_info);
@@ -216,6 +219,9 @@ ydn.crm.OptionPageApp.prototype.run = function() {
   var me = this;
   var menu = document.getElementById('main-menu');
   window.addEventListener('popstate', function(e) {
+    if (ydn.crm.OptionPageApp.DEBUG) {
+      window.console.log('popstate ' + location.hash);
+    }
     me.showPanel_(location.hash.replace('#', ''));
   }, false);
 

@@ -43,6 +43,7 @@ ydn.crm.sugarcrm.Page = function(opt_tid) {
   this.root_ = document.createElement('div');
   this.widget_ = new ydn.crm.sugarcrm.Widget(new ydn.crm.sugarcrm.WidgetModel());
   this.widget_.show_stats = true;
+  this.model_updated_after_login_ = false; // ugly
 };
 
 
@@ -68,10 +69,14 @@ ydn.crm.sugarcrm.Page.prototype.setUserInfo = function(info) {
  * @override
  */
 ydn.crm.sugarcrm.Page.prototype.showPage = function(val) {
+  if (this.model_updated_after_login_) {
+    return;
+  }
   ydn.crm.sugarcrm.WidgetModel.list().addCallbacks(function(models) {
     for (var i = 0; i < models.length; i++) {
       var model = models[i];
       if (model.isLogin()) {
+        this.model_updated_after_login_ = true;
         this.widget_.setModel(model);
         break;
       }

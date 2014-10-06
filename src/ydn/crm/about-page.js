@@ -46,6 +46,8 @@ ydn.crm.AboutPage = function(opt_tid) {
 ydn.crm.AboutPage.prototype.render = function(el) {
   var temp = ydn.ui.getTemplateById(this.template_id_).content;
   this.root_.appendChild(temp.cloneNode(true));
+  var version = this.root_.querySelector('span[name=version]');
+  version.textContent = ydn.crm.version;
   el.appendChild(this.root_);
 };
 
