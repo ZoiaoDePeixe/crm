@@ -22,6 +22,8 @@
 
 
 goog.provide('ydn.crm.sugarcrm.Page');
+goog.require('ydn.crm.sugarcrm.Widget');
+goog.require('ydn.crm.sugarcrm.WidgetModel');
 
 
 
@@ -39,6 +41,7 @@ ydn.crm.sugarcrm.Page = function(opt_tid) {
    * @private
    */
   this.root_ = document.createElement('div');
+  this.widget_ = new ydn.crm.sugarcrm.Widget(new ydn.crm.sugarcrm.WidgetModel());
 };
 
 
@@ -48,6 +51,7 @@ ydn.crm.sugarcrm.Page = function(opt_tid) {
 ydn.crm.sugarcrm.Page.prototype.render = function(el) {
   var temp = ydn.ui.getTemplateById(this.template_id_).content;
   this.root_.appendChild(temp.cloneNode(true));
+  this.widget_.render(this.root_.querySelector('#sugarcrm-widget'));
   el.appendChild(this.root_);
 };
 
@@ -63,7 +67,17 @@ ydn.crm.sugarcrm.Page.prototype.setUserInfo = function(info) {
  * @override
  */
 ydn.crm.sugarcrm.Page.prototype.showPage = function(val) {
-
+  ydn.crm.sugarcrm.WidgetModel.list().addCallbacks(function(models) {
+    for (var i = 0; i < models.length; i++) {
+      var model = models[i];
+      if (model.isLogin()) {
+        this.widget_.setModel(model);
+        break;
+      }
+    }
+  }, function(e) {
+    ydn.crm.msg.Manager.addStatus('listing sugarcrm model fail ' + (e.message || e));
+  }, this);
 };
 
 

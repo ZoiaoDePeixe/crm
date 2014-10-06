@@ -30,11 +30,33 @@ ydn.crm.sugarcrm.Widget = function(model, opt_hide_title) {
 
 
 /**
+ * @define {boolean} debug flag.
+ */
+ydn.crm.sugarcrm.Widget.DEBUG = true;
+
+
+/**
+ * @return {ydn.crm.sugarcrm.WidgetModel}
+ */
+ydn.crm.sugarcrm.Widget.prototype.getModel = function() {
+  return this.model;
+};
+
+
+/**
+ * @param {ydn.crm.sugarcrm.WidgetModel} model
+ */
+ydn.crm.sugarcrm.Widget.prototype.setModel = function(model) {
+  this.model = model;
+  this.refresh();
+};
+
+
+/**
  * @param {Element} ele
  */
 ydn.crm.sugarcrm.Widget.prototype.render = function(ele) {
-  var div = document.createElement('div');
-  ele.appendChild(div);
+
   var template = ydn.ui.getTemplateById('sugarcrm-template').content;
   this.root.appendChild(template.cloneNode(true));
 
@@ -63,6 +85,8 @@ ydn.crm.sugarcrm.Widget.prototype.render = function(ele) {
     this.root.querySelector('h3').style.display = 'none';
   }
 
+  ele.appendChild(this.root);
+
   this.refresh();
 };
 
@@ -81,21 +105,19 @@ ydn.crm.sugarcrm.Widget.prototype.onDomainBlur = function(e) {
     return;
   }
 
-  this.model.setInstanceUrl(domain, function(info) {
+  this.model.setInstanceUrl(domain).addCallbacks(function(info) {
     var input_baseurl = this.root.querySelector('input[name=baseurl]');
     input_baseurl.value = '';
-    if (info instanceof Error) {
-      ele_message.textContent = info.name;
-      ele_message.className = 'error';
-      ele_message.setAttribute('title', info.message || '');
-    } else {
-      ele_message.textContent = 'SugarCRM ' + info.flavor + ' ' + info.version;
-      ele_message.className = '';
-      if (info['baseUrl']) {
-        input_baseurl.value = info['baseUrl'];
-      }
-      ele_message.removeAttribute('title');
+    ele_message.textContent = 'SugarCRM ' + info.flavor + ' ' + info.version;
+    ele_message.className = '';
+    if (info['baseUrl']) {
+      input_baseurl.value = info['baseUrl'];
     }
+    ele_message.removeAttribute('title');
+  }, function(e) {
+    ele_message.textContent = e.name;
+    ele_message.className = 'error';
+    ele_message.setAttribute('title', e.message || '');
   }, this);
 };
 
@@ -150,15 +172,18 @@ ydn.crm.sugarcrm.Widget.prototype.refresh = function() {
   var info_panel = this.root.querySelector('div[name=info-panel]');
   var remove_panel = this.root.querySelector('div[name=remove-panel]');
   var permission_panel = this.root.querySelector('#grant-host-permission');
+  if (ydn.crm.sugarcrm.Widget.DEBUG) {
+    window.console.log('refreshing', about);
+  }
   if (about) {
     if (about.isLogin) {
       var a = info_panel.querySelector('a[name=instance]');
-      a.textContent = about.domain;
+      a.textContent = about.baseUrl;
       a.href = about.baseUrl;
       a.target = about.domain;
       info_panel.querySelector('span[name=user]').textContent = about.userName;
-      this.model.getInfo(function(info) {
-        var info_div = login_panel.querySelector('span[name=instance-info]');
+      this.model.getInfo().addCallback(function(info) {
+        var info_div = info_panel.querySelector('span[name=instance-info]');
         if (info && !(info instanceof Error)) {
           info_div.textContent = info.version + ' ' + info.flavor;
         }
@@ -207,12 +232,18 @@ ydn.crm.sugarcrm.Widget.prototype.handleLogin = function(e) {
   btn_new_sugar.textContent = 'logging in...';
   btn_new_sugar.setAttribute('disabled', '1');
 
-  this.model.login(url, username, password).addCallbacks(function(info) {
-    window.location.reload();
-  }, function(e) {
-    btn_new_sugar.removeAttribute('disabled');
-    btn_new_sugar.textContent = 'Login';
-    ele_msg.textContent = e.name + ': ' + e.message;
-  }, this);
+  var model = this.model;
+  chrome.permissions.request(this.model.getPermissionObject(), function(grant) {
+    console.log('grant ' + grant);
+    model.login(url, username, password).addCallbacks(function(info) {
+      window.location.reload();
+    }, function(e) {
+      btn_new_sugar.removeAttribute('disabled');
+      btn_new_sugar.textContent = 'Login';
+      ele_msg.textContent = e.name + ': ' + e.message;
+    }, this);
+  });
+
+
 };
 

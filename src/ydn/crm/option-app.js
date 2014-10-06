@@ -127,7 +127,6 @@ ydn.crm.OptionPageApp.prototype.updateUserInfo_ = function(user_info) {
 };
 
 
-
 /**
  * Do silence login.
  * @protected
@@ -173,23 +172,31 @@ ydn.crm.OptionPageApp.prototype.login = function(context) {
  * @private
  */
 ydn.crm.OptionPageApp.prototype.showPanel_ = function(name) {
+  name = name || 'home';
   name = name.trim().toLowerCase();
   var menu = document.getElementById('main-menu');
   var content = document.getElementById('app-content');
   var has_selected = false;
+  var selected_index = -1;
+  for (var i = content.childElementCount - 1; i >= 0; i--) {
+    var page_name = content.children[i].getAttribute('name');
+    if (page_name == name) {
+      selected_index = i;
+      break;
+    }
+  }
+  if (selected_index == -1) {
+    ydn.crm.msg.Manager.addStatus('Invalid tab name: ' + name);
+    return;
+  }
   for (var i = content.childElementCount - 1; i >= 0; i--) {
     var page = content.children[i];
     var page_name = page.getAttribute('name');
-    var selected = page_name == name;
-    has_selected |= selected;
+    var selected = selected_index == i;
     this.pages_[name].showPage(selected);
+
     menu.children[i].className = selected ? 'selected' : '';
     page.style.display = selected ? '' : 'none';
-  }
-  if (!has_selected) {
-    // show home
-    menu.children[0].className = 'selected';
-    content.children[0].style.display = '';
   }
 };
 
@@ -231,11 +238,9 @@ ydn.crm.OptionPageApp.prototype.run = function() {
       });
 
   this.login(null).addCallback(function() {
-    if (location.hash) {
-      goog.Timer.callOnce(function() {
-        this.showPanel_(location.hash.replace('#', ''));
-      }, 10, this);
-    }
+    goog.Timer.callOnce(function() {
+      this.showPanel_(location.hash.replace('#', ''));
+    }, 10, this);
   }, this);
 };
 

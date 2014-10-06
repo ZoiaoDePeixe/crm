@@ -26,15 +26,15 @@ goog.provide('ydn.crm.sugarcrm.WidgetModel');
 
 /**
  * SugarCRM model for widget.
- * @param {SugarCrm.About} data
+ * @param {SugarCrm.About=} opt_about SugarCRM instance about info.
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.WidgetModel = function(data) {
+ydn.crm.sugarcrm.WidgetModel = function(opt_about) {
   /**
    * @type {SugarCrm.About}
    */
-  this.data = data;
+  this.data = opt_about || null;
   /**
    * @type {SugarCrm.ServerInfo}
    */
@@ -73,18 +73,18 @@ ydn.crm.sugarcrm.WidgetModel.prototype.isLogin = function() {
 /**
  * Query host permission.
  * @param {function(this: T, boolean)=} opt_cb
- * @param {T} scope
+ * @param {T=} opt_scope
  * @template T
  * @return {boolean}
  */
-ydn.crm.sugarcrm.WidgetModel.prototype.hasHostPermission = function(opt_cb, scope) {
+ydn.crm.sugarcrm.WidgetModel.prototype.hasHostPermission = function(opt_cb, opt_scope) {
   var permissions = {
     origins: ['http://' + this.data.domain + '/*', 'https://' + this.data.domain + '/*']
   };
   chrome.permissions.contains(permissions, function(grant) {
     // console.log(scope, grant);
     if (opt_cb) {
-      opt_cb.call(scope, grant);
+      opt_cb.call(opt_scope, grant);
     }
   });
   return !!this.data && !!this.data.hostPermission;
@@ -120,31 +120,27 @@ ydn.crm.sugarcrm.WidgetModel.prototype.setInstanceUrl = function(url) {
   var domain = url.replace(/^https?:\/\//, '');
   domain = domain.replace(/\/.*/, ''); // remove after /
   if (url.length < 3 || !/\./.test(url)) {
-    cb.call(scope, new Error('Invalid instance ' + url));
-    return;
+    return goog.async.Deferred.fail(new Error('Invalid instance ' + url));
   }
   if (this.data && this.data.domain == domain) {
-    if (cb) {
-      cb.call(scope, this.info);
-    }
-    return;
+    return goog.async.Deferred.succeed(this.info);
   }
   if (!this.data) {
-    this.data = {
+    this.data = /** @type {SugarCrm.About} */ ({
       domain: domain,
       isLogin: false
-    };
+    });
   }
   return ydn.msg.getChannel().send('sugar-server-info', url).addCallback(function(info) {
     var base_url = /^http/.test(url) ? url : null;
     if (info['baseUrl']) {
       base_url = info['baseUrl'];
     }
-    this.data = {
+    this.data = /** @type {SugarCrm.About} */ ({
       baseUrl: base_url,
       domain: domain,
       isLogin: false
-    };
+    });
     // console.log(info);
     this.info = info;
     return info;
@@ -157,13 +153,13 @@ ydn.crm.sugarcrm.WidgetModel.prototype.setInstanceUrl = function(url) {
  * @return {!goog.async.Deferred} `null` if no info is available.
  */
 ydn.crm.sugarcrm.WidgetModel.prototype.getInfo = function() {
-  if (!this.about || !this.about.domain) {
+  if (!this.data || !this.data.domain) {
     return goog.async.Deferred.succeed(null);
   }
   if (this.info) {
     return goog.async.Deferred.succeed(this.info);
   }
-  return ydn.msg.getChannel().send('sugar-server-info', this.about.domain).addCallback(function(x) {
+  return ydn.msg.getChannel().send('sugar-server-info', this.data.domain).addCallback(function(x) {
     this.info = x;
   }, this);
 };
@@ -187,22 +183,24 @@ ydn.crm.sugarcrm.WidgetModel.prototype.login = function(url, username, password)
     this.data.password = CryptoJS.MD5(password).toString();
     this.data.hashed = true;
   }
-  var permission = {'origins': ['http://' + this.data.domain + '/*',
+
+  // whether user give permission or not, we still continue login.
+  // console.log(permission, me.data);
+  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.NEW_SUGAR, this.data).addCallback(function(info) {
+    // console.log(info);
+    this.data = info;
+  }, this);
+
+};
+
+
+/**
+ * Chrome host permission request object.
+ * @return {Object}
+ */
+ydn.crm.sugarcrm.WidgetModel.prototype.getPermissionObject = function() {
+  return {'origins': ['http://' + this.data.domain + '/*',
     'https://' + this.data.domain + '/*']};
-  var me = this;
-  var df = new goog.async.Deferred();
-  chrome.permissions.request(permission, function(grant) {
-    // whether user give permission or not, we still continue login.
-    // console.log(permission, me.data);
-    ydn.msg.getChannel().send('new-sugarcrm', me.data).addCallbacks(function(info) {
-      // console.log(info);
-      me.data = info;
-      df.callback(info);
-    }, function(e) {
-      df.errback(e);
-    }, me);
-  });
-  return df;
 };
 
 
