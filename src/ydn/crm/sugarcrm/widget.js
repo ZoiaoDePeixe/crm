@@ -26,6 +26,11 @@ ydn.crm.sugarcrm.Widget = function(model, opt_hide_title) {
    */
   this.root = document.createElement('div');
   this.hide_title_ = !!opt_hide_title;
+  /**
+   * Display number of records in cached modules.
+   * @type {boolean}
+   */
+  this.show_stats = false;
 };
 
 
@@ -187,6 +192,7 @@ ydn.crm.sugarcrm.Widget.prototype.refresh = function() {
         if (info && !(info instanceof Error)) {
           info_div.textContent = info.version + ' ' + info.flavor;
         }
+        this.showStats();
       }, this);
       this.model.hasHostPermission(function(grant) {
         permission_panel.style.display = grant ? 'none' : '';
@@ -207,6 +213,50 @@ ydn.crm.sugarcrm.Widget.prototype.refresh = function() {
     login_panel.style.display = '';
     info_panel.style.display = 'none';
     remove_panel.style.display = 'none';
+  }
+};
+
+
+/**
+ * Display number of records in cached modules.
+ * @param {boolean=} opt_val
+ */
+ydn.crm.sugarcrm.Widget.prototype.showStats = function(opt_val) {
+  if (goog.isDef(opt_val)) {
+    this.show_stats = opt_val;
+  }
+  var stats = this.root.querySelector('div[name=stats-panel]');
+  if (this.show_stats && this.model.isLogin()) {
+    this.model.getChannel().send(ydn.crm.Ch.SReq.STATS).addCallback(function(arr) {
+      var ul = stats.querySelector('ul');
+      ul.innerHTML = '';
+      console.log(arr);
+      for (var i = 0; i < arr.length; i++) {
+        var obj = arr[i];
+        var li = document.createElement('li');
+        var span = document.createElement('span');
+        span.textContent = obj['count'] + ' ' + obj['module'];
+        li.appendChild(span);
+        var last = new Date(obj['updated']);
+        if (last.getTime()) {
+          var last_span = document.createElement('span');
+          last_span.textContent = ', checked on ' + last.toLocaleString();
+          last_span.setAttribute('title', 'Last synchronized time');
+          li.appendChild(last_span);
+        }
+        var modified = new Date(obj['modified']);
+        if (modified.getTime()) {
+          var modify_span = document.createElement('span');
+          modify_span.textContent = ', last updated on ' + modified.toLocaleString();
+          modify_span.setAttribute('title', 'Last updated time in server');
+          li.appendChild(modify_span);
+        }
+        ul.appendChild(li);
+      }
+    }, this);
+    goog.style.setElementShown(stats, true);
+  } else {
+    goog.style.setElementShown(stats, false);
   }
 };
 

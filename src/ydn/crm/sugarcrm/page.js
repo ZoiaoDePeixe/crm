@@ -42,6 +42,7 @@ ydn.crm.sugarcrm.Page = function(opt_tid) {
    */
   this.root_ = document.createElement('div');
   this.widget_ = new ydn.crm.sugarcrm.Widget(new ydn.crm.sugarcrm.WidgetModel());
+  this.widget_.show_stats = true;
 };
 
 

@@ -71,6 +71,16 @@ ydn.crm.sugarcrm.WidgetModel.prototype.isLogin = function() {
 
 
 /**
+ * @return {!ydn.msg.Channel}
+ */
+ydn.crm.sugarcrm.WidgetModel.prototype.getChannel = function() {
+  var domain = this.getDomain();
+  goog.asserts.assert(domain, 'not ready');
+  return ydn.msg.getMain().getChannel(ydn.msg.Group.SUGAR, domain);
+};
+
+
+/**
  * Query host permission.
  * @param {function(this: T, boolean)=} opt_cb
  * @param {T=} opt_scope
@@ -196,7 +206,7 @@ ydn.crm.sugarcrm.WidgetModel.prototype.login = function(url, username, password)
 
 /**
  * Chrome host permission request object.
- * @return {Object}
+ * @return {{origins: (Array.<string>|undefined), permissions: (Array.<string>|undefined)}}
  */
 ydn.crm.sugarcrm.WidgetModel.prototype.getPermissionObject = function() {
   return {'origins': ['http://' + this.data.domain + '/*',

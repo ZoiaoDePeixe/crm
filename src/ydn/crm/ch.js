@@ -127,6 +127,7 @@ ydn.crm.Ch.SReq = {
   REST: 'rest', // SugarCRM REST request
   SEARCH: 'search', // free text query
   SERVER_INFO: 'server-info',
+  STATS: 'stats', // statistic of cached data
   SYNC_ENTRY: 'sync-entry',
   /**
    * @desc remove ExternalId that link contact gdata with sugar record.
