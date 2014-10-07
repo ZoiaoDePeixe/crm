@@ -22,6 +22,7 @@
 
 
 goog.provide('ydn.crm.sugarcrm.Page');
+goog.require('ydn.crm.gdata.CredentialWidget');
 goog.require('ydn.crm.sugarcrm.Widget');
 goog.require('ydn.crm.sugarcrm.WidgetModel');
 
@@ -39,9 +40,19 @@ ydn.crm.sugarcrm.Page = function() {
    * @private
    */
   this.root_ = document.createElement('div');
-  this.widget_ = new ydn.crm.sugarcrm.Widget(new ydn.crm.sugarcrm.WidgetModel());
-  this.widget_.show_stats = true;
+  /**
+   * @protected
+   * @type {ydn.crm.sugarcrm.Widget}
+   */
+  this.sugar_widget = new ydn.crm.sugarcrm.Widget(new ydn.crm.sugarcrm.WidgetModel());
+  this.sugar_widget.show_stats = true;
   this.model_updated_after_login_ = false; // ugly
+
+  /**
+   * @protected
+   * @type {ydn.crm.gdata.CredentialWidget}
+   */
+  this.gdata_widget = new ydn.crm.gdata.CredentialWidget();
 };
 
 
@@ -51,7 +62,8 @@ ydn.crm.sugarcrm.Page = function() {
 ydn.crm.sugarcrm.Page.prototype.render = function(el) {
   var temp = ydn.ui.getTemplateById('sugarcrm-home-template').content;
   this.root_.appendChild(temp.cloneNode(true));
-  this.widget_.render(this.root_.querySelector('#sugarcrm-widget'));
+  this.gdata_widget.render(this.root_.querySelector('#gdata'));
+  this.sugar_widget.render(this.root_.querySelector('#sugarcrm-widget'));
   el.appendChild(this.root_);
 };
 
@@ -63,12 +75,13 @@ ydn.crm.sugarcrm.Page.prototype.onPageShow = function() {
   if (this.model_updated_after_login_) {
     return;
   }
+  this.gdata_widget.refresh();
   ydn.crm.sugarcrm.WidgetModel.list().addCallbacks(function(models) {
     for (var i = 0; i < models.length; i++) {
       var model = models[i];
       if (model.isLogin()) {
         this.model_updated_after_login_ = true;
-        this.widget_.setModel(model);
+        this.sugar_widget.setModel(model);
         break;
       }
     }
