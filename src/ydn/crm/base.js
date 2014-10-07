@@ -35,7 +35,7 @@ ydn.crm.base.LocalKey = {
   WHAT: 'sd',
   USER_SETTING: 'st',
   TRACK: 'ydn-crm-track',
-  SUGARCRM_SRC: 'sugarcrm-src',
+  FRONT_END_SRC: 'front-end-src',
   LAST_LOGIN_USER_ID: 'last-login'
 };
 
@@ -218,4 +218,13 @@ ydn.crm.base.LocalStorageKey = {
  * }}
  */
 ydn.crm.EmailInfo;
+
+
+/**
+ * The first page is home page.
+ * @typedef {{
+ *   pages: !Array.<string>
+ * }}
+ */
+ydn.crm.DashboardProfile;
 

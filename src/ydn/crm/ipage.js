@@ -37,14 +37,8 @@ ydn.crm.IPage.prototype.onPageShow = function() {};
 
 
 /**
- * Invoke when user login or logout.
- * @param {?YdnApiUser} info `null` if logout.
- */
-ydn.crm.IPage.prototype.onUserChange = function(info) {};
-
-
-/**
  * Render content.
  * @param {Element} el root element.
  */
 ydn.crm.IPage.prototype.render = function(el) {};
+

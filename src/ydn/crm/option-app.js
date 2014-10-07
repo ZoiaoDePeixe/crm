@@ -25,8 +25,11 @@
 
 
 goog.provide('ydn.crm.OptionPageApp');
+goog.require('ydn.crm.AboutPage');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.msg.StatusBar');
+goog.require('ydn.crm.tracking.MsgModel');
+goog.require('ydn.crm.tracking.Panel');
 goog.require('ydn.msg.Pipe');
 
 
@@ -57,6 +60,13 @@ ydn.crm.OptionPageApp = function() {
   var status = new ydn.crm.msg.StatusBar(true);
   status.render(status_el);
   ydn.crm.msg.Manager.addConsumer(status);
+
+  /**
+   * Process user page setup.
+   * @type {boolean}
+   * @private
+   */
+  this.process_user_page_setup_ = false;
 
 };
 
@@ -130,6 +140,33 @@ ydn.crm.OptionPageApp.prototype.updateUserInfo_ = function(user_info) {
 
 
 /**
+ * Process after login.
+ * @param {ydn.crm.DashboardProfile} profile user profile for pages.
+ * @protected
+ */
+ydn.crm.OptionPageApp.prototype.processUserPageSetup = function(profile) {
+  for (var i = 0; i < profile.pages.length; i++) {
+    var pn = profile.pages[i];
+    var name = i == 0 ? 'home' : pn;
+    if (pn == 'tracking') {
+      var model = new ydn.crm.tracking.MsgModel();
+      var page = new ydn.crm.tracking.Panel(model);
+      this.addPage(name, page.toString(), page);
+    } else if (pn == 'about-sugarcrm') {
+      var about = new ydn.crm.AboutPage('sugarcrm-home-template');
+      this.addPage(name, about.toString(), about);
+    } else if (pn == 'about-tracking') {
+      var about_tk = new ydn.crm.AboutPage('tracking-about-template');
+      this.addPage(name, about_tk.toString(), about_tk);
+    } else {
+      window.console.error('Invalid page name: ' + pn);
+    }
+  }
+
+};
+
+
+/**
  * Do silence login.
  * @protected
  * @param {Object?} context login context
@@ -137,26 +174,25 @@ ydn.crm.OptionPageApp.prototype.updateUserInfo_ = function(user_info) {
  */
 ydn.crm.OptionPageApp.prototype.login = function(context) {
 
-  var btn_login = document.getElementById('user-login');
   return ydn.msg.getChannel().send('echo').addCallbacks(function(ok) {
     this.setStatus('logging in...');
     var user = ydn.crm.ui.UserSetting.getInstance();
     return user.onReady().addCallbacks(function() {
       var user_info = user.getUserInfo();
-      if (ydn.crm.OptionPageApp.DEBUG) {
-        window.console.log('user ready', user_info);
-      }
-      this.updateUserInfo_(user_info);
-      for (var p in this.pages_) {
-        this.pages_[p].onUserChange(user_info);
-      }
-      var content = document.getElementById('app-content');
-      if (user.isLogin()) {
-        content.style.display = '';
-      } else {
-        content.style.display = 'none';
-        this.setStatus('Not login');
-      }
+      goog.Timer.callOnce(function() {
+        if (ydn.crm.OptionPageApp.DEBUG) {
+          window.console.log('user ready', user_info);
+        }
+        this.updateUserInfo_(user_info);
+
+        var content = document.getElementById('app-content');
+        if (user_info.is_login) {
+          content.style.display = '';
+        } else {
+          content.style.display = 'none';
+          this.setStatus('Not login');
+        }
+      }, 10, this);
       return user_info;
     }, function(e) {
       var msg = e.message ? e.message : e;
@@ -248,10 +284,29 @@ ydn.crm.OptionPageApp.prototype.run = function() {
       });
 
   this.login(null).addCallback(function() {
-    goog.Timer.callOnce(function() {
-      this.showPanel_(location.hash.replace('#', ''));
-    }, 10, this);
+    if (this.process_user_page_setup_) {
+      ydn.msg.getChannel().send(ydn.crm.Ch.Req.USER_DASHBOARD).addCallback(function(obj) {
+        goog.Timer.callOnce(function() {
+          this.processUserPageSetup(/** @type {ydn.crm.DashboardProfile} */ (obj));
+          this.showPanel_(location.hash.replace('#', ''));
+        }, 10, this);
+      }, this);
+    } else {
+      goog.Timer.callOnce(function() {
+        this.showPanel_(location.hash.replace('#', ''));
+      }, 10, this);
+    }
   }, this);
 };
 
 
+/**
+ * Run option page app.
+ * @return {ydn.crm.OptionPageApp}
+ */
+ydn.crm.OptionPageApp.runOptionApp = function() {
+  var app = new ydn.crm.OptionPageApp();
+  app.process_user_page_setup_ = true;
+  app.run();
+  return app;
+};

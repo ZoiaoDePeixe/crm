@@ -55,11 +55,12 @@ ydn.crm.AboutPage.prototype.render = function(el) {
 /**
  * @override
  */
-ydn.crm.AboutPage.prototype.onUserChange = function(info) {
-};
+ydn.crm.AboutPage.prototype.onPageShow = function() {};
 
 
 /**
  * @override
  */
-ydn.crm.AboutPage.prototype.onPageShow = function() {};
+ydn.crm.AboutPage.prototype.toString = function() {
+  return 'About';
+};

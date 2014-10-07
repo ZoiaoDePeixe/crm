@@ -79,8 +79,9 @@ ydn.crm.Ch.Req = {
   SERVER_AUDIT_LOG: 'server-audit-log',
   SOCIAL_PROFILE: 'social-profile',
   SUGAR_SERVER_INFO: 'sugar-server-info',
-  TRACKING_LIST_BEACON: 'tracking-list-beacon',
-  TRACKING_LIST_ACCESS: 'tracking-list-access'
+  TRACKING_QUERY: 'tracking-query',
+  TRACKING_UPDATE: 'tracking-update',
+  USER_DASHBOARD: 'user-dashboard'
 };
 
 

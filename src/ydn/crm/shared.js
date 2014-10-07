@@ -214,7 +214,7 @@ ydn.crm.shared.getContentScriptName = function() {
     }
     df.callback(fn);
     var obj = {};
-    obj[ydn.crm.base.LocalKey.SUGARCRM_SRC] = fn; // set for option page
+    obj[ydn.crm.base.LocalKey.FRONT_END_SRC] = fn; // set for option page
     chrome.storage.local.set(obj);
   });
   return df;

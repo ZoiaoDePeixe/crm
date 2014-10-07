@@ -29,13 +29,11 @@ goog.require('ydn.crm.sugarcrm.WidgetModel');
 
 /**
  * Home page for SugarCRM in CRMinInbox suite.
- * @param {string=} opt_tid template element id.
  * @constructor
  * @implements {ydn.crm.IPage}
  * @struct
  */
-ydn.crm.sugarcrm.Page = function(opt_tid) {
-  this.template_id_ = opt_tid || 'sugarcrm-home-template';
+ydn.crm.sugarcrm.Page = function() {
   /**
    * @type {Element}
    * @private
@@ -51,17 +49,10 @@ ydn.crm.sugarcrm.Page = function(opt_tid) {
  * @override
  */
 ydn.crm.sugarcrm.Page.prototype.render = function(el) {
-  var temp = ydn.ui.getTemplateById(this.template_id_).content;
+  var temp = ydn.ui.getTemplateById('sugarcrm-home-template').content;
   this.root_.appendChild(temp.cloneNode(true));
   this.widget_.render(this.root_.querySelector('#sugarcrm-widget'));
   el.appendChild(this.root_);
-};
-
-
-/**
- * @override
- */
-ydn.crm.sugarcrm.Page.prototype.onUserChange = function(info) {
 };
 
 
@@ -87,4 +78,9 @@ ydn.crm.sugarcrm.Page.prototype.onPageShow = function() {
 };
 
 
-
+/**
+ * @override
+ */
+ydn.crm.sugarcrm.Page.prototype.toString = function() {
+  return 'Dashboard';
+};
