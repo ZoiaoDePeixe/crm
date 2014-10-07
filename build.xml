@@ -51,32 +51,6 @@
         </sequential>
     </macrodef>
 
-
-    <macrodef name="backup-site" description="Backup Google Sites">
-        <attribute name="sitename"/>
-        <attribute name="out.dir"/>
-        <attribute name="domain" default="mechanobio.info"/>
-        <sequential>
-            <echo>Running backup ...</echo>
-            <mkdir dir="@{out.dir}"/>
-            <java classname="com.google.sites.liberation.imprt.Main">
-                <classpath>
-                    <pathelement location="${google-sites-liberation.jar}"/>
-                </classpath>
-                <arg line='-d @{domain}'/>
-                <arg line="-w https://sites.google.com/a/@{domain}/@{sitename}"/>
-                <arg line='-f "@{out.dir}"'/>
-                <arg line="-u agent102@blueprint.org"/>
-                <arg line="-p matrix*1"/>
-                <arg line="-r"/>
-            </java>
-            <echo>
-                Saved to "@{out.dir}"
-            </echo>
-        </sequential>
-    </macrodef>
-
-
     <target name="jstd" description="print out jstd file for JS test driver">
 
         <jstd-gen base.dir="${crm.dir}"
@@ -105,70 +79,6 @@
             <arg line='-d "doc"'/>
         </exec>
     </target>
-
-    <macrodef name="comp-adved" description="compile JS">
-       <attribute name="input.fn" />
-       <attribute name="output.fn" />
-       <attribute name="entrypoint"/>
-       <element name="opt-arg" optional="true"/>
-       <sequential>
-        <closure-compile compilationlevel="ADVANCED_OPTIMIZATIONS"
-                         input="@{input.fn}"
-                         input.dir="${crm.dir}/src"
-                         output.fn="${out.dir}/@{output.fn}">
-            <options>
-                <opt-arg/>
-                <arg line='-i "${crm.dir}/src/exports.js"'/>
-                <arg line='-i "${crm.dir}/src/ui/exports.js"'/>
-                <arg line='-i "${work.dir}/ydn/src/msg/exports.js"'/>
-                <arg line='-f "--source_map_format=V3"'/>
-                <arg line='-f "--create_source_map=${out.dir}/@{output.fn}.map"'/>
-                <arg line='-p "${db-work.dir}/ydn-base/src"'/>
-                <arg line='-p "${db-work.dir}/ydn-db/src"'/>
-                <arg line='-p "${db-work.dir}/ydn-db-sync/src"'/>
-                <arg line='-p "${db-work.dir}/ydn/src"'/>
-                <arg line='-p "${work.dir}/ydn-api/js"'/>
-                <arg line='-p "${work.dir}/sync-app/js"'/>
-                <arg line='--path "${work.dir}/crm/src"'/>
-                <arg line='--path "${work.dir}/crm/src"'/>
-                <arg line='-p "${db-work.dir}/gdata/src"'/>
-                <arg line='-p "${db-work.dir}/ydn-db-fulltext/src"'/>
-                <arg line='-p "${db-work.dir}/fullproof/js"'/>
-                <arg line='-p "${db-work.dir}/natural/js"'/>
-                <arg line='-f "--externs=${work.dir}/fullproof/externs/unicode.js"'/>
-                <arg line='-f "--flagfile=${flagfile}"'/>
-                <arg line='-f "--define=goog.json.USE_NATIVE_JSON=true"'/>
-                <arg line='-f "--define=ydn.crm.base.VERSION_MAJOR=${crm-app-ver-major}"'/>
-                <arg line='-f "--define=ydn.crm.base.VERSION_MINOR=${crm-app-ver-minor}"'/>
-                <arg line='-f "--define=ydn.crm.base.VERSION_PATCH=${crm-app-ver-patch}"'/>
-                <arg line='-f "--externs=${closure-compiler.dir}/contrib/externs/chrome_extensions.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/misc.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/atom.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/gapi.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/aws.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/sugarcrm.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/opensocial.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/svg.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-base/externs/kineticjs.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-api/externs/misc.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn/externs/ydn-server.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/misc.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/schema.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/ydn-db/externs/websql.js"'/>
-                <arg line='-f "--externs=${crm.dir}/externs/misc.js"'/>
-                <arg line='-f "--externs=${db-work.dir}/gdata/externs/gdata.js"'/>
-                <arg line='-f "--output_wrapper=${outputwrapper.norun}"'/>
-            </options>
-        </closure-compile>
-        <concat destfile="${out.dir}/@{output.fn}" append="true">
-            //# sourceMappingURL=@{output.fn}.map
-        </concat>
-        <replace description="replace so with online repo path"
-                 file="${out.dir}/@{output.fn}.map"
-                 token="${work.dir}/"
-                 value="http://localhost/"/>
-       </sequential>
-    </macrodef>
 
 
     <macrodef name="calc-deps" description="calculate dependency for testing">

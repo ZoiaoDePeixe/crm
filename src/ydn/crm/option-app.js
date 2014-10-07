@@ -28,6 +28,7 @@ goog.provide('ydn.crm.OptionPageApp');
 goog.require('ydn.crm.AboutPage');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.msg.StatusBar');
+goog.require('ydn.crm.sugarcrm.Page');
 goog.require('ydn.crm.tracking.MsgModel');
 goog.require('ydn.crm.tracking.Panel');
 goog.require('ydn.msg.Pipe');
@@ -153,11 +154,14 @@ ydn.crm.OptionPageApp.prototype.processUserPageSetup = function(profile) {
       var page = new ydn.crm.tracking.Panel(model);
       this.addPage(name, page.toString(), page);
     } else if (pn == 'about-sugarcrm') {
-      var about = new ydn.crm.AboutPage('sugarcrm-home-template');
+      var about = new ydn.crm.AboutPage('about-template');
       this.addPage(name, about.toString(), about);
     } else if (pn == 'about-tracking') {
       var about_tk = new ydn.crm.AboutPage('tracking-about-template');
       this.addPage(name, about_tk.toString(), about_tk);
+    } else if (pn == 'sugarcrm') {
+      var sugar = new ydn.crm.sugarcrm.Page();
+      this.addPage(name, sugar.toString(), sugar);
     } else {
       window.console.error('Invalid page name: ' + pn);
     }

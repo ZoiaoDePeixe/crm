@@ -21,6 +21,8 @@
  */
 
 goog.provide('ydn.crm.sugarcrm.WidgetModel');
+goog.require('goog.crypt');
+goog.require('goog.crypt.Md5');
 
 
 
@@ -190,7 +192,10 @@ ydn.crm.sugarcrm.WidgetModel.prototype.login = function(url, username, password)
   }
   if (password) {
     // keep hashed password only.
-    this.data.password = CryptoJS.MD5(password).toString();
+    // this.data.password = CryptoJS.MD5(password).toString();
+    var md5 = new goog.crypt.Md5();
+    md5.update(password);
+    this.data.password = goog.crypt.byteArrayToHex(md5.digest());
     this.data.hashed = true;
   }
 
