@@ -61,14 +61,14 @@ ydn.crm.sugarcrm.Page.prototype.render = function(el) {
 /**
  * @override
  */
-ydn.crm.sugarcrm.Page.prototype.setUserInfo = function(info) {
+ydn.crm.sugarcrm.Page.prototype.onUserChange = function(info) {
 };
 
 
 /**
  * @override
  */
-ydn.crm.sugarcrm.Page.prototype.showPage = function(val) {
+ydn.crm.sugarcrm.Page.prototype.onPageShow = function() {
   if (this.model_updated_after_login_) {
     return;
   }

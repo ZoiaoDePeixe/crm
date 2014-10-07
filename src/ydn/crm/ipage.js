@@ -31,17 +31,16 @@ ydn.crm.IPage = function() {};
 
 
 /**
- * Show or hide page.
- * @param {boolean} val
+ * Event for showing the page.
  */
-ydn.crm.IPage.prototype.showPage = function(val) {};
+ydn.crm.IPage.prototype.onPageShow = function() {};
 
 
 /**
  * Invoke when user login or logout.
  * @param {?YdnApiUser} info `null` if logout.
  */
-ydn.crm.IPage.prototype.setUserInfo = function(info) {};
+ydn.crm.IPage.prototype.onUserChange = function(info) {};
 
 
 /**

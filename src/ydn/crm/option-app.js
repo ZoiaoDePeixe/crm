@@ -147,7 +147,7 @@ ydn.crm.OptionPageApp.prototype.login = function(context) {
       }
       this.updateUserInfo_(user_info);
       for (var p in this.pages_) {
-        this.pages_[p].setUserInfo(user_info);
+        this.pages_[p].onUserChange(user_info);
       }
       var content = document.getElementById('app-content');
       if (user.isLogin()) {
@@ -197,7 +197,9 @@ ydn.crm.OptionPageApp.prototype.showPanel_ = function(name) {
     var page = content.children[i];
     var page_name = page.getAttribute('name');
     var selected = selected_index == i;
-    this.pages_[name].showPage(selected);
+    if (selected) {
+      this.pages_[name].onPageShow();
+    }
 
     menu.children[i].className = selected ? 'selected' : '';
     page.style.display = selected ? '' : 'none';

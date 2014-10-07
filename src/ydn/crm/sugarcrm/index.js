@@ -272,3 +272,11 @@ ydn.crm.sugarcrm.getViewLinkV7 = function(base_url, m_name, id) {
 ydn.crm.sugarcrm.toModuleSymbol = function(m_name) {
   return m_name ? m_name.substr(0, 2) : '';
 };
+
+
+/**
+ * @const
+ * @type {ydn.crm.sugarcrm.ModuleName} Default module when no module name
+ * is defined in new record panel, etc.
+ */
+ydn.crm.sugarcrm.DEFAULT_MODULE = ydn.crm.sugarcrm.ModuleName.LEADS;
