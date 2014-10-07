@@ -53,8 +53,9 @@ ydn.crm.OptionPageApp = function() {
    */
   this.pages_ = {};
 
-  var status = new ydn.crm.msg.StatusBar();
-  status.render(document.getElementById('status'));
+  var status_el = document.getElementById(ydn.crm.ui.SugarListPanel.CSS_CLASS_STATUS);
+  var status = new ydn.crm.msg.StatusBar(true);
+  status.render(status_el);
   ydn.crm.msg.Manager.addConsumer(status);
 
 };
