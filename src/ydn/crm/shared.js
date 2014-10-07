@@ -200,7 +200,7 @@ ydn.crm.shared.getContentScriptName = function() {
   var df = new goog.async.Deferred();
   var key = ydn.crm.base.LocalKey.TRACK;
   var base_path = 'jsc/';
-  var fn_prefix = 'ydn.crm.sugarcrm-';
+  var fn_prefix = 'crmininbox-';
   chrome.storage.local.get(key, function(data) {
     var track = data[key];
     var Version = goog.global['CRMinInbox']['sugarcrm']['Version'];
