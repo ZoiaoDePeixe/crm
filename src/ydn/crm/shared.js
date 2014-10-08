@@ -15,6 +15,7 @@ goog.require('ydn.client.OAuthProvider');
 goog.require('ydn.client.Proxy');
 goog.require('ydn.client.RichClient');
 goog.require('ydn.client.SimpleClient');
+goog.require('ydn.crm.base');
 goog.require('ydn.db.Storage');
 goog.require('ydn.debug');
 goog.require('ydn.debug.DbLogger');
