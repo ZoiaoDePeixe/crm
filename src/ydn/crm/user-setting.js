@@ -17,7 +17,7 @@ goog.require('ydn.gdata.Kind');
  */
 ydn.crm.UserSetting = function(opt_user_id) {
   /**
-   * @type {string?}
+   * @type {?string}
    * @private
    */
   this.user_id_ = opt_user_id || null;
@@ -70,8 +70,8 @@ ydn.crm.UserSetting.schema = /** @type {DatabaseSchema} */ (/** @type {Object} *
   }, {
     name: ydn.crm.UserSetting.STORE_SUGAR
   }, ydn.db.sync.Entity.schema,
-    ydn.crm.tracking.Service.trackSchema,
-    ydn.crm.tracking.Service.accessSchema]
+  ydn.crm.tracking.Service.trackSchema,
+  ydn.crm.tracking.Service.accessSchema]
 }));
 
 

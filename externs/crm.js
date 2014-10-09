@@ -264,3 +264,20 @@ YdnCrm.TrackingAggregate.prototype.numOfClick;
  * @type {number} sum of time to open.
  */
 YdnCrm.TrackingAggregate.prototype.totalTimeToOpens;
+
+
+
+/**
+ * User setting for tracking
+ * @interface
+ */
+YdnCrm.TrackingSetting = function() {};
+
+
+/**
+ * @type {Array.<string>} list of domain of being track by default.
+ */
+YdnCrm.TrackingSetting.prototype.domains;
+
+
+
