@@ -221,6 +221,7 @@ ydn.crm.EmailInfo;
 
 
 /**
+ * TODO: does not work, need to changes as externs.
  * The first page is home page.
  * @typedef {{
  *   pages: !Array.<string>

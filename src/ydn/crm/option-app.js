@@ -76,7 +76,7 @@ ydn.crm.OptionPageApp = function() {
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.OptionPageApp.DEBUG = false;
+ydn.crm.OptionPageApp.DEBUG = true;
 
 
 /**
@@ -147,8 +147,12 @@ ydn.crm.OptionPageApp.prototype.updateUserInfo_ = function(user_info) {
  * @protected
  */
 ydn.crm.OptionPageApp.prototype.processUserPageSetup = function(profile) {
-  for (var i = 0; i < profile.pages.length; i++) {
-    var pn = profile.pages[i];
+  if (ydn.crm.OptionPageApp.DEBUG) {
+    window.console.log(profile);
+  }
+  var pages = profile['pages'];
+  for (var i = 0; i < pages.length; i++) {
+    var pn = pages[i];
     var name = i == 0 ? 'home' : pn;
     if (pn == 'tracking') {
       var model = new ydn.crm.tracking.MsgModel();

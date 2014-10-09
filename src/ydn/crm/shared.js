@@ -197,7 +197,7 @@ ydn.crm.shared.uptime = goog.now();
  * Get content script file name.
  * @return {!goog.async.Deferred}
  */
-ydn.crm.shared.getContentScriptName = function() {
+ydn.crm.shared.getFrontEndScriptName = function() {
   var df = new goog.async.Deferred();
   var key = ydn.crm.base.LocalKey.TRACK;
   var base_path = 'jsc/';
@@ -247,6 +247,7 @@ ydn.crm.shared.init = function() {
       'Bug report: https://github.com/yathit/sugarcrm-gmail-chrome-extension');
   ydn.debug.captureOnConsole(false);
 
+  ydn.crm.shared.getFrontEndScriptName(); // initialize front end script.
   ydn.crm.shared.getClient(); // initialize default client
 
   var log_store = ydn.debug.DbLogger.getStoreSchema();
