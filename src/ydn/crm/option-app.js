@@ -31,6 +31,7 @@ goog.require('ydn.crm.msg.StatusBar');
 goog.require('ydn.crm.sugarcrm.Page');
 goog.require('ydn.crm.tracking.MsgModel');
 goog.require('ydn.crm.tracking.Panel');
+goog.require('ydn.crm.ui.SugarListPanel');
 goog.require('ydn.msg.Pipe');
 
 
@@ -314,3 +315,6 @@ ydn.crm.OptionPageApp.runOptionApp = function() {
   app.run();
   return app;
 };
+
+
+goog.exportSymbol('runOptionApp', ydn.crm.OptionPageApp.runOptionApp);
