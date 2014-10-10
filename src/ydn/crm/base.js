@@ -229,3 +229,14 @@ ydn.crm.EmailInfo;
  */
 ydn.crm.DashboardProfile;
 
+
+/**
+ * Application short_name. These value are used for setting default app setting.
+ * @enum {string}
+ */
+ydn.crm.base.AppShortName = {
+  EMAIL_TRACKER: 'Email Tracker',
+  SUGARCRM: 'SugarCRM',
+  OTHERS: ''
+};
+

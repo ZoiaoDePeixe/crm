@@ -1,9 +1,10 @@
 /**
- * @fileoverview User setting.
+ * @fileoverview User setting used in backend and front end.
  */
 
 
 goog.provide('ydn.crm.UserSetting');
+goog.require('ydn.crm.tracking');
 goog.require('ydn.db.Storage');
 goog.require('ydn.gdata.Kind');
 
@@ -69,9 +70,9 @@ ydn.crm.UserSetting.schema = /** @type {DatabaseSchema} */ (/** @type {Object} *
     name: ydn.crm.UserSetting.STORE_GENERAL
   }, {
     name: ydn.crm.UserSetting.STORE_SUGAR
-  }, ydn.db.sync.Entity.schema,
-  ydn.crm.tracking.Service.trackSchema,
-  ydn.crm.tracking.Service.accessSchema]
+  }, ydn.db.base.entitySchema,
+  ydn.crm.tracking.trackSchema,
+  ydn.crm.tracking.accessSchema]
 }));
 
 
@@ -222,6 +223,22 @@ ydn.crm.UserSetting.prototype.setLocalSetting = function(key, val) {
     df.callback(true);
   });
   return df;
+};
+
+
+/**
+ * App short_name as defined in manifest.
+ * @return {ydn.crm.base.AppShortName}
+ */
+ydn.crm.UserSetting.getAppShortName = function() {
+  var mani = chrome.runtime.getManifest();
+  if (mani['short_name'] == ydn.crm.base.AppShortName.EMAIL_TRACKER) {
+    return ydn.crm.base.AppShortName.EMAIL_TRACKER;
+  } else if (mani['short_name'] == ydn.crm.base.AppShortName.SUGARCRM) {
+    return ydn.crm.base.AppShortName.SUGARCRM;
+  } else {
+    return ydn.crm.base.AppShortName.OTHERS;
+  }
 };
 
 
