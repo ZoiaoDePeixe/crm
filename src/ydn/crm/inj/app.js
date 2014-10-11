@@ -72,15 +72,13 @@ ydn.crm.inj.App = function() {
    * @type {ydn.crm.gmail.Tracker}
    * @private
    */
-  this.tracker_ = new ydn.crm.gmail.Tracker();
-  this.tracker_.setObserver(this.compose_observer);
+  this.tracker_ = null;
 
   /**
    * @protected
    * @type {ydn.crm.inj.SugarCrmApp}
    */
-  this.sugar_app = new ydn.crm.inj.SugarCrmApp(this.gmail_observer,
-      this.compose_observer);
+  this.sugar_app = null;
 
 };
 
@@ -107,11 +105,15 @@ ydn.crm.inj.App.prototype.handleChannelMessage = function(e) {
   }
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   if (e.type == ydn.crm.Ch.BReq.LIST_DOMAINS) {
-    this.sugar_app.updateSugarPanels();
+    if (this.sugar_app) {
+      this.sugar_app.updateSugarPanels();
+    }
   } else if (e.type == ydn.crm.Ch.BReq.LOGGED_IN) {
     if (!us.hasValidLogin()) {
       us.invalidate();
-      this.sugar_app.onUserStatusChange(us);
+      if (this.sugar_app) {
+        this.sugar_app.onUserStatusChange(us);
+      }
     }
   } else if (e.type == ydn.crm.Ch.BReq.LOGGED_OUT) {
     if (us.getLoginEmail()) {
@@ -139,7 +141,9 @@ ydn.crm.inj.App.prototype.resetUser_ = function() {
       goog.log.warning(this.logger, 'user not login');
       this.gmail_observer.setEnabled(false);
     }
-    this.sugar_app.onUserStatusChange(us);
+    if (this.sugar_app) {
+      this.sugar_app.onUserStatusChange(us);
+    }
   }, function(e) {
     window.console.error(e);
   }, this);
@@ -151,7 +155,17 @@ ydn.crm.inj.App.prototype.resetUser_ = function() {
  */
 ydn.crm.inj.App.prototype.init = function() {
   goog.log.finer(this.logger, 'init ' + this);
-  this.sugar_app.init();
+
+  if (ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.SUGARCRM)) {
+    this.sugar_app = new ydn.crm.inj.SugarCrmApp(this.gmail_observer,
+        this.compose_observer);
+    this.sugar_app.init();
+  }
+  if (ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.TRACKING)) {
+    this.tracker_ = new ydn.crm.gmail.Tracker();
+    this.tracker_.setObserver(this.compose_observer);
+  }
+
 
   goog.events.listen(ydn.msg.getMain(),
       [ydn.crm.Ch.BReq.LIST_DOMAINS,

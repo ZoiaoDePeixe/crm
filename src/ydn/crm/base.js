@@ -246,7 +246,7 @@ ydn.crm.base.AppShortName = {
  */
 ydn.crm.base.Feature = {
   GDATA_CONTACT: 'gc',
-  EMAIL_TRACKING: 'et',
+  TRACKING: 'tk',
   SUGARCRM: 'su'
 };
 

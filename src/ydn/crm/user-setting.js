@@ -32,6 +32,7 @@ ydn.crm.UserSetting = function(opt_user_id) {
    * @type {ydn.db.Storage}
    */
   this.gdata_db_ = null;
+
   if (opt_user_id) {
     this.setup(opt_user_id);
   }
@@ -227,18 +228,28 @@ ydn.crm.UserSetting.prototype.setLocalSetting = function(key, val) {
 
 
 /**
+ * @type {ydn.crm.base.AppShortName}
+ * @private
+ */
+ydn.crm.UserSetting.app_name_;
+
+
+/**
  * App short_name as defined in manifest.
  * @return {ydn.crm.base.AppShortName}
  */
 ydn.crm.UserSetting.getAppShortName = function() {
-  var mani = chrome.runtime.getManifest();
-  if (mani['short_name'] == ydn.crm.base.AppShortName.EMAIL_TRACKER) {
-    return ydn.crm.base.AppShortName.EMAIL_TRACKER;
-  } else if (mani['short_name'] == ydn.crm.base.AppShortName.SUGARCRM) {
-    return ydn.crm.base.AppShortName.SUGARCRM;
-  } else {
-    return ydn.crm.base.AppShortName.OTHERS;
+  if (!ydn.crm.UserSetting.app_name_) {
+    var mani = chrome.runtime.getManifest();
+    if (mani['short_name'] == ydn.crm.base.AppShortName.EMAIL_TRACKER) {
+      ydn.crm.UserSetting.app_name_ = ydn.crm.base.AppShortName.EMAIL_TRACKER;
+    } else if (mani['short_name'] == ydn.crm.base.AppShortName.SUGARCRM) {
+      ydn.crm.UserSetting.app_name_ = ydn.crm.base.AppShortName.SUGARCRM;
+    } else {
+      ydn.crm.UserSetting.app_name_ = ydn.crm.base.AppShortName.OTHERS;
+    }
   }
+  return ydn.crm.UserSetting.app_name_;
 };
 
 
