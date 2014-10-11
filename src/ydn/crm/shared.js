@@ -233,7 +233,7 @@ ydn.crm.shared.init = function() {
   }
   ydn.crm.shared.init_ = true;
 
-  var title = 'Yathit CRM Bridge ydn.crm.version ' + ydn.crm.version;
+  var title = 'Yathit CRMinInbox ydn.crm.version ' + ydn.crm.version;
   if (goog.DEBUG) {
     title += ' (dev)';
     ydn.debug.log('ydn.crm', 'fine');
