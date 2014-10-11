@@ -35,6 +35,9 @@ ydn.crm.inj.Hud = function() {
    */
   this.panel = new ydn.crm.ui.SidebarPanel();
 
+  goog.style.setElementShown(this.root_el_,
+      ydn.crm.ui.UserSetting.hasSidebar());
+
 };
 
 

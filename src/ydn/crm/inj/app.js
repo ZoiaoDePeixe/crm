@@ -35,11 +35,11 @@ goog.require('goog.ui.TabBar');
 goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.base');
 goog.require('ydn.crm.gmail.ContextSidebar');
+goog.require('ydn.crm.gmail.GmailObserver');
+goog.require('ydn.crm.gmail.Tracker');
 goog.require('ydn.crm.inj');
 goog.require('ydn.crm.inj.Hud');
 goog.require('ydn.crm.inj.InlineRenderer');
-goog.require('ydn.crm.inj.StickyRenderer');
-goog.require('ydn.crm.inj.WidgetRenderer');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
 goog.require('ydn.debug');
@@ -63,6 +63,25 @@ ydn.crm.inj.App = function() {
   ydn.crm.msg.Manager.addStatus('Starting ' + ydn.crm.version + '...');
 
   /**
+   * @type {ydn.crm.gmail.ComposeObserver}
+   * @private
+   */
+  this.compose_observer_ = new ydn.crm.gmail.ComposeObserver();
+
+  /**
+   * @final
+   * @type {ydn.crm.gmail.GmailObserver}
+   */
+  this.gmail_observer = new ydn.crm.gmail.GmailObserver();
+
+  /**
+   * @type {ydn.crm.gmail.Tracker}
+   * @private
+   */
+  this.tracker_ = new ydn.crm.gmail.Tracker();
+  this.tracker_.setObserver(this.compose_observer_);
+
+  /**
    * @protected
    * @type {ydn.crm.inj.AppRenderer}
    */
@@ -72,23 +91,10 @@ ydn.crm.inj.App = function() {
    * @protected
    * @type {ydn.crm.gmail.ContextSidebar}
    */
-  this.sidebar = new ydn.crm.gmail.ContextSidebar();
+  this.sidebar = new ydn.crm.gmail.ContextSidebar(this.compose_observer_);
   this.sidebar.render(this.renderer.getContentElement());
 
-  this.sniff_timer_ = new goog.Timer(400);
-  goog.events.listen(this.sniff_timer_, goog.Timer.TICK, this.handleTimerTick_, true, this);
-  this.sniff_count_ = 0;
-  /**
-   * @type {string}
-   * @private
-   */
-  this.current_href_ = '';
 
-  this.history = new goog.history.Html5History();
-  this.history.setPathPrefix(new goog.Uri(document.location.href).getPath() + '/');
-  goog.events.listen(this.history, goog.history.EventType.NAVIGATE,
-      this.handleHistory, false, this);
-  this.prev_token_ = null;
   /**
    * @type {ydn.crm.ui.UserSetting}
    * @final
@@ -101,6 +107,11 @@ ydn.crm.inj.App = function() {
    */
   this.hud = new ydn.crm.inj.Hud();
 
+  this.handler = new goog.events.EventHandler(this);
+  this.handler.listen(this.gmail_observer, ydn.crm.gmail.GmailObserver.EventType.CONTEXT_CHANGE,
+      this.onGmailContextEvent_);
+  this.handler.listen(this.compose_observer_, ydn.crm.gmail.GmailObserver.EventType.PAGE_CHANGE,
+      this.onGmailPageChanged);
 };
 
 
@@ -118,74 +129,17 @@ ydn.crm.inj.App.prototype.logger = goog.log.getLogger('ydn.crm.inj.App');
 
 
 /**
- * In gmail message thread page, sniff main contact of the message and suitable
- * element to inject ui.
- * @param {boolean=} opt_log_detail
- * @return {HTMLTableElement}
- */
-ydn.crm.inj.App.prototype.getRightBarTable = function(opt_log_detail) {
-
-  // sniff position
-  var main = document.querySelector('table[role="presentation"]');
-  // the main layout table has one row and three column.
-  // take the last column
-  if (!main) {
-    if (opt_log_detail) {
-      goog.log.warning(this.logger, 'Could not find main view');
-    }
-    return null;
-  }
-  if (opt_log_detail && main.childElementCount != 1) {
-    goog.log.warning(this.logger, 'Probably our assumption about layout is wrong');
-  }
-  var tr = main.querySelector('tr');
-  if (opt_log_detail && tr.childElementCount != 3) {
-    goog.log.warning(this.logger, 'Probably our assumption about layout is very wrong');
-    return null;
-  }
-  var td_sidebar = tr.children[2];
-  if (opt_log_detail && !td_sidebar.style.height) {
-    goog.log.warning(this.logger, 'Probably our assumption about layout is wrong');
-  }
-
-  return /** @type {HTMLTableElement} */ (td_sidebar.querySelector('table'));
-};
-
-
-/**
  * Sniff contact and set to model.
- * @param {Event} e
+ * @param {ydn.crm.gmail.GmailObserver.ContextRightBarEvent} e
  * @private
  */
-ydn.crm.inj.App.prototype.handleTimerTick_ = function(e) {
-  this.sniff_count_++;
-  if (this.current_href_ != location.href) {
-    // url already changed.
-    goog.log.warning(this.logger, 'url already changed');
-    this.sniff_timer_.stop();
-  }
-  if (this.sniff_count_ > ydn.crm.inj.App.MAX_SNIFF_COUNT) {
-    goog.log.warning(this.logger, 'sniff give up after ' + this.sniff_count_);
-    this.sniff_timer_.stop();
-  }
-  var contact_table = this.getRightBarTable();
-  if (contact_table) {
-    if (this.renderer) {
-      this.renderer.attachToGmailRightBar(contact_table);
-    }
-  } else if (ydn.crm.inj.App.DEBUG) {
-    window.console.log('contact_table cannot find');
-  }
+ydn.crm.inj.App.prototype.onGmailContextEvent_ = function(e) {
 
-  var is_advanced_stage = this.sniff_count_ > 5;
-  var model = ydn.crm.inj.App.sniffEmail(contact_table, is_advanced_stage);
-
-  if (ydn.crm.inj.App.DEBUG) {
-    window.console.log('rendering for ' + model);
+  if (this.renderer) {
+    this.renderer.attachToGmailRightBar(e.table);
   }
-  if (model) {
-    this.sniff_timer_.stop();
-    this.sidebar.updateForNewContact(model);
+  if (e.context) {
+    this.sidebar.updateForNewContact(e.context);
   }
 
 };
@@ -199,109 +153,28 @@ ydn.crm.inj.App.MAX_SNIFF_COUNT = 40;
 
 
 /**
- * Sniff email from contact table.
- * @param {Element} contact_table
- * @param {boolean} adv
- * @return {ydn.crm.inj.Context}
- */
-ydn.crm.inj.App.sniffEmail = function(contact_table, adv) {
-  // span element with email address.
-  // var span_emails = td_main.querySelectorAll('span[email]');
-  // it is quite hard to get valid identifier of the contact on the sidebar
-  if (!contact_table) {
-    return null;
-  }
-  var img_identifier = contact_table.querySelector('img[jid]');
-  if (!img_identifier) {
-    // use advanced method
-    if (adv) {
-      // sniff name only, without email
-      var name_span = contact_table.querySelector('span[title]');
-      if (name_span) {
-        var name = name_span.getAttribute('title').trim();
-        if (name.length > 0) {
-          var email_span = document.querySelector('span[name="' + name + '"][email]');
-          if (email_span) {
-            var account = ydn.crm.ui.UserSetting.getInstance().getLoginEmail();
-            var email = email_span.getAttribute('email');
-            return new ydn.crm.inj.Context(account, email, name);
-          }
-        }
-      }
-      return null;
-    } else {
-      return null;
-    }
-  }
-  var jid_email = img_identifier.getAttribute('jid');
-  var td_1 = img_identifier;
-  while (td_1 && td_1.tagName != 'TD') {
-    td_1 = td_1.parentElement;
-  }
-  var span_title = td_1.nextElementSibling.querySelector('span[title]');
-  var contact_name = span_title.getAttribute('title');
-  var account = ydn.crm.ui.UserSetting.getInstance().getLoginEmail();
-  return new ydn.crm.inj.Context(account, jid_email, contact_name);
-};
-
-
-/**
- * Handle history changes.
- * @param {goog.history.Event} e
- */
-ydn.crm.inj.App.prototype.handleHistory = function(e) {
-  if (e.token == this.prev_token_) {
-    // fixme: to fix repeat call.
-    return;
-  }
-  this.prev_token_ = e.token;
-  if (ydn.crm.inj.App.DEBUG) {
-    window.console.log(e.token);
-  }
-  var state = ydn.gmail.Utils.getState(e.token);
-  if (state == ydn.gmail.Utils.GmailViewState.COMPOSE) { // compose new
-    this.updateForCompose();
-  } else if (state == ydn.gmail.Utils.GmailViewState.EMAIL) {
-    this.updateForNewThread();
-  } else {
-    if (this.renderer) {
-      this.renderer.attachToGmailRightBar(null);
-    }
-  }
-};
-
-
-/**
- * Compose panel appear.
- */
-ydn.crm.inj.App.prototype.updateForCompose = function() {
-  var val = this.sidebar.injectTemplateMenu();
-  goog.log.finer(this.logger, 'inject compose ' + (val ? 'ok' : 'fail'));
-};
-
-
-/**
- * When a new email thread is display on Gmail, we have to update sidebar
- * for changes in context contact.
- */
-ydn.crm.inj.App.prototype.updateForNewThread = function() {
-  goog.log.finest(this.logger, 'updating sidebar');
-  this.sniff_count_ = 0;
-  this.current_href_ = location.href;
-  if (this.renderer) {
-    // this.sidebar.updateForNewGmailThread();
-    this.renderer.attachToGmailRightBar(null);
-  }
-  this.sidebar.updateForNewContact(null); // let know, new context is coming.
-  this.sniff_timer_.start();
-};
-
-
-/**
  * @const
  * @type {boolean}
  */
 ydn.crm.inj.App.SHOW_TABPANE = true;
+
+
+/**
+ * @param {ydn.crm.gmail.GmailObserver.PageChangeEvent} e
+ */
+ydn.crm.inj.App.prototype.onGmailPageChanged = function(e) {
+  if (e.page_type == ydn.gmail.Utils.GmailViewState.COMPOSE) {
+    var val = this.sidebar.injectTemplateMenu();
+    goog.log.finer(this.logger, 'inject compose ' + (val ? 'ok' : 'fail'));
+  } else if (e.page_type == ydn.gmail.Utils.GmailViewState.EMAIL) {
+    goog.log.finest(this.logger, 'updating sidebar');
+    if (this.renderer) {
+      // remove previous attachment
+      this.renderer.attachToGmailRightBar(null);
+    }
+    this.sidebar.updateForNewContact(null); // let know, new context is coming.
+  }
+};
 
 
 /**
@@ -340,7 +213,7 @@ ydn.crm.inj.App.prototype.resetUser_ = function() {
       this.sidebar.updateHeader();
       this.hud.updateHeader();
       this.updateSugarPanels_();
-      this.history.setEnabled(true);
+      this.gmail_observer.setEnabled(true);
     } else {
       // we are not showing any UI if user is not login.
       // user should use browser bandage to login and refresh the page.
@@ -349,7 +222,7 @@ ydn.crm.inj.App.prototype.resetUser_ = function() {
       this.sidebar.updateSugarPanels([]);
       this.hud.updateSugarPanels([]);
       goog.log.warning(this.logger, 'user not login');
-      this.history.setEnabled(false);
+      this.gmail_observer.setEnabled(false);
     }
   }, function(e) {
     window.console.error(e);

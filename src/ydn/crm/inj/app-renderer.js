@@ -44,6 +44,7 @@ ydn.crm.inj.AppRenderer = function(opt_root_ele) {
    * @private
    */
   this.has_attached_ = false;
+  goog.style.setElementShown(this.ele_root, false);
 };
 
 
