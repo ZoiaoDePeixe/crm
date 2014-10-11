@@ -26,20 +26,14 @@
 
 goog.provide('ydn.crm.inj.App');
 goog.require('goog.dom');
-goog.require('goog.events');
-goog.require('goog.history.Html5History');
 goog.require('goog.style');
-goog.require('goog.ui.Component.EventType');
-goog.require('goog.ui.Tab');
-goog.require('goog.ui.TabBar');
 goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.base');
 goog.require('ydn.crm.gmail.ContextSidebar');
 goog.require('ydn.crm.gmail.GmailObserver');
 goog.require('ydn.crm.gmail.Tracker');
 goog.require('ydn.crm.inj');
-goog.require('ydn.crm.inj.Hud');
-goog.require('ydn.crm.inj.InlineRenderer');
+goog.require('ydn.crm.inj.SugarCrmApp');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
 goog.require('ydn.debug');
@@ -63,59 +57,39 @@ ydn.crm.inj.App = function() {
   ydn.crm.msg.Manager.addStatus('Starting ' + ydn.crm.version + '...');
 
   /**
-   * @type {ydn.crm.gmail.ComposeObserver}
-   * @private
-   */
-  this.compose_observer_ = new ydn.crm.gmail.ComposeObserver();
-
-  /**
    * @final
    * @type {ydn.crm.gmail.GmailObserver}
    */
   this.gmail_observer = new ydn.crm.gmail.GmailObserver();
 
   /**
+   * @final
+   * @type {ydn.crm.gmail.ComposeObserver}
+   */
+  this.compose_observer = new ydn.crm.gmail.ComposeObserver(this.gmail_observer);
+
+  /**
    * @type {ydn.crm.gmail.Tracker}
    * @private
    */
   this.tracker_ = new ydn.crm.gmail.Tracker();
-  this.tracker_.setObserver(this.compose_observer_);
-
-
+  this.tracker_.setObserver(this.compose_observer);
 
   /**
    * @protected
-   * @type {ydn.crm.gmail.ContextSidebar}
+   * @type {ydn.crm.inj.SugarCrmApp}
    */
-  this.sidebar = new ydn.crm.gmail.ContextSidebar(this.compose_observer_);
-  var renderer = new ydn.crm.inj.InlineRenderer(this.gmail_observer);
-  this.sidebar.render(renderer.getContentElement());
+  this.sugar_app = new ydn.crm.inj.SugarCrmApp(this.gmail_observer,
+      this.compose_observer);
 
 
-  /**
-   * @type {ydn.crm.ui.UserSetting}
-   * @final
-   */
-  this.user_setting = ydn.crm.ui.UserSetting.getInstance();
-
-  /**
-   * @final
-   * @type {ydn.crm.inj.Hud}
-   */
-  this.hud = new ydn.crm.inj.Hud();
-
-  this.handler = new goog.events.EventHandler(this);
-  this.handler.listen(this.gmail_observer, ydn.crm.gmail.GmailObserver.EventType.CONTEXT_CHANGE,
-      this.onGmailContextEvent_);
-  this.handler.listen(this.compose_observer_, ydn.crm.gmail.GmailObserver.EventType.PAGE_CHANGE,
-      this.onGmailPageChanged);
 };
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.inj.App.DEBUG = false;
+ydn.crm.inj.App.DEBUG = true;
 
 
 /**
@@ -123,48 +97,6 @@ ydn.crm.inj.App.DEBUG = false;
  * @type {goog.log.Logger}
  */
 ydn.crm.inj.App.prototype.logger = goog.log.getLogger('ydn.crm.inj.App');
-
-
-/**
- * Sniff contact and set to model.
- * @param {ydn.crm.gmail.GmailObserver.ContextRightBarEvent} e
- * @private
- */
-ydn.crm.inj.App.prototype.onGmailContextEvent_ = function(e) {
-
-  if (e.context) {
-    this.sidebar.updateForNewContact(e.context);
-  }
-
-};
-
-
-/**
- * @const
- * @type {number}
- */
-ydn.crm.inj.App.MAX_SNIFF_COUNT = 40;
-
-
-/**
- * @const
- * @type {boolean}
- */
-ydn.crm.inj.App.SHOW_TABPANE = true;
-
-
-/**
- * @param {ydn.crm.gmail.GmailObserver.PageChangeEvent} e
- */
-ydn.crm.inj.App.prototype.onGmailPageChanged = function(e) {
-  if (e.page_type == ydn.gmail.Utils.GmailViewState.COMPOSE) {
-    var val = this.sidebar.injectTemplateMenu();
-    goog.log.finer(this.logger, 'inject compose ' + (val ? 'ok' : 'fail'));
-  } else if (e.page_type == ydn.gmail.Utils.GmailViewState.EMAIL) {
-    goog.log.finest(this.logger, 'updating sidebar');
-    this.sidebar.updateForNewContact(null); // let know, new context is coming.
-  }
-};
 
 
 /**
@@ -176,11 +108,11 @@ ydn.crm.inj.App.prototype.handleChannelMessage = function(e) {
   }
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   if (e.type == ydn.crm.Ch.BReq.LIST_DOMAINS) {
-    this.updateSugarPanels_();
+    this.sugar_app.updateSugarPanels();
   } else if (e.type == ydn.crm.Ch.BReq.LOGGED_IN) {
     if (!us.hasValidLogin()) {
       us.invalidate();
-      this.resetUser_();
+      this.sugar_app.onUserStatusChange(us);
     }
   } else if (e.type == ydn.crm.Ch.BReq.LOGGED_OUT) {
     if (us.getLoginEmail()) {
@@ -196,42 +128,22 @@ ydn.crm.inj.App.prototype.handleChannelMessage = function(e) {
  * @private
  */
 ydn.crm.inj.App.prototype.resetUser_ = function() {
-  this.user_setting.onReady().addCallbacks(function() {
+  var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
+  us.onReady().addCallbacks(function() {
     goog.log.finest(this.logger, 'initiating UI');
-    if (this.user_setting.hasValidLogin()) {
-      this.sidebar.updateHeader();
-      this.hud.updateHeader();
-      this.updateSugarPanels_();
+
+    if (us.hasValidLogin()) {
       this.gmail_observer.setEnabled(true);
     } else {
       // we are not showing any UI if user is not login.
       // user should use browser bandage to login and refresh the page.
-      this.sidebar.updateHeader();
-      this.hud.updateHeader();
-      this.sidebar.updateSugarPanels([]);
-      this.hud.updateSugarPanels([]);
       goog.log.warning(this.logger, 'user not login');
       this.gmail_observer.setEnabled(false);
     }
+    this.sugar_app.onUserStatusChange(us);
   }, function(e) {
     window.console.error(e);
   }, this);
-};
-
-
-/**
- * Update sugar panels.
- * @private
- */
-ydn.crm.inj.App.prototype.updateSugarPanels_ = function() {
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR_DOMAIN).addCallback(
-      function(sugars) {
-        if (ydn.crm.ui.SugarListPanel.DEBUG) {
-          window.console.log(sugars);
-        }
-        this.sidebar.updateSugarPanels(sugars);
-        this.hud.updateSugarPanels(sugars);
-      }, this);
 };
 
 
@@ -240,8 +152,7 @@ ydn.crm.inj.App.prototype.updateSugarPanels_ = function() {
  */
 ydn.crm.inj.App.prototype.init = function() {
   goog.log.finer(this.logger, 'init ' + this);
-
-  this.hud.render();
+  this.sugar_app.init();
 
   goog.events.listen(ydn.msg.getMain(),
       [ydn.crm.Ch.BReq.LIST_DOMAINS,
