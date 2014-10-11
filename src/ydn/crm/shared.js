@@ -202,9 +202,9 @@ ydn.crm.shared.getFrontEndScriptName = function() {
   var key = ydn.crm.base.LocalKey.TRACK;
   var base_path = 'jsc/';
   var fn_prefix = 'crmininbox-';
+  var Version = goog.global['CRMinInbox']['sugarcrm']['Version'];
   chrome.storage.local.get(key, function(data) {
     var track = data[key];
-    var Version = goog.global['CRMinInbox']['sugarcrm']['Version'];
     var fn = base_path + fn_prefix + Version['release'] + '.js';
     if (navigator.onLine && track == ydn.crm.base.Track.EDGE) {
       fn = 'https://ydn-src-1.storage.googleapis.com/jsc/' + fn_prefix + 'edge.js';
