@@ -25,6 +25,8 @@
 
 goog.provide('ydn.crm.inj.AppRenderer');
 goog.require('goog.Disposable');
+goog.require('ydn.crm.gmail.ComposeObserver');
+goog.require('ydn.crm.gmail.GmailObserver');
 goog.require('ydn.crm.ui.AppStatusBar');
 goog.require('ydn.crm.ui.StatusBar');
 
@@ -32,11 +34,12 @@ goog.require('ydn.crm.ui.StatusBar');
 
 /**
  * Base main application renderer;
+ * @param {ydn.crm.gmail.GmailObserver} gmail_observer
  * @param {Element=} opt_root_ele
  * @constructor
  * @struct
  */
-ydn.crm.inj.AppRenderer = function(opt_root_ele) {
+ydn.crm.inj.AppRenderer = function(gmail_observer, opt_root_ele) {
   this.ele_root = opt_root_ele || this.createDom();
 
   /**
@@ -45,6 +48,10 @@ ydn.crm.inj.AppRenderer = function(opt_root_ele) {
    */
   this.has_attached_ = false;
   goog.style.setElementShown(this.ele_root, false);
+  goog.events.listen(gmail_observer, ydn.crm.gmail.GmailObserver.EventType.CONTEXT_CHANGE,
+      this.onGmailContextEvent_, false, this);
+  goog.events.listen(gmail_observer, ydn.crm.gmail.GmailObserver.EventType.PAGE_CHANGE,
+      this.onGmailPageChanged, false, this);
 };
 
 
@@ -129,6 +136,7 @@ ydn.crm.inj.AppRenderer.prototype.createDom = function() {
 /**
  * Set user info.
  * @param {ydn.crm.ui.UserSetting} user
+ * @deprecated no longer using.
  */
 ydn.crm.inj.AppRenderer.prototype.setUserSetting = function(user) {
   var header = this.getHeaderElement();
@@ -195,6 +203,27 @@ ydn.crm.inj.AppRenderer.prototype.detach = function() {
  * @param {HTMLTableElement} contact_table right bar table
  */
 ydn.crm.inj.AppRenderer.prototype.attachToGmailRightBar = function(contact_table) {
+
+};
+
+
+/**
+ * @param {ydn.crm.gmail.GmailObserver.PageChangeEvent} e
+ */
+ydn.crm.inj.AppRenderer.prototype.onGmailPageChanged = function(e) {
+  // remove previous attachment
+  this.attachToGmailRightBar(null);
+};
+
+
+/**
+ * Sniff contact and set to model.
+ * @param {ydn.crm.gmail.GmailObserver.ContextRightBarEvent} e
+ * @private
+ */
+ydn.crm.inj.AppRenderer.prototype.onGmailContextEvent_ = function(e) {
+
+  this.attachToGmailRightBar(e.table);
 
 };
 

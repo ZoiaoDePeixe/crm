@@ -28,13 +28,14 @@ goog.require('ydn.crm.inj.AppRenderer');
 
 /**
  * Sticky renderer
+ * @param {ydn.crm.gmail.GmailObserver} gmail_observer
  * @param {Element=} opt_ele
  * @constructor
  * @struct
  * @extends {ydn.crm.inj.AppRenderer}
  */
-ydn.crm.inj.InlineRenderer = function(opt_ele) {
-  goog.base(this, opt_ele);
+ydn.crm.inj.InlineRenderer = function(gmail_observer, opt_ele) {
+  goog.base(this, gmail_observer, opt_ele);
   this.sidebar_has_attached_ = false;
 };
 goog.inherits(ydn.crm.inj.InlineRenderer, ydn.crm.inj.AppRenderer);
@@ -54,6 +55,10 @@ ydn.crm.inj.InlineRenderer.prototype.attach = function() {
  * @param {HTMLTableElement} contact_table right bar table
  */
 ydn.crm.inj.InlineRenderer.prototype.attachToGmailRightBar = function(contact_table) {
+  if (ydn.crm.inj.AppRenderer.DEBUG) {
+    window.console.log('attachToGmailRightBar panel',
+        this.sidebar_has_attached_, contact_table);
+  }
   if (!contact_table) {
     this.sidebar_has_attached_ = false;
     goog.style.setElementShown(this.ele_root, false);
@@ -61,9 +66,6 @@ ydn.crm.inj.InlineRenderer.prototype.attachToGmailRightBar = function(contact_ta
   }
   if (this.sidebar_has_attached_) {
     return;
-  }
-  if (ydn.crm.inj.AppRenderer.DEBUG) {
-    window.console.log('Attaching panel');
   }
   // locate root element
   var root_container;

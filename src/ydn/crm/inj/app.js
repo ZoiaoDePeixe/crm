@@ -81,18 +81,15 @@ ydn.crm.inj.App = function() {
   this.tracker_ = new ydn.crm.gmail.Tracker();
   this.tracker_.setObserver(this.compose_observer_);
 
-  /**
-   * @protected
-   * @type {ydn.crm.inj.AppRenderer}
-   */
-  this.renderer = new ydn.crm.inj.InlineRenderer();
+
 
   /**
    * @protected
    * @type {ydn.crm.gmail.ContextSidebar}
    */
   this.sidebar = new ydn.crm.gmail.ContextSidebar(this.compose_observer_);
-  this.sidebar.render(this.renderer.getContentElement());
+  var renderer = new ydn.crm.inj.InlineRenderer(this.gmail_observer);
+  this.sidebar.render(renderer.getContentElement());
 
 
   /**
@@ -135,9 +132,6 @@ ydn.crm.inj.App.prototype.logger = goog.log.getLogger('ydn.crm.inj.App');
  */
 ydn.crm.inj.App.prototype.onGmailContextEvent_ = function(e) {
 
-  if (this.renderer) {
-    this.renderer.attachToGmailRightBar(e.table);
-  }
   if (e.context) {
     this.sidebar.updateForNewContact(e.context);
   }
@@ -168,10 +162,6 @@ ydn.crm.inj.App.prototype.onGmailPageChanged = function(e) {
     goog.log.finer(this.logger, 'inject compose ' + (val ? 'ok' : 'fail'));
   } else if (e.page_type == ydn.gmail.Utils.GmailViewState.EMAIL) {
     goog.log.finest(this.logger, 'updating sidebar');
-    if (this.renderer) {
-      // remove previous attachment
-      this.renderer.attachToGmailRightBar(null);
-    }
     this.sidebar.updateForNewContact(null); // let know, new context is coming.
   }
 };
@@ -208,7 +198,6 @@ ydn.crm.inj.App.prototype.handleChannelMessage = function(e) {
 ydn.crm.inj.App.prototype.resetUser_ = function() {
   this.user_setting.onReady().addCallbacks(function() {
     goog.log.finest(this.logger, 'initiating UI');
-    this.renderer.setUserSetting(this.user_setting);
     if (this.user_setting.hasValidLogin()) {
       this.sidebar.updateHeader();
       this.hud.updateHeader();
