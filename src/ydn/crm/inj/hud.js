@@ -35,8 +35,9 @@ ydn.crm.inj.Hud = function() {
    */
   this.panel = new ydn.crm.ui.SidebarPanel();
 
-  goog.style.setElementShown(this.root_el_,
-      ydn.crm.ui.UserSetting.hasSidebar());
+  var has_widget = ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.GDATA_CONTACT) ||
+      ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.SUGARCRM);
+  goog.style.setElementShown(this.root_el_, has_widget);
 
 };
 

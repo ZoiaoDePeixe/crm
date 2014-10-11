@@ -82,14 +82,13 @@ ydn.crm.inj.App = function() {
   this.sugar_app = new ydn.crm.inj.SugarCrmApp(this.gmail_observer,
       this.compose_observer);
 
-
 };
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.inj.App.DEBUG = true;
+ydn.crm.inj.App.DEBUG = false;
 
 
 /**

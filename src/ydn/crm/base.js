@@ -240,3 +240,13 @@ ydn.crm.base.AppShortName = {
   OTHERS: ''
 };
 
+
+/**
+ * @enum {string}
+ */
+ydn.crm.base.Feature = {
+  GDATA_CONTACT: 'gc',
+  EMAIL_TRACKING: 'et',
+  SUGARCRM: 'su'
+};
+
