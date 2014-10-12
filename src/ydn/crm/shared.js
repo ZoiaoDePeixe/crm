@@ -6,7 +6,6 @@
 
 
 goog.provide('ydn.crm.shared');
-goog.require('analytics.getService');
 goog.require('goog.log');
 goog.require('goog.net.XhrManager');
 goog.require('ydn.client.AdaptorClient');
@@ -130,10 +129,9 @@ ydn.crm.shared.setupGoogleAnalytic = function(id) {
  * @param {number=} opt_value 'image2'
  */
 ydn.crm.shared.gaSend = function(category, action, opt_label, opt_value) {
-  if (ydn.crm.shared.cpaTracker_) {
+  /* if (ydn.crm.shared.cpaTracker_) {
     ydn.crm.shared.cpaTracker_.sendEvent(category, action, opt_label, opt_value);
-  }
-  if (goog.global['_gaq']) {
+  } else */ if (goog.global['_gaq']) {
     if (goog.global['_gaq'].length > 100) {
       return;
     }
@@ -221,13 +219,6 @@ ydn.crm.shared.getFrontEndScriptName = function() {
 
 
 /**
- * @type {analytics.Tracker}
- * @private
- */
-ydn.crm.shared.cpaTracker_;
-
-
-/**
  * Get Google Analytics UA string.
  * @return {?string} return null if not running under chrome extension.
  */
@@ -254,8 +245,11 @@ ydn.crm.shared.getGaUa = function() {
  * See @link https://github.com/GoogleChrome/chrome-platform-analytics/
  * @private
  * @see ydn.crm.shared.initGa_ not used both
+ * @deprecated use ydn.crm.shared.initGa_ instead
  */
 ydn.crm.shared.initChromePlatformAnalytics_ = function() {
+  throw new Error('Not using');
+  /*
   var ua = ydn.crm.shared.getGaUa();
   if (!ua) {
     return;
@@ -264,6 +258,7 @@ ydn.crm.shared.initChromePlatformAnalytics_ = function() {
 
   ydn.crm.shared.cpaTracker_ = service.getTracker(ua);
   ydn.crm.shared.cpaTracker_.sendAppView('BackgroundView');
+  */
 };
 
 
