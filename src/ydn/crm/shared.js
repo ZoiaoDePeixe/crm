@@ -126,9 +126,9 @@ ydn.crm.shared.setupGoogleAnalytic = function(id) {
 
   var r = 'googleAnalytic';
   goog.global[r] = function() {
-    (goog.global[r].q = goog.global[r].q || []).push(arguments);
+    (goog.global[r]['q'] = goog.global[r]['q'] || []).push(arguments);
   };
-  goog.global[r].l = +new Date;
+  goog.global[r]['l'] = +new Date;
 
   goog.global[r]('create', id, 'auto');
   goog.global[r]('send', 'pageview');
