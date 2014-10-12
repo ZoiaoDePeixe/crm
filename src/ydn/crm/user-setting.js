@@ -243,6 +243,8 @@ ydn.crm.UserSetting.getAppShortName = function() {
     var mani = chrome.runtime.getManifest();
     if (mani['short_name'] == ydn.crm.base.AppShortName.EMAIL_TRACKER) {
       ydn.crm.UserSetting.app_name_ = ydn.crm.base.AppShortName.EMAIL_TRACKER;
+    } else if (mani['short_name'] == ydn.crm.base.AppShortName.EMAIL_TRACKER_GMAIL) {
+      ydn.crm.UserSetting.app_name_ = ydn.crm.base.AppShortName.EMAIL_TRACKER_GMAIL;
     } else if (mani['short_name'] == ydn.crm.base.AppShortName.SUGARCRM) {
       ydn.crm.UserSetting.app_name_ = ydn.crm.base.AppShortName.SUGARCRM;
     } else {

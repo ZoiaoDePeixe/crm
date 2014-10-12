@@ -80,8 +80,7 @@ ydn.crm.Ch.Req = {
   SOCIAL_PROFILE: 'social-profile',
   SUGAR_SERVER_INFO: 'sugar-server-info',
   TRACKING_QUERY: 'tracking-query',
-  TRACKING_UPDATE: 'tracking-update',
-  USER_DASHBOARD: 'user-dashboard'
+  TRACKING_UPDATE: 'tracking-update'
 };
 
 

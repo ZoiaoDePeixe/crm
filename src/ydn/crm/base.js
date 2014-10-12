@@ -221,20 +221,11 @@ ydn.crm.EmailInfo;
 
 
 /**
- * TODO: does not work, need to changes as externs.
- * The first page is home page.
- * @typedef {{
- *   pages: !Array.<string>
- * }}
- */
-ydn.crm.DashboardProfile;
-
-
-/**
  * Application short_name. These value are used for setting default app setting.
  * @enum {string}
  */
 ydn.crm.base.AppShortName = {
+  EMAIL_TRACKER_GMAIL: 'Email Tracker for Gmail',
   EMAIL_TRACKER: 'Email Tracker',
   SUGARCRM: 'SugarCRM',
   OTHERS: ''

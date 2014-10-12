@@ -143,14 +143,17 @@ ydn.crm.OptionPageApp.prototype.updateUserInfo_ = function(user_info) {
 
 /**
  * Process after login.
- * @param {ydn.crm.DashboardProfile} profile user profile for pages.
  * @protected
  */
-ydn.crm.OptionPageApp.prototype.processUserPageSetup = function(profile) {
-  if (ydn.crm.OptionPageApp.DEBUG) {
-    window.console.log(profile);
+ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
+
+  var pages = ['sugarcrm', 'tracking', 'about-sugarcrm'];
+  var asn = ydn.crm.UserSetting.getAppShortName();
+  if (asn == ydn.crm.base.AppShortName.EMAIL_TRACKER ||
+      ydn.crm.base.AppShortName.EMAIL_TRACKER_GMAIL) {
+    pages = ['tracking', 'about-tracking'];
   }
-  var pages = profile['pages'];
+
   for (var i = 0; i < pages.length; i++) {
     var pn = pages[i];
     var name = i == 0 ? 'home' : pn;
@@ -294,12 +297,10 @@ ydn.crm.OptionPageApp.prototype.run = function() {
 
   this.login(null).addCallback(function() {
     if (this.process_user_page_setup_) {
-      ydn.msg.getChannel().send(ydn.crm.Ch.Req.USER_DASHBOARD).addCallback(function(obj) {
-        goog.Timer.callOnce(function() {
-          this.processUserPageSetup(/** @type {ydn.crm.DashboardProfile} */ (obj));
-          this.showPanel_(location.hash.replace('#', ''));
-        }, 10, this);
-      }, this);
+      goog.Timer.callOnce(function() {
+        this.processUserPageSetup();
+        this.showPanel_(location.hash.replace('#', ''));
+      }, 10, this);
     } else {
       goog.Timer.callOnce(function() {
         this.showPanel_(location.hash.replace('#', ''));
