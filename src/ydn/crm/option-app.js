@@ -150,7 +150,7 @@ ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
   var pages = ['sugarcrm', 'tracking', 'about-sugarcrm'];
   var asn = ydn.crm.UserSetting.getAppShortName();
   if (asn == ydn.crm.base.AppShortName.EMAIL_TRACKER ||
-      ydn.crm.base.AppShortName.EMAIL_TRACKER_GMAIL) {
+      asn == ydn.crm.base.AppShortName.EMAIL_TRACKER_GMAIL) {
     pages = ['tracking', 'about-tracking'];
   }
 
