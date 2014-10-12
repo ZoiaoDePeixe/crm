@@ -6,6 +6,7 @@
 
 
 goog.provide('ydn.crm.shared');
+goog.require('analytics.getService');
 goog.require('goog.log');
 goog.require('goog.net.XhrManager');
 goog.require('ydn.client.AdaptorClient');
@@ -115,43 +116,40 @@ ydn.crm.shared.getValueBySyncKey = function(key) {
  */
 ydn.crm.shared.setupGoogleAnalytic = function(id) {
 
+  throw new Error('NotImpl');
 
-
-  // Insert the script tag asynchronously.
-  var a = document.createElement('script');
-  var m = document.getElementsByTagName('script')[0];
-  a.async = 1;
-  a.src = 'https://www.google-analytics.com/analytics.js';
-  m.parentNode.insertBefore(a, m);
-
-  var r = 'googleAnalytic';
-  goog.global[r] = function() {
-    (goog.global[r]['q'] = goog.global[r]['q'] || []).push(arguments);
-  };
-  goog.global[r]['l'] = +new Date;
-
-  goog.global[r]('create', id, 'auto');
-  goog.global[r]('send', 'pageview');
 };
 
 
 /**
- * Call to Google Analytics.
+ * Send event to Google Analytics.
  *
- * @param {string} cmd 'send'
- * @param {string} event
- * @param {string} label 'image2'
- * @param {string=} opt_action 'clicked'
+ * @param {string} category
+ * @param {string} action 'image2'
+ * @param {string=} opt_label 'image2'
+ * @param {number=} opt_value 'image2'
  */
-ydn.crm.shared.ga = function(cmd, event, label, opt_action) {
-  if (goog.global['googleAnalytic']) {
-    goog.global['googleAnalytic'](cmd, event, label, opt_action);
+ydn.crm.shared.gaSend = function(category, action, opt_label, opt_value) {
+  if (ydn.crm.shared.cpaTracker_) {
+    ydn.crm.shared.cpaTracker_.sendEvent(category, action, opt_label, opt_value);
+  }
+  if (goog.global['_gaq']) {
+    if (goog.global['_gaq'].length > 100) {
+      return;
+    }
+    var arg = ['_trackEvent'];
+    for (var i = 0; i < arguments.length; i++) {
+      arg.push(arguments[i]);
+    }
+    goog.global['_gaq']['push'](arg);
+  } else if (goog.global['googleAnalytic']) {
+    goog.global['googleAnalytic']('send', category, action, action, opt_value);
   } else {
     var data = {
-      'cmd': cmd,
-      'event': event,
-      'label': label,
-      'action': opt_action || ''
+      'category': category,
+      'label': action || '',
+      'value': opt_value || '',
+      'action': action || ''
     };
     ydn.debug.ILogger.instance.log(data);
   }
@@ -223,6 +221,81 @@ ydn.crm.shared.getFrontEndScriptName = function() {
 
 
 /**
+ * @type {analytics.Tracker}
+ * @private
+ */
+ydn.crm.shared.cpaTracker_;
+
+
+/**
+ * Get Google Analytics UA string.
+ * @return {?string} return null if not running under chrome extension.
+ */
+ydn.crm.shared.getGaUa = function() {
+  if (!chrome || !chrome.runtime || !chrome.runtime.id) {
+    return null;
+  }
+  var ua = 'UA-33861582-';
+  var uap = '9'; // for dev
+  if (chrome.runtime.id == 'ldikiokclnbceabnlbkabmcacpiednop') {
+    // Gmail tracker
+    uap = '8';
+  } else if (chrome.runtime.id == 'iccdnijlhdogaccaiafdpjmbakdcdakk') {
+    // SugarCRM
+    uap = '6';
+  }
+  return ua + uap;
+};
+
+
+/**
+ * Initialize chrome platform analytics.
+ * Tracking with CPA requires host permission to "https://www.google-analytics.com/"
+ * See @link https://github.com/GoogleChrome/chrome-platform-analytics/
+ * @private
+ * @see ydn.crm.shared.initGa_ not used both
+ */
+ydn.crm.shared.initChromePlatformAnalytics_ = function() {
+  var ua = ydn.crm.shared.getGaUa();
+  if (!ua) {
+    return;
+  }
+  var service = analytics.getService(chrome.runtime.id);
+
+  ydn.crm.shared.cpaTracker_ = service.getTracker(ua);
+  ydn.crm.shared.cpaTracker_.sendAppView('BackgroundView');
+};
+
+
+/**
+ * Initialize (old) Google Analytics.
+ * @private
+ * @see ydn.crm.shared.initChromePlatformAnalytics_ no use both
+ */
+ydn.crm.shared.initGa_ = function() {
+  var ua = ydn.crm.shared.getGaUa();
+  if (!ua) {
+    return;
+  }
+  if (goog.global['_gaq']) {
+    return;
+  }
+  goog.global['_gaq'] = [];
+  goog.global['_gaq'].push(['_setAccount', ua]);
+  goog.global['_gaq'].push(['_gat._forceSSL']);
+  goog.global['_gaq'].push(['_trackPageview']);
+
+  var ga = document.createElement('script');
+  ga.type = 'text/javascript';
+  ga.async = true;
+  ga.src = 'https://ssl.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(ga, s);
+
+};
+
+
+/**
  * Initialize shared data.
  * Initialization is only done once, but this method can be call multiple time,
  * just to ignore repeat call.
@@ -232,6 +305,8 @@ ydn.crm.shared.init = function() {
     return;
   }
   ydn.crm.shared.init_ = true;
+  // ydn.crm.shared.initChromePlatformAnalytics_();
+  ydn.crm.shared.initGa_();
 
   var title = 'Yathit CRMinInbox ydn.crm.version ' + ydn.crm.version;
   if (goog.DEBUG) {
