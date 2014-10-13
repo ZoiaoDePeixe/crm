@@ -132,6 +132,12 @@ YdnCrm.AccessRecord.prototype.Region;
 /**
  * @type {string}
  */
+YdnCrm.AccessRecord.prototype.Query;
+
+
+/**
+ * @type {string}
+ */
 YdnCrm.AccessRecord.prototype.UserAgent;
 
 
