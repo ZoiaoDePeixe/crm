@@ -76,7 +76,7 @@ ydn.crm.OptionPageApp = function() {
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.OptionPageApp.DEBUG = true;
+ydn.crm.OptionPageApp.DEBUG = false;
 
 
 /**

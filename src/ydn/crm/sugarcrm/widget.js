@@ -37,7 +37,7 @@ ydn.crm.sugarcrm.Widget = function(model, opt_hide_title) {
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.Widget.DEBUG = true;
+ydn.crm.sugarcrm.Widget.DEBUG = false;
 
 
 /**
