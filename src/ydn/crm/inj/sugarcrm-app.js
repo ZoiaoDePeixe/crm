@@ -31,7 +31,7 @@ goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.base');
 goog.require('ydn.crm.gmail.ContextSidebar');
 goog.require('ydn.crm.gmail.GmailObserver');
-goog.require('ydn.crm.gmail.Tracker');
+goog.require('ydn.crm.tracking.Tracker');
 goog.require('ydn.crm.inj');
 goog.require('ydn.crm.inj.Hud');
 goog.require('ydn.crm.inj.InlineRenderer');

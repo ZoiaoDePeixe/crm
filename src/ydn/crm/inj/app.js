@@ -31,7 +31,7 @@ goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.base');
 goog.require('ydn.crm.gmail.ContextSidebar');
 goog.require('ydn.crm.gmail.GmailObserver');
-goog.require('ydn.crm.gmail.Tracker');
+goog.require('ydn.crm.tracking.Tracker');
 goog.require('ydn.crm.inj');
 goog.require('ydn.crm.inj.SugarCrmApp');
 goog.require('ydn.crm.msg.Manager');
@@ -69,7 +69,7 @@ ydn.crm.inj.App = function() {
   this.compose_observer = new ydn.crm.gmail.ComposeObserver(this.gmail_observer);
 
   /**
-   * @type {ydn.crm.gmail.Tracker}
+   * @type {ydn.crm.tracking.Tracker}
    * @private
    */
   this.tracker_ = null;
@@ -162,7 +162,7 @@ ydn.crm.inj.App.prototype.init = function() {
     this.sugar_app.init();
   }
   if (ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.TRACKING)) {
-    this.tracker_ = new ydn.crm.gmail.Tracker();
+    this.tracker_ = new ydn.crm.tracking.Tracker();
     this.tracker_.setObserver(this.compose_observer);
   }
 
