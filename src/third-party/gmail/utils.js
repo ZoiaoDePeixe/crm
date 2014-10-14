@@ -156,7 +156,7 @@ ydn.gmail.Utils.getUserEmail = function() {
   }
   // Note: Sniffing work only when gmail was loaded.
 
-  var email_span = document.querySelector('span[name="me"][email]');
+  // var email_span = document.querySelector('span[name="me"][email]');
   return ydn.gmail.Utils.sniffGmail_(3).addErrback(function(e) {
     return ydn.gmail.Utils.getUserEmailByFeed();
   });

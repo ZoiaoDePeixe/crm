@@ -22,7 +22,7 @@ YdnCrm.BeaconData = function() {};
 /**
  * @type {number}
  */
-YdnCrm.BeaconData.prototype.created;
+YdnCrm.BeaconData.prototype.recorded;
 
 
 /**
@@ -102,7 +102,7 @@ YdnCrm.AccessRecord.prototype.Country;
 /**
  * @type {number}
  */
-YdnCrm.AccessRecord.prototype.Created;
+YdnCrm.AccessRecord.prototype.Recorded;
 
 
 /**
@@ -139,6 +139,13 @@ YdnCrm.AccessRecord.prototype.Query;
  * @type {string}
  */
 YdnCrm.AccessRecord.prototype.UserAgent;
+
+
+/**
+ * @type {string} either 't', 'r', or 'f' representing tracking image, redirect
+ * and font respectively.
+ */
+YdnCrm.AccessRecord.prototype.Tracker;
 
 
 
