@@ -31,7 +31,7 @@ goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.base');
 goog.require('ydn.crm.gmail.ContextSidebar');
 goog.require('ydn.crm.gmail.GmailObserver');
-goog.require('ydn.crm.gmail.MessageHeaderWidget');
+goog.require('ydn.crm.gmail.MessageHeaderInjector');
 goog.require('ydn.crm.inj');
 goog.require('ydn.crm.inj.Hud');
 goog.require('ydn.crm.inj.InlineRenderer');
@@ -46,20 +46,20 @@ goog.require('ydn.msg.Pipe');
 
 /**
  * SugarCRM app.
- * @param {ydn.crm.gmail.MessageHeaderWidget} heading_widget
+ * @param {ydn.crm.gmail.MessageHeaderInjector} heading_injector
  * @param {ydn.crm.gmail.GmailObserver} gmail_observer
  * @param {ydn.crm.gmail.ComposeObserver} compose_observer
  * @constructor
  * @struct
  */
-ydn.crm.inj.SugarCrmApp = function(heading_widget, gmail_observer, compose_observer) {
+ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer, compose_observer) {
 
   /**
    * @final
-   * @type {ydn.crm.gmail.MessageHeaderWidget}
+   * @type {ydn.crm.gmail.MessageHeaderInjector}
    * @private
    */
-  this.heading_widget_ = heading_widget;
+  this.heading_injector_ = heading_injector;
   /**
    * @protected
    * @type {ydn.crm.gmail.ContextSidebar}
@@ -139,7 +139,7 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarPanels = function() {
         this.sidebar.updateSugarPanels(sugars);
         this.hud.updateSugarPanels(sugars);
         var sugar = this.sidebar.getSugarModelClone();
-        this.heading_widget_.setSugar(sugar);
+        this.heading_injector_.setSugar(sugar);
       }, this);
 };
 
