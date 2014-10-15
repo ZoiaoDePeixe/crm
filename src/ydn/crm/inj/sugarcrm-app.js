@@ -31,12 +31,12 @@ goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.base');
 goog.require('ydn.crm.gmail.ContextSidebar');
 goog.require('ydn.crm.gmail.GmailObserver');
-goog.require('ydn.crm.tracking.Tracker');
 goog.require('ydn.crm.inj');
 goog.require('ydn.crm.inj.Hud');
 goog.require('ydn.crm.inj.InlineRenderer');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
+goog.require('ydn.crm.tracking.Tracker');
 goog.require('ydn.debug');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
@@ -56,7 +56,7 @@ ydn.crm.inj.SugarCrmApp = function(gmail_observer, compose_observer) {
    * @protected
    * @type {ydn.crm.gmail.ContextSidebar}
    */
-  this.sidebar = new ydn.crm.gmail.ContextSidebar(compose_observer);
+  this.sidebar = new ydn.crm.gmail.ContextSidebar(gmail_observer, compose_observer);
   var renderer = new ydn.crm.inj.InlineRenderer(gmail_observer);
   this.sidebar.render(renderer.getContentElement());
 
@@ -70,8 +70,7 @@ ydn.crm.inj.SugarCrmApp = function(gmail_observer, compose_observer) {
   this.handler = new goog.events.EventHandler(this);
   this.handler.listen(gmail_observer, ydn.crm.gmail.GmailObserver.EventType.CONTEXT_CHANGE,
       this.onGmailContextEvent_);
-  this.handler.listen(gmail_observer, ydn.crm.gmail.GmailObserver.EventType.PAGE_CHANGE,
-      this.onGmailPageChanged);
+
 };
 
 
@@ -98,19 +97,6 @@ ydn.crm.inj.SugarCrmApp.prototype.onGmailContextEvent_ = function(e) {
  */
 ydn.crm.inj.SugarCrmApp.prototype.init = function() {
   this.hud.render();
-};
-
-
-/**
- * @param {ydn.crm.gmail.GmailObserver.PageChangeEvent} e
- */
-ydn.crm.inj.SugarCrmApp.prototype.onGmailPageChanged = function(e) {
-  if (ydn.crm.inj.SugarCrmApp.DEBUG) {
-    window.console.info(e.page_type);
-  }
-  if (e.page_type == ydn.gmail.Utils.GmailViewState.EMAIL) {
-    this.sidebar.updateForNewContact(null); // let know, new context is coming.
-  }
 };
 
 
