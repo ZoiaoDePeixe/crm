@@ -31,11 +31,12 @@ goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.base');
 goog.require('ydn.crm.gmail.ContextSidebar');
 goog.require('ydn.crm.gmail.GmailObserver');
-goog.require('ydn.crm.tracking.Tracker');
+goog.require('ydn.crm.gmail.MessageHeaderWidget');
 goog.require('ydn.crm.inj');
 goog.require('ydn.crm.inj.SugarCrmApp');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
+goog.require('ydn.crm.tracking.Tracker');
 goog.require('ydn.debug');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
@@ -68,6 +69,8 @@ ydn.crm.inj.App = function() {
    */
   this.compose_observer = new ydn.crm.gmail.ComposeObserver(this.gmail_observer);
 
+  this.header_widget_ = new ydn.crm.gmail.MessageHeaderWidget();
+
   /**
    * @type {ydn.crm.tracking.Tracker}
    * @private
@@ -80,13 +83,15 @@ ydn.crm.inj.App = function() {
    */
   this.sugar_app = null;
 
+  goog.events.listen(this.gmail_observer, ydn.crm.gmail.GmailObserver.EventType.PAGE_CHANGE,
+      this.onGmailPageChanged_, false, this);
 };
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.inj.App.DEBUG = false;
+ydn.crm.inj.App.DEBUG = true;
 
 
 /**
@@ -94,6 +99,32 @@ ydn.crm.inj.App.DEBUG = false;
  * @type {goog.log.Logger}
  */
 ydn.crm.inj.App.prototype.logger = goog.log.getLogger('ydn.crm.inj.App');
+
+
+/**
+ * @param {ydn.crm.gmail.GmailObserver.PageChangeEvent} e
+ * @private
+ */
+ydn.crm.inj.App.prototype.onGmailPageChanged_ = function(e) {
+  if (e.page_type == ydn.gmail.Utils.GmailViewState.EMAIL) {
+    // inject email header widget.
+    var cell = this.gmail_observer.getCurrentMessageHeader();
+    if (ydn.crm.inj.App.DEBUG) {
+      window.console.log('injecting header to', cell);
+    }
+    if (cell) {
+      goog.Timer.callOnce(function() {
+        if (this.header_widget_.isInDocument()) {
+          this.header_widget_.exitDocument();
+        }
+        this.header_widget_.renderBefore(cell.firstElementChild);
+      }, 10, this);
+
+    } else if (ydn.crm.inj.App.DEBUG) {
+      window.console.warn('Message header element not found');
+    }
+  }
+};
 
 
 /**
@@ -135,11 +166,16 @@ ydn.crm.inj.App.prototype.resetUser_ = function() {
 
     if (us.hasValidLogin()) {
       this.gmail_observer.setEnabled(true);
+      var tracking = ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.TRACKING);
+      this.header_widget_.enableFeatures(true, true);
+
     } else {
       // we are not showing any UI if user is not login.
       // user should use browser bandage to login and refresh the page.
       goog.log.warning(this.logger, 'user not login');
       this.gmail_observer.setEnabled(false);
+      this.header_widget_.enableFeatures(false, false);
+      this.header_widget_.setSugar(null);
     }
     if (this.sugar_app) {
       this.sugar_app.onUserStatusChange(us);
@@ -157,8 +193,8 @@ ydn.crm.inj.App.prototype.init = function() {
   goog.log.finer(this.logger, 'init ' + this);
 
   if (ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.SUGARCRM)) {
-    this.sugar_app = new ydn.crm.inj.SugarCrmApp(this.gmail_observer,
-        this.compose_observer);
+    this.sugar_app = new ydn.crm.inj.SugarCrmApp(this.header_widget_,
+        this.gmail_observer, this.compose_observer);
     this.sugar_app.init();
   }
   if (ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.TRACKING)) {
