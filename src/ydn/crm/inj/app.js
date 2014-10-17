@@ -37,6 +37,7 @@ goog.require('ydn.crm.inj.SugarCrmApp');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
 goog.require('ydn.crm.tracking.Tracker');
+goog.require('ydn.crm.tracking.TrackResult');
 goog.require('ydn.debug');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
@@ -156,14 +157,14 @@ ydn.crm.inj.App.prototype.resetUser_ = function() {
     if (us.hasValidLogin()) {
       this.gmail_observer.setEnabled(true);
       var tracking = ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.TRACKING);
-      this.header_injector_.enableFeatures(true, true);
+      this.header_injector_.setTrackResult(new ydn.crm.tracking.TrackResult());
 
     } else {
       // we are not showing any UI if user is not login.
       // user should use browser bandage to login and refresh the page.
       goog.log.warning(this.logger, 'user not login');
       this.gmail_observer.setEnabled(false);
-      this.header_injector_.enableFeatures(false, false);
+      this.header_injector_.setTrackResult(null);
       this.header_injector_.setSugar(null);
     }
     if (this.sugar_app) {

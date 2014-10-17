@@ -37,6 +37,7 @@ goog.require('ydn.crm.inj.Hud');
 goog.require('ydn.crm.inj.InlineRenderer');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
+goog.require('ydn.crm.sugarcrm.model.Archiver');
 goog.require('ydn.crm.tracking.Tracker');
 goog.require('ydn.debug');
 goog.require('ydn.gmail.Utils.GmailViewState');
@@ -139,7 +140,7 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarPanels = function() {
         this.sidebar.updateSugarPanels(sugars);
         this.hud.updateSugarPanels(sugars);
         var sugar = this.sidebar.getSugarModelClone();
-        this.heading_injector_.setSugar(sugar);
+        this.heading_injector_.setSugar(new ydn.crm.sugarcrm.model.Archiver(sugar));
       }, this);
 };
 

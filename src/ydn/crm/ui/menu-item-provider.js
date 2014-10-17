@@ -17,7 +17,7 @@
  */
 
 
-goog.provide('ydn.crm.ui.IMenuButtonProvider');
+
 goog.provide('ydn.crm.ui.IMenuItemProvider');
 
 
@@ -50,14 +50,3 @@ ydn.crm.ui.IMenuItemProvider.prototype.getMenuName = function() {};
 ydn.crm.ui.IMenuButtonProvider = function() {};
 
 
-/**
- * Get menu item configuration by target element, which is the reply button.
- * @param {ydn.crm.gmail.MessageHeaderWidget} widget
- */
-ydn.crm.ui.IMenuButtonProvider.prototype.configureButton = function(widget) {};
-
-
-/**
- * @return {string} menu name.
- */
-ydn.crm.ui.IMenuItemProvider.prototype.getIconName = function() {};
