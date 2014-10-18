@@ -42,11 +42,11 @@ ydn.crm.ui.IMenuItemProvider.prototype.configureMenuItem = function(widget) {};
 ydn.crm.ui.IMenuItemProvider.prototype.getMenuName = function() {};
 
 
-
 /**
- * Menu Item provider interface.
- * @interface
+ * @param {goog.events.Event} e Handle on menu item click
  */
-ydn.crm.ui.IMenuButtonProvider = function() {};
+ydn.crm.ui.IMenuItemProvider.prototype.onIMenuItem = function(e) {};
+
+
 
 
