@@ -43,9 +43,10 @@ ydn.crm.ui.IMenuItemProvider.prototype.getMenuName = function() {};
 
 
 /**
+ * @param {ydn.crm.gmail.MessageHeaderWidget} widget
  * @param {goog.events.Event} e Handle on menu item click
  */
-ydn.crm.ui.IMenuItemProvider.prototype.onIMenuItem = function(e) {};
+ydn.crm.ui.IMenuItemProvider.prototype.onIMenuItem = function(widget, e) {};
 
 
 
