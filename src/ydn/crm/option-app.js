@@ -220,13 +220,26 @@ ydn.crm.OptionPageApp.prototype.login = function(context) {
 
 
 /**
+ * Refresh the panel according to hash.
+ */
+ydn.crm.OptionPageApp.prototype.refreshPanelByHash = function() {
+  var hash = location.hash.replace('#', '') || 'home';
+  var idx = hash.indexOf('?');
+  if (idx > 0) {
+    this.showPanel_(hash.substr(0, idx), hash.substr(idx + 1));
+  } else {
+    this.showPanel_(hash);
+  }
+};
+
+
+/**
  * Show a particular section.
  * @param {string} name
+ * @param {string=} opt_query
  * @private
  */
-ydn.crm.OptionPageApp.prototype.showPanel_ = function(name) {
-  name = name || 'home';
-  name = name.trim().toLowerCase();
+ydn.crm.OptionPageApp.prototype.showPanel_ = function(name, opt_query) {
   var menu = document.getElementById('main-menu');
   var content = document.getElementById('app-content');
   var has_selected = false;
@@ -247,7 +260,7 @@ ydn.crm.OptionPageApp.prototype.showPanel_ = function(name) {
     var page_name = page.getAttribute('name');
     var selected = selected_index == i;
     if (selected) {
-      this.pages_[name].onPageShow();
+      this.pages_[name].onPageShow(opt_query);
     }
 
     menu.children[i].className = selected ? 'selected' : '';
@@ -274,7 +287,7 @@ ydn.crm.OptionPageApp.prototype.run = function() {
     if (ydn.crm.OptionPageApp.DEBUG) {
       window.console.log('popstate ' + location.hash);
     }
-    me.showPanel_(location.hash.replace('#', ''));
+    me.refreshPanelByHash();
   }, false);
 
   var link = document.getElementById('user-login');
@@ -299,11 +312,11 @@ ydn.crm.OptionPageApp.prototype.run = function() {
     if (this.process_user_page_setup_) {
       goog.Timer.callOnce(function() {
         this.processUserPageSetup();
-        this.showPanel_(location.hash.replace('#', ''));
+        this.refreshPanelByHash();
       }, 10, this);
     } else {
       goog.Timer.callOnce(function() {
-        this.showPanel_(location.hash.replace('#', ''));
+        this.refreshPanelByHash();
       }, 10, this);
     }
   }, this);

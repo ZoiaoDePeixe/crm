@@ -96,7 +96,7 @@ ydn.crm.inj.App = function() {
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.inj.App.DEBUG = true;
+ydn.crm.inj.App.DEBUG = false;
 
 
 /**

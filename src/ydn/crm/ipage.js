@@ -32,8 +32,9 @@ ydn.crm.IPage = function() {};
 
 /**
  * Event for showing the page.
+ * @param {string=} opt_query
  */
-ydn.crm.IPage.prototype.onPageShow = function() {};
+ydn.crm.IPage.prototype.onPageShow = function(opt_query) {};
 
 
 /**
