@@ -134,13 +134,14 @@ ydn.crm.inj.SugarCrmApp.prototype.onUserStatusChange = function(us) {
 ydn.crm.inj.SugarCrmApp.prototype.updateSugarPanels = function() {
   ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR_DOMAIN).addCallback(
       function(sugars) {
-        if (ydn.crm.ui.SugarListPanel.DEBUG) {
-          window.console.log(sugars);
-        }
         this.sidebar.updateSugarPanels(sugars);
         this.hud.updateSugarPanels(sugars);
         var sugar = this.sidebar.getSugarModelClone();
-        this.heading_injector_.setSugar(new ydn.crm.sugarcrm.model.Archiver(sugar));
+        if (ydn.crm.ui.SugarListPanel.DEBUG) {
+          window.console.log(sugars, sugar);
+        }
+        var archiver = sugar ? new ydn.crm.sugarcrm.model.Archiver(sugar) : null;
+        this.heading_injector_.setSugar(archiver);
       }, this);
 };
 
