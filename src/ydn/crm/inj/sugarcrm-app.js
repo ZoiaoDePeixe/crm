@@ -85,7 +85,7 @@ ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer, compose_obs
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.inj.SugarCrmApp.DEBUG = false;
+ydn.crm.inj.SugarCrmApp.DEBUG = true;
 
 
 /**
@@ -122,8 +122,7 @@ ydn.crm.inj.SugarCrmApp.prototype.onUserStatusChange = function(us) {
     // user should use browser bandage to login and refresh the page.
     this.sidebar.updateHeader();
     this.hud.updateHeader();
-    this.sidebar.updateSugarPanels([]);
-    this.hud.updateSugarPanels([]);
+    this.updateSugarPanels();
   }
 };
 
@@ -137,7 +136,7 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarPanels = function() {
         this.sidebar.updateSugarPanels(sugars);
         this.hud.updateSugarPanels(sugars);
         var sugar = this.sidebar.getSugarModelClone();
-        if (ydn.crm.ui.SugarListPanel.DEBUG) {
+        if (ydn.crm.inj.SugarCrmApp.DEBUG) {
           window.console.log(sugars, sugar);
         }
         var archiver = sugar ? new ydn.crm.sugarcrm.model.Archiver(sugar) : null;
