@@ -99,12 +99,6 @@ ydn.crm.base.THEME_DEFAULT = ydn.crm.base.Theme.DESKTOP;
 
 
 /**
- * @define {string} link/email tracking origin server.
- */
-ydn.crm.base.TRACKING_ORIGIN = 'https://imgsrv-dot-yathit-app.appspot.com';
-
-
-/**
  * @define {string} login origin server.
  */
 ydn.crm.base.LOGIN_ORIGIN = 'https://www.yathit.com'; // 'http://localhost:8080'; //
