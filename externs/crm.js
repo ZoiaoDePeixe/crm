@@ -148,6 +148,11 @@ YdnCrm.AccessRecord.prototype.UserAgent;
 YdnCrm.AccessRecord.prototype.Tracker;
 
 
+/**
+ * @type {string}
+ */
+YdnCrm.AccessRecord.prototype.AccessUserId;
+
 
 /**
  * @interface

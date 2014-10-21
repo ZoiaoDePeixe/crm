@@ -307,7 +307,7 @@ ydn.crm.shared.init = function() {
   if (goog.DEBUG) {
     title += ' (dev)';
     ydn.debug.log('ydn.crm', 'warning');
-    // ydn.debug.log('ydn.crm.ui', 'finer');
+    // ydn.debug.log('ydn.crm.tracking', 'finer');
     // ydn.debug.log('ydn.ds', 'fine');
     // ydn.debug.log('ydn.crm.app.EventPage', 'finest');
   }
