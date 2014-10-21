@@ -230,7 +230,7 @@ ydn.crm.sugarcrm.Widget.prototype.showStats = function(opt_val) {
     this.model.getChannel().send(ydn.crm.Ch.SReq.STATS).addCallback(function(arr) {
       var ul = stats.querySelector('ul');
       ul.innerHTML = '';
-      console.log(arr);
+      // console.log(arr);
       for (var i = 0; i < arr.length; i++) {
         var obj = arr[i];
         var li = document.createElement('li');

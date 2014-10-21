@@ -131,7 +131,8 @@ ydn.crm.shared.setupGoogleAnalytic = function(id) {
 ydn.crm.shared.gaSend = function(category, action, opt_label, opt_value) {
   /* if (ydn.crm.shared.cpaTracker_) {
     ydn.crm.shared.cpaTracker_.sendEvent(category, action, opt_label, opt_value);
-  } else */ if (goog.global['_gaq']) {
+  } else */
+  if (goog.global['_gaq']) {
     if (goog.global['_gaq'].length > 100) {
       return;
     }
@@ -268,6 +269,10 @@ ydn.crm.shared.initChromePlatformAnalytics_ = function() {
  * @see ydn.crm.shared.initChromePlatformAnalytics_ no use both
  */
 ydn.crm.shared.initGa_ = function() {
+  if (location.protocol != 'chrome-extension:') {
+    // we track only from chrome extension only.
+    return;
+  }
   var ua = ydn.crm.shared.getGaUa();
   if (!ua) {
     return;
