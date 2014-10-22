@@ -302,7 +302,7 @@ ydn.crm.ui.UserSetting.KEY_USER_SETTING = 'sugar-setting';
  * @enum {string}
  */
 ydn.crm.ui.UserSetting.Key = {
-  SUGAR: 'sugar',
+  CRM_IN_INBOX: 'crmininbox',
   TRACKING: 'tracking' // tracking setting
 };
 
@@ -317,23 +317,32 @@ ydn.crm.ui.UserSetting.USER_SETTING_DEFAULT = {};
 /**
  * Get user setting from memory. User setting is loaded to memory when
  * this object is ready.
- * @param {!Array.<string|ydn.crm.ui.UserSetting.Key>} key_path
+ * @param {string|ydn.crm.ui.UserSetting.Key} key
+ * @param {...string} var_args
  * @return {*}
+ * @see #getSugarCrmSetting
  */
-ydn.crm.ui.UserSetting.prototype.getSetting = function(key_path) {
+ydn.crm.ui.UserSetting.prototype.getSetting = function(key, var_args) {
   var obj = this.user_setting || ydn.crm.ui.UserSetting.USER_SETTING_DEFAULT;
-  return goog.object.getValueByKeys(obj, key_path);
+  return goog.object.getValueByKeys(obj, goog.array.clone(arguments));
 };
 
 
 /**
  * Get user setting to memory and persist to persistent storage.
- * @param {!Array.<string|ydn.crm.ui.UserSetting.Key>} key_path
- * @param {*} val
+ * @param {*} val value to store
+ * @param {string|ydn.crm.ui.UserSetting.Key} key
+ * @param {...string} var_args keys
  */
-ydn.crm.ui.UserSetting.prototype.setSetting = function(key_path, val) {
+ydn.crm.ui.UserSetting.prototype.setSetting = function(val, key, var_args) {
   this.user_setting = this.user_setting || ydn.crm.ui.UserSetting.USER_SETTING_DEFAULT;
-  ydn.db.utils.setValueByKeys(this.user_setting, key_path.join('.'), val);
+  var key_path = key;
+  for (var i = 2; i < arguments.length; i++) {
+    if (arguments[i]) {
+      key_path += '.' + arguments[i];
+    }
+  }
+  ydn.db.utils.setValueByKeys(this.user_setting, key_path, val);
 
   var store = {};
   store[ydn.crm.base.SyncKey.USER_SETTING] = this.user_setting;
@@ -397,6 +406,7 @@ ydn.crm.ui.UserSetting.SugarCrmSettingUnitKey = {
 
 /**
  * @return {!CrmApp.SugarCrmSetting}
+ * @see #getSetting
  */
 ydn.crm.ui.UserSetting.prototype.getSugarCrmSetting = function() {
   if (!this.sugar_settings_) {
