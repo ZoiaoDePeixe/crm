@@ -317,7 +317,7 @@ ydn.crm.ui.UserSetting.USER_SETTING_DEFAULT = {};
 /**
  * Get user setting from memory. User setting is loaded to memory when
  * this object is ready.
- * @param {string|ydn.crm.ui.UserSetting.Key} key
+ * @param {ydn.crm.ui.UserSetting.Key} key
  * @param {...string} var_args
  * @return {*}
  * @see #getSugarCrmSetting
@@ -331,7 +331,7 @@ ydn.crm.ui.UserSetting.prototype.getSetting = function(key, var_args) {
 /**
  * Get user setting to memory and persist to persistent storage.
  * @param {*} val value to store
- * @param {string|ydn.crm.ui.UserSetting.Key} key
+ * @param {ydn.crm.ui.UserSetting.Key} key
  * @param {...string} var_args keys
  */
 ydn.crm.ui.UserSetting.prototype.setSetting = function(val, key, var_args) {

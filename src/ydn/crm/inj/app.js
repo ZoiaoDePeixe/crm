@@ -34,10 +34,11 @@ goog.require('ydn.crm.gmail.GmailObserver');
 goog.require('ydn.crm.gmail.MessageHeaderWidget');
 goog.require('ydn.crm.inj');
 goog.require('ydn.crm.inj.SugarCrmApp');
+goog.require('ydn.crm.inj.TrackingApp');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
-goog.require('ydn.crm.tracking.Tracker');
 goog.require('ydn.crm.tracking.TrackResult');
+goog.require('ydn.crm.tracking.Tracker');
 goog.require('ydn.debug');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
@@ -77,16 +78,16 @@ ydn.crm.inj.App = function() {
   this.header_injector_ = new ydn.crm.gmail.MessageHeaderInjector(this.gmail_observer);
 
   /**
-   * @type {ydn.crm.tracking.Tracker}
-   * @private
-   */
-  this.tracker_ = null;
-
-  /**
    * @protected
    * @type {ydn.crm.inj.SugarCrmApp}
    */
   this.sugar_app = null;
+
+  /**
+   * @protected
+   * @type {ydn.crm.inj.TrackingApp}
+   */
+  this.tracking_app = null;
 
   goog.events.listen(this.gmail_observer, ydn.crm.gmail.GmailObserver.EventType.MESSAGE_HEADER,
       this.onMessageHeaderAppear_, false, this);
@@ -156,19 +157,17 @@ ydn.crm.inj.App.prototype.resetUser_ = function() {
 
     if (us.hasValidLogin()) {
       this.gmail_observer.setEnabled(true);
-      var tracking = ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.TRACKING);
-      this.header_injector_.setTrackResult(new ydn.crm.tracking.TrackResult());
-
     } else {
       // we are not showing any UI if user is not login.
       // user should use browser bandage to login and refresh the page.
       goog.log.warning(this.logger, 'user not login');
       this.gmail_observer.setEnabled(false);
-      this.header_injector_.setTrackResult(null);
-      this.header_injector_.setSugar(null);
     }
     if (this.sugar_app) {
       this.sugar_app.onUserStatusChange(us);
+    }
+    if (this.tracking_app) {
+      this.tracking_app.onUserStatusChange(us);
     }
   }, function(e) {
     window.console.error(e);
@@ -188,10 +187,10 @@ ydn.crm.inj.App.prototype.init = function() {
     this.sugar_app.init();
   }
   if (ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.TRACKING)) {
-    this.tracker_ = new ydn.crm.tracking.Tracker();
-    this.tracker_.setObserver(this.compose_observer);
+    this.tracking_app = new ydn.crm.inj.TrackingApp(this.header_injector_,
+        this.gmail_observer, this.compose_observer);
+    this.tracking_app.init();
   }
-
 
   goog.events.listen(ydn.msg.getMain(),
       [ydn.crm.Ch.BReq.LIST_DOMAINS,

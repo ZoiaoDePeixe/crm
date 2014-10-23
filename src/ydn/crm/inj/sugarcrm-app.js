@@ -120,6 +120,7 @@ ydn.crm.inj.SugarCrmApp.prototype.onUserStatusChange = function(us) {
   } else {
     // we are not showing any UI if user is not login.
     // user should use browser bandage to login and refresh the page.
+    this.heading_injector_.setSugar(null);
     this.sidebar.updateHeader();
     this.hud.updateHeader();
     this.updateSugarPanels();
