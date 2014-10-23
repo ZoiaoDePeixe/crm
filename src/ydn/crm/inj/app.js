@@ -88,9 +88,6 @@ ydn.crm.inj.App = function() {
    * @type {ydn.crm.inj.TrackingApp}
    */
   this.tracking_app = null;
-
-  goog.events.listen(this.gmail_observer, ydn.crm.gmail.GmailObserver.EventType.MESSAGE_HEADER,
-      this.onMessageHeaderAppear_, false, this);
 };
 
 
@@ -105,17 +102,6 @@ ydn.crm.inj.App.DEBUG = false;
  * @type {goog.log.Logger}
  */
 ydn.crm.inj.App.prototype.logger = goog.log.getLogger('ydn.crm.inj.App');
-
-
-/**
- * @param {ydn.crm.gmail.GmailObserver.MessageHeaderAppearEvent} e
- * @private
- */
-ydn.crm.inj.App.prototype.onMessageHeaderAppear_ = function(e) {
-  if (ydn.crm.inj.App.DEBUG) {
-    window.console.log('Message header appear', e.reply_btn);
-  }
-};
 
 
 /**
