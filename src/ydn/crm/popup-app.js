@@ -48,7 +48,7 @@ ydn.crm.PopupPageApp = function() {
    */
   this.user_info = null;
 
-  var status_el = document.getElementById('status-bar-message');
+  var status_el = document.getElementById('sidebar-status');
   var status = new ydn.crm.msg.StatusBar(true);
   status.render(status_el);
   ydn.crm.msg.Manager.addConsumer(status);
