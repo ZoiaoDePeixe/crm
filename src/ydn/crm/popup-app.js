@@ -49,7 +49,7 @@ ydn.crm.PopupPageApp = function() {
   this.user_info = null;
 
   var status_el = document.getElementById('sidebar-status');
-  var status = new ydn.crm.msg.StatusBar(true);
+  var status = new ydn.crm.msg.StatusBar(false);
   status.render(status_el);
   ydn.crm.msg.Manager.addConsumer(status);
 
@@ -139,10 +139,35 @@ ydn.crm.PopupPageApp.prototype.processUserPageSetup = function() {
 
 
 /**
+ * Initialize for GData access token.
+ * @private
+ */
+ydn.crm.PopupPageApp.prototype.initGDataToken_ = function() {
+  var option_page = window.location.href.replace(/#.*/, '')
+      .replace('popup.html', 'option-page.html');
+  ydn.msg.getChannel().send('gdata-token', location.href).addCallback(function(data) {
+    var token = /** @type {YdnApiToken} */ (data);
+    if (!token || !token.has_token) {
+      this.renderFeed([
+        {
+          tagName: 'A',
+          textContent: 'Setup Google account',
+          target: 'option-page',
+          href: option_page + '#credentials'
+        }
+      ], true);
+    }
+  }, this);
+};
+
+
+/**
  * Initialize UI for SugarCRM.
  * @private
  */
 ydn.crm.PopupPageApp.prototype.initSugarCrm_ = function() {
+
+  this.initGDataToken_(); // SugarCRM require GData token.
 
   ydn.crm.sugarcrm.model.Sugar.list().addCallback(function(models) {
     for (var i = 0; i < models.length; i++) {
@@ -170,6 +195,58 @@ ydn.crm.PopupPageApp.prototype.initSugarCrm_ = function() {
     }
   }, this);
 
+};
+
+
+/**
+ * Update request permission request link.
+ * @param {string} domain origin domain name to check.
+ * @param {string} label button label.
+ * @param {Array.<string>} origins list of permitted origin.
+ * @private
+ */
+ydn.crm.PopupPageApp.prototype.updateOriginRequestLink_ = function(domain, label, origins) {
+  var ok = false;
+  for (var i = 0; i < origins.length; i++) {
+    var origin = origins[i];
+    if (origin.indexOf('/' + domain + '/') >= 0) {
+      ok = true;
+      break;
+    }
+  }
+  var ul = document.querySelector('ul.host-permission');
+  var a = ul.querySelector('a[data-domain="' + domain + '"]');
+  var li = a ? a.parentElement : null;
+  if (ok) {
+    if (li) {
+      goog.style.setElementShown(li, false);
+    }
+  } else {
+    if (li) {
+      goog.style.setElementShown(li, true);
+    } else {
+      li = document.createElement('li');
+      a = document.createElement('button');
+      a.textContent = label;
+      li.appendChild(a);
+      a.setAttribute('data-domain', domain);
+      ul.appendChild(li);
+    }
+  }
+};
+
+
+/**
+ * Initialize for Email Tracking UI.
+ * @private
+ */
+ydn.crm.PopupPageApp.prototype.initEmailTracking_ = function() {
+  var me = this;
+  chrome.permissions.getAll(function(permissions) {
+    var origins = /** @type {Array.<string>} */ (permissions['origins']) || [];
+    me.updateOriginRequestLink_('mail.google.com', 'Setup Gmail', origins);
+    me.updateOriginRequestLink_('*.mail.live.com', 'Setup Outlook.com', origins);
+  });
 };
 
 
@@ -213,29 +290,15 @@ ydn.crm.PopupPageApp.prototype.run = function() {
     var info = /** @type {YdnApiUser} */ (x);
     if (info.is_login) {
       ydn.crm.msg.Manager.setStatus(mid, info.email + ' logged in.');
-      // check host premission requirement
-      // check gdata token
-      ydn.msg.getChannel().send('gdata-token', option_page + '#credentials').addCallback(function(data) {
-        var token = /** @type {YdnApiToken} */ (data);
-        if (!token || !token.has_token) {
-          this.renderFeed([
-            {
-              tagName: 'A',
-              textContent: 'Setup Google account',
-              target: 'option-page',
-              href: option_page + '#credentials'
-            }
-          ], true);
-        }
-      }, this);
+      // OK.
     } else {
       ydn.crm.msg.Manager.addStatus('Not logged in.');
       var arr = [
         {
           tagName: 'A',
-          textContent: 'Setup',
-          target: 'setup',
-          href: setup_page
+          textContent: 'Login',
+          target: '_blank',
+          href: info.login_url
         }
       ];
       this.renderFeed(arr, true);
