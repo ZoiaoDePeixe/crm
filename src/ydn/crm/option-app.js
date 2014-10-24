@@ -155,23 +155,22 @@ ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
   }
 
   for (var i = 0; i < pages.length; i++) {
-    var pn = pages[i];
-    var name = i == 0 ? 'home' : pn;
-    if (pn == 'tracking') {
+    var name = pages[i];
+    if (name == 'tracking') {
       var model = new ydn.crm.tracking.MsgModel();
       var page = new ydn.crm.tracking.Panel(model);
       this.addPage(name, page.toString(), page);
-    } else if (pn == 'about-sugarcrm') {
+    } else if (name == 'about-sugarcrm') {
       var about = new ydn.crm.AboutPage('about-template');
       this.addPage(name, about.toString(), about);
-    } else if (pn == 'about-tracking') {
+    } else if (name == 'about-tracking') {
       var about_tk = new ydn.crm.AboutPage('tracking-about-template');
       this.addPage(name, about_tk.toString(), about_tk);
-    } else if (pn == 'sugarcrm') {
+    } else if (name == 'sugarcrm') {
       var sugar = new ydn.crm.sugarcrm.Page();
       this.addPage(name, sugar.toString(), sugar);
     } else {
-      window.console.error('Invalid page name: ' + pn);
+      window.console.error('Invalid page name: ' + name);
     }
   }
 
@@ -244,11 +243,16 @@ ydn.crm.OptionPageApp.prototype.showPanel_ = function(name, opt_query) {
   var content = document.getElementById('app-content');
   var has_selected = false;
   var selected_index = -1;
-  for (var i = content.childElementCount - 1; i >= 0; i--) {
-    var page_name = content.children[i].getAttribute('name');
-    if (page_name == name) {
-      selected_index = i;
-      break;
+  if (name == 'home') {
+    selected_index = 0;
+    name = content.children[0].getAttribute('name');
+  } else {
+    for (var i = content.childElementCount - 1; i >= 0; i--) {
+      var page_name = content.children[i].getAttribute('name');
+      if (page_name == name) {
+        selected_index = i;
+        break;
+      }
     }
   }
   if (selected_index == -1) {
