@@ -21,7 +21,7 @@
  */
 
 
-goog.provide('ydn.crm.AboutPage');
+goog.provide('ydn.crm.TrackingSetupPage');
 goog.require('ydn.crm.IPage');
 
 
@@ -32,7 +32,7 @@ goog.require('ydn.crm.IPage');
  * @implements {ydn.crm.IPage}
  * @struct
  */
-ydn.crm.AboutPage = function() {
+ydn.crm.TrackingSetupPage = function() {
   /**
    * @type {Element}
    * @private
@@ -42,13 +42,46 @@ ydn.crm.AboutPage = function() {
 
 
 /**
+ * @typedef {{
+ *   label: string,
+ *   domain: string
+ * }}
+ */
+ydn.crm.TrackingSetupPage.TargetEmailProviderInfo;
+
+
+/**
+ * @type {Array.<ydn.crm.TrackingSetupPage.TargetEmailProviderInfo>}
+ */
+ydn.crm.TrackingSetupPage.providers = [{
+  label: 'Google Email (Gmail)',
+  domain: 'mail.google.com'
+}, {
+  label: 'Microsoft Email (Outlook.com)',
+  domain: 'mail.live.com'
+}];
+
+
+/**
  * @override
  */
-ydn.crm.AboutPage.prototype.render = function(el) {
-  var temp = ydn.ui.getTemplateById(this.template_id_).content;
-  this.root_.appendChild(temp.cloneNode(true));
-  var version = this.root_.querySelector('span[name=version]');
-  version.textContent = ydn.crm.version;
+ydn.crm.TrackingSetupPage.prototype.render = function(el) {
+  var ul = document.createElement('ul');
+  var gen = goog.ui.IdGenerator.getInstance();
+  for (var i = 0; i < ydn.crm.TrackingSetupPage.providers.length; i++) {
+    var provider = ydn.crm.TrackingSetupPage.providers[i];
+    var li = document.createElement('li');
+    var checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.id = gen.getNextUniqueId();
+    var label = document.createElement('label');
+    label.for = checkbox.id;
+    label.value = provider.label;
+    checkbox.setAttribute('data-domain', provider.domain);
+    li.appendChild(checkbox);
+    li.appendChild(label);
+    ul.appendChild(li);
+  }
   el.appendChild(this.root_);
 };
 
@@ -56,12 +89,12 @@ ydn.crm.AboutPage.prototype.render = function(el) {
 /**
  * @override
  */
-ydn.crm.AboutPage.prototype.onPageShow = function() {};
+ydn.crm.TrackingSetupPage.prototype.onPageShow = function() {};
 
 
 /**
  * @override
  */
-ydn.crm.AboutPage.prototype.toString = function() {
+ydn.crm.TrackingSetupPage.prototype.toString = function() {
   return 'Setup';
 };
