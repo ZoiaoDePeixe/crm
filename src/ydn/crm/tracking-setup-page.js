@@ -22,6 +22,7 @@
 
 
 goog.provide('ydn.crm.TrackingSetupPage');
+goog.require('goog.events.EventHandler');
 goog.require('ydn.crm.IPage');
 
 
@@ -38,6 +39,11 @@ ydn.crm.TrackingSetupPage = function() {
    * @private
    */
   this.root_ = document.createElement('div');
+  /**
+   * @protected
+   * @type {goog.events.EventHandler}
+   */
+  this.handler = new goog.events.EventHandler(this);
 };
 
 
@@ -58,8 +64,31 @@ ydn.crm.TrackingSetupPage.providers = [{
   domain: 'mail.google.com'
 }, {
   label: 'Microsoft Email (Outlook.com)',
-  domain: 'mail.live.com'
+  domain: '*.mail.live.com'
 }];
+
+
+/**
+ * @param {goog.events.BrowserEvent} e
+ * @private
+ */
+ydn.crm.TrackingSetupPage.prototype.onPermissionClick_ = function(e) {
+  if (e.target.tagName == 'INPUT') {
+    var input = e.target;
+    var domain = input.getAttribute('data-domain');
+    var permissions = {
+      'origins': ['http://' + domain + '/*', 'https://' + domain + '/*']
+    };
+    if (input.checked) {
+      chrome.permissions.remove(permissions);
+    } else {
+      e.preventDefault();
+      chrome.permissions.request(permissions, function(grant) {
+        input.checked = !!grant;
+      });
+    }
+  }
+};
 
 
 /**
@@ -67,29 +96,34 @@ ydn.crm.TrackingSetupPage.providers = [{
  */
 ydn.crm.TrackingSetupPage.prototype.render = function(el) {
   var ul = document.createElement('ul');
-  var gen = goog.ui.IdGenerator.getInstance();
+  // var gen = goog.ui.IdGenerator.getInstance();
   for (var i = 0; i < ydn.crm.TrackingSetupPage.providers.length; i++) {
     var provider = ydn.crm.TrackingSetupPage.providers[i];
     var li = document.createElement('li');
     var checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-    checkbox.id = gen.getNextUniqueId();
-    var label = document.createElement('label');
-    label.for = checkbox.id;
-    label.value = provider.label;
     checkbox.setAttribute('data-domain', provider.domain);
-    li.appendChild(checkbox);
+    var label = document.createElement('label');
+    label.appendChild(checkbox);
+    label.appendChild(document.createTextNode(provider.label));
     li.appendChild(label);
     ul.appendChild(li);
   }
+  this.root_.appendChild(ul);
   el.appendChild(this.root_);
+
+  this.handler.listen(ul, 'click', this.onPermissionClick_, true);
 };
 
 
 /**
  * @override
  */
-ydn.crm.TrackingSetupPage.prototype.onPageShow = function() {};
+ydn.crm.TrackingSetupPage.prototype.onPageShow = function() {
+  chrome.permissions.getAll(function(permissions) {
+
+  });
+};
 
 
 /**
