@@ -80,12 +80,12 @@ ydn.crm.TrackingSetupPage.prototype.onPermissionClick_ = function(e) {
       'origins': ['http://' + domain + '/*', 'https://' + domain + '/*']
     };
     if (input.checked) {
-      chrome.permissions.remove(permissions);
-    } else {
       e.preventDefault();
       chrome.permissions.request(permissions, function(grant) {
         input.checked = !!grant;
       });
+    } else {
+      chrome.permissions.remove(permissions);
     }
   }
 };
@@ -109,7 +109,17 @@ ydn.crm.TrackingSetupPage.prototype.render = function(el) {
     li.appendChild(label);
     ul.appendChild(li);
   }
-  this.root_.appendChild(ul);
+
+
+  var div = document.createElement('div');
+  var head = document.createElement('div');
+  var h3 = document.createElement('h3');
+  h3.textContent = 'Email provider to be tracked';
+  head.appendChild(h3);
+
+  div.appendChild(head);
+  div.appendChild(ul);
+  this.root_.appendChild(div);
   el.appendChild(this.root_);
 
   this.handler.listen(ul, 'click', this.onPermissionClick_, true);
@@ -117,12 +127,37 @@ ydn.crm.TrackingSetupPage.prototype.render = function(el) {
 
 
 /**
+ * @param {HTMLInputElement} input
+ * @private
+ */
+ydn.crm.TrackingSetupPage.prototype.updatePermission_ = function(input) {
+  var domain = input.getAttribute('data-domain');
+  var permissions = {
+    'origins': ['http://' + domain + '/*', 'https://' + domain + '/*']
+  };
+  chrome.permissions.contains(permissions, function(ok) {
+    input.checked = ok;
+  });
+};
+
+
+/**
+ * @private
+ */
+ydn.crm.TrackingSetupPage.prototype.updatePermissions_ = function() {
+  var inputs = this.root_.querySelectorAll('li input');
+  for (var i = 0; i < inputs.length; i++) {
+    var obj = /** @type {HTMLInputElement} */ (inputs[i]);
+    this.updatePermission_(obj);
+  }
+};
+
+
+/**
  * @override
  */
 ydn.crm.TrackingSetupPage.prototype.onPageShow = function() {
-  chrome.permissions.getAll(function(permissions) {
-
-  });
+  this.updatePermissions_();
 };
 
 
