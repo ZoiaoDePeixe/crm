@@ -296,6 +296,24 @@ ydn.crm.shared.initGa_ = function() {
 
 
 /**
+ * Load custom logging setting.
+ * @private
+ */
+ydn.crm.shared.loadCustomLogging_ = function() {
+  chrome.storage.local.get(ydn.crm.base.ChromeLocalKey.CUSTOM_LOGGING, function(json) {
+    json = json[ydn.crm.base.ChromeLocalKey.CUSTOM_LOGGING];
+    if (json) {
+      for (var scope in json) {
+        var level = json[scope];
+        window.console.info('logging ' + scope + ' enabled to ' + level);
+        ydn.debug.log(scope, level);
+      }
+    }
+  });
+};
+
+
+/**
  * Initialize shared data.
  * Initialization is only done once, but this method can be call multiple time,
  * just to ignore repeat call.
@@ -311,10 +329,13 @@ ydn.crm.shared.init = function() {
   var title = 'Yathit CRMinInbox ydn.crm.version ' + ydn.crm.version;
   if (goog.DEBUG) {
     title += ' (dev)';
-    ydn.debug.log('ydn.crm', 'fine');
+    ydn.debug.log('ydn.crm', 'warning');
     // ydn.debug.log('ydn.crm.tracking', 'finer');
     // ydn.debug.log('ydn.ds', 'fine');
     // ydn.debug.log('ydn.crm.app.EventPage', 'finest');
+  }
+  if (goog.log.ENABLED) {
+    ydn.crm.shared.loadCustomLogging_();
   }
   goog.global.console.info(title);
   goog.global.console.info('API documentation: http://crm.yathit.com/\n' +

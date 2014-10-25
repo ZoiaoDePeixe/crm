@@ -187,7 +187,10 @@ ydn.crm.base.ChromeSyncKeysNow = [ydn.crm.base.ChromeSyncKey.CONTEXT_PANEL_POSIT
  * @enum {string}
  */
 ydn.crm.base.ChromeLocalKey = {
-  TEST: 'test'
+  TEST: 'test',
+  /* Use in simple popup page */
+  POPUP_CONTENT: 'popup-content',
+  CUSTOM_LOGGING: 'custom-logging'
 };
 
 
