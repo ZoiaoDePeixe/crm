@@ -311,7 +311,7 @@ ydn.crm.shared.init = function() {
   var title = 'Yathit CRMinInbox ydn.crm.version ' + ydn.crm.version;
   if (goog.DEBUG) {
     title += ' (dev)';
-    ydn.debug.log('ydn.crm', 'warning');
+    ydn.debug.log('ydn.crm', 'fine');
     // ydn.debug.log('ydn.crm.tracking', 'finer');
     // ydn.debug.log('ydn.ds', 'fine');
     // ydn.debug.log('ydn.crm.app.EventPage', 'finest');
