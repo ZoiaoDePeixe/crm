@@ -244,8 +244,8 @@ ydn.crm.PopupPageApp.prototype.initEmailTracking_ = function() {
   var me = this;
   chrome.permissions.getAll(function(permissions) {
     var origins = /** @type {Array.<string>} */ (permissions['origins']) || [];
-    me.updateOriginRequestLink_('mail.google.com', 'Setup Gmail', origins);
-    me.updateOriginRequestLink_('*.mail.live.com', 'Setup Outlook.com', origins);
+    me.updateOriginRequestLink_('mail.google.com', 'Enable tracking in Gmail', origins);
+    me.updateOriginRequestLink_('*.mail.live.com', 'Enable tracking in Outlook.com', origins);
   });
 };
 
@@ -290,15 +290,22 @@ ydn.crm.PopupPageApp.prototype.run = function() {
     var info = /** @type {YdnApiUser} */ (x);
     if (info.is_login) {
       ydn.crm.msg.Manager.setStatus(mid, info.email + ' logged in.');
-      // OK.
+      var asn = ydn.crm.UserSetting.getAppShortName();
+      var is_tracker_app = asn == ydn.crm.base.AppShortName.EMAIL_TRACKER ||
+          asn == ydn.crm.base.AppShortName.EMAIL_TRACKER_GMAIL;
+      if (is_tracker_app) {
+        this.initEmailTracking_();
+      } else {
+        this.initSugarCrm_();
+      }
     } else {
       ydn.crm.msg.Manager.addStatus('Not logged in.');
       var arr = [
         {
           tagName: 'A',
-          textContent: 'Login',
-          target: '_blank',
-          href: info.login_url
+          textContent: 'Setup',
+          target: 'option-page',
+          href: option_page
         }
       ];
       this.renderFeed(arr, true);
