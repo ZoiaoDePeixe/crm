@@ -203,7 +203,7 @@ ydn.crm.shared.getFrontEndScriptName = function() {
   chrome.storage.local.get(key, function(data) {
     var track = data[key];
     var fn = base_path + fn_prefix + Version['release'] + '.js';
-    if (navigator.onLine && track == ydn.crm.base.Track.EDGE) {
+    if (window.navigator.onLine && track == ydn.crm.base.Track.EDGE) {
       fn = 'https://ydn-src-1.storage.googleapis.com/jsc/' + fn_prefix + 'edge.js';
     } else if (track == ydn.crm.base.Track.BETA && Version['beta']) {
       fn = base_path + fn_prefix + Version['beta'] + '.js';
