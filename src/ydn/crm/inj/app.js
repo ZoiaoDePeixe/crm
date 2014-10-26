@@ -27,7 +27,6 @@
 goog.provide('ydn.crm.inj.App');
 goog.require('goog.dom');
 goog.require('goog.style');
-goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.base');
 goog.require('ydn.crm.gmail.ContextSidebar');
 goog.require('ydn.crm.gmail.GmailObserver');

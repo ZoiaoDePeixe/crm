@@ -12,16 +12,22 @@ var user = ydn.crm.ui.UserSetting.getInstance();
 ydn.crm.shared.logger.info('activity panel test');
 
 ydn.crm.shared.init();
+ydn.ui.setTemplateDocument('/inj-template.html');
+
 var hud = new ydn.crm.inj.Hud();
 hud.render();
 
 user.onReady().addCallbacks(function() {
   document.getElementById('gmail-account').textContent = user.getLoginEmail();
   hud.updateHeader();
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR_DOMAIN).addCallback(function(sugars) {
-    console.log(sugars);
-        hud.updateSugarPanels(sugars);
-      }, this);
+  var panel = new goog.ui.Component();
+  hud.addPanel(panel);
+  var el = panel.getElement();
+  var div = document.createElement('div');
+  div.textContent = 'Panel content';
+  div.style.height = '200px';
+  div.style.backgroundColor = 'lightblue';
+  el.appendChild(div);
 }, function(e) {
   window.console.error(e);
 });
