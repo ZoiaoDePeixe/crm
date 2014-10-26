@@ -14,7 +14,7 @@
 
 
 /**
- * @fileoverview Email tracking app.
+ * @fileoverview Email tracking app run in content script.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
