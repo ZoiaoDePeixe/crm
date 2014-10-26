@@ -8,7 +8,7 @@ ydn.debug.log('ydn.crm', 'finer');
 ydn.debug.log('ydn.crm.inj.App', 'finest');
 // ydn.msg.Pipe.DEBUG = true;
 
-var app = ydn.crm.inj.App.runApp();
+var app = ydn.crm.inj.App.runInjApp();
 
 
 document.getElementById('go-email').onclick = function(e) {
@@ -26,7 +26,7 @@ document.getElementById('go-email').onclick = function(e) {
     document.body.appendChild(main);
     location.hash = 'inbox/2345675435';
   }
-}
+};
 
 
 
