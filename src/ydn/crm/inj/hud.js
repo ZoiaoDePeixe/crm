@@ -7,7 +7,6 @@
 goog.provide('ydn.crm.inj.Hud');
 goog.require('goog.ui.Popup');
 goog.require('templ.ydn.crm.inj');
-goog.require('ydn.crm.ui.SidebarPanel');
 
 
 
@@ -29,11 +28,6 @@ ydn.crm.inj.Hud = function() {
   this.root_el_ = div.firstElementChild;
   var a = this.root_el_.querySelector('a[name=option-page-url]');
   a.href = chrome.extension.getURL(ydn.crm.base.OPTION_PAGE);
-  /**
-   * @final
-   * @type {ydn.crm.ui.SidebarPanel}
-   */
-  this.panel = new ydn.crm.ui.SidebarPanel();
 
   var has_widget = ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.GDATA_CONTACT) ||
       ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.SUGARCRM);
@@ -75,12 +69,20 @@ ydn.crm.inj.Hud.prototype.render = function() {
   var btn = this.root_el_.querySelector('.hud-button');
   goog.events.listen(btn, 'click', this.onClick_, false, this);
 
-  var popup_content = popup.querySelector('.popup-content');
-  this.panel.render(popup_content);
   var logo = this.root_el_.querySelector('.logo-box');
   logo.appendChild(ydn.crm.ui.createSvgIcon('ydn-logo'));
   var arrow = this.root_el_.querySelector('.arrow-box');
   arrow.appendChild(ydn.crm.ui.createSvgIcon('arrow-drop-right'));
+};
+
+
+/**
+ * Add UI component.
+ * @param {goog.ui.Component} panel
+ */
+ydn.crm.inj.Hud.prototype.addPanel = function(panel) {
+  var popup_content = this.root_el_.querySelector('.popup-content');
+  panel.render(popup_content);
 };
 
 
@@ -94,14 +96,6 @@ ydn.crm.inj.Hud.prototype.updateHeader = function() {
   } else {
     this.root_el_.classList.remove(ydn.crm.inj.Hud.CSS_CLASS_INVALID);
   }
-  this.panel.updateHeader();
 };
 
-
-/**
- * @param {Array.<string>} sugars list of sugar domain.
- */
-ydn.crm.inj.Hud.prototype.updateSugarPanels = function(sugars) {
-  this.panel.updateSugarPanels(sugars);
-};
 
