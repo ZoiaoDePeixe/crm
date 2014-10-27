@@ -33,8 +33,8 @@ goog.require('ydn.crm.gmail.ContextSidebar');
 goog.require('ydn.crm.gmail.GmailObserver');
 goog.require('ydn.crm.gmail.MessageHeaderInjector');
 goog.require('ydn.crm.inj');
+goog.require('ydn.crm.inj.GmailContextContainer');
 goog.require('ydn.crm.inj.Hud');
-goog.require('ydn.crm.inj.InlineRenderer');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
 goog.require('ydn.crm.sugarcrm.model.Archiver');
@@ -50,10 +50,11 @@ goog.require('ydn.msg.Pipe');
  * @param {ydn.crm.gmail.MessageHeaderInjector} heading_injector
  * @param {ydn.crm.gmail.GmailObserver} gmail_observer
  * @param {ydn.crm.gmail.ComposeObserver} compose_observer
+ * @param {ydn.crm.inj.ContextContainer} renderer
  * @constructor
  * @struct
  */
-ydn.crm.inj.TrackingApp = function(heading_injector, gmail_observer, compose_observer) {
+ydn.crm.inj.TrackingApp = function(heading_injector, gmail_observer, compose_observer, renderer) {
 
   /**
    * @final
@@ -61,6 +62,18 @@ ydn.crm.inj.TrackingApp = function(heading_injector, gmail_observer, compose_obs
    * @private
    */
   this.heading_injector_ = heading_injector;
+
+  /**
+   * @final
+   * @type {ydn.crm.inj.ContextContainer}
+   * @private
+   */
+  this.context_container_ = renderer;
+  /**
+   * @type {ydn.crm.tracking.TrackResult}
+   * @private
+   */
+  this.track_result_ = null;
 
   /**
    * @type {ydn.crm.tracking.GmailTracker}
@@ -92,7 +105,8 @@ ydn.crm.inj.TrackingApp.prototype.init = function() {
  */
 ydn.crm.inj.TrackingApp.prototype.onUserStatusChange = function(us) {
   if (us.hasValidLogin()) {
-    this.heading_injector_.setTrackResult(new ydn.crm.tracking.TrackResult());
+    this.track_result_ = new ydn.crm.tracking.TrackResult(this.context_container_);
+    this.heading_injector_.setTrackResult(this.track_result_);
   } else {
     this.heading_injector_.setTrackResult(null);
   }

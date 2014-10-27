@@ -23,7 +23,7 @@
 
 goog.provide('ydn.crm.inj.WidgetRenderer');
 goog.require('goog.ui.Popup');
-goog.require('ydn.crm.inj.AppRenderer');
+goog.require('ydn.crm.inj.ContextContainer');
 
 
 
@@ -32,12 +32,12 @@ goog.require('ydn.crm.inj.AppRenderer');
  * @param {Element} ele
  * @constructor
  * @struct
- * @extends {ydn.crm.inj.AppRenderer}
+ * @extends {ydn.crm.inj.ContextContainer}
  */
 ydn.crm.inj.WidgetRenderer = function(ele) {
   goog.base(this, ele);
 };
-goog.inherits(ydn.crm.inj.WidgetRenderer, ydn.crm.inj.AppRenderer);
+goog.inherits(ydn.crm.inj.WidgetRenderer, ydn.crm.inj.ContextContainer);
 
 
 /**
@@ -80,7 +80,7 @@ ydn.crm.inj.WidgetRenderer.prototype.attach = function() {
  * @private
  */
 ydn.crm.inj.WidgetRenderer.prototype.attach_ = function() {
-  if (ydn.crm.inj.AppRenderer.DEBUG) {
+  if (ydn.crm.inj.ContextContainer.DEBUG) {
     window.console.log('Attaching panel');
   }
   var btn = document.createElement('div');
@@ -111,7 +111,7 @@ ydn.crm.inj.WidgetRenderer.prototype.attach_ = function() {
     panel_container_.insertBefore(this.ele_root, panel_container_.firstElementChild);
   } else {
     // failback anchor point
-    if (ydn.crm.inj.AppRenderer.DEBUG) {
+    if (ydn.crm.inj.ContextContainer.DEBUG) {
       window.console.log('tablist not found, attach in failback position');
     }
     this.logger.warning('tablist not found.'); // todo: this problem should send back to server
@@ -150,7 +150,7 @@ ydn.crm.inj.WidgetRenderer.prototype.togglePanel_ = function(e) {
     if (ele.getAttribute('role') == 'tablist') {
       break;
     }
-    var is_ydn_panel = ele.id == ydn.crm.inj.AppRenderer.ID_ROOT_ELE;
+    var is_ydn_panel = ele.id == ydn.crm.inj.ContextContainer.ID_ROOT_ELE;
     if (is_ydn_panel) {
       goog.style.setElementShown(ele, is_ydn);
 

@@ -23,7 +23,7 @@
 
 goog.provide('ydn.crm.inj.StickyRenderer');
 goog.require('goog.ui.Popup');
-goog.require('ydn.crm.inj.AppRenderer');
+goog.require('ydn.crm.inj.ContextContainer');
 goog.require('ydn.gmail.Utils');
 
 
@@ -33,7 +33,7 @@ goog.require('ydn.gmail.Utils');
  * @param {Element} ele
  * @constructor
  * @struct
- * @extends {ydn.crm.inj.AppRenderer}
+ * @extends {ydn.crm.inj.ContextContainer}
  */
 ydn.crm.inj.StickyRenderer = function(ele) {
   goog.base(this, ele);
@@ -63,7 +63,7 @@ ydn.crm.inj.StickyRenderer = function(ele) {
 
   this.sidebar_has_attached_ = false;
 };
-goog.inherits(ydn.crm.inj.StickyRenderer, ydn.crm.inj.AppRenderer);
+goog.inherits(ydn.crm.inj.StickyRenderer, ydn.crm.inj.ContextContainer);
 
 
 /**
@@ -134,7 +134,7 @@ ydn.crm.inj.StickyRenderer.prototype.updateUi_ = function(n) {
   }
   this.displayBtn.innerHTML = chars;
   var obj = {};
-  if (ydn.crm.inj.AppRenderer.DEBUG) {
+  if (ydn.crm.inj.ContextContainer.DEBUG) {
     window.console.log(n);
   }
   obj[ydn.crm.base.ChromeSyncKey.CONTEXT_PANEL_STICKY_BTN_STATE] = n;
@@ -218,7 +218,7 @@ ydn.crm.inj.StickyRenderer.prototype.attach = function() {
   }
   goog.style.setElementShown(this.ele_root, false);
 
-  this.ele_root.className = ydn.crm.inj.AppRenderer.CSS_CLASS_STICKY_RIGHT + ' ' + ydn.crm.inj.AppRenderer.CSS_CLASS;
+  this.ele_root.className = ydn.crm.inj.ContextContainer.CSS_CLASS_STICKY_RIGHT + ' ' + ydn.crm.inj.ContextContainer.CSS_CLASS;
   goog.style.setElementShown(this.ele_root, true);
   this.show();
 };
@@ -248,7 +248,7 @@ ydn.crm.inj.StickyRenderer.prototype.attachToGmailRightBar = function(contact_ta
       this.updateUi_(an == 2 ? 2 : 3);
     }
   } else if (!this.sidebar_has_attached_) {
-    if (ydn.crm.inj.AppRenderer.DEBUG) {
+    if (ydn.crm.inj.ContextContainer.DEBUG) {
       window.console.log('Attaching panel');
     }
     this.sidebar_has_attached_ = true;

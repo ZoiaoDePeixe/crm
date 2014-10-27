@@ -14,37 +14,37 @@
 
 
 /**
- * @fileoverview Sticky renderer render stick to right side.
+ * @fileoverview Container on gmail right bar.
  *
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
 
-goog.provide('ydn.crm.inj.InlineRenderer');
-goog.require('ydn.crm.inj.AppRenderer');
+goog.provide('ydn.crm.inj.GmailContextContainer');
+goog.require('ydn.crm.inj.ContextContainer');
 
 
 
 /**
- * Sticky renderer
+ * Container on gmail right bar.
  * @param {ydn.crm.gmail.GmailObserver} gmail_observer
  * @param {Element=} opt_ele
  * @constructor
  * @struct
- * @extends {ydn.crm.inj.AppRenderer}
+ * @extends {ydn.crm.inj.ContextContainer}
  */
-ydn.crm.inj.InlineRenderer = function(gmail_observer, opt_ele) {
+ydn.crm.inj.GmailContextContainer = function(gmail_observer, opt_ele) {
   goog.base(this, gmail_observer, opt_ele);
   this.sidebar_has_attached_ = false;
 };
-goog.inherits(ydn.crm.inj.InlineRenderer, ydn.crm.inj.AppRenderer);
+goog.inherits(ydn.crm.inj.GmailContextContainer, ydn.crm.inj.ContextContainer);
 
 
 /**
  * @inheritDoc
  */
-ydn.crm.inj.InlineRenderer.prototype.attach = function() {
+ydn.crm.inj.GmailContextContainer.prototype.attach = function() {
   // this will attach when showing gmail inbox thread.
 
 };
@@ -54,8 +54,8 @@ ydn.crm.inj.InlineRenderer.prototype.attach = function() {
  * Attach to Gmail right side bar.
  * @param {HTMLTableElement} contact_table right bar table
  */
-ydn.crm.inj.InlineRenderer.prototype.attachToGmailRightBar = function(contact_table) {
-  if (ydn.crm.inj.AppRenderer.DEBUG) {
+ydn.crm.inj.GmailContextContainer.prototype.attachToGmailRightBar = function(contact_table) {
+  if (ydn.crm.inj.ContextContainer.DEBUG) {
     window.console.log('attachToGmailRightBar panel',
         this.sidebar_has_attached_, contact_table);
   }

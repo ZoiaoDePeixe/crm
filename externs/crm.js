@@ -193,6 +193,12 @@ YdnCrm.TrackingData.prototype.opens;
 /**
  * @type {number}
  */
+YdnCrm.TrackingData.prototype.selfOpens;
+
+
+/**
+ * @type {number}
+ */
 YdnCrm.TrackingData.prototype.clicks;
 
 

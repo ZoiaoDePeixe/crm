@@ -77,6 +77,12 @@ ydn.crm.inj.App = function() {
   this.header_injector_ = new ydn.crm.gmail.MessageHeaderInjector(this.gmail_observer);
 
   /**
+   * @final
+   * @type {ydn.crm.inj.GmailContextContainer}
+   */
+  this.context_container = new ydn.crm.inj.GmailContextContainer(this.gmail_observer);
+
+  /**
    * @protected
    * @type {ydn.crm.inj.SugarCrmApp}
    */
@@ -168,12 +174,12 @@ ydn.crm.inj.App.prototype.init = function() {
 
   if (ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.SUGARCRM)) {
     this.sugar_app = new ydn.crm.inj.SugarCrmApp(this.header_injector_,
-        this.gmail_observer, this.compose_observer);
+        this.gmail_observer, this.compose_observer, this.context_container);
     this.sugar_app.init();
   }
   if (ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.TRACKING)) {
     this.tracking_app = new ydn.crm.inj.TrackingApp(this.header_injector_,
-        this.gmail_observer, this.compose_observer);
+        this.gmail_observer, this.compose_observer, this.context_container);
     this.tracking_app.init();
   }
 
@@ -210,7 +216,6 @@ ydn.crm.inj.App.runInjApp = function() {
   var app = new ydn.crm.inj.App();
 
   var tid2 = window.setTimeout(function() {
-    // after 15 sec, we will load anyways
     app.init();
   }, 500);
 
