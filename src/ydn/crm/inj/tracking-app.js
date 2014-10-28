@@ -39,6 +39,7 @@ goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
 goog.require('ydn.crm.sugarcrm.model.Archiver');
 goog.require('ydn.crm.tracking.GmailComposeTracker');
+goog.require('ydn.crm.tracking.GmailReplyTracker');
 goog.require('ydn.debug');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
@@ -51,10 +52,11 @@ goog.require('ydn.msg.Pipe');
  * @param {ydn.crm.gmail.GmailObserver} gmail_observer
  * @param {ydn.crm.gmail.ComposeObserver} compose_observer
  * @param {ydn.crm.inj.ContextContainer} renderer
+ * @param {ydn.cs.ReplyPanelManager} reply_panel_manager
  * @constructor
  * @struct
  */
-ydn.crm.inj.TrackingApp = function(heading_injector, gmail_observer, compose_observer, renderer) {
+ydn.crm.inj.TrackingApp = function(heading_injector, gmail_observer, compose_observer, renderer, reply_panel_manager) {
 
   /**
    * @final
@@ -69,6 +71,14 @@ ydn.crm.inj.TrackingApp = function(heading_injector, gmail_observer, compose_obs
    * @private
    */
   this.context_container_ = renderer;
+
+  /**
+   * @final
+   * @type {ydn.cs.ReplyPanelManager}
+   * @private
+   */
+  this.reply_panel_manager_ = reply_panel_manager;
+
   /**
    * @type {ydn.crm.tracking.TrackResult}
    * @private
@@ -81,6 +91,8 @@ ydn.crm.inj.TrackingApp = function(heading_injector, gmail_observer, compose_obs
    */
   this.tracker_ = new ydn.crm.tracking.GmailComposeTracker();
   this.tracker_.setGmailObserver(compose_observer);
+
+  this.reply_tracker_ = new ydn.crm.tracking.GmailReplyTracker();
 
 };
 
@@ -107,8 +119,10 @@ ydn.crm.inj.TrackingApp.prototype.onUserStatusChange = function(us) {
   if (us.hasValidLogin()) {
     this.track_result_ = new ydn.crm.tracking.TrackResult(this.context_container_);
     this.heading_injector_.setTrackResult(this.track_result_);
+    this.reply_panel_manager_.subscribeReplyPanelService(this.reply_tracker_);
   } else {
     this.heading_injector_.setTrackResult(null);
+    this.reply_panel_manager_.unsubscribeReplyPanelService(this.reply_tracker_);
   }
 };
 

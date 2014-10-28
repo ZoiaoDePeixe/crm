@@ -38,6 +38,7 @@ goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
 goog.require('ydn.crm.tracking.TrackResult');
 goog.require('ydn.crm.tracking.Tracker');
+goog.require('ydn.cs.ReplyPanelManager');
 goog.require('ydn.debug');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
@@ -81,6 +82,12 @@ ydn.crm.inj.App = function() {
    * @type {ydn.crm.inj.GmailContextContainer}
    */
   this.context_container = new ydn.crm.inj.GmailContextContainer(this.gmail_observer);
+
+  /**
+   * @final
+   * @type {ydn.cs.ReplyPanelManager}
+   */
+  this.reply_panel_manager = new ydn.cs.ReplyPanelManager(this.gmail_observer);
 
   /**
    * @protected
@@ -179,7 +186,8 @@ ydn.crm.inj.App.prototype.init = function() {
   }
   if (ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.TRACKING)) {
     this.tracking_app = new ydn.crm.inj.TrackingApp(this.header_injector_,
-        this.gmail_observer, this.compose_observer, this.context_container);
+        this.gmail_observer, this.compose_observer, this.context_container,
+        this.reply_panel_manager);
     this.tracking_app.init();
   }
 
