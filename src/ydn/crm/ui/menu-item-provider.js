@@ -39,7 +39,7 @@ ydn.crm.ui.IMenuItemProvider.prototype.configureMenuItem = function(widget) {};
 /**
  * @return {string} menu name.
  */
-ydn.crm.ui.IMenuItemProvider.prototype.getMenuName = function() {};
+ydn.crm.ui.IMenuItemProvider.prototype.getName = function() {};
 
 
 /**

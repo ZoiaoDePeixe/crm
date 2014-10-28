@@ -38,7 +38,7 @@ goog.require('ydn.crm.inj.Hud');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
 goog.require('ydn.crm.sugarcrm.model.Archiver');
-goog.require('ydn.crm.tracking.GmailTracker');
+goog.require('ydn.crm.tracking.GmailComposeTracker');
 goog.require('ydn.debug');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
@@ -76,10 +76,10 @@ ydn.crm.inj.TrackingApp = function(heading_injector, gmail_observer, compose_obs
   this.track_result_ = null;
 
   /**
-   * @type {ydn.crm.tracking.GmailTracker}
+   * @type {ydn.crm.tracking.GmailComposeTracker}
    * @private
    */
-  this.tracker_ = new ydn.crm.tracking.GmailTracker();
+  this.tracker_ = new ydn.crm.tracking.GmailComposeTracker();
   this.tracker_.setGmailObserver(compose_observer);
 
 };
