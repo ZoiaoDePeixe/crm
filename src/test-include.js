@@ -6,7 +6,6 @@
 goog.require('goog.testing.MockClock');
 goog.require('ydn.crm.inj.App');
 goog.require('ydn.crm.sugarcrm.utils');
-goog.require('ydn.crm.ui.GmailCmdInjector');
 goog.require('ydn.crm.ui.SidebarPanel');
 goog.require('ydn.crm.ui.StatusBar');
 goog.require('ydn.crm.gmail.Template');

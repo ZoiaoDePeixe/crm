@@ -24,26 +24,22 @@ var perturb_data_tooltip = function() {
 };
 
 
-document.getElementById('go-inbox').onclick = function(e) {
+var sel_goto = document.getElementById('goto');
+sel_goto.onchange = function(e) {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'fixture/gmail-inbox.html', false);
+  var url = 'fixture/' + sel_goto.value + '.html';
+  console.log(url);
+  xhr.open('GET', url, false);
   xhr.onload = function() {
     mock_content.innerHTML = xhr.responseText;
-    location.hash = '';
-  };
-  xhr.send();
-};
-
-document.getElementById('go-thread').onclick = function(e) {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'fixture/gmail-thread-2.html', false);
-  xhr.onload = function() {
-    mock_content.innerHTML = xhr.responseText;
-    location.hash = 'inbox/2345675435';
+    if (sel_goto.value == 'gmail-inbox') {
+      location.hash = '';
+    } else {
+      location.hash = 'inbox/2345675435';
+    }
     perturb_data_tooltip();
   };
   xhr.send();
-
 };
 
 
