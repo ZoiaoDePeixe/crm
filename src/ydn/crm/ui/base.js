@@ -62,6 +62,13 @@ ydn.crm.ui.CSS_CLASS_TITLE = 'title';
  * @const
  * @type {string} icon with rounded border.
  */
+ydn.crm.ui.CSS_CLASS_SVG_BUTTON = 'svg-button';
+
+
+/**
+ * @const
+ * @type {string} icon with rounded border.
+ */
 ydn.crm.ui.CSS_CLASS_BADGE_ICON = 'badge-icon';
 
 
