@@ -36,7 +36,7 @@ goog.require('ydn.crm.inj.SugarCrmApp');
 goog.require('ydn.crm.inj.TrackingApp');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
-goog.require('ydn.crm.tracking.TrackResult');
+goog.require('ydn.crm.tracking.HeaderControl');
 goog.require('ydn.crm.tracking.Tracker');
 goog.require('ydn.cs.ReplyPanelManager');
 goog.require('ydn.debug');
