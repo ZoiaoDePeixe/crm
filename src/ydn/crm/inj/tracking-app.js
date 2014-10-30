@@ -80,7 +80,7 @@ ydn.crm.inj.TrackingApp = function(heading_injector, gmail_observer, compose_obs
   this.reply_panel_manager_ = reply_panel_manager;
 
   /**
-   * @type {ydn.crm.tracking.HeaderControl}
+   * @type {ydn.crm.tracking.ResultController}
    * @private
    */
   this.track_result_ = null;
@@ -116,7 +116,7 @@ ydn.crm.inj.TrackingApp.prototype.init = function() {
  */
 ydn.crm.inj.TrackingApp.prototype.onUserStatusChange = function(us) {
   if (us.hasValidLogin()) {
-    this.track_result_ = new ydn.crm.tracking.HeaderControl(this.context_container_);
+    this.track_result_ = new ydn.crm.tracking.ResultController(this.context_container_);
     this.heading_injector_.setTrackResult(this.track_result_);
     this.reply_panel_manager_.subscribeReplyPanelService(this.reply_tracker_);
   } else {
