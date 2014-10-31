@@ -185,31 +185,37 @@ YdnCrm.TrackingData.prototype.sentDate;
 
 
 /**
- * @type {number}
+ * @type {number} number of times email opens excluding self open.
  */
 YdnCrm.TrackingData.prototype.opens;
 
 
 /**
- * @type {number}
+ * @type {number} number of times email opens by self.
  */
 YdnCrm.TrackingData.prototype.selfOpens;
 
 
 /**
- * @type {number}
+ * @type {number} number of click to tracked links recorded.
  */
 YdnCrm.TrackingData.prototype.clicks;
 
 
 /**
- * @type {number}
+ * @type {number} number of tracked link in the message.
+ */
+YdnCrm.TrackingData.prototype.numLink;
+
+
+/**
+ * @type {number} time interval between open and sent.
  */
 YdnCrm.TrackingData.prototype.timeToOpen;
 
 
 /**
- * @type {string} cities at which email open.
+ * @type {string} comma separated names of cities at which email open.
  */
 YdnCrm.TrackingData.prototype.cities;
 
