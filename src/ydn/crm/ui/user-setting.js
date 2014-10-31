@@ -546,15 +546,6 @@ ydn.crm.ui.UserSetting.prototype.show = function() {
  * @return {boolean}
  */
 ydn.crm.ui.UserSetting.hasFeature = function(feature) {
-  var features = [];
-  var app_name = ydn.crm.UserSetting.getAppShortName();
-  if (feature == ydn.crm.base.Feature.TRACKING) {
-    return true;
-  } else if (feature == ydn.crm.base.Feature.SUGARCRM) {
-    return app_name == ydn.crm.base.AppShortName.SUGARCRM;
-  } else if (feature == ydn.crm.base.Feature.GDATA_CONTACT) {
-    return app_name == ydn.crm.base.AppShortName.SUGARCRM;
-  }
-  return false;
+  return ydn.crm.UserSetting.hasFeature(feature);
 };
 

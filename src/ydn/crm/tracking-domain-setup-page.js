@@ -15,13 +15,13 @@
 
 
 /**
- * @fileoverview Tracking setup page.
+ * @fileoverview Tracking domain setup page.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
 
-goog.provide('ydn.crm.TrackingSetupPage');
+goog.provide('ydn.crm.TrackingDomainSetupPage');
 goog.require('goog.events.EventHandler');
 goog.require('ydn.crm.IPage');
 
@@ -33,7 +33,7 @@ goog.require('ydn.crm.IPage');
  * @implements {ydn.crm.IPage}
  * @struct
  */
-ydn.crm.TrackingSetupPage = function() {
+ydn.crm.TrackingDomainSetupPage = function() {
   /**
    * @type {Element}
    * @private
@@ -53,13 +53,13 @@ ydn.crm.TrackingSetupPage = function() {
  *   domain: string
  * }}
  */
-ydn.crm.TrackingSetupPage.TargetEmailProviderInfo;
+ydn.crm.TrackingDomainSetupPage.TargetEmailProviderInfo;
 
 
 /**
- * @type {Array.<ydn.crm.TrackingSetupPage.TargetEmailProviderInfo>}
+ * @type {Array.<ydn.crm.TrackingDomainSetupPage.TargetEmailProviderInfo>}
  */
-ydn.crm.TrackingSetupPage.providers = [{
+ydn.crm.TrackingDomainSetupPage.providers = [{
   label: 'Google Email (Gmail)',
   domain: 'mail.google.com'
 }, {
@@ -72,7 +72,7 @@ ydn.crm.TrackingSetupPage.providers = [{
  * @param {goog.events.BrowserEvent} e
  * @private
  */
-ydn.crm.TrackingSetupPage.prototype.onPermissionClick_ = function(e) {
+ydn.crm.TrackingDomainSetupPage.prototype.onPermissionClick_ = function(e) {
   if (e.target.tagName == 'INPUT') {
     var input = e.target;
     var domain = input.getAttribute('data-domain');
@@ -94,11 +94,11 @@ ydn.crm.TrackingSetupPage.prototype.onPermissionClick_ = function(e) {
 /**
  * @override
  */
-ydn.crm.TrackingSetupPage.prototype.render = function(el) {
+ydn.crm.TrackingDomainSetupPage.prototype.render = function(el) {
   var ul = document.createElement('ul');
   // var gen = goog.ui.IdGenerator.getInstance();
-  for (var i = 0; i < ydn.crm.TrackingSetupPage.providers.length; i++) {
-    var provider = ydn.crm.TrackingSetupPage.providers[i];
+  for (var i = 0; i < ydn.crm.TrackingDomainSetupPage.providers.length; i++) {
+    var provider = ydn.crm.TrackingDomainSetupPage.providers[i];
     var li = document.createElement('li');
     var checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
@@ -130,7 +130,7 @@ ydn.crm.TrackingSetupPage.prototype.render = function(el) {
  * @param {HTMLInputElement} input
  * @private
  */
-ydn.crm.TrackingSetupPage.prototype.updatePermission_ = function(input) {
+ydn.crm.TrackingDomainSetupPage.prototype.updatePermission_ = function(input) {
   var domain = input.getAttribute('data-domain');
   var permissions = {
     'origins': ['http://' + domain + '/*', 'https://' + domain + '/*']
@@ -144,7 +144,7 @@ ydn.crm.TrackingSetupPage.prototype.updatePermission_ = function(input) {
 /**
  * @private
  */
-ydn.crm.TrackingSetupPage.prototype.updatePermissions_ = function() {
+ydn.crm.TrackingDomainSetupPage.prototype.updatePermissions_ = function() {
   var inputs = this.root_.querySelectorAll('li input');
   for (var i = 0; i < inputs.length; i++) {
     var obj = /** @type {HTMLInputElement} */ (inputs[i]);
@@ -156,7 +156,7 @@ ydn.crm.TrackingSetupPage.prototype.updatePermissions_ = function() {
 /**
  * @override
  */
-ydn.crm.TrackingSetupPage.prototype.onPageShow = function() {
+ydn.crm.TrackingDomainSetupPage.prototype.onPageShow = function() {
   this.updatePermissions_();
 };
 
@@ -164,6 +164,6 @@ ydn.crm.TrackingSetupPage.prototype.onPageShow = function() {
 /**
  * @override
  */
-ydn.crm.TrackingSetupPage.prototype.toString = function() {
+ydn.crm.TrackingDomainSetupPage.prototype.toString = function() {
   return 'Setup';
 };

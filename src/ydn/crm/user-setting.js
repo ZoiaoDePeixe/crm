@@ -255,4 +255,22 @@ ydn.crm.UserSetting.getAppShortName = function() {
 };
 
 
+/**
+ * @param {ydn.crm.base.Feature} feature
+ * @return {boolean}
+ */
+ydn.crm.UserSetting.hasFeature = function(feature) {
+  var features = [];
+  var app_name = ydn.crm.UserSetting.getAppShortName();
+  if (feature == ydn.crm.base.Feature.TRACKING) {
+    return true;
+  } else if (feature == ydn.crm.base.Feature.SUGARCRM) {
+    return app_name == ydn.crm.base.AppShortName.SUGARCRM;
+  } else if (feature == ydn.crm.base.Feature.GDATA_CONTACT) {
+    return app_name == ydn.crm.base.AppShortName.SUGARCRM;
+  }
+  return false;
+};
+
+
 
