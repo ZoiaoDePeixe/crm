@@ -22,6 +22,8 @@
 
 
 goog.provide('ydn.crm.TrackingSettingWidget');
+goog.require('goog.events.EventHandler');
+goog.require('ydn.crm.tracking.utils');
 
 
 
@@ -36,6 +38,12 @@ ydn.crm.TrackingSettingWidget = function() {
    * @private
    */
   this.root_ = null;
+
+  /**
+   * @protected
+   * @type {goog.events.EventHandler}
+   */
+  this.handler = new goog.events.EventHandler(this);
 };
 
 
@@ -51,6 +59,21 @@ ydn.crm.TrackingSettingWidget.TEMPLATE_ID = 'tracking-setting-template';
  * @param {Element} el
  */
 ydn.crm.TrackingSettingWidget.prototype.render = function(el) {
-  this.root_ = ydn.ui.getTemplateById(ydn.crm.TrackingSettingWidget.TEMPLATE_ID);
-  el.appendChild(this.root_);
+  var template = ydn.ui.getTemplateById(ydn.crm.TrackingSettingWidget.TEMPLATE_ID);
+  el.appendChild(template.content.cloneNode(true));
+  this.root_ = el.querySelector('section.tracking-setting');
+  var sel = this.root_.querySelector('.default-tracking-selection');
+  this.handler.listen(sel, 'click', this.onSelectionClick_);
+};
+
+
+/**
+ * @param {goog.events.BrowserEvent} e
+ * @private
+ */
+ydn.crm.TrackingSettingWidget.prototype.onSelectionClick_ = function(e) {
+  if (e.target.tagName == 'INPUT') {
+    var s = /** @type {ydn.crm.tracking.DefaultTracking} */ (e.target.value);
+    ydn.crm.tracking.utils.setUserDefaultTracking(s);
+  }
 };

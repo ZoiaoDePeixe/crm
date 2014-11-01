@@ -101,5 +101,5 @@ ydn.crm.sugarcrm.Page.prototype.onPageShow = function() {
  * @override
  */
 ydn.crm.sugarcrm.Page.prototype.toString = function() {
-  return 'Dashboard';
+  return 'Home';
 };
