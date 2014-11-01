@@ -15,30 +15,36 @@
 
 
 /**
- * @fileoverview Tracking setting widget.
+ * @fileoverview Tracking domain setup page.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
 
-goog.provide('ydn.crm.TrackingSettingWidget');
+goog.provide('ydn.crm.TrackingSetupPage');
 goog.require('goog.events.EventHandler');
-goog.require('ydn.crm.tracking.utils');
+goog.require('ydn.crm.IPage');
+goog.require('ydn.crm.tracking.SettingWidget');
 
 
 
 /**
- * Tracking setting widget.
+ * Tracking setup page.
  * @constructor
+ * @implements {ydn.crm.IPage}
  * @struct
  */
-ydn.crm.TrackingSettingWidget = function() {
+ydn.crm.TrackingSetupPage = function() {
   /**
    * @type {Element}
    * @private
    */
-  this.root_ = null;
-
+  this.root_ = document.createElement('div');
+  /**
+   * @protected
+   * @type {ydn.crm.tracking.SettingWidget}
+   */
+  this.setting_widget = new ydn.crm.tracking.SettingWidget();
   /**
    * @protected
    * @type {goog.events.EventHandler}
@@ -48,32 +54,25 @@ ydn.crm.TrackingSettingWidget = function() {
 
 
 /**
- * @const
- * @type {string}
+ * @override
  */
-ydn.crm.TrackingSettingWidget.TEMPLATE_ID = 'tracking-setting-template';
-
-
-/**
- * Render UI.
- * @param {Element} el
- */
-ydn.crm.TrackingSettingWidget.prototype.render = function(el) {
-  var template = ydn.ui.getTemplateById(ydn.crm.TrackingSettingWidget.TEMPLATE_ID);
-  el.appendChild(template.content.cloneNode(true));
-  this.root_ = el.querySelector('section.tracking-setting');
-  var sel = this.root_.querySelector('.default-tracking-selection');
-  this.handler.listen(sel, 'click', this.onSelectionClick_);
+ydn.crm.TrackingSetupPage.prototype.render = function(el) {
+  el.appendChild(this.root_);
+  this.setting_widget.render(this.root_);
 };
 
 
 /**
- * @param {goog.events.BrowserEvent} e
- * @private
+ * @override
  */
-ydn.crm.TrackingSettingWidget.prototype.onSelectionClick_ = function(e) {
-  if (e.target.tagName == 'INPUT') {
-    var s = /** @type {ydn.crm.tracking.DefaultTracking} */ (e.target.value);
-    ydn.crm.tracking.utils.setUserDefaultTracking(s);
-  }
+ydn.crm.TrackingSetupPage.prototype.onPageShow = function() {
+  this.setting_widget.refresh();
+};
+
+
+/**
+ * @override
+ */
+ydn.crm.TrackingSetupPage.prototype.toString = function() {
+  return 'Setup';
 };
