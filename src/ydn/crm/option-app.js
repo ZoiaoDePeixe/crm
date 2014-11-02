@@ -26,12 +26,12 @@
 
 goog.provide('ydn.crm.OptionPageApp');
 goog.require('ydn.crm.AboutPage');
-goog.require('ydn.crm.TrackingSetupPage');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.msg.StatusBar');
 goog.require('ydn.crm.sugarcrm.Page');
 goog.require('ydn.crm.tracking.MsgModel');
 goog.require('ydn.crm.tracking.Panel');
+goog.require('ydn.crm.tracking.SettingPage');
 goog.require('ydn.crm.ui.SugarListPanel');
 goog.require('ydn.msg.Pipe');
 
@@ -153,7 +153,7 @@ ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
   var is_tracker_app = asn == ydn.crm.base.AppShortName.EMAIL_TRACKER ||
       asn == ydn.crm.base.AppShortName.EMAIL_TRACKER_GMAIL;
   if (is_tracker_app) {
-    pages = ['tracking', 'tracking-setup', 'about-tracking'];
+    pages = ['tracking', 'tracking-setting', 'about-tracking'];
   }
 
   for (var i = 0; i < pages.length; i++) {
@@ -171,8 +171,8 @@ ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
     } else if (name == 'sugarcrm') {
       var sugar = new ydn.crm.sugarcrm.Page();
       this.addPage(name, sugar.toString(), sugar);
-    } else if (name == 'tracking-setup') {
-      var tracking_setup = new ydn.crm.TrackingSetupPage();
+    } else if (name == 'tracking-setting') {
+      var tracking_setup = new ydn.crm.tracking.SettingPage();
       this.addPage(name, tracking_setup.toString(), tracking_setup);
     } else {
       window.console.error('Invalid page name: ' + name);
@@ -248,12 +248,13 @@ ydn.crm.OptionPageApp.prototype.showPanel_ = function(name, opt_query) {
   var content = document.getElementById('app-content');
   var has_selected = false;
   var selected_index = -1;
+  name = name.toLowerCase();
   if (name == 'home') {
     selected_index = 0;
     name = content.children[0].getAttribute('name');
   } else {
     for (var i = content.childElementCount - 1; i >= 0; i--) {
-      var page_name = content.children[i].getAttribute('name');
+      var page_name = content.children[i].getAttribute('name').toLowerCase();
       if (page_name == name) {
         selected_index = i;
         break;
