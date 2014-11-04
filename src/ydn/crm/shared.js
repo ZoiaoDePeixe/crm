@@ -406,10 +406,6 @@ ydn.crm.shared.init = function() {
     if (!data) {
       return null;
     }
-    if (data['HttpRequestData'] &&
-        data['HttpRequestData']['path'] == 'https://mail.google.com/mail/feed/atom/bazinga') {
-      return null;
-    }
     /*
     var user = ydn.api.User.getInstance();
     if (user && user.isLogin()) {

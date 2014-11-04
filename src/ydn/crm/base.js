@@ -238,3 +238,9 @@ ydn.crm.base.Feature = {
   SUGARCRM: 'su'
 };
 
+
+/**
+ * @const
+ * @type {boolean}
+ */
+ydn.crm.base.USE_PAGE_ACTION_ONLY_FOR_HOST_PERMISSION = true;
