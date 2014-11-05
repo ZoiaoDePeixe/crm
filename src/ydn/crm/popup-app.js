@@ -290,7 +290,7 @@ ydn.crm.PopupPageApp.prototype.run = function() {
     var info = /** @type {YdnApiUser} */ (x);
     if (info.is_login) {
       ydn.crm.msg.Manager.setStatus(mid, info.email + ' logged in.');
-      var asn = ydn.crm.UserSetting.getAppShortName();
+      var asn = ydn.crm.AppSetting.getAppShortName();
       var is_tracker_app = asn == ydn.crm.base.AppShortName.EMAIL_TRACKER ||
           asn == ydn.crm.base.AppShortName.EMAIL_TRACKER_GMAIL;
       if (is_tracker_app) {

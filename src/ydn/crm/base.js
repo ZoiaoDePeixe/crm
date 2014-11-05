@@ -7,12 +7,6 @@ goog.require('goog.async.Deferred');
 
 
 /**
- * @define {boolean} running in raw mode.
- */
-ydn.crm.base.RAW = false;
-
-
-/**
  * @const
  * @type {string}
  */
@@ -238,9 +232,3 @@ ydn.crm.base.Feature = {
   SUGARCRM: 'su'
 };
 
-
-/**
- * @const
- * @type {boolean}
- */
-ydn.crm.base.USE_PAGE_ACTION_ONLY_FOR_HOST_PERMISSION = true;

@@ -65,7 +65,7 @@ ydn.crm.sugarcrm.Page.prototype.render = function(el) {
   this.root_.appendChild(temp.cloneNode(true));
   var gdata_ele = this.root_.querySelector('#gdata');
   this.gdata_widget.render(gdata_ele);
-  if (ydn.crm.UserSetting.hasFeature(ydn.crm.base.Feature.TRACKING)) {
+  if (ydn.crm.AppSetting.hasFeature(ydn.crm.base.Feature.TRACKING)) {
     var tracking = new ydn.crm.tracking.SettingWidget();
     tracking.render(gdata_ele.parentElement);
   }

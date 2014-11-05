@@ -546,6 +546,6 @@ ydn.crm.ui.UserSetting.prototype.show = function() {
  * @return {boolean}
  */
 ydn.crm.ui.UserSetting.hasFeature = function(feature) {
-  return ydn.crm.UserSetting.hasFeature(feature);
+  return ydn.crm.AppSetting.hasFeature(feature);
 };
 
