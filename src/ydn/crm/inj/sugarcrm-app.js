@@ -129,6 +129,7 @@ ydn.crm.inj.SugarCrmApp.prototype.init = function() {
   this.hud.addPanel(this.sidebar_panel);
 
   var us = ydn.crm.ui.UserSetting.getInstance();
+
   goog.events.listen(us,
       [ydn.crm.ui.UserSetting.EventType.LOGIN,
         ydn.crm.ui.UserSetting.EventType.LOGOUT],
@@ -137,6 +138,10 @@ ydn.crm.inj.SugarCrmApp.prototype.init = function() {
   goog.events.listen(ydn.msg.getMain(),
       [ydn.crm.Ch.BReq.LIST_DOMAINS],
       this.handleSugarDomainChanges, false, this);
+
+  if (ydn.crm.inj.SugarCrmApp.DEBUG) {
+    window.console.info('SugarCrmApp initialized.');
+  }
 };
 
 
@@ -146,6 +151,9 @@ ydn.crm.inj.SugarCrmApp.prototype.init = function() {
  * @protected
  */
 ydn.crm.inj.SugarCrmApp.prototype.onUserStatusChange = function(e) {
+  if (ydn.crm.inj.SugarCrmApp.DEBUG) {
+    window.console.log('updating for ' + e.type);
+  }
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   if (us.hasValidLogin()) {
     this.context_panel.updateHeader();
@@ -167,8 +175,14 @@ ydn.crm.inj.SugarCrmApp.prototype.onUserStatusChange = function(e) {
  * Update sugar panels.
  */
 ydn.crm.inj.SugarCrmApp.prototype.updateSugarPanels = function() {
+  if (ydn.crm.inj.SugarCrmApp.DEBUG) {
+    window.console.info('updating sugar panels');
+  }
   ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR_DOMAIN).addCallback(
       function(sugars) {
+        if (ydn.crm.inj.SugarCrmApp.DEBUG) {
+          window.console.log(sugars);
+        }
         this.sidebar_panel.updateSugarPanels(sugars);
         this.context_panel.updateSugarPanels(sugars).addCallback(function() {
           var sugar = this.context_panel.getSugarModelClone();

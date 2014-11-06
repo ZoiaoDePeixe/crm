@@ -5,8 +5,6 @@
 
 
 goog.provide('ydn.crm.inj.Hud');
-goog.require('goog.ui.Popup');
-goog.require('templ.ydn.crm.inj');
 
 
 

@@ -64,7 +64,6 @@ ydn.crm.Ch.Req = {
   GDATA_LIST_CONTACT: 'gdata-list-contact', // list by 'email' or 'externalid'
   GDATA_TOKEN: 'gdata-token', //
   GDATA_TOKEN_REVOKE: 'gdata-token-revoke',
-  HOST_PERMISSION: 'host-permission',
   LIST_SUGAR: 'list-sugarcrm', // list sugarcrm about
   LIST_SUGAR_DOMAIN: 'list-sugarcrm-domain', // list sugarcrm domain
   LOG: 'log', // log bug
@@ -76,6 +75,7 @@ ydn.crm.Ch.Req = {
   NUKE: 'nk', // clear db
   REMOVE_SUGAR: 'remove-sugar',
   REQUEST: 'request', // send request to database
+  REQUEST_HOST_PERMISSION: 'request-host-permission',
   SERVER_AUDIT_LOG: 'server-audit-log',
   SOCIAL_PROFILE: 'social-profile',
   SUGAR_SERVER_INFO: 'sugar-server-info',

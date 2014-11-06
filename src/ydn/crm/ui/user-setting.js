@@ -176,6 +176,9 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
             'Not login to Yathit server.' : 'Login to Yathit server failed.';
         goog.log.fine(this.logger, msg);
         ydn.crm.msg.Manager.addStatus(msg);
+        if (!!info && info.is_login) {
+          this.dispatchEvent(new goog.events.Event(ydn.crm.ui.UserSetting.EventType.LOGIN, this));
+        }
       }, function(e) {
         this.login_info = null;
         ydn.crm.msg.Manager.addStatus('login error.');

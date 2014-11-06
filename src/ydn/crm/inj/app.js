@@ -121,7 +121,7 @@ ydn.crm.inj.App.prototype.logger = goog.log.getLogger('ydn.crm.inj.App');
  * @private
  */
 ydn.crm.inj.App.prototype.handleUserLogin_ = function(e) {
-  this.resetUser_();
+  // this.resetUser_();
 };
 
 
@@ -132,7 +132,7 @@ ydn.crm.inj.App.prototype.handleUserLogin_ = function(e) {
 ydn.crm.inj.App.prototype.resetUser_ = function() {
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   us.onReady().addCallbacks(function() {
-    goog.log.finest(this.logger, 'initiating UI');
+    goog.log.finer(this.logger, 'setting up userinfo');
 
     if (us.hasValidLogin()) {
       this.gmail_observer.setEnabled(true);
