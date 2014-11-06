@@ -232,3 +232,19 @@ ydn.crm.base.Feature = {
   SUGARCRM: 'su'
 };
 
+
+/**
+ * Message token broadcast across documents.
+ * @enum {string}
+ */
+ydn.crm.base.BroadcastToken = {
+  /**
+   * @desc A window want to close itself, since it jobs has finished.
+   */
+  CLOSING: 'closing',
+  /**
+   * @desc Command to close window.
+   */
+  CLOSE: 'close'
+};
+

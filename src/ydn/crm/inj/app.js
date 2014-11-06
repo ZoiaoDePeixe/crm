@@ -117,30 +117,11 @@ ydn.crm.inj.App.prototype.logger = goog.log.getLogger('ydn.crm.inj.App');
 
 
 /**
- * @param {ydn.msg.Event} e
+ * @param {goog.events.Event} e
+ * @private
  */
-ydn.crm.inj.App.prototype.handleChannelMessage = function(e) {
-  if (ydn.crm.inj.App.DEBUG) {
-    window.console.log(e.type);
-  }
-  var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
-  if (e.type == ydn.crm.Ch.BReq.LIST_DOMAINS) {
-    if (this.sugar_app) {
-      this.sugar_app.updateSugarPanels();
-    }
-  } else if (e.type == ydn.crm.Ch.BReq.LOGGED_IN) {
-    if (!us.hasValidLogin()) {
-      us.invalidate();
-      if (this.sugar_app) {
-        this.sugar_app.onUserStatusChange(us);
-      }
-    }
-  } else if (e.type == ydn.crm.Ch.BReq.LOGGED_OUT) {
-    if (us.getLoginEmail()) {
-      us.invalidate();
-      this.resetUser_();
-    }
-  }
+ydn.crm.inj.App.prototype.handleUserLogin_ = function(e) {
+  this.resetUser_();
 };
 
 
@@ -161,12 +142,6 @@ ydn.crm.inj.App.prototype.resetUser_ = function() {
       goog.log.warning(this.logger, 'user not login');
       this.gmail_observer.setEnabled(false);
     }
-    if (this.sugar_app) {
-      this.sugar_app.onUserStatusChange(us);
-    }
-    if (this.tracking_app) {
-      this.tracking_app.onUserStatusChange(us);
-    }
   }, function(e) {
     window.console.error(e);
   }, this);
@@ -177,24 +152,27 @@ ydn.crm.inj.App.prototype.resetUser_ = function() {
  * Init UI.
  */
 ydn.crm.inj.App.prototype.init = function() {
-  goog.log.finer(this.logger, 'init ' + this);
+  goog.log.fine(this.logger, 'initializing ' + this);
 
   if (ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.SUGARCRM)) {
     this.sugar_app = new ydn.crm.inj.SugarCrmApp(this.header_injector_,
         this.gmail_observer, this.compose_observer, this.context_container);
+    goog.log.fine(this.logger, 'initializing sugarcrm app');
     this.sugar_app.init();
   }
   if (ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.TRACKING)) {
     this.tracking_app = new ydn.crm.inj.TrackingApp(this.header_injector_,
         this.gmail_observer, this.compose_observer, this.context_container,
         this.reply_panel_manager);
+    goog.log.fine(this.logger, 'initializing tracking app');
     this.tracking_app.init();
   }
 
-  goog.events.listen(ydn.msg.getMain(),
-      [ydn.crm.Ch.BReq.LIST_DOMAINS,
-        ydn.crm.Ch.BReq.LOGGED_OUT, ydn.crm.Ch.BReq.LOGGED_IN],
-      this.handleChannelMessage, false, this);
+  var us = ydn.crm.ui.UserSetting.getInstance();
+  goog.events.listen(us,
+      [ydn.crm.ui.UserSetting.EventType.LOGOUT,
+        ydn.crm.ui.UserSetting.EventType.LOGIN],
+      this.handleUserLogin_, false, this);
 
   var delay = (0.5 + Math.random()) * 60 * 1000;
   setTimeout(function() {

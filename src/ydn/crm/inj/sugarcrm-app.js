@@ -33,8 +33,8 @@ goog.require('ydn.crm.gmail.ContextSidebar');
 goog.require('ydn.crm.gmail.GmailObserver');
 goog.require('ydn.crm.gmail.MessageHeaderInjector');
 goog.require('ydn.crm.inj');
-goog.require('ydn.crm.inj.Hud');
 goog.require('ydn.crm.inj.GmailContextContainer');
+goog.require('ydn.crm.inj.Hud');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
 goog.require('ydn.crm.sugarcrm.model.Archiver');
@@ -110,19 +110,43 @@ ydn.crm.inj.SugarCrmApp.prototype.onGmailContextEvent_ = function(e) {
 
 
 /**
+ * @param {ydn.msg.Event} e
+ * @protected
+ */
+ydn.crm.inj.SugarCrmApp.prototype.handleSugarDomainChanges = function(e) {
+
+  if (e.type == ydn.crm.Ch.BReq.LIST_DOMAINS) {
+    this.updateSugarPanels();
+  }
+};
+
+
+/**
  * Initialize UI.
  */
 ydn.crm.inj.SugarCrmApp.prototype.init = function() {
   this.hud.render();
   this.hud.addPanel(this.sidebar_panel);
+
+  var us = ydn.crm.ui.UserSetting.getInstance();
+  goog.events.listen(us,
+      [ydn.crm.ui.UserSetting.EventType.LOGIN,
+        ydn.crm.ui.UserSetting.EventType.LOGOUT],
+      this.onUserStatusChange, false, this);
+
+  goog.events.listen(ydn.msg.getMain(),
+      [ydn.crm.Ch.BReq.LIST_DOMAINS],
+      this.handleSugarDomainChanges, false, this);
 };
 
 
 /**
  * Reset user setting
- * @param {ydn.crm.ui.UserSetting} us
+ * @param {goog.events.Event} e
+ * @protected
  */
-ydn.crm.inj.SugarCrmApp.prototype.onUserStatusChange = function(us) {
+ydn.crm.inj.SugarCrmApp.prototype.onUserStatusChange = function(e) {
+  var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   if (us.hasValidLogin()) {
     this.context_panel.updateHeader();
     this.hud.updateHeader();

@@ -106,15 +106,21 @@ ydn.crm.inj.TrackingApp.DEBUG = false;
  * Initialize UI.
  */
 ydn.crm.inj.TrackingApp.prototype.init = function() {
-
+  var us = ydn.crm.ui.UserSetting.getInstance();
+  goog.events.listen(us,
+      [ydn.crm.ui.UserSetting.EventType.LOGIN,
+        ydn.crm.ui.UserSetting.EventType.LOGOUT],
+      this.onUserStatusChange, false, this);
 };
 
 
 /**
  * Reset user setting
- * @param {ydn.crm.ui.UserSetting} us
+ * @param {goog.events.Event} e
+ * @protected
  */
-ydn.crm.inj.TrackingApp.prototype.onUserStatusChange = function(us) {
+ydn.crm.inj.TrackingApp.prototype.onUserStatusChange = function(e) {
+  var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   if (us.hasValidLogin()) {
     this.track_result_ = new ydn.crm.tracking.ResultController(this.context_container_);
     this.heading_injector_.setTrackResult(this.track_result_);

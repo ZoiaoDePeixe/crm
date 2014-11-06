@@ -15,6 +15,7 @@ goog.require('ydn.crm.Ch');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
 goog.require('ydn.gmail.Utils');
+goog.require('ydn.msg');
 goog.require('ydn.object');
 goog.require('ydn.ui.MessageBox');
 
@@ -23,8 +24,11 @@ goog.require('ydn.ui.MessageBox');
 /**
  * Front end user setting.
  * @constructor
+ * @extends {goog.events.EventTarget}
+ * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.ui.UserSetting = function() {
+  goog.base(this);
   /**
    * @type {?YdnApiUser}
    */
@@ -57,8 +61,37 @@ ydn.crm.ui.UserSetting = function() {
    * @private
    */
   this.login_id_md5_ = '';
+
+  goog.events.listen(ydn.msg.getMain(),
+      [ydn.crm.Ch.BReq.LOGGED_OUT, ydn.crm.Ch.BReq.LOGGED_IN],
+      this.handleLoginProcess_, false, this);
 };
+goog.inherits(ydn.crm.ui.UserSetting, goog.events.EventTarget);
 goog.addSingletonGetter(ydn.crm.ui.UserSetting);
+
+
+/**
+ * @enum {string} login/logout event.
+ */
+ydn.crm.ui.UserSetting.EventType = {
+  LOGIN: 'login',
+  LOGOUT: 'logout'
+};
+
+
+/**
+ * @param {ydn.msg.Event} e
+ * @private
+ */
+ydn.crm.ui.UserSetting.prototype.handleLoginProcess_ = function(e) {
+  var type = e.type == ydn.crm.Ch.BReq.LOGGED_IN ?
+      ydn.crm.ui.UserSetting.EventType.LOGIN : ydn.crm.ui.UserSetting.EventType.LOGOUT;
+  goog.log.finer(this.logger, 'receiving ' + e.type + ' event');
+  this.invalidate().addBoth(function() {
+    goog.log.fine(this.logger, 'dispatching ' + type + ' event');
+    this.dispatchEvent(new goog.events.Event(type, this));
+  }, this);
+};
 
 
 /**
@@ -69,7 +102,7 @@ ydn.crm.ui.UserSetting.DEBUG = false;
 
 /**
  * @protected
- * @type {goog.debug.Logger}
+ * @type {goog.log.Logger}
  */
 ydn.crm.ui.UserSetting.prototype.logger = goog.log.getLogger('ydn.crm.ui.UserSetting');
 
@@ -131,27 +164,22 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
 
     this.df_ = ydn.gmail.Utils.getUserEmail().addBoth(function(email) {
       this.gmail_ = email;
-      if (email) {
-        ydn.crm.msg.Manager.addStatus('Loading user setting for ' + email);
-      } else {
-        ydn.crm.msg.Manager.addStatus('User setting not available.');
-      }
+      var msg = email ? 'Loading user setting for ' + email : 'User setting not available.';
+      ydn.crm.msg.Manager.addStatus(msg);
+      goog.log.fine(this.logger, msg);
       return ydn.msg.getChannel().send(ydn.crm.Ch.Req.LOGIN_INFO, {
         'gmail': email
       }).addCallbacks(function(x) {
         var info = /** @type {YdnApiUser} */ (x);
         this.login_info = info;
-        if (!info) {
-          ydn.crm.msg.Manager.addStatus('Login to Yathit server failed.');
-        } else if (!info.is_login) {
-          ydn.crm.msg.Manager.addStatus('Not login to Yathit server.');
-        } else {
-          ydn.crm.msg.Manager.addStatus(info.email + ' login.');
-        }
+        msg = info ? info.is_login ? info.email + ' login.' :
+            'Not login to Yathit server.' : 'Login to Yathit server failed.';
+        goog.log.fine(this.logger, msg);
+        ydn.crm.msg.Manager.addStatus(msg);
       }, function(e) {
         this.login_info = null;
         ydn.crm.msg.Manager.addStatus('login error.');
-        this.logger.warning('login fail');
+        goog.log.warning(this.logger, 'login fail');
       }, this);
     }, this);
 
