@@ -117,7 +117,7 @@ ydn.crm.inj.SugarCrmApp.prototype.onGmailContextEvent_ = function(e) {
 ydn.crm.inj.SugarCrmApp.prototype.handleSugarDomainChanges = function(e) {
 
   if (e.type == ydn.crm.Ch.BReq.LIST_DOMAINS) {
-    this.updateSugarPanels();
+    this.updateSugarPanels_();
   }
 };
 
@@ -158,22 +158,23 @@ ydn.crm.inj.SugarCrmApp.prototype.onUserStatusChange = function(e) {
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   if (us.hasValidLogin()) {
     this.context_panel.updateHeader();
-    this.updateSugarPanels();
+    this.updateSugarPanels_();
   } else {
     // we are not showing any UI if user is not login.
     // user should use browser bandage to login and refresh the page.
     this.heading_injector_.setSugar(null);
     this.context_panel.updateHeader();
     this.sidebar_panel.updateHeader();
-    this.updateSugarPanels();
+    this.updateSugarPanels_();
   }
 };
 
 
 /**
  * Update sugar panels.
+ * @private
  */
-ydn.crm.inj.SugarCrmApp.prototype.updateSugarPanels = function() {
+ydn.crm.inj.SugarCrmApp.prototype.updateSugarPanels_ = function() {
   if (ydn.crm.inj.SugarCrmApp.DEBUG) {
     window.console.info('updating sugar panels');
   }
