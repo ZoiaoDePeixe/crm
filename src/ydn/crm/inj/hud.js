@@ -5,6 +5,10 @@
 
 
 goog.provide('ydn.crm.inj.Hud');
+goog.require('goog.events');
+goog.require('ydn.crm.msg.Manager');
+goog.require('ydn.crm.msg.StatusBar');
+goog.require('ydn.crm.ui.UserSetting');
 
 
 
@@ -24,14 +28,26 @@ ydn.crm.inj.Hud = function() {
    * @final
    */
   this.root_el_ = div.firstElementChild;
+  /**
+   * @protected
+   * @type {goog.events.EventHandler}
+   */
+  this.handler = new goog.events.EventHandler(this);
   var a = this.root_el_.querySelector('a[name=option-page-url]');
   a.href = chrome.extension.getURL(ydn.crm.base.OPTION_PAGE);
 
-  var has_widget = ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.GDATA_CONTACT) ||
-      ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.SUGARCRM);
+  var has_widget = ydn.crm.AppSetting.hasFeature(ydn.crm.base.Feature.GDATA_CONTACT) ||
+      ydn.crm.AppSetting.hasFeature(ydn.crm.base.Feature.SUGARCRM);
   goog.style.setElementShown(this.root_el_, has_widget);
 
 };
+
+
+/**
+ * @protected
+ * @type {goog.log.Logger}
+ */
+ydn.crm.inj.Hud.prototype.logger = goog.log.getLogger('ydn.crm.inj.Hud');
 
 
 /**
@@ -39,6 +55,20 @@ ydn.crm.inj.Hud = function() {
  * @type {string}
  */
 ydn.crm.inj.Hud.CSS_CLASS_INVALID = 'invalid';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ydn.crm.inj.Hud.CSS_CLASS_INVALID_LOGIN_PANEL = 'invalid-login-panel';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ydn.crm.inj.Hud.CSS_CLASS_SETUP = 'setup-panel';
 
 
 /**
@@ -71,6 +101,75 @@ ydn.crm.inj.Hud.prototype.render = function() {
   logo.appendChild(ydn.crm.ui.createSvgIcon('ydn-logo'));
   var arrow = this.root_el_.querySelector('.arrow-box');
   arrow.appendChild(ydn.crm.ui.createSvgIcon('arrow-drop-right'));
+
+  var dom = goog.dom.getDomHelper();
+  var root = this.root_el_;
+
+  var header = this.root_el_.querySelector('.popup-header');
+  var status_el = document.createElement('div');
+  var status = new ydn.crm.msg.StatusBar();
+  status.render(header);
+  ydn.crm.msg.Manager.addConsumer(status);
+
+  var link_panel = dom.createDom('div', ydn.crm.inj.Hud.CSS_CLASS_SETUP);
+  var a = dom.createElement('a');
+  a.textContent = 'Setup';
+  a.href = chrome.extension.getURL(ydn.crm.base.SETUP_PAGE) + '#modal';
+  a.className = 'maia-button blue';
+  a.setAttribute('data-window-height', '600');
+  a.setAttribute('data-window-width', '800');
+  link_panel.appendChild(a);
+  goog.style.setElementShown(link_panel, false);
+
+  var invalid_login = dom.createDom('div', ydn.crm.inj.Hud.CSS_CLASS_INVALID_LOGIN_PANEL);
+  goog.style.setElementShown(invalid_login, false);
+  header.appendChild(link_panel);
+  header.appendChild(invalid_login);
+
+
+  var a_grant = header.querySelector('div.' +
+      ydn.crm.inj.Hud.CSS_CLASS_SETUP + ' a');
+  this.handler.listen(a_grant, 'click', ydn.ui.openPageAsDialog, true);
+
+  var us = ydn.crm.ui.UserSetting.getInstance();
+
+  this.handler.listen(us,
+      [ydn.crm.ui.UserSetting.EventType.LOGOUT,
+        ydn.crm.ui.UserSetting.EventType.LOGIN],
+      this.handleUserLogin_);
+};
+
+
+/**
+ * @param {goog.events.Event} e
+ * @private
+ */
+ydn.crm.inj.Hud.prototype.handleUserLogin_ = function(e) {
+  var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
+  var header = this.root_el_.querySelector('.popup-header');
+
+  var setup = header.querySelector('.' + ydn.crm.inj.Hud.CSS_CLASS_SETUP);
+  var invalid_login_panel = header.querySelector('.' +
+      ydn.crm.inj.Hud.CSS_CLASS_INVALID_LOGIN_PANEL);
+
+  goog.log.fine(this.logger, 'handling user login');
+
+  if (us.isLogin()) {
+    goog.style.setElementShown(setup, false);
+    if (!us.hasValidLogin()) {
+      var data = {
+        ydn_login: us.getLoginEmail()
+      };
+      goog.soy.renderElement(invalid_login_panel, templ.ydn.crm.inj.wrongLogin, data);
+      goog.style.setElementShown(invalid_login_panel, true);
+    } else {
+      goog.style.setElementShown(invalid_login_panel, false);
+    }
+  } else {
+    goog.style.setElementShown(setup, true);
+    goog.style.setElementShown(invalid_login_panel, false);
+
+  }
 };
 
 
@@ -84,16 +183,5 @@ ydn.crm.inj.Hud.prototype.addPanel = function(panel) {
 };
 
 
-/**
- * Update header UI.
- */
-ydn.crm.inj.Hud.prototype.updateHeader = function() {
-  var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
-  if (us.isLogin() && !us.hasValidLogin()) {
-    this.root_el_.classList.add(ydn.crm.inj.Hud.CSS_CLASS_INVALID);
-  } else {
-    this.root_el_.classList.remove(ydn.crm.inj.Hud.CSS_CLASS_INVALID);
-  }
-};
 
 

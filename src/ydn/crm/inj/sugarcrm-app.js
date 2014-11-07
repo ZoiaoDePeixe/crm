@@ -52,11 +52,12 @@ goog.require('ydn.msg.Pipe');
  * @param {ydn.crm.gmail.GmailObserver} gmail_observer
  * @param {ydn.crm.gmail.ComposeObserver} compose_observer
  * @param {ydn.crm.inj.ContextContainer} renderer
+ * @param {ydn.crm.inj.Hud} hud
  * @constructor
  * @struct
  */
 ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer, compose_observer,
-                                   renderer) {
+                                   renderer, hud) {
 
   /**
    * @final
@@ -82,7 +83,7 @@ ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer, compose_obs
    * @final
    * @type {ydn.crm.inj.Hud}
    */
-  this.hud = new ydn.crm.inj.Hud();
+  this.hud = hud;
 
   this.handler = new goog.events.EventHandler(this);
   this.handler.listen(gmail_observer, ydn.crm.gmail.GmailObserver.EventType.CONTEXT_CHANGE,
@@ -125,7 +126,7 @@ ydn.crm.inj.SugarCrmApp.prototype.handleSugarDomainChanges = function(e) {
  * Initialize UI.
  */
 ydn.crm.inj.SugarCrmApp.prototype.init = function() {
-  this.hud.render();
+
   this.hud.addPanel(this.sidebar_panel);
 
   var us = ydn.crm.ui.UserSetting.getInstance();
@@ -157,14 +158,12 @@ ydn.crm.inj.SugarCrmApp.prototype.onUserStatusChange = function(e) {
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   if (us.hasValidLogin()) {
     this.context_panel.updateHeader();
-    this.hud.updateHeader();
     this.updateSugarPanels();
   } else {
     // we are not showing any UI if user is not login.
     // user should use browser bandage to login and refresh the page.
     this.heading_injector_.setSugar(null);
     this.context_panel.updateHeader();
-    this.hud.updateHeader();
     this.sidebar_panel.updateHeader();
     this.updateSugarPanels();
   }

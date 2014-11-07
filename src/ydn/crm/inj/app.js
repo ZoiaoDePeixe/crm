@@ -90,6 +90,12 @@ ydn.crm.inj.App = function() {
   this.reply_panel_manager = new ydn.cs.ReplyPanelManager(this.gmail_observer);
 
   /**
+   * @final
+   * @type {ydn.crm.inj.Hud}
+   */
+  this.hud = new ydn.crm.inj.Hud();
+
+  /**
    * @protected
    * @type {ydn.crm.inj.SugarCrmApp}
    */
@@ -100,6 +106,7 @@ ydn.crm.inj.App = function() {
    * @type {ydn.crm.inj.TrackingApp}
    */
   this.tracking_app = null;
+
 };
 
 
@@ -121,30 +128,17 @@ ydn.crm.inj.App.prototype.logger = goog.log.getLogger('ydn.crm.inj.App');
  * @private
  */
 ydn.crm.inj.App.prototype.handleUserLogin_ = function(e) {
-  // this.resetUser_();
-};
-
-
-/**
- * Reset user setting
- * @private
- */
-ydn.crm.inj.App.prototype.resetUser_ = function() {
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
-  us.onReady().addCallbacks(function() {
-    goog.log.finer(this.logger, 'setting up userinfo');
-
+  goog.log.fine(this.logger, 'handling user login');
+  if (us.isLogin()) {
     if (us.hasValidLogin()) {
       this.gmail_observer.setEnabled(true);
     } else {
-      // we are not showing any UI if user is not login.
-      // user should use browser bandage to login and refresh the page.
-      goog.log.warning(this.logger, 'user not login');
       this.gmail_observer.setEnabled(false);
     }
-  }, function(e) {
-    window.console.error(e);
-  }, this);
+  } else {
+    this.gmail_observer.setEnabled(false);
+  }
 };
 
 
@@ -154,9 +148,18 @@ ydn.crm.inj.App.prototype.resetUser_ = function() {
 ydn.crm.inj.App.prototype.init = function() {
   goog.log.fine(this.logger, 'initializing ' + this);
 
+  this.hud.render();
+  var us = ydn.crm.ui.UserSetting.getInstance();
+
+  goog.events.listen(us,
+      [ydn.crm.ui.UserSetting.EventType.LOGOUT,
+        ydn.crm.ui.UserSetting.EventType.LOGIN],
+      this.handleUserLogin_, false, this);
+
+
   if (ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.SUGARCRM)) {
     this.sugar_app = new ydn.crm.inj.SugarCrmApp(this.header_injector_,
-        this.gmail_observer, this.compose_observer, this.context_container);
+        this.gmail_observer, this.compose_observer, this.context_container, this.hud);
     goog.log.fine(this.logger, 'initializing sugarcrm app');
     this.sugar_app.init();
   }
@@ -168,18 +171,13 @@ ydn.crm.inj.App.prototype.init = function() {
     this.tracking_app.init();
   }
 
-  var us = ydn.crm.ui.UserSetting.getInstance();
-  goog.events.listen(us,
-      [ydn.crm.ui.UserSetting.EventType.LOGOUT,
-        ydn.crm.ui.UserSetting.EventType.LOGIN],
-      this.handleUserLogin_, false, this);
 
   var delay = (0.5 + Math.random()) * 60 * 1000;
   setTimeout(function() {
     ydn.debug.ILogger.instance.beginUploading();
   }, delay);
 
-  this.resetUser_();
+  us.onReady();
 
 };
 

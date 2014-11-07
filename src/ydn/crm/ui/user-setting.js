@@ -172,17 +172,29 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
       }).addCallbacks(function(x) {
         var info = /** @type {YdnApiUser} */ (x);
         this.login_info = info;
-        msg = info ? info.is_login ? info.email + ' login.' :
-            'Not login to Yathit server.' : 'Login to Yathit server failed.';
-        goog.log.fine(this.logger, msg);
-        ydn.crm.msg.Manager.addStatus(msg);
-        if (!!info && info.is_login) {
-          this.dispatchEvent(new goog.events.Event(ydn.crm.ui.UserSetting.EventType.LOGIN, this));
+        msg = 'Login attempt to Yathit server failed.';
+        if (info) {
+          if (info.is_login) {
+            msg = info.email + ' login.';
+            goog.log.fine(this.logger, msg);
+            ydn.crm.msg.Manager.addStatus(msg);
+            this.dispatchEvent(new goog.events.Event(ydn.crm.ui.UserSetting.EventType.LOGIN, this));
+          } else {
+            goog.log.fine(this.logger, 'Login required.');
+            var mid = ydn.crm.msg.Manager.addStatus('Login required.');
+            this.dispatchEvent(new goog.events.Event(ydn.crm.ui.UserSetting.EventType.LOGOUT, this));
+          }
+        } else {
+          goog.log.fine(this.logger, msg);
+          ydn.crm.msg.Manager.addStatus(msg);
+          this.dispatchEvent(new goog.events.Event(ydn.crm.ui.UserSetting.EventType.LOGOUT, this));
         }
+
       }, function(e) {
         this.login_info = null;
         ydn.crm.msg.Manager.addStatus('login error.');
         goog.log.warning(this.logger, 'login fail');
+        this.dispatchEvent(new goog.events.Event(ydn.crm.ui.UserSetting.EventType.LOGOUT, this));
       }, this);
     }, this);
 
