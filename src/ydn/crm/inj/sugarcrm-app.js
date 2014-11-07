@@ -115,10 +115,7 @@ ydn.crm.inj.SugarCrmApp.prototype.onGmailContextEvent_ = function(e) {
  * @protected
  */
 ydn.crm.inj.SugarCrmApp.prototype.handleSugarDomainChanges = function(e) {
-
-  if (e.type == ydn.crm.Ch.BReq.LIST_DOMAINS) {
-    this.updateSugarPanels_();
-  }
+  this.updateSugarPanels_();
 };
 
 
@@ -137,7 +134,7 @@ ydn.crm.inj.SugarCrmApp.prototype.init = function() {
       this.onUserStatusChange, false, this);
 
   goog.events.listen(ydn.msg.getMain(),
-      [ydn.crm.Ch.BReq.LIST_DOMAINS],
+      [ydn.crm.Ch.BReq.SUGARCRM],
       this.handleSugarDomainChanges, false, this);
 
   if (ydn.crm.inj.SugarCrmApp.DEBUG) {

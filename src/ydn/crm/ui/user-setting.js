@@ -162,7 +162,7 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
 
     this.loadSugarCrmSetting();
 
-    this.df_ = ydn.gmail.Utils.getUserEmail().addBoth(function(email) {
+    var df = ydn.gmail.Utils.getUserEmail().addBoth(function(email) {
       this.gmail_ = email;
       var msg = email ? 'Loading user setting for ' + email : 'User setting not available.';
       ydn.crm.msg.Manager.addStatus(msg);
@@ -196,8 +196,11 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
         goog.log.warning(this.logger, 'login fail');
         this.dispatchEvent(new goog.events.Event(ydn.crm.ui.UserSetting.EventType.LOGOUT, this));
       }, this);
+
     }, this);
 
+    this.df_ = new goog.async.Deferred();
+    df.chainDeferred(this.df_);
   }
   return this.df_;
 };

@@ -248,3 +248,11 @@ ydn.crm.base.BroadcastToken = {
   CLOSE: 'close'
 };
 
+
+/**
+ * @param {string} id yathit login id.
+ * @return {string} db name for user.
+ */
+ydn.crm.base.makeUserDbName = function(id) {
+  return 'setting-' + id;
+};

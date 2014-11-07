@@ -29,6 +29,7 @@ goog.require('ydn.crm.AboutPage');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.msg.StatusBar');
 goog.require('ydn.crm.sugarcrm.Page');
+goog.require('ydn.crm.tracking.LazyDbModel');
 goog.require('ydn.crm.tracking.MsgModel');
 goog.require('ydn.crm.tracking.Panel');
 goog.require('ydn.crm.tracking.SettingPage');
@@ -143,6 +144,27 @@ ydn.crm.OptionPageApp.prototype.updateUserInfo_ = function(user_info) {
 
 
 /**
+ * @define {boolean} model selection.
+ */
+ydn.crm.OptionPageApp.USE_MSG_MODEL = false;
+
+
+/**
+ * @protected
+ * @return {ydn.crm.tracking.Panel}
+ */
+ydn.crm.OptionPageApp.prototype.createTrackingPanel = function() {
+  var model;
+  if (ydn.crm.OptionPageApp.USE_MSG_MODEL) {
+    model = new ydn.crm.tracking.MsgModel();
+  } else {
+    model = new ydn.crm.tracking.LazyDbModel();
+  }
+  return new ydn.crm.tracking.Panel(model);
+};
+
+
+/**
  * Process after login.
  * @protected
  */
@@ -159,8 +181,7 @@ ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
   for (var i = 0; i < pages.length; i++) {
     var name = pages[i];
     if (name == 'tracking') {
-      var model = new ydn.crm.tracking.MsgModel();
-      var page = new ydn.crm.tracking.Panel(model);
+      var page = this.createTrackingPanel();
       this.addPage(name, page.toString(), page);
     } else if (name == 'about-sugarcrm') {
       var about = new ydn.crm.AboutPage('about-template');

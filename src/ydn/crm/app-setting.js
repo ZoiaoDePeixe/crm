@@ -130,7 +130,7 @@ ydn.crm.AppSetting.prototype.setup = function(id) {
     return;
   }
   goog.global.sessionStorage.setItem('last-user-id', id);
-  var db_name = 'setting-' + id;
+  var db_name = ydn.crm.base.makeUserDbName(id);
   var gdata_db_name = 'gdata-' + id;
   if (this.user_db_) {
     if (this.user_db_.getName() != db_name) {

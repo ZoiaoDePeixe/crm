@@ -323,6 +323,7 @@ ydn.crm.shared.setLogging = function(scope, level) {
     var log = json[ydn.crm.base.ChromeLocalKey.CUSTOM_LOGGING];
     if (!log) {
       log = {};
+      json[ydn.crm.base.ChromeLocalKey.CUSTOM_LOGGING] = log;
     }
     log[scope] = level;
     ydn.debug.log(scope, level);

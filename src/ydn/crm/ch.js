@@ -90,8 +90,9 @@ ydn.crm.Ch.Req = {
  * @enum {string}
  */
 ydn.crm.Ch.BReq = {
-  LIST_DOMAINS: 'list-sugarcrm-domains', // list of domain name of sugarcrm
+  // LIST_DOMAINS: 'list-sugarcrm-domains', // list of domain name of sugarcrm
   HOST_PERMISSION: 'host-permission',
+  SUGARCRM: 'sugarcrm', // changes in sugarcrm instance. login, logout
   LOGGED_OUT: 'logout',
   LOGGED_IN: 'login',
   NEW_TRACKING_POINT: 'new-tracing-point'
