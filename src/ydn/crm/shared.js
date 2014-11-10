@@ -333,6 +333,17 @@ ydn.crm.shared.setLogging = function(scope, level) {
 
 
 /**
+ * @protected use for debug.
+ */
+ydn.crm.shared.getLogging = function() {
+  chrome.storage.local.get(ydn.crm.base.ChromeLocalKey.CUSTOM_LOGGING, function(json) {
+    var log = json[ydn.crm.base.ChromeLocalKey.CUSTOM_LOGGING];
+    window.console.log(log);
+  });
+};
+
+
+/**
  * Initialize shared data.
  * Initialization is only done once, but this method can be call multiple time,
  * just to ignore repeat call.

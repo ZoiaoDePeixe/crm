@@ -95,7 +95,7 @@ ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer, compose_obs
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.inj.SugarCrmApp.DEBUG = false;
+ydn.crm.inj.SugarCrmApp.DEBUG = true;
 
 
 /**
@@ -173,7 +173,7 @@ ydn.crm.inj.SugarCrmApp.prototype.onUserStatusChange = function(e) {
  */
 ydn.crm.inj.SugarCrmApp.prototype.updateSugarPanels_ = function() {
   if (ydn.crm.inj.SugarCrmApp.DEBUG) {
-    window.console.info('updating sugar panels');
+    window.console.info('preparing to update sugar panels');
   }
   ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR_DOMAIN).addCallback(
       function(sugars) {
