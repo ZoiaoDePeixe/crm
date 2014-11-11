@@ -200,6 +200,7 @@ ydn.crm.inj.App.runInjApp = function() {
   var app = new ydn.crm.inj.App();
 
   var tid2 = window.setTimeout(function() {
+
     app.init();
   }, 500);
 

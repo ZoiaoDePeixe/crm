@@ -95,7 +95,7 @@ ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer, compose_obs
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.inj.SugarCrmApp.DEBUG = true;
+ydn.crm.inj.SugarCrmApp.DEBUG = false;
 
 
 /**
@@ -155,13 +155,14 @@ ydn.crm.inj.SugarCrmApp.prototype.onUserStatusChange = function(e) {
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   if (us.hasValidLogin()) {
     this.context_panel.updateHeader();
+    this.sidebar_panel.setVisible(true);
     this.updateSugarPanels_();
   } else {
     // we are not showing any UI if user is not login.
     // user should use browser bandage to login and refresh the page.
     this.heading_injector_.setSugar(null);
     this.context_panel.updateHeader();
-    this.sidebar_panel.updateHeader();
+    this.sidebar_panel.setVisible(false);
     this.updateSugarPanels_();
   }
 };
@@ -175,13 +176,31 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarPanels_ = function() {
   if (ydn.crm.inj.SugarCrmApp.DEBUG) {
     window.console.info('preparing to update sugar panels');
   }
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR_DOMAIN).addCallback(
-      function(sugars) {
+  ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR).addCallback(
+      function(arr) {
         if (ydn.crm.inj.SugarCrmApp.DEBUG) {
-          window.console.log(sugars);
+          window.console.log(arr);
         }
-        this.sidebar_panel.updateSugarPanels(sugars);
-        this.context_panel.updateSugarPanels(sugars).addCallback(function() {
+        var sugars = /** @type {Array<SugarCrm.About>} */ (arr);
+        var sugar;
+        for (var i = 0; i < sugars.length; i++) {
+          var obj = sugars[i];
+          if (obj.isLogin) {
+            sugar = obj;
+            break;
+          }
+        }
+        if (!sugar) {
+          if (ydn.crm.inj.SugarCrmApp.DEBUG) {
+            window.console.info('no sugarcrm instance');
+          }
+          this.sidebar_panel.setSugarCrm(null);
+          this.context_panel.updateSugarPanels([]);
+          return;
+        }
+        var domains = sugar ? [sugar.domain] : [];
+        this.sidebar_panel.setSugarCrm(sugar);
+        this.context_panel.updateSugarPanels([sugar.domain]).addCallback(function() {
           var sugar = this.context_panel.getSugarModelClone();
           if (ydn.crm.inj.SugarCrmApp.DEBUG) {
             window.console.log(sugars, sugar);

@@ -19,26 +19,16 @@ goog.require('ydn.crm.ui.UserSetting');
  */
 ydn.crm.inj.Hud = function() {
 
-  var temp = ydn.ui.getTemplateById('hub-template').content;
-  var div = document.createElement('div');
-  div.appendChild(temp.cloneNode(true));
   /**
    * @type {Element}
    * @private
-   * @final
    */
-  this.root_el_ = div.firstElementChild;
+  this.root_el_ = null;
   /**
    * @protected
    * @type {goog.events.EventHandler}
    */
   this.handler = new goog.events.EventHandler(this);
-  var a = this.root_el_.querySelector('a[name=option-page-url]');
-  a.href = chrome.extension.getURL(ydn.crm.base.OPTION_PAGE);
-
-  var has_widget = ydn.crm.AppSetting.hasFeature(ydn.crm.base.Feature.GDATA_CONTACT) ||
-      ydn.crm.AppSetting.hasFeature(ydn.crm.base.Feature.SUGARCRM);
-  goog.style.setElementShown(this.root_el_, has_widget);
 
 };
 
@@ -92,7 +82,22 @@ ydn.crm.inj.Hud.prototype.onClick_ = function(e) {
  * This will render side
  */
 ydn.crm.inj.Hud.prototype.render = function() {
+
+  var temp = ydn.ui.getTemplateById('hub-template').content;
+  var div = document.createElement('div');
+  div.appendChild(temp.cloneNode(true));
+
+  this.root_el_ = div.firstElementChild;
+
   document.body.appendChild(this.root_el_);
+
+  var a_option = this.root_el_.querySelector('a[name=option-page-url]');
+  a_option.href = chrome.extension.getURL(ydn.crm.base.OPTION_PAGE);
+
+  var has_widget = ydn.crm.AppSetting.hasFeature(ydn.crm.base.Feature.GDATA_CONTACT) ||
+      ydn.crm.AppSetting.hasFeature(ydn.crm.base.Feature.SUGARCRM);
+  goog.style.setElementShown(this.root_el_, has_widget);
+
   var popup = this.root_el_.querySelector('.hud-popup');
   var btn = this.root_el_.querySelector('.hud-button');
   goog.events.listen(btn, 'click', this.onClick_, false, this);
