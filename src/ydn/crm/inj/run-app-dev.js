@@ -9,10 +9,12 @@ location.hash = '';
 var app = ydn.crm.inj.App.runInjApp();
 var mock_content = document.getElementById('mock-content');
 ydn.debug.log('ydn.crm', 'finer');
-ydn.debug.log('ydn.crm.inj.App', 'finest');
+// ydn.debug.log('ydn.crm.inj.App', 'finest');
 ydn.debug.captureOnConsole(true);
 
 ydn.crm.gmail.GmailObserver.DEBUG =  true;
+ydn.crm.tracking.Tracker.DEBUG =  true;
+ydn.cs.ReplyPanelManager.DEBUG =  true;
 
 
 var perturb_data_tooltip = function() {
@@ -21,13 +23,21 @@ var perturb_data_tooltip = function() {
     var img = imgs[i];
     img.setAttribute('data-tooltip', 'Show details');
   }
+  imgs = document.querySelectorAll('div[data-tooltip="' + ydn.cs.gmail.ReplyPanelWrapper.MSG_TYPE_OF_RESPONSE + '"]');
+  for (var i = 0; i < imgs.length; i++) {
+    var img = imgs[i];
+    setTimeout(function() {
+      img.setAttribute('data-tooltip', ydn.cs.gmail.ReplyPanelWrapper.MSG_TYPE_OF_RESPONSE);
+    }, 100);
+    break;
+  }
 };
 
 
 var loadContent = function(url) {
   var xhr = new XMLHttpRequest();
   console.log(url);
-  xhr.open('GET', url, false);
+  xhr.open('GET', url, true);
   xhr.onload = function() {
     mock_content.innerHTML = xhr.responseText;
     if (sel_goto.value == 'gmail-inbox') {
