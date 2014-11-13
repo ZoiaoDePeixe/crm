@@ -24,10 +24,9 @@ goog.require('ydn.testing.ErrorLogger');
 
 
 /**
- * @type {goog.debug.Logger}
+ * @type {goog.log.Logger}
  */
-ydn.crm.shared.logger =
-    goog.log.getLogger('ydn.crm');
+ydn.crm.shared.logger = goog.log.getLogger('ydn.crm');
 
 
 /**
@@ -35,6 +34,7 @@ ydn.crm.shared.logger =
  */
 ydn.crm.shared.log = function() {
   ydn.debug.log('ydn.crm', 'finer');
+  ydn.debug.captureOnConsole(true);
 };
 
 
@@ -160,12 +160,8 @@ ydn.crm.shared.gaSend = function(category, action, opt_label, opt_value) {
       'detail': detail
     };
     var client = ydn.crm.shared.getLoginClient();
-    var resp = client.request(new ydn.client.HttpRequestData('/ga/', 'POST',
-        null, null, JSON.stringify(data)));
-
-    resp.execute(function(data) {
-      window.console.log(data);
-    });
+    client.request(new ydn.client.HttpRequestData('/ga/', 'POST',
+        null, null, JSON.stringify(data))).execute(null);
   } else if (goog.global['_gaq']) {
     if (goog.global['_gaq'].length > 100) {
       return;
