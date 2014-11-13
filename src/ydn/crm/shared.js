@@ -121,18 +121,52 @@ ydn.crm.shared.setupGoogleAnalytic = function(id) {
 
 
 /**
+ * @const
+ * @type {boolean}
+ */
+ydn.crm.shared.USE_SERVER_ANALYTICS = true;
+
+
+/**
  * Send event to Google Analytics.
  *
- * @param {string} category
- * @param {string} action 'image2'
- * @param {string=} opt_label 'image2'
- * @param {number=} opt_value 'image2'
+ * @param {string} category 'login'
+ * @param {string} action 'click'
+ * @param {string=} opt_label 'user-name'
+ * @param {(number|Object|string)=} opt_value 'image2'
  */
 ydn.crm.shared.gaSend = function(category, action, opt_label, opt_value) {
   /* if (ydn.crm.shared.cpaTracker_) {
     ydn.crm.shared.cpaTracker_.sendEvent(category, action, opt_label, opt_value);
   } else */
-  if (goog.global['_gaq']) {
+  var value = 0;
+  var detail = '';
+  if (opt_value) {
+    if (goog.isNumber(opt_value)) {
+      value = opt_value;
+    } else if (goog.isString(opt_value)) {
+      detail = opt_value;
+    } else {
+      detail = JSON.stringify(opt_value);
+    }
+  }
+  if (ydn.crm.shared.USE_SERVER_ANALYTICS) {
+    var data = {
+      'installId': ydn.crm.shared.install_id,
+      'category': category,
+      'action': action,
+      'label': opt_label || '',
+      'value': value,
+      'detail': detail
+    };
+    var client = ydn.crm.shared.getLoginClient();
+    var resp = client.request(new ydn.client.HttpRequestData('/ga/', 'POST',
+        null, null, JSON.stringify(data)));
+
+    resp.execute(function(data) {
+      window.console.log(data);
+    });
+  } else if (goog.global['_gaq']) {
     if (goog.global['_gaq'].length > 100) {
       return;
     }
