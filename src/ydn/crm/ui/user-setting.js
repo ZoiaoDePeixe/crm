@@ -214,7 +214,7 @@ ydn.crm.ui.UserSetting.prototype.invalidate = function() {
   this.login_info = null;
   this.user_setting = null;
   this.df_ = null;
-  // this.gmail_ = null; // cannot be change.
+  // this.gmail_ = null; // cannot be changed.
   return this.onReady();
 };
 
@@ -222,11 +222,10 @@ ydn.crm.ui.UserSetting.prototype.invalidate = function() {
 /**
  * Get login email address to Yathit server. Call this method only after login.
  * @return {string} gdata_account Google account id, i.e., email address. If call
- * before ready cause assertion error.
+ * before ready, return empty string.
  */
 ydn.crm.ui.UserSetting.prototype.getLoginEmail = function() {
-  goog.asserts.assert(this.login_info, 'UserSetting not ready');
-  return this.login_info.email;
+  return this.login_info ? this.login_info.email : '';
 };
 
 
