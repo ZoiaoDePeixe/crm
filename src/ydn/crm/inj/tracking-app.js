@@ -122,12 +122,11 @@ ydn.crm.inj.TrackingApp.prototype.init = function() {
 ydn.crm.inj.TrackingApp.prototype.onUserStatusChange = function(e) {
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   if (us.hasValidLogin()) {
-    this.track_result_ = new ydn.crm.tracking.ResultController(this.context_container_);
-    this.heading_injector_.setTrackResult(this.track_result_);
-    this.reply_panel_manager_.subscribeReplyPanelService(this.reply_tracker_);
-  } else {
-    this.heading_injector_.setTrackResult(null);
-    this.reply_panel_manager_.unsubscribeReplyPanelService(this.reply_tracker_);
+    if (!this.track_result_) {
+      this.track_result_ = new ydn.crm.tracking.ResultController(this.context_container_);
+      this.heading_injector_.setTrackResult(this.track_result_);
+      this.reply_panel_manager_.subscribeReplyPanelService(this.reply_tracker_);
+    }
   }
 };
 

@@ -128,6 +128,28 @@ ydn.crm.shared.USE_SERVER_ANALYTICS = true;
 
 
 /**
+ * Ad hoc for analytics query.
+ * <pre>
+ *   var xp = app.xp();
+ *   xp.qa({
+ *     'email': 'a@b.c',
+ *     'category': 'setup',
+ *     'list': 'email'        // list unique email
+ *   });
+ * </pre>
+ * @param {Object=} opt_params
+ */
+ydn.crm.shared.queryAnalytics = function(opt_params) {
+  var params = opt_params || {};
+  var client = ydn.crm.shared.getLoginClient();
+  var hd = new ydn.client.HttpRequestData('/ga/', 'GET', params);
+  client.request(hd).execute(function(data) {
+    window.console.log(data);
+  });
+};
+
+
+/**
  * Send event to Google Analytics.
  *
  * @param {string} category 'login'
@@ -159,9 +181,12 @@ ydn.crm.shared.gaSend = function(category, action, opt_label, opt_value) {
       'value': value,
       'detail': detail
     };
+    var headers = {
+      'content-type': 'application/json'
+    };
     var client = ydn.crm.shared.getLoginClient();
     client.request(new ydn.client.HttpRequestData('/ga/', 'POST',
-        null, null, JSON.stringify(data))).execute(null);
+        null, headers, JSON.stringify(data))).execute(null);
   } else if (goog.global['_gaq']) {
     if (goog.global['_gaq'].length > 100) {
       return;
@@ -384,7 +409,7 @@ ydn.crm.shared.init = function() {
   }
   ydn.crm.shared.init_ = true;
   // ydn.crm.shared.initChromePlatformAnalytics_();
-  ydn.crm.shared.initGa_();
+  // ydn.crm.shared.initGa_();
 
   var title = 'Yathit CRMinInbox ydn.crm.version ' + ydn.crm.version;
   if (goog.DEBUG) {

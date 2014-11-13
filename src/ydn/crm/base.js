@@ -256,3 +256,17 @@ ydn.crm.base.BroadcastToken = {
 ydn.crm.base.makeUserDbName = function(id) {
   return 'setting-' + id;
 };
+
+
+/**
+ * Type of analytics, we want to collect.
+ * @type {Object}
+ */
+ydn.crm.base.analytic = {
+  app: {
+    channelConnection: true
+  },
+  sugarcrm: {
+    databaseSyncUpdate: true
+  }
+};
