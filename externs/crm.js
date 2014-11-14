@@ -149,9 +149,16 @@ YdnCrm.AccessRecord.prototype.Tracker;
 
 
 /**
- * @type {string}
+ * @type {string|undefined}
  */
 YdnCrm.AccessRecord.prototype.AccessUserId;
+
+
+/**
+ * @type {string}
+ */
+YdnCrm.AccessRecord.prototype.User;
+
 
 
 /**
@@ -194,6 +201,12 @@ YdnCrm.TrackingData.prototype.opens;
  * @type {number} number of times email opens by self.
  */
 YdnCrm.TrackingData.prototype.selfOpens;
+
+
+/**
+ * @type {string} email opening state.
+ */
+YdnCrm.TrackingData.prototype.open;
 
 
 /**
