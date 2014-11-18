@@ -184,7 +184,8 @@ ydn.crm.base.ChromeLocalKey = {
   TEST: 'test',
   /* Use in simple popup page */
   POPUP_CONTENT: 'popup-content',
-  CUSTOM_LOGGING: 'custom-logging'
+  CUSTOM_LOGGING: 'custom-logging',
+  GCM_REG_ID: 'gcm-reg-id'
 };
 
 
@@ -270,3 +271,9 @@ ydn.crm.base.analytic = {
     databaseSyncUpdate: true
   }
 };
+
+
+/**
+ * @define {string} link/email tracking origin server.
+ */
+ydn.crm.base.TRACKING_ORIGIN = 'https://imgsrv-dot-yathit-app.appspot.com';
