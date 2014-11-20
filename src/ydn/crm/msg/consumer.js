@@ -42,7 +42,8 @@ ydn.crm.msg.Consumer.prototype.setMessage = function(id, msg) {};
  * @enum {string}
  */
 ydn.crm.msg.MessageType = {
-  NORMAL: 'n',
+  NORMAL: '',
+  NOTIFICATION: 'n',
   ERROR: 'e'
 };
 

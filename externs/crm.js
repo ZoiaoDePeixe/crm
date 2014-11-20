@@ -55,6 +55,13 @@ YdnCrm.BeaconData.prototype.subject;
 YdnCrm.BeaconData.prototype.userId;
 
 
+/**
+ * This value exists only in client side used by ydn.crm.tracking.notifier.
+ * @type {?Object} notification data.
+ */
+YdnCrm.BeaconData.prototype.notification;
+
+
 
 /**
  * @interface
@@ -78,86 +85,92 @@ YdnCrm.GeoPoint.prototype.longitude;
 /**
  * @interface
  */
-YdnCrm.AccessRecord = function() {};
+YdnCrm.BeaconHit = function() {};
 
 
 /**
  * @type {string}
  */
-YdnCrm.AccessRecord.prototype.City;
+YdnCrm.BeaconHit.prototype.ID;
+
+
+/**
+ * @type {string}
+ */
+YdnCrm.BeaconHit.prototype.City;
 
 
 /**
  * @type {YdnCrm.GeoPoint}
  */
-YdnCrm.AccessRecord.prototype.CityLatLong;
+YdnCrm.BeaconHit.prototype.CityLatLong;
 
 
 /**
  * @type {string}
  */
-YdnCrm.AccessRecord.prototype.Country;
+YdnCrm.BeaconHit.prototype.Country;
 
 
 /**
  * @type {number}
  */
-YdnCrm.AccessRecord.prototype.Recorded;
+YdnCrm.BeaconHit.prototype.Recorded;
 
 
 /**
  * @type {string}
  */
-YdnCrm.AccessRecord.prototype.Ip;
+YdnCrm.BeaconHit.prototype.Ip;
 
 
 /**
  * @type {string}
  */
-YdnCrm.AccessRecord.prototype.Path;
+YdnCrm.BeaconHit.prototype.Path;
 
 
 /**
  * @type {string}
  */
-YdnCrm.AccessRecord.prototype.Referer;
+YdnCrm.BeaconHit.prototype.Referer;
 
 
 /**
  * @type {string}
  */
-YdnCrm.AccessRecord.prototype.Region;
+YdnCrm.BeaconHit.prototype.Region;
 
 
 /**
  * @type {string}
  */
-YdnCrm.AccessRecord.prototype.Query;
+YdnCrm.BeaconHit.prototype.Query;
 
 
 /**
  * @type {string}
  */
-YdnCrm.AccessRecord.prototype.UserAgent;
+YdnCrm.BeaconHit.prototype.UserAgent;
 
 
 /**
  * @type {string} either 't', 'r', or 'f' representing tracking image, redirect
  * and font respectively.
  */
-YdnCrm.AccessRecord.prototype.Tracker;
+YdnCrm.BeaconHit.prototype.Tracker;
 
 
 /**
  * @type {string|undefined}
  */
-YdnCrm.AccessRecord.prototype.AccessUserId;
+YdnCrm.BeaconHit.prototype.AccessUserId;
 
 
 /**
  * @type {string}
  */
-YdnCrm.AccessRecord.prototype.User;
+YdnCrm.BeaconHit.prototype.User;
 
 
 
