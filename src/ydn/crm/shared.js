@@ -31,10 +31,15 @@ ydn.crm.shared.logger = goog.log.getLogger('ydn.crm');
 
 /**
  * Log to console.
+ * @param {boolean} enabled enable or disable logging on 'ydn.crm' namespace.
  */
-ydn.crm.shared.log = function() {
+ydn.crm.shared.log = function(enabled) {
+  ydn.crm.shared.setLogging('ydn.crm', 'finer');
+  var obj = {};
+  obj[ydn.crm.base.ChromeSyncKey.LOGGING_CAPTURE_ON_CONSOLE] = !!enabled;
+  chrome.storage.sync.set(obj);
   ydn.debug.log('ydn.crm', 'finer');
-  ydn.debug.captureOnConsole(true);
+  ydn.debug.captureOnConsole(!!enabled);
 };
 
 
