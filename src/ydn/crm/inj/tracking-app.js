@@ -32,7 +32,6 @@ goog.require('ydn.crm.base');
 goog.require('ydn.crm.gmail.ContextSidebar');
 goog.require('ydn.crm.gmail.GmailObserver');
 goog.require('ydn.crm.gmail.MessageHeaderInjector');
-goog.require('ydn.crm.inj');
 goog.require('ydn.crm.inj.GmailContextContainer');
 goog.require('ydn.crm.inj.Hud');
 goog.require('ydn.crm.msg.Manager');
