@@ -79,7 +79,7 @@ ydn.crm.inj.TrackingApp = function(heading_injector, gmail_observer, compose_obs
   this.reply_panel_manager_ = reply_panel_manager;
 
   /**
-   * @type {ydn.crm.tracking.ResultController}
+   * @type {ydn.crm.tracking.result.Controller}
    * @private
    */
   this.track_result_ = null;
@@ -122,7 +122,7 @@ ydn.crm.inj.TrackingApp.prototype.onUserStatusChange = function(e) {
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   if (us.hasValidLogin()) {
     if (!this.track_result_) {
-      this.track_result_ = new ydn.crm.tracking.ResultController(this.context_container_);
+      this.track_result_ = new ydn.crm.tracking.result.Controller(this.context_container_);
       this.heading_injector_.setTrackResult(this.track_result_);
       this.reply_panel_manager_.subscribeReplyPanelService(this.reply_tracker_);
     }

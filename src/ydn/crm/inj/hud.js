@@ -121,9 +121,12 @@ ydn.crm.inj.Hud.prototype.render = function() {
   var link_panel = dom.createDom('div', ydn.crm.inj.Hud.CSS_CLASS_SETUP);
   var a = dom.createElement('a');
   a.textContent = 'Setup';
-  var setup_page = ydn.crm.AppSetting.isEmailTracker() ?
-      ydn.crm.base.OPTION_PAGE : ydn.crm.base.SETUP_PAGE;
-  a.href = chrome.extension.getURL(setup_page) + '#modal';
+
+  if (ydn.crm.AppSetting.isEmailTracker()) {
+    a.href = chrome.extension.getURL(ydn.crm.base.OPTION_PAGE);
+  } else {
+    a.href = chrome.extension.getURL(ydn.crm.base.SETUP_PAGE) + '#modal';
+  }
   a.className = 'maia-button blue';
   a.setAttribute('data-window-height', '600');
   a.setAttribute('data-window-width', '800');
