@@ -94,9 +94,11 @@ ydn.crm.inj.Hud.prototype.render = function() {
   var a_option = this.root_el_.querySelector('a[name=option-page-url]');
   a_option.href = chrome.extension.getURL(ydn.crm.base.OPTION_PAGE);
 
+  /*
   var has_widget = ydn.crm.AppSetting.hasFeature(ydn.crm.base.Feature.GDATA_CONTACT) ||
       ydn.crm.AppSetting.hasFeature(ydn.crm.base.Feature.SUGARCRM);
   goog.style.setElementShown(this.root_el_, has_widget);
+  */
 
   var popup = this.root_el_.querySelector('.hud-popup');
   var btn = this.root_el_.querySelector('.hud-button');
@@ -119,7 +121,9 @@ ydn.crm.inj.Hud.prototype.render = function() {
   var link_panel = dom.createDom('div', ydn.crm.inj.Hud.CSS_CLASS_SETUP);
   var a = dom.createElement('a');
   a.textContent = 'Setup';
-  a.href = chrome.extension.getURL(ydn.crm.base.SETUP_PAGE) + '#modal';
+  var setup_page = ydn.crm.AppSetting.isEmailTracker() ?
+      ydn.crm.base.OPTION_PAGE : ydn.crm.base.SETUP_PAGE;
+  a.href = chrome.extension.getURL(setup_page) + '#modal';
   a.className = 'maia-button blue';
   a.setAttribute('data-window-height', '600');
   a.setAttribute('data-window-width', '800');

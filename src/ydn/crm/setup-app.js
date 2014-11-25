@@ -40,7 +40,6 @@ goog.require('ydn.msg.Pipe');
 ydn.crm.SetupApp = function() {
 
   ydn.msg.initPipe(ydn.msg.ChannelName.POPUP);
-  ydn.ui.setTemplateDocument(chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE));
 
   /**
    * @protected
@@ -48,9 +47,8 @@ ydn.crm.SetupApp = function() {
    */
   this.user_info = null;
 
-  var status_el = document.getElementById('sidebar-status');
   var status = new ydn.crm.msg.StatusBar(true);
-  status.render(status_el);
+  status.render(document.getElementById('sidebar-status'));
   ydn.crm.msg.Manager.addConsumer(status);
 
   this.handler = new goog.events.EventHandler(this);
@@ -60,7 +58,23 @@ ydn.crm.SetupApp = function() {
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.SetupApp.DEBUG = false;
+ydn.crm.SetupApp.DEBUG = true;
+
+
+/**
+ * Init the app.
+ */
+ydn.crm.SetupApp.prototype.init = function() {
+
+};
+
+
+/**
+ * Run the app.
+ */
+ydn.crm.SetupApp.prototype.run = function() {
+
+};
 
 
 /**
@@ -77,7 +91,12 @@ ydn.crm.SetupApp.close = function() {
  */
 ydn.crm.SetupApp.runSetupApp = function() {
   var app = new ydn.crm.SetupApp();
-  app.run();
+  var url = chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE);
+  ydn.ui.setTemplateDocument(url, function() {
+    app.init();
+    ydn.crm.msg.Manager.addStatus('Initializing');
+  });
+
   return app;
 };
 

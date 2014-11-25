@@ -15,4 +15,5 @@ goog.require('ydn.testing');
 goog.require('ydn.tracking.Widget');
 goog.require('ydn.crm.OptionPageApp');
 goog.require('ydn.crm.PopupPageApp');
+goog.require('ydn.crm.SetupApp');
 

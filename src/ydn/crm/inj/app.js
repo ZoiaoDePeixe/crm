@@ -31,7 +31,6 @@ goog.require('ydn.crm.base');
 goog.require('ydn.crm.gmail.ContextSidebar');
 goog.require('ydn.crm.gmail.GmailObserver');
 goog.require('ydn.crm.gmail.MessageHeaderWidget');
-goog.require('ydn.crm.base');
 goog.require('ydn.crm.inj.SugarCrmApp');
 goog.require('ydn.crm.inj.TrackingApp');
 goog.require('ydn.crm.msg.Manager');
