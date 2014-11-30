@@ -53,10 +53,11 @@ goog.require('ydn.msg.Pipe');
  * @param {ydn.crm.gmail.ComposeObserver} compose_observer
  * @param {ydn.crm.inj.ContextContainer} renderer
  * @param {ydn.cs.ReplyPanelManager} reply_panel_manager
+ * @param {ydn.crm.inj.Hud} hud
  * @constructor
  * @struct
  */
-ydn.crm.inj.TrackingApp = function(heading_injector, gmail_observer, compose_observer, renderer, reply_panel_manager) {
+ydn.crm.inj.TrackingApp = function(heading_injector, gmail_observer, compose_observer, renderer, reply_panel_manager, hud) {
 
   /**
    * @final
@@ -99,7 +100,7 @@ ydn.crm.inj.TrackingApp = function(heading_injector, gmail_observer, compose_obs
    * @private
    */
   this.sidebar_ = new ydn.crm.tracking.result.Sidebar(us);
-
+  hud.addPanel(this.sidebar_);
 };
 
 
