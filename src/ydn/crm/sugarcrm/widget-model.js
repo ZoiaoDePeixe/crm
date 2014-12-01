@@ -125,16 +125,16 @@ ydn.crm.sugarcrm.WidgetModel.prototype.requestHostPermission = function(cb, scop
 /**
  * Set domain.
  * @param {string} url sugarcrm instance url
- * @return {!goog.async.Deferred}
+ * @return {!goog.async.Deferred<SugarCrm.ServerInfo>}
  */
 ydn.crm.sugarcrm.WidgetModel.prototype.setInstanceUrl = function(url) {
   url = url.trim();
-  var domain = url.replace(/^https?:\/\//, '');
-  domain = domain.replace(/\/.*/, ''); // remove after /
   if (url.length < 3 || !/\./.test(url)) {
     return goog.async.Deferred.fail(new Error('Invalid instance ' + url));
   }
-  if (this.data && this.data.domain == domain) {
+  var domain = url.replace(/^https?:\/\//, '');
+  domain = domain.replace(/\/.*/, ''); // remove after /
+  if (this.data && this.info && this.data.domain == domain) {
     return goog.async.Deferred.succeed(this.info);
   }
   if (!this.data) {

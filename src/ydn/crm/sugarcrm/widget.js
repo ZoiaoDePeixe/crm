@@ -286,7 +286,7 @@ ydn.crm.sugarcrm.Widget.prototype.handleLogin = function(e) {
 
   var model = this.model;
   chrome.permissions.request(this.model.getPermissionObject(), function(grant) {
-    console.log('grant ' + grant);
+    // console.log('grant ' + grant);
     model.login(url, username, password).addCallbacks(function(info) {
       window.location.reload();
     }, function(e) {
