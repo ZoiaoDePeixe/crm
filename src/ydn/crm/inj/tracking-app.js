@@ -57,7 +57,8 @@ goog.require('ydn.msg.Pipe');
  * @constructor
  * @struct
  */
-ydn.crm.inj.TrackingApp = function(heading_injector, gmail_observer, compose_observer, renderer, reply_panel_manager, hud) {
+ydn.crm.inj.TrackingApp = function(heading_injector, gmail_observer,
+    compose_observer, renderer, reply_panel_manager, hud) {
 
   /**
    * @final

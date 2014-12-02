@@ -56,6 +56,12 @@ YdnCrm.BeaconData.prototype.userId;
 
 
 /**
+ * @type {number}
+ */
+YdnCrm.BeaconData.prototype.numLink;
+
+
+/**
  * This value exists only in client side used by ydn.crm.tracking.notifier.
  * @type {?Object} notification data.
  */
