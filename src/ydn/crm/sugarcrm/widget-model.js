@@ -133,26 +133,17 @@ ydn.crm.sugarcrm.WidgetModel.prototype.setInstanceUrl = function(url) {
     return goog.async.Deferred.fail(new Error('Invalid instance ' + url));
   }
   var domain = url.replace(/^https?:\/\//, '');
-  domain = domain.replace(/\/.*/, ''); // remove after /
-  if (this.data && this.info && this.data.domain == domain) {
-    return goog.async.Deferred.succeed(this.info);
-  }
+  domain = domain.replace(/\/.*/, ''); // remove after
   if (!this.data) {
     this.data = /** @type {SugarCrm.About} */ ({
       domain: domain,
+      baseUrl: url,
       isLogin: false
     });
   }
+  this.data.domain = domain;
+  this.data.baseUrl = url;
   return ydn.msg.getChannel().send('sugar-server-info', url).addCallback(function(info) {
-    var base_url = /^http/.test(url) ? url : null;
-    if (info['baseUrl']) {
-      base_url = info['baseUrl'];
-    }
-    this.data = /** @type {SugarCrm.About} */ ({
-      baseUrl: base_url,
-      domain: domain,
-      isLogin: false
-    });
     // console.log(info);
     this.info = info;
     return info;
