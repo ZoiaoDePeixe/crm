@@ -44,11 +44,23 @@ ydn.crm.inj.ContextContainer = function(gmail_observer, opt_root_ele) {
    * @private
    */
   this.has_attached_ = false;
+  /**
+   * @type {ydn.crm.gmail.GmailObserver}
+   * @private
+   */
+  this.gmail_observer_ = gmail_observer;
+  /**
+   * @protected
+   * @type {goog.events.EventHandler}
+   */
+  this.handler = new goog.events.EventHandler(this);
+  /**
+   * @type {boolean}
+   * @private
+   */
+  this.enabled_ = false;
+
   goog.style.setElementShown(this.ele_root, false);
-  goog.events.listen(gmail_observer, ydn.crm.gmail.GmailObserver.EventType.CONTEXT_CHANGE,
-      this.onGmailContextEvent_, false, this);
-  goog.events.listen(gmail_observer, ydn.crm.gmail.GmailObserver.EventType.PAGE_CHANGE,
-      this.onGmailPageChanged, false, this);
 };
 
 
@@ -59,8 +71,38 @@ ydn.crm.inj.ContextContainer.DEBUG = false;
 
 
 /**
+ * Enable or disable attaching on sidebar.
+ * @param {boolean} val
+ */
+ydn.crm.inj.ContextContainer.prototype.setEnabled = function(val) {
+  if (val == this.enabled_) {
+    return;
+  }
+  if (val) {
+    this.handler.listen(this.gmail_observer_,
+        ydn.crm.gmail.GmailObserver.EventType.CONTEXT_CHANGE,
+        this.onGmailContextEvent_);
+    this.handler.listen(this.gmail_observer_,
+        ydn.crm.gmail.GmailObserver.EventType.PAGE_CHANGE,
+        this.onGmailPageChanged);
+  } else {
+    this.handler.unlisten(this.gmail_observer_,
+        ydn.crm.gmail.GmailObserver.EventType.CONTEXT_CHANGE,
+        this.onGmailContextEvent_);
+    this.handler.unlisten(this.gmail_observer_,
+        ydn.crm.gmail.GmailObserver.EventType.PAGE_CHANGE,
+        this.onGmailPageChanged);
+    if (this.ele_root.parentElement) {
+      this.ele_root.parentElement.removeChild(this.ele_root);
+    }
+  }
+  this.enabled_ = val;
+};
+
+
+/**
  * @protected
- * @type {goog.debug.Logger}
+ * @type {goog.log.Logger}
  */
 ydn.crm.inj.ContextContainer.prototype.logger = goog.log.getLogger('ydn.crm.inj.ContextContainer');
 
@@ -104,7 +146,8 @@ ydn.crm.inj.ContextContainer.prototype.createDom = function() {
    */
   var ele_root = document.createElement('div');
   ele_root.id = ydn.crm.inj.ContextContainer.ID_ROOT_ELE;
-  ele_root.className = ydn.crm.inj.ContextContainer.CSS_CLASS + ' ' + ydn.crm.ui.CSS_CLASS;
+  ele_root.className = ydn.crm.inj.ContextContainer.CSS_CLASS + ' ' +
+      ydn.crm.ui.CSS_CLASS;
   // temporarily attached to document.
   document.body.appendChild(ele_root);
   goog.style.setElementShown(ele_root, false);

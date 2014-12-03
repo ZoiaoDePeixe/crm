@@ -111,7 +111,7 @@ ydn.crm.sugarcrm.Widget.prototype.onDomainBlur = function(e) {
     return;
   }
 
-  this.model.setInstanceUrl(domain).addCallbacks(function(info) {
+  this.model.getServerInfo(domain).addCallbacks(function(info) {
     var input_baseurl = this.root.querySelector('input[name=baseurl]');
     input_baseurl.value = '';
     ele_message.textContent = 'SugarCRM ' + info.flavor + ' ' + info.version;

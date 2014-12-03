@@ -130,11 +130,14 @@ ydn.crm.inj.App.prototype.handleUserLogin_ = function(e) {
   if (us.isLogin()) {
     if (us.hasValidLogin()) {
       this.gmail_observer.setEnabled(true);
+      this.context_container.setEnabled(true);
     } else {
       this.gmail_observer.setEnabled(false);
+      this.context_container.setEnabled(false);
     }
   } else {
     this.gmail_observer.setEnabled(false);
+    this.context_container.setEnabled(false);
   }
 };
 

@@ -25,7 +25,7 @@ user.onReady().addCallbacks(function() {
   var el = panel.getElement();
   var div = document.createElement('div');
   div.textContent = 'Panel content';
-  div.style.height = '200px';
+  div.style.height = '100px';
   div.style.backgroundColor = 'lightblue';
   el.appendChild(div);
 }, function(e) {

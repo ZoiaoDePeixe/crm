@@ -123,9 +123,23 @@ ydn.crm.sugarcrm.WidgetModel.prototype.requestHostPermission = function(cb, scop
 
 
 /**
+ *
+ * @param {string} url
+ * @return {!goog.async.Deferred<SugarCrm.ServerInfo>}
+ */
+ydn.crm.sugarcrm.WidgetModel.prototype.getServerInfo = function(url) {
+  this.setInstanceUrl(url);
+  return ydn.msg.getChannel().send('sugar-server-info', url).addCallback(function(info) {
+    // console.log(info);
+    this.info = info;
+    return info;
+  }, this);
+};
+
+
+/**
  * Set domain.
  * @param {string} url sugarcrm instance url
- * @return {!goog.async.Deferred<SugarCrm.ServerInfo>}
  */
 ydn.crm.sugarcrm.WidgetModel.prototype.setInstanceUrl = function(url) {
   url = url.trim();
@@ -143,11 +157,7 @@ ydn.crm.sugarcrm.WidgetModel.prototype.setInstanceUrl = function(url) {
   }
   this.data.domain = domain;
   this.data.baseUrl = url;
-  return ydn.msg.getChannel().send('sugar-server-info', url).addCallback(function(info) {
-    // console.log(info);
-    this.info = info;
-    return info;
-  }, this);
+
 };
 
 

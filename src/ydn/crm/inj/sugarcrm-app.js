@@ -55,8 +55,8 @@ goog.require('ydn.msg.Pipe');
  * @constructor
  * @struct
  */
-ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer, compose_observer,
-                                   renderer, hud) {
+ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer,
+                                   compose_observer, renderer, hud) {
 
   /**
    * @final

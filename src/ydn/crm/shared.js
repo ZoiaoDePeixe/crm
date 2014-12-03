@@ -143,13 +143,45 @@ ydn.crm.shared.USE_SERVER_ANALYTICS = true;
  *   });
  * </pre>
  * @param {Object=} opt_params
+ * @param {Function=} opt_cb
  */
-ydn.crm.shared.queryAnalytics = function(opt_params) {
+ydn.crm.shared.queryAnalytics = function(opt_params, opt_cb) {
   var params = opt_params || {};
   var client = ydn.crm.shared.getLoginClient();
   var hd = new ydn.client.HttpRequestData('/ga/', 'GET', params);
   client.request(hd).execute(function(data) {
-    window.console.log(data);
+    if (opt_cb) {
+      opt_cb(data);
+    } else {
+      delete data['installId'];
+      window.console.table(data);
+    }
+  });
+};
+
+
+/**
+ * @protected
+ */
+ydn.crm.shared.auditListUser = function() {
+  ydn.crm.shared.queryAnalytics({'list': 'email'}, function(arr) {
+    for (var i = 0; i < arr.length; i++) {
+      var obj = arr[i];
+      window.console.log(obj['email']);
+    }
+  });
+};
+
+
+/**
+ * @protected
+ */
+ydn.crm.shared.auditUserActivity = function() {
+  ydn.crm.shared.queryAnalytics({'list': 'email'}, function(arr) {
+    for (var i = 0; i < arr.length; i++) {
+      var obj = arr[i];
+      window.console.log(obj['email']);
+    }
   });
 };
 
