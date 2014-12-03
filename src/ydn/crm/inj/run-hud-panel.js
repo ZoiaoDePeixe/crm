@@ -19,7 +19,7 @@ hud.render();
 
 user.onReady().addCallbacks(function() {
   document.getElementById('gmail-account').textContent = user.getLoginEmail();
-  hud.updateHeader();
+
   var panel = new goog.ui.Component();
   hud.addPanel(panel);
   var el = panel.getElement();

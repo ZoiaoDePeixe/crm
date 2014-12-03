@@ -6,9 +6,12 @@
 
 goog.provide('ydn.crm.inj.Hud');
 goog.require('goog.events');
+goog.require('ydn.crm.AppSetting');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.msg.StatusBar');
+goog.require('ydn.crm.ui');
 goog.require('ydn.crm.ui.UserSetting');
+goog.require('ydn.ui');
 
 
 
