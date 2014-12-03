@@ -126,7 +126,7 @@ ydn.crm.inj.Hud.prototype.render = function() {
   a.textContent = 'Setup';
 
   if (ydn.crm.AppSetting.isEmailTracker()) {
-    a.href = chrome.extension.getURL(ydn.crm.base.OPTION_PAGE);
+    a.href = chrome.extension.getURL(ydn.crm.base.LOGIN_PAGE);
   } else {
     a.href = chrome.extension.getURL(ydn.crm.base.SETUP_PAGE) + '#modal';
   }

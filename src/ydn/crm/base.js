@@ -130,6 +130,13 @@ ydn.crm.base.SETUP_PAGE = 'setup.html';
  * @const
  * @type {string}
  */
+ydn.crm.base.LOGIN_PAGE = 'login.html';
+
+
+/**
+ * @const
+ * @type {string}
+ */
 ydn.crm.base.HOST_PERMISSION_PAGE = 'host-permission.html';
 
 
