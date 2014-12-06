@@ -170,9 +170,11 @@ ydn.crm.inj.Hud.prototype.handleUserLogin_ = function(e) {
       ydn.crm.inj.Hud.CSS_CLASS_INVALID_LOGIN_PANEL);
 
   goog.log.fine(this.logger, 'handling user login');
+  var content = this.root_el_.querySelector('.popup-content');
 
   if (us.isLogin()) {
     goog.style.setElementShown(setup, false);
+    goog.style.setElementShown(content, true);
     if (!us.hasValidLogin()) {
       var data = {
         ydn_login: us.getLoginEmail()
@@ -183,6 +185,7 @@ ydn.crm.inj.Hud.prototype.handleUserLogin_ = function(e) {
       goog.style.setElementShown(invalid_login_panel, false);
     }
   } else {
+    goog.style.setElementShown(content, true);
     goog.style.setElementShown(setup, true);
     goog.style.setElementShown(invalid_login_panel, false);
 

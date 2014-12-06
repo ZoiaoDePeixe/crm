@@ -22,10 +22,10 @@
 
 
 goog.provide('ydn.crm.sugarcrm.Page');
-goog.require('ydn.crm.tracking.SettingWidget');
 goog.require('ydn.crm.gdata.CredentialWidget');
 goog.require('ydn.crm.sugarcrm.Widget');
 goog.require('ydn.crm.sugarcrm.WidgetModel');
+goog.require('ydn.crm.tracking.setting.Main');
 
 
 
@@ -66,7 +66,7 @@ ydn.crm.sugarcrm.Page.prototype.render = function(el) {
   var gdata_ele = this.root_.querySelector('#gdata');
   this.gdata_widget.render(gdata_ele);
   if (ydn.crm.AppSetting.hasFeature(ydn.crm.base.Feature.TRACKING)) {
-    var tracking = new ydn.crm.tracking.SettingWidget();
+    var tracking = new ydn.crm.tracking.setting.Main();
     tracking.render(gdata_ele.parentElement);
   }
   this.sugar_widget.render(this.root_.querySelector('#sugarcrm-widget'));

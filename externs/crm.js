@@ -329,5 +329,43 @@ YdnCrm.TrackingAggregate.prototype.totalTimeToOpens;
 
 
 
+/**
+ * Do not track record.
+ * @interface
+ */
+YdnCrm.DoNotTrack = function() {};
+
+
+/**
+ * @type {string}
+ */
+YdnCrm.DoNotTrack.prototype.Account;
+
+
+/**
+ * @type {string}
+ */
+YdnCrm.DoNotTrack.prototype.Id;
+
+
+/**
+ * @type {number}
+ */
+YdnCrm.DoNotTrack.prototype.Modified;
+
+
+/**
+ * @type {string}
+ */
+YdnCrm.DoNotTrack.prototype.Target;
+
+
+/**
+ * @type {boolean}
+ */
+YdnCrm.DoNotTrack.prototype.Deleted;
+
+
+
 
 

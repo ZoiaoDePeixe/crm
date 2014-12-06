@@ -55,6 +55,9 @@ ydn.crm.Ch.Req = {
   ACK: 'ack', // acknowledge message
   BADGE_UPDATE: 'badge-update', // update browser action logo
   CLOSE: 'close',
+  DNT_ADD: 'dnt-add',
+  DNT_QUERY: 'dnt-query',
+  DNT_REMOVE: 'dnt-remove',
   EXPORT_RECORD: 'export-record',
   ECHO: 'echo',
   FEED_LOG: 'feed-log', // list of log
