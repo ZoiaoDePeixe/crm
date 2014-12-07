@@ -284,3 +284,11 @@ ydn.crm.base.analytic = {
  * @define {string} link/email tracking origin server.
  */
 ydn.crm.base.TRACKING_ORIGIN = 'https://imgsrv-dot-yathit-app.appspot.com';
+
+
+/**
+ * @return {string}
+ */
+ydn.crm.base.getOptionPage = function() {
+  return chrome.runtime.getURL(ydn.crm.base.OPTION_PAGE);
+};
