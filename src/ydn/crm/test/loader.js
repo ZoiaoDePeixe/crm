@@ -166,7 +166,7 @@ ydn.crm.test.initUi = function() {
  * Initialize all mock.
  */
 ydn.crm.test.init = function() {
-  jstestdriver.plugins.async.CallbackPool.TIMEOUT = 3;
+// jstestdriver.plugins.async.CallbackPool.TIMEOUT = 3;
   ydn.crm.test.initPipe();
   ydn.crm.test.initUi();
 };
