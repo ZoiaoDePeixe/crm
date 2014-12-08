@@ -18,7 +18,7 @@
  *
  * As soon as the app run, this connect with background script, create stable
  * connection channel and check login status and load of the user
- * setting. Finally this will load Gmail content panel and listen gmail histry
+ * setting. Finally this will load Gmail content panel and listen gmail history
  * changes. These changes are regularily updated back to Gmail content panel.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)

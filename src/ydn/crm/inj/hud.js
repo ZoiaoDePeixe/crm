@@ -175,14 +175,16 @@ ydn.crm.inj.Hud.prototype.handleUserLogin_ = function(e) {
   if (us.isLogin()) {
     goog.style.setElementShown(setup, false);
     goog.style.setElementShown(content, true);
-    if (!us.hasValidLogin()) {
+    if (us.hasValidLogin()) {
+      goog.style.setElementShown(invalid_login_panel, false);
+      this.root_el_.classList.remove(ydn.crm.inj.Hud.CSS_CLASS_INVALID);
+    } else {
+      this.root_el_.classList.add(ydn.crm.inj.Hud.CSS_CLASS_INVALID);
       var data = {
         ydn_login: us.getLoginEmail()
       };
       goog.soy.renderElement(invalid_login_panel, templ.ydn.crm.inj.wrongLogin, data);
       goog.style.setElementShown(invalid_login_panel, true);
-    } else {
-      goog.style.setElementShown(invalid_login_panel, false);
     }
   } else {
     goog.style.setElementShown(content, true);
