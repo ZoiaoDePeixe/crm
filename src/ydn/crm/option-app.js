@@ -324,20 +324,9 @@ ydn.crm.OptionPageApp.prototype.run = function() {
   var link = document.getElementById('user-login');
   link.addEventListener('click', function(e) {
     e.preventDefault();
-    if (link.textContent == 'logout') {
-      ydn.msg.getChannel().send('logged-out');
-    }
 
     ydn.ui.openPageAsDialog(e);
   }, true);
-
-  chrome.runtime.onMessageExternal.addListener(
-      function(request, sender, sendResponse) {
-        if (request == 'closing') {
-          sendResponse('close');
-          location.reload();
-        }
-      });
 
   this.login(null).addCallback(function() {
     if (this.process_user_page_setup_) {
@@ -364,6 +353,22 @@ ydn.crm.OptionPageApp.runOptionApp = function() {
   app.run();
   return app;
 };
+
+chrome.runtime.onMessageExternal.addListener(
+    function(request, sender, sendResponse) {
+      // the redirect page, pm.html will send this message.
+      if (request == 'closing') {
+        sendResponse('close');
+        var link = document.getElementById('user-login');
+        if (link.textContent == 'logout') {
+          ydn.msg.getChannel().send(ydn.crm.Ch.Req.LOGGED_OUT).addCallback(function() {
+            location.reload();
+          });
+        } else {
+          location.reload();
+        }
+      }
+    });
 
 
 goog.exportSymbol('runOptionApp', ydn.crm.OptionPageApp.runOptionApp);
