@@ -6,9 +6,12 @@
 
 
 goog.provide('ydn.crm.test');
+goog.setTestOnly('ydn.crm.test');
 goog.require('ydn.msg.MockPipe');
+goog.require('ydn.crm.base');
 goog.require('ydn.testing.mockExtension');
 
+ydn.crm.base.SVG_PAGE = '/cwork/image/all-icons.svg';
 
 /**
  * var main = ydn.msg.getChannel();
