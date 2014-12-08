@@ -166,15 +166,16 @@ ydn.crm.sugarcrm.WidgetModel.prototype.setInstanceUrl = function(url) {
  * @return {!goog.async.Deferred} `null` if no info is available.
  */
 ydn.crm.sugarcrm.WidgetModel.prototype.getInfo = function() {
-  if (!this.data || !this.data.domain) {
-    return goog.async.Deferred.succeed(null);
+  if (!this.isLogin()) {
+    throw new Error('NotLogin');
   }
   if (this.info) {
     return goog.async.Deferred.succeed(this.info);
   }
-  return ydn.msg.getChannel().send('sugar-server-info', this.data.domain).addCallback(function(x) {
-    this.info = x;
-  }, this);
+  return this.getChannel().send(ydn.crm.Ch.SReq.SERVER_INFO)
+      .addCallback(function(x) {
+        this.info = x;
+      }, this);
 };
 
 
