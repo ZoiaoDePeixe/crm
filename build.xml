@@ -8,7 +8,7 @@
     <import file="${db-work.dir}/ydn/build.xml"/>
     <property name="crm-app-ver-major" value="1"/>
     <property name="crm-app-ver-minor" value="6"/>
-    <property name="crm-app-ver-patch" value="4"/>
+    <property name="crm-app-ver-patch" value="5"/>
     <property name="crm-app-ver" value="${crm-app-ver-major}.${crm-app-ver-minor}.${crm-app-ver-patch}"/>
     <property name="sugarcrm-ver-major" value="0"/>
     <property name="sugarcrm-ver-minor" value="19"/>
