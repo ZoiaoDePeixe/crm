@@ -137,13 +137,13 @@ ydn.crm.ui.UserSetting.prototype.getUserInfo = function() {
 /**
  * Return user set value or default. UI component need this to be readable
  * synchronously.
- * @return {ydn.crm.ui.ContextPanelPosition}
+ * @return {ydn.crm.base.ContextPanelPosition}
  */
 ydn.crm.ui.UserSetting.prototype.getContextPanelPosition = function() {
 
   var val = ydn.crm.shared.getValueBySyncKey(ydn.crm.base.ChromeSyncKey.CONTEXT_PANEL_POSITION) ||
-      ydn.crm.ui.ContextPanelPosition.INLINE;
-  return /** @type {ydn.crm.ui.ContextPanelPosition} */ (val);
+      ydn.crm.base.ContextPanelPosition.INLINE;
+  return /** @type {ydn.crm.base.ContextPanelPosition} */ (val);
 };
 
 
@@ -273,65 +273,15 @@ ydn.crm.ui.UserSetting.prototype.getModuleInfo = function(name) {
     return channel.send(ydn.crm.Ch.SReq.INFO_MODULE).addCallback(function(x) {
       if (goog.isArray(x)) {
         for (var i = 0; i < x.length; i++) {
-          this.fixSugarCrmModuleMeta(x[i]);
+          ydn.crm.sugarcrm.fixSugarCrmModuleMeta(x[i]);
         }
       } else {
-        this.fixSugarCrmModuleMeta(x);
+        ydn.crm.sugarcrm.fixSugarCrmModuleMeta(x);
       }
       return x;
     }, this);
   }, this);
 
-};
-
-
-/**
- * SugarCRM module has nasty habit of not declearing group name if previous
- * field name is similar to previous field name.
- * Also name, first_name, and last_name, full_name are not into name group.
- * email, email1, email2, etc are gorup into email.
- * @param {SugarCrm.ModuleInfo} info
- */
-ydn.crm.ui.UserSetting.prototype.fixSugarCrmModuleMeta = function(info) {
-  var last_field_name = '';
-  var last_group = '';
-  for (var name in info.module_fields) {
-    /**
-     * @type {SugarCrm.ModuleField}
-     */
-    var mf = info.module_fields[name];
-
-    if (['created_by', 'created_by_name', 'date_entered', 'date_modified', 'deleted',
-      'modified_user_id', 'modified_by_name',
-      'id'].indexOf(name) >= 0) {
-      mf.calculated = true;
-    }
-
-    if (['salutation', 'name', 'last_name', 'first_name', 'full_name'].indexOf(name) >= 0) {
-      mf.group = 'name';
-    } else if (/^email\d?$/.test(name)) {
-      mf.group = 'email';
-    } else if (/^phone?/.test(name)) {
-      mf.group = 'phone';
-    } else if (!mf.group && goog.string.startsWith(name, last_field_name)) {
-      mf.group = last_group;
-      continue;
-    }
-    last_field_name = name;
-    last_group = mf.group;
-
-  }
-  // fix link field that does not have module name
-  for (var name in info.link_fields) {
-    /**
-     * @type {SugarCrm.LinkField}
-     */
-    var lf = info.link_fields[name];
-    if (name == 'contact' && !lf.module) {
-      lf.module = 'Contacts';
-    }
-  }
-  // console.log(info);
 };
 
 

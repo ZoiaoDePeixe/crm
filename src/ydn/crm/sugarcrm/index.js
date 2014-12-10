@@ -280,3 +280,53 @@ ydn.crm.sugarcrm.toModuleSymbol = function(m_name) {
  * is defined in new record panel, etc.
  */
 ydn.crm.sugarcrm.DEFAULT_MODULE = ydn.crm.sugarcrm.ModuleName.LEADS;
+
+
+/**
+ * SugarCRM module has nasty habit of not declearing group name if previous
+ * field name is similar to previous field name.
+ * Also name, first_name, and last_name, full_name are not into name group.
+ * email, email1, email2, etc are gorup into email.
+ * @param {SugarCrm.ModuleInfo} info
+ */
+ydn.crm.sugarcrm.fixSugarCrmModuleMeta = function(info) {
+  var last_field_name = '';
+  var last_group = '';
+  for (var name in info.module_fields) {
+    /**
+     * @type {SugarCrm.ModuleField}
+     */
+    var mf = info.module_fields[name];
+
+    if (['created_by', 'created_by_name', 'date_entered', 'date_modified',
+          'deleted', 'modified_user_id', 'modified_by_name',
+          'id'].indexOf(name) >= 0) {
+      mf.calculated = true;
+    }
+
+    if (['salutation', 'name', 'last_name', 'first_name', 'full_name'].indexOf(name) >= 0) {
+      mf.group = 'name';
+    } else if (/^email\d?$/.test(name)) {
+      mf.group = 'email';
+    } else if (/^phone?/.test(name)) {
+      mf.group = 'phone';
+    } else if (!mf.group && goog.string.startsWith(name, last_field_name)) {
+      mf.group = last_group;
+      continue;
+    }
+    last_field_name = name;
+    last_group = mf.group;
+
+  }
+  // fix link field that does not have module name
+  for (var name in info.link_fields) {
+    /**
+     * @type {SugarCrm.LinkField}
+     */
+    var lf = info.link_fields[name];
+    if (name == 'contact' && !lf.module) {
+      lf.module = 'Contacts';
+    }
+  }
+  // console.log(info);
+};

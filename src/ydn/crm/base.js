@@ -4,6 +4,7 @@
 
 goog.provide('ydn.crm.base');
 goog.require('goog.async.Deferred');
+goog.provide('ydn.crm.base.ContextPanelPosition');
 
 
 /**
@@ -292,3 +293,27 @@ ydn.crm.base.TRACKING_ORIGIN = 'https://imgsrv-dot-yathit-app.appspot.com';
 ydn.crm.base.getOptionPage = function() {
   return chrome.runtime.getURL(ydn.crm.base.OPTION_PAGE);
 };
+
+
+/**
+ * @enum {string} position of context panel in Gmail.
+ */
+ydn.crm.base.ContextPanelPosition = {
+  WIDGET: 'wg',
+  INLINE: 'in',
+  NONE: 'no',
+  RIGHT_BAR: 'rb',
+  STICKY: 'st'
+};
+
+
+/**
+ * All positions.
+ * @type {Array.<ydn.crm.base.ContextPanelPosition>}
+ */
+ydn.crm.base.ContextPanelPositions = [
+  ydn.crm.base.ContextPanelPosition.WIDGET,
+  ydn.crm.base.ContextPanelPosition.INLINE,
+  ydn.crm.base.ContextPanelPosition.NONE,
+  ydn.crm.base.ContextPanelPosition.RIGHT_BAR,
+  ydn.crm.base.ContextPanelPosition.STICKY];

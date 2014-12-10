@@ -16,6 +16,7 @@ goog.require('ydn.client.Proxy');
 goog.require('ydn.client.RichClient');
 goog.require('ydn.client.SimpleClient');
 goog.require('ydn.crm.base');
+goog.require('ydn.crm.base.ContextPanelPosition');
 goog.require('ydn.db.Storage');
 goog.require('ydn.debug');
 goog.require('ydn.debug.DbLogger');
@@ -98,7 +99,7 @@ ydn.crm.shared.handleStorageChange = function(obj, name) {
     if (goog.isObject(obj[ydn.crm.base.ChromeSyncKey.CONTEXT_PANEL_POSITION])) {
       // update with default value.
       ydn.crm.shared.sync_caches[ydn.crm.base.ChromeSyncKey.CONTEXT_PANEL_POSITION] =
-          obj[ydn.crm.base.ChromeSyncKey.CONTEXT_PANEL_POSITION].newValue || ydn.crm.ui.ContextPanelPosition.INLINE;
+          obj[ydn.crm.base.ChromeSyncKey.CONTEXT_PANEL_POSITION].newValue || ydn.crm.base.ContextPanelPosition.INLINE;
     }
   }
 };
