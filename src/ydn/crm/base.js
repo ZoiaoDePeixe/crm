@@ -160,7 +160,7 @@ ydn.crm.base.INJ_TEMPLATE = 'inj-template.html';
  */
 ydn.crm.base.SyncKey = {
   USER_SETTING: 'user-setting',
-  SUGAR_SETTING: 'sugar-setting'
+  SUGAR_SETTING: 'sugarcrm-setting'
 };
 
 

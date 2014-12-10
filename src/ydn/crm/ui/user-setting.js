@@ -396,16 +396,23 @@ ydn.crm.ui.UserSetting.prototype.setSetting = function(val, key, var_args) {
 
 
 /**
- * @type {!CrmApp.SugarCrmSetting}
+ * @return {!CrmApp.SugarCrmSetting}
  * @private
  */
-ydn.crm.ui.UserSetting.DEFAULT_SUGAR_SETTING_ = /** @type {!CrmApp.SugarCrmSetting} */ (
-    {'Group': {}, 'Field': {}});
+ydn.crm.ui.UserSetting.getDefaultSugarCrmSetting_ = function() {
+  var obj = /** @type {!CrmApp.SugarCrmSetting} */ ({'Module': {}});
+  for (var i = 0; i < ydn.crm.sugarcrm.CacheModules.length; i++) {
+    var name = ydn.crm.sugarcrm.CacheModules[i];
+    obj.Module[name] = /** @type {!CrmApp.SugarCrmModuleSetting} */ (
+        {'Group': {}, 'Field': {}});
+  }
+  return obj;
+};
 
 
 /**
  * Get SugarCrm setting.
- * @return {!goog.async.Deferred}
+ * @return {!goog.async.Deferred<CrmApp.SugarCrmSetting>}
  */
 ydn.crm.ui.UserSetting.prototype.loadSugarCrmSetting = function() {
   // keep setting in memory so that, setting is shared among sugarcrm instance.
@@ -414,7 +421,7 @@ ydn.crm.ui.UserSetting.prototype.loadSugarCrmSetting = function() {
     var df = new goog.async.Deferred();
     var key = ydn.crm.base.SyncKey.SUGAR_SETTING;
     chrome.storage.sync.get(key, function(val) {
-      me.sugar_settings_ = val[key] || ydn.crm.ui.UserSetting.DEFAULT_SUGAR_SETTING_;
+      me.sugar_settings_ = val[key] || ydn.crm.ui.UserSetting.getDefaultSugarCrmSetting_();
       df.callback(me.sugar_settings_);
     });
     return df;
@@ -457,7 +464,7 @@ ydn.crm.ui.UserSetting.prototype.getSugarCrmSetting = function() {
   if (!this.sugar_settings_) {
     this.loadSugarCrmSetting();
   }
-  return this.sugar_settings_ || ydn.object.clone(ydn.crm.ui.UserSetting.DEFAULT_SUGAR_SETTING_);
+  return this.sugar_settings_ || ydn.crm.ui.UserSetting.getDefaultSugarCrmSetting_();
 };
 
 
