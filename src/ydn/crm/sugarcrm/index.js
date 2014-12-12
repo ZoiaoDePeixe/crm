@@ -187,8 +187,14 @@ ydn.crm.sugarcrm.SIMPLE_MODULES = [ydn.crm.sugarcrm.ModuleName.NOTES];
  * @const
  * @type {Array.<ydn.crm.sugarcrm.ModuleName>}
  */
-ydn.crm.sugarcrm.EDITABLE_MODULES = [ydn.crm.sugarcrm.ModuleName.CONTACTS, ydn.crm.sugarcrm.ModuleName.LEADS,
-  ydn.crm.sugarcrm.ModuleName.NOTES];
+ydn.crm.sugarcrm.EDITABLE_MODULES = [ydn.crm.sugarcrm.ModuleName.ACCOUNTS,
+  ydn.crm.sugarcrm.ModuleName.CONTACTS,
+  ydn.crm.sugarcrm.ModuleName.LEADS,
+  ydn.crm.sugarcrm.ModuleName.NOTES,
+  ydn.crm.sugarcrm.ModuleName.TASKS,
+  ydn.crm.sugarcrm.ModuleName.MEETINGS,
+  ydn.crm.sugarcrm.ModuleName.CALLS,
+  ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES];
 
 
 /**
@@ -304,7 +310,10 @@ ydn.crm.sugarcrm.fixSugarCrmModuleMeta = function(info) {
       mf.calculated = true;
     }
 
-    if (['salutation', 'name', 'last_name', 'first_name', 'full_name'].indexOf(name) >= 0) {
+    if (info.module_name == ydn.crm.sugarcrm.ModuleName.CALLS &&
+        ['date_start', 'date_end', 'duration_hours', 'duration_minutes'].indexOf(name) >= 0) {
+      mf.group = 'appointment';
+    } else if (['salutation', 'name', 'last_name', 'first_name', 'full_name'].indexOf(name) >= 0) {
       mf.group = 'name';
     } else if (/^email\d?$/.test(name)) {
       mf.group = 'email';
