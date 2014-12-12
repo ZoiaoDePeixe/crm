@@ -12,7 +12,7 @@ ydn.debug.log('ydn.crm', 'finer');
 // ydn.debug.log('ydn.crm.inj.App', 'finest');
 ydn.debug.captureOnConsole(true);
 
-ydn.msg.Pipe.DEBUG = true;
+// ydn.msg.Pipe.DEBUG =  true;
 // ydn.crm.gmail.GmailObserver.DEBUG =  true;
 // ydn.crm.tracking.Tracker.DEBUG =  true;
 // ydn.cs.ReplyPanelManager.DEBUG =  true;
