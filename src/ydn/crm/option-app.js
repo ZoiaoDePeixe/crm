@@ -321,6 +321,22 @@ ydn.crm.OptionPageApp.prototype.run = function() {
     me.refreshPanelByHash();
   }, false);
 
+  chrome.runtime.onMessageExternal.addListener(
+      function(request, sender, sendResponse) {
+        // the redirect page, pm.html will send this message.
+        if (request == 'closing') {
+          sendResponse('close');
+          var link = document.getElementById('user-login');
+          if (link.textContent == 'logout') {
+            ydn.msg.getChannel().send(ydn.crm.Ch.Req.LOGGED_OUT).addCallback(function() {
+              location.reload();
+            });
+          } else {
+            location.reload();
+          }
+        }
+      });
+
   var link = document.getElementById('user-login');
   link.addEventListener('click', function(e) {
     e.preventDefault();
@@ -348,27 +364,13 @@ ydn.crm.OptionPageApp.prototype.run = function() {
  * @return {ydn.crm.OptionPageApp}
  */
 ydn.crm.OptionPageApp.runOptionApp = function() {
+
+
   var app = new ydn.crm.OptionPageApp();
   app.process_user_page_setup_ = true;
   app.run();
   return app;
 };
-
-chrome.runtime.onMessageExternal.addListener(
-    function(request, sender, sendResponse) {
-      // the redirect page, pm.html will send this message.
-      if (request == 'closing') {
-        sendResponse('close');
-        var link = document.getElementById('user-login');
-        if (link.textContent == 'logout') {
-          ydn.msg.getChannel().send(ydn.crm.Ch.Req.LOGGED_OUT).addCallback(function() {
-            location.reload();
-          });
-        } else {
-          location.reload();
-        }
-      }
-    });
 
 
 goog.exportSymbol('runOptionApp', ydn.crm.OptionPageApp.runOptionApp);
