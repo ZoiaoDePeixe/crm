@@ -92,8 +92,12 @@ ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer,
   this.hud = hud;
 
   this.handler = new goog.events.EventHandler(this);
-  this.handler.listen(gmail_observer, ydn.crm.gmail.GmailObserver.EventType.CONTEXT_CHANGE,
+  this.handler.listen(gmail_observer,
+      ydn.crm.gmail.GmailObserver.EventType.CONTEXT_CHANGE,
       this.onGmailContextEvent_);
+  this.handler.listen(this.attachment_injector_,
+      ydn.crm.sugarcrm.events.EventType.VIEW_RECORD,
+      this.onViewRecord_);
 
 };
 
@@ -112,6 +116,18 @@ ydn.crm.inj.SugarCrmApp.DEBUG = false;
 ydn.crm.inj.SugarCrmApp.prototype.onGmailContextEvent_ = function(e) {
 
   this.context_panel.updateForNewContact(e.context);
+
+};
+
+
+/**
+ * Sniff contact and set to model.
+ * @param {ydn.crm.sugarcrm.events.RecordViewEvent} e
+ * @private
+ */
+ydn.crm.inj.SugarCrmApp.prototype.onViewRecord_ = function(e) {
+
+  this.sidebar_panel.showRecord(e.module, e.id);
 
 };
 
