@@ -29,6 +29,7 @@ goog.require('goog.ui.Tab');
 goog.require('goog.ui.TabBar');
 goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.base');
+goog.require('ydn.crm.gmail.AttachmentInjector');
 goog.require('ydn.crm.gmail.ContextSidebar');
 goog.require('ydn.crm.gmail.GmailObserver');
 goog.require('ydn.crm.gmail.MessageHeaderInjector');
@@ -64,6 +65,12 @@ ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer,
    * @private
    */
   this.heading_injector_ = heading_injector;
+  /**
+   * @final
+   * @type {ydn.crm.gmail.AttachmentInjector}
+   * @private
+   */
+  this.attachment_injector_ = new ydn.crm.gmail.AttachmentInjector(gmail_observer);
   /**
    * @protected
    * @type {ydn.crm.gmail.ContextSidebar}
@@ -180,33 +187,44 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarPanels_ = function() {
         if (ydn.crm.inj.SugarCrmApp.DEBUG) {
           window.console.log(arr);
         }
+        var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
+        var has_valid_login = us.hasValidLogin();
         var sugars = /** @type {Array<SugarCrm.About>} */ (arr);
-        var sugar;
+        /**
+         * @type {SugarCrm.About}
+         */
+        var about;
         for (var i = 0; i < sugars.length; i++) {
           var obj = sugars[i];
           if (obj.isLogin) {
-            sugar = obj;
+            about = obj;
             break;
           }
         }
-        if (!sugar) {
+        if (!about) {
           if (ydn.crm.inj.SugarCrmApp.DEBUG) {
             window.console.info('no sugarcrm instance');
           }
+          this.attachment_injector_.setSugar(null);
           this.sidebar_panel.setSugarCrm(null);
           this.context_panel.updateSugarPanels([]);
-          return;
+        } else {
+          var domains = [about.domain];
+          this.sidebar_panel.setSugarCrm(about);
+          this.context_panel.updateSugarPanels(domains).addCallback(function() {
+            // todo: need clean up
+            if (has_valid_login) {
+              var sugar = this.context_panel.getSugarModelClone(); // ?
+              var archiver = new ydn.crm.sugarcrm.model.Archiver(sugar);
+              this.heading_injector_.setSugar(archiver);
+              this.attachment_injector_.setSugar(sugar);
+            } else {
+              this.heading_injector_.setSugar(null);
+              this.attachment_injector_.setSugar(null);
+            }
+          }, this);
         }
-        var domains = sugar ? [sugar.domain] : [];
-        this.sidebar_panel.setSugarCrm(sugar);
-        this.context_panel.updateSugarPanels([sugar.domain]).addCallback(function() {
-          var sugar = this.context_panel.getSugarModelClone();
-          if (ydn.crm.inj.SugarCrmApp.DEBUG) {
-            window.console.log(sugars, sugar);
-          }
-          var archiver = sugar ? new ydn.crm.sugarcrm.model.Archiver(sugar) : null;
-          this.heading_injector_.setSugar(archiver);
-        }, this);
+
       }, this);
 };
 

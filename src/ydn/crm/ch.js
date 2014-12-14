@@ -140,6 +140,7 @@ ydn.crm.Ch.SReq = {
    * @see #LINK
    */
   UNLINK: 'unlink',
+  UPLOAD_DOC: 'upload-doc', // upload document.
   VALUES: 'values' // record values query
 };
 

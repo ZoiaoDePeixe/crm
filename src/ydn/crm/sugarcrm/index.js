@@ -121,6 +121,7 @@ ydn.crm.sugarcrm.assertModuleName = function(name) {
  */
 ydn.crm.sugarcrm.CacheModules = [ydn.crm.sugarcrm.ModuleName.ACCOUNTS,
   ydn.crm.sugarcrm.ModuleName.CONTACTS,
+  ydn.crm.sugarcrm.ModuleName.DOCUMENTS,
   ydn.crm.sugarcrm.ModuleName.EMAIL_TEMPLATES,
   ydn.crm.sugarcrm.ModuleName.LEADS,
   ydn.crm.sugarcrm.ModuleName.NOTES,

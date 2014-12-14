@@ -317,3 +317,13 @@ ydn.crm.base.ContextPanelPositions = [
   ydn.crm.base.ContextPanelPosition.NONE,
   ydn.crm.base.ContextPanelPosition.RIGHT_BAR,
   ydn.crm.base.ContextPanelPosition.STICKY];
+
+
+/**
+ * List of error used in crm packages.
+ * @enum {string}
+ */
+ydn.crm.base.ErrorName = {
+  HOST_PERMISSION: 'HostPermissionError',
+  BACKEND_ERROR: 'BackendError'
+};
