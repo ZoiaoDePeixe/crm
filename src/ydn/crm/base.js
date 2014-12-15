@@ -207,20 +207,6 @@ ydn.crm.base.LocalStorageKey = {
 
 
 /**
- * @typedef {{
- *   from_addr: string,
- *   to_addrs: string,
- *   date_sent: Date,
- *   html: string,
- *   subject: string,
- *   mailbox_id: string,
- *   message_id: string
- * }}
- */
-ydn.crm.EmailInfo;
-
-
-/**
  * Application short_name. These value are used for setting default app setting.
  * @enum {string}
  */
