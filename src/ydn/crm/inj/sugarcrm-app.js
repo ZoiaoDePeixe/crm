@@ -126,7 +126,9 @@ ydn.crm.inj.SugarCrmApp.prototype.onGmailContextEvent_ = function(e) {
  * @private
  */
 ydn.crm.inj.SugarCrmApp.prototype.onViewRecord_ = function(e) {
-
+  if (ydn.crm.inj.SugarCrmApp.DEBUG) {
+    window.console.log('view record ' + e.module + ':' + e.id);
+  }
   this.sidebar_panel.showRecord(e.module, e.id);
 
 };
