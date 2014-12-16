@@ -72,7 +72,7 @@ ydn.social.MetaContact.prototype.getLocationDeduced = function() {
 /**
  * Fetch contact info by email.
  * @param {string} email
- * @return {!goog.async.Deferred.<ydn.social.MetaContact>}
+ * @return {!goog.async.Deferred<ydn.social.MetaContact>}
  */
 ydn.social.MetaContact.fetchByEmail = function(email) {
   email = email.trim().replace('%40', '@');
@@ -86,6 +86,11 @@ ydn.social.MetaContact.fetchByEmail = function(email) {
   }, function(e) {
     return new ydn.social.MetaContact(null);
   });
+};
+
+
+ydn.social.MetaContact.prototype.getTwitterStatus = function() {
+
 };
 
 

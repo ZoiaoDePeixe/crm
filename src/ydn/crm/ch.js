@@ -85,7 +85,8 @@ ydn.crm.Ch.Req = {
   TRACKING_CLEAR_DNT: 'tracking-clear-dnt',
   TRACKING_SELF_OPEN: 'tracking-self-open', // notify self access
   TRACKING_QUERY: 'tracking-query',
-  TRACKING_UPDATE: 'tracking-update'
+  TRACKING_UPDATE: 'tracking-update',
+  TWITTER: 'twitter'
 };
 
 

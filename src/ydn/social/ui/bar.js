@@ -25,7 +25,9 @@ goog.provide('ydn.social.ui.Bar');
 goog.require('goog.log');
 goog.require('goog.ui.AdvancedTooltip');
 goog.require('goog.ui.Component');
+goog.require('ydn.crm.Ch');
 goog.require('ydn.crm.ui');
+goog.require('ydn.msg');
 goog.require('ydn.social.MetaContact');
 
 
@@ -67,6 +69,20 @@ ydn.social.ui.Bar.DEBUG = true;
  * @const
  * @type {string}
  */
+ydn.social.ui.Bar.CSS_CLASS_CONTAINER = 'tooltip-container';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ydn.social.ui.Bar.CSS_CLASS_DETAIL = 'tooltip-detail';
+
+
+/**
+ * @const
+ * @type {string}
+ */
 ydn.social.ui.Bar.CSS_CLASS = 'social-bar';
 
 
@@ -76,12 +92,22 @@ ydn.social.ui.Bar.CSS_CLASS = 'social-bar';
  * @private
  */
 ydn.social.ui.Bar.prototype.createButton_ = function(name) {
+  var container = document.createElement('div');
+  var btn = document.createElement('div');
+  var details = document.createElement('div');
+  container.classList.add(ydn.social.ui.Bar.CSS_CLASS_CONTAINER);
+  container.classList.add(name);
+  btn.classList.add('tooltip-host');
+  details.classList.add(ydn.social.ui.Bar.CSS_CLASS_DETAIL);
+  var t = ydn.ui.getTemplateById('template-detail-' + name).content;
+  details.appendChild(t.cloneNode(true));
   var twitter = ydn.crm.ui.createSvgIcon(name);
-  var btn = document.createElement('span');
   btn.classList.add(ydn.crm.ui.CSS_CLASS_SVG_BUTTON);
   btn.setAttribute('name', name);
   btn.appendChild(twitter);
-  return btn;
+  container.appendChild(btn);
+  container.appendChild(details);
+  return container;
 };
 
 
@@ -104,6 +130,44 @@ ydn.social.ui.Bar.prototype.createDom = function() {
  */
 ydn.social.ui.Bar.prototype.setTarget = function(target) {
   this.target = target;
+  this.refresh();
+};
+
+
+/**
+ * @protected
+ */
+ydn.social.ui.Bar.prototype.refresh = function() {
+  this.refreshTwitter_();
+};
+
+
+/**
+ * @private
+ */
+ydn.social.ui.Bar.prototype.refreshTwitter_ = function() {
+  var container = this.getElement().querySelector('.' +
+      ydn.social.ui.Bar.CSS_CLASS_CONTAINER + '.twitter');
+  var detail = container.querySelector('.' + ydn.social.ui.Bar.CSS_CLASS_DETAIL);
+  detail.innerHTML = '';
+
+};
+
+
+/**
+ * Update contents.
+ * @param {string} email
+ */
+ydn.social.ui.Bar.prototype.showByEmail = function(email) {
+  if (!email) {
+    this.setTarget(null);
+    return;
+  }
+  ydn.social.MetaContact.fetchByEmail(email).addCallbacks(function(mc) {
+    this.setTarget(mc);
+  }, function(e) {
+    window.console.error(e.stack || e);
+  }, this);
 };
 
 
@@ -113,7 +177,8 @@ ydn.social.ui.Bar.prototype.setTarget = function(target) {
 ydn.social.ui.Bar.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var hd = this.getHandler();
-  var buttons = this.getElement().querySelectorAll(ydn.crm.ui.CSS_CLASS_SVG_BUTTON);
+  var buttons = this.getElement().querySelectorAll('.' +
+      ydn.crm.ui.CSS_CLASS_SVG_BUTTON);
   for (var i = 0; i < buttons.length; i++) {
     hd.listen(buttons[i], 'click', this.onButtonClicked_);
   }
@@ -125,5 +190,12 @@ ydn.social.ui.Bar.prototype.enterDocument = function() {
  * @private
  */
 ydn.social.ui.Bar.prototype.onButtonClicked_ = function(ev) {
-
+  var media = ev.currentTarget.getAttribute('name');
+  var query = {
+    'path' : 'statuses/user_timeline',
+    'user_id': '5998422'
+  };
+  ydn.msg.getChannel().send(ydn.crm.Ch.Req.TWITTER, query).addBoth(function(x) {
+    window.console.log(x);
+  });
 };
