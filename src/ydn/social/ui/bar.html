@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Social bar</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../css/inj.css">
+    <script src="../../../../../closure-library/closure/goog/base.js"></script>
+    <script src="../../../../../ydn-base/src/deps.js"></script>
+    <script src="../../../../../ydn/src/deps.js"></script>
+    <script src="../../../../../crm/src/deps.js"></script>
+    <script src="../../../../../sugarcrm/src/deps.js"></script>
+    <script src="../../../../../js/environment.js"></script>
+    <script src="deps-bar.js"></script>
+    <style>
+        *,
+        *:before,
+        *:after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0 auto;
+            max-width: 640px;
+            width: 90%;
+        }
+
+        body,
+        button {
+            font-family: "Helvetica Neue", Arial, sans-serif;
+        }
+
+        button {
+            font-size: 100%;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
+        header,
+        .content,
+        .content p {
+            margin: 4em 0;
+            text-align: center;
+        }
+
+        /**
+         * Tooltips!
+         */
+
+        /* Base styles for the element that has a tooltip */
+        [data-tooltip],
+        .tooltip {
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* Base styles for the entire tooltip */
+        [data-tooltip]:before,
+        [data-tooltip]:after,
+        .tooltip:before,
+        .tooltip:after {
+            position: absolute;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out,
+            visibility 0.2s ease-in-out,
+            transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+            transform: translate3d(0, 0, 0);
+            pointer-events: none;
+        }
+
+        /* Show the entire tooltip on hover and focus */
+        [data-tooltip]:hover:before,
+        [data-tooltip]:hover:after,
+        [data-tooltip]:focus:before,
+        [data-tooltip]:focus:after,
+        .tooltip:hover:before,
+        .tooltip:hover:after,
+        .tooltip:focus:before,
+        .tooltip:focus:after {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Base styles for the tooltip's directional arrow */
+        .tooltip:before,
+        [data-tooltip]:before {
+            z-index: 1001;
+            border: 6px solid transparent;
+            background: transparent;
+            content: "";
+        }
+
+        /* Base styles for the tooltip's content area */
+        .tooltip:after,
+        [data-tooltip]:after {
+            z-index: 1000;
+            padding: 8px;
+            width: 160px;
+            background-color: #000;
+            background-color: hsla(0, 0%, 20%, 0.9);
+            color: #fff;
+            content: attr(data-tooltip);
+            font-size: 14px;
+            line-height: 1.2;
+        }
+
+        /* Directions */
+
+        /* Top (default) */
+        [data-tooltip]:before,
+        [data-tooltip]:after,
+        .tooltip:before,
+        .tooltip:after,
+        .tooltip-top:before,
+        .tooltip-top:after {
+            bottom: 100%;
+            left: 50%;
+        }
+
+        [data-tooltip]:before,
+        .tooltip:before,
+        .tooltip-top:before {
+            margin-left: -6px;
+            margin-bottom: -12px;
+            border-top-color: #000;
+            border-top-color: hsla(0, 0%, 20%, 0.9);
+        }
+
+        /* Horizontally align top/bottom tooltips */
+        [data-tooltip]:after,
+        .tooltip:after,
+        .tooltip-top:after {
+            margin-left: -80px;
+        }
+
+        [data-tooltip]:hover:before,
+        [data-tooltip]:hover:after,
+        [data-tooltip]:focus:before,
+        [data-tooltip]:focus:after,
+        .tooltip:hover:before,
+        .tooltip:hover:after,
+        .tooltip:focus:before,
+        .tooltip:focus:after,
+        .tooltip-top:hover:before,
+        .tooltip-top:hover:after,
+        .tooltip-top:focus:before,
+        .tooltip-top:focus:after {
+            transform: translateY(-12px);
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+<div class="content">
+    <p>Data attribute only <a href="#" data-tooltip="I’m the tooltip, yo.">Tooltip</a>
+    </p>
+</div>
+    <div id="bar" style="border: thin black solid; padding: 2px;"></div>
+    <script src="run-bar.js">
+    </script>
+</body>
+</html>
