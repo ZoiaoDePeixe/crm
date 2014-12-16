@@ -202,7 +202,7 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
     this.df_ = new goog.async.Deferred();
     df.chainDeferred(this.df_);
   }
-  return this.df_;
+  return this.df_.branch();
 };
 
 
@@ -312,6 +312,7 @@ ydn.crm.ui.UserSetting.USER_SETTING_DEFAULT = {};
 /**
  * Get user setting from memory. User setting is loaded to memory when
  * this object is ready.
+ * This will return default setting, if user is not login or not ready.
  * @param {ydn.crm.ui.UserSetting.Key} key
  * @param {...string} var_args
  * @return {*}
