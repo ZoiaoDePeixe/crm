@@ -13,48 +13,29 @@
     <style>
 
 
-        .tooltip-container {
-            position: relative;
-
-        }
-
-        .tooltip-host {
-            position: relative
-        }
-
-        .tooltip-container .tooltip-detail {
-            display: none;
-            position: absolute;
-            opacity: 1;
-            background-color: #ffffff;
-            z-index: 1001;
-        }
-
-        .tooltip-container:hover .tooltip-detail {
-            display: block;
-            bottom: 24px;
-            border: solid thin gray;
-            border-radius: 4px;
-            padding: 4px;
-        }
 
     </style>
 </head>
 <body>
-Target: <input list="targets"/>
+Target: <input list="targets" id="target-input"/>
 <datalist id="targets">
 
     <option value="kyawtun@yathit.com"></option>
-    <option value="some@newdomain.com"></option>
-    <option value="the.phone.kid@example.biz"></option>
+    <option value="ericbidelman@google.com"></option>
+    <option value="justin@ring.md"></option>
     <option value="bart@fullcontact.com"></option>
     <option value="kyawlwinoo73@gmail.com"></option>
 </datalist>
 
-    <div style="margin-top: 400px; width: 20em;">
+    <div style="margin-top: 300px; width: 20em;">
 
     <div id="bar" style="border: thin black solid; padding: 2px;"></div>
     </div>
+    <div style="margin-top: 20px;">
+        <button id="twitter-profile">Twitter profile</button>
+        <button id="tweet-btn">Tweets</button>
+    </div>
+    <div id="result" class="social-bar"></div>
     <script src="run-bar.js">
     </script>
 </body>

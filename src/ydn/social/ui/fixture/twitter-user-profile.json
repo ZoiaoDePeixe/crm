@@ -1,0 +1,180 @@
+{
+  "id": 5998422,
+  "id_str": "5998422",
+  "name": "Bart Lorang",
+  "screen_name": "bartlorang",
+  "location": "Boulder, Colorado",
+  "profile_location": null,
+  "description": "CEO & Co-Founder of @FullContactApp - Tech Entrepreneur, Angel Investor. New father and writing about it here: https://t.co/QhPGyQjBqr",
+  "url": "https://t.co/wTPP0nn6zU",
+  "entities": {
+    "url": {
+      "urls": [
+        {
+          "url": "https://t.co/wTPP0nn6zU",
+          "expanded_url": "https://cobook.co/bart.lorang",
+          "display_url": "cobook.co/bart.lorang",
+          "indices": [
+            0,
+            23
+          ]
+        }
+      ]
+    },
+    "description": {
+      "urls": [
+        {
+          "url": "https://t.co/QhPGyQjBqr",
+          "expanded_url": "https://medium.com/startup-baby",
+          "display_url": "medium.com/startup-baby",
+          "indices": [
+            111,
+            134
+          ]
+        }
+      ]
+    }
+  },
+  "protected": false,
+  "followers_count": 4601,
+  "friends_count": 699,
+  "listed_count": 140,
+  "created_at": "Sat May 12 23:45:57 +0000 2007",
+  "favourites_count": 1468,
+  "utc_offset": -25200,
+  "time_zone": "Mountain Time (US & Canada)",
+  "geo_enabled": true,
+  "verified": false,
+  "statuses_count": 8137,
+  "lang": "en",
+  "status": {
+    "created_at": "Wed Dec 17 03:40:11 +0000 2014",
+    "id": 545060862864535550,
+    "id_str": "545060862864535553",
+    "text": "RT @tamccann: Introducing FullContact for Gmail http://t.co/mdJYRfAoHE - great news for all you old @gist fans out there.  And, it syncs co…",
+    "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+    "truncated": false,
+    "in_reply_to_status_id": null,
+    "in_reply_to_status_id_str": null,
+    "in_reply_to_user_id": null,
+    "in_reply_to_user_id_str": null,
+    "in_reply_to_screen_name": null,
+    "geo": null,
+    "coordinates": null,
+    "place": null,
+    "contributors": null,
+    "retweeted_status": {
+      "created_at": "Wed Dec 17 02:29:00 +0000 2014",
+      "id": 545042951697887200,
+      "id_str": "545042951697887232",
+      "text": "Introducing FullContact for Gmail http://t.co/mdJYRfAoHE - great news for all you old @gist fans out there.  And, it syncs contacts too!",
+      "source": "<a href=\"http://bufferapp.com\" rel=\"nofollow\">Buffer</a>",
+      "truncated": false,
+      "in_reply_to_status_id": null,
+      "in_reply_to_status_id_str": null,
+      "in_reply_to_user_id": null,
+      "in_reply_to_user_id_str": null,
+      "in_reply_to_screen_name": null,
+      "geo": null,
+      "coordinates": null,
+      "place": null,
+      "contributors": null,
+      "retweet_count": 1,
+      "favorite_count": 1,
+      "entities": {
+        "hashtags": [],
+        "symbols": [],
+        "user_mentions": [
+          {
+            "screen_name": "gist",
+            "name": "The Doc",
+            "id": 2467576987,
+            "id_str": "2467576987",
+            "indices": [
+              86,
+              91
+            ]
+          }
+        ],
+        "urls": [
+          {
+            "url": "http://t.co/mdJYRfAoHE",
+            "expanded_url": "http://buff.ly/1AjnyR2",
+            "display_url": "buff.ly/1AjnyR2",
+            "indices": [
+              34,
+              56
+            ]
+          }
+        ]
+      },
+      "favorited": false,
+      "retweeted": false,
+      "possibly_sensitive": false,
+      "lang": "en"
+    },
+    "retweet_count": 1,
+    "favorite_count": 0,
+    "entities": {
+      "hashtags": [],
+      "symbols": [],
+      "user_mentions": [
+        {
+          "screen_name": "tamccann",
+          "name": "T.A. McCann",
+          "id": 4258851,
+          "id_str": "4258851",
+          "indices": [
+            3,
+            12
+          ]
+        },
+        {
+          "screen_name": "gist",
+          "name": "The Doc",
+          "id": 2467576987,
+          "id_str": "2467576987",
+          "indices": [
+            100,
+            105
+          ]
+        }
+      ],
+      "urls": [
+        {
+          "url": "http://t.co/mdJYRfAoHE",
+          "expanded_url": "http://buff.ly/1AjnyR2",
+          "display_url": "buff.ly/1AjnyR2",
+          "indices": [
+            48,
+            70
+          ]
+        }
+      ]
+    },
+    "favorited": false,
+    "retweeted": false,
+    "possibly_sensitive": false,
+    "lang": "en"
+  },
+  "contributors_enabled": false,
+  "is_translator": false,
+  "is_translation_enabled": false,
+  "profile_background_color": "EDECE9",
+  "profile_background_image_url": "http://pbs.twimg.com/profile_background_images/17676328/coors-field.jpg",
+  "profile_background_image_url_https": "https://pbs.twimg.com/profile_background_images/17676328/coors-field.jpg",
+  "profile_background_tile": true,
+  "profile_image_url": "http://pbs.twimg.com/profile_images/1364842224/Bart_Profile_1_normal.jpg",
+  "profile_image_url_https": "https://pbs.twimg.com/profile_images/1364842224/Bart_Profile_1_normal.jpg",
+  "profile_banner_url": "https://pbs.twimg.com/profile_banners/5998422/1399136393",
+  "profile_link_color": "F50E0E",
+  "profile_sidebar_border_color": "D3D2CF",
+  "profile_sidebar_fill_color": "E3E2DE",
+  "profile_text_color": "634047",
+  "profile_use_background_image": true,
+  "default_profile": false,
+  "default_profile_image": false,
+  "following": null,
+  "follow_request_sent": null,
+  "notifications": null
+}

@@ -92,14 +92,14 @@ ydn.social.MetaContact.fetchByEmail = function(email) {
 /**
  * @enum {string}
  */
-ydn.social.MetaContact.Network = {
+ydn.social.Network = {
   TWITTER: 'twitter'
 };
 
 
 /**
  * Get social profile.
- * @param {ydn.social.MetaContact.Network} network
+ * @param {ydn.social.Network} network
  * @return {?CrmApp.FullContact2SocialProfile}
  */
 ydn.social.MetaContact.prototype.getProfile = function(network) {
@@ -117,7 +117,7 @@ ydn.social.MetaContact.prototype.getProfile = function(network) {
 
 /**
  * Get twitter user profile.
- * @param {ydn.social.MetaContact.Network} network
+ * @param {ydn.social.Network} network
  * @return {!goog.async.Deferred<Object>} Resulting object depends on network.
  */
 ydn.social.MetaContact.prototype.getProfileDetail = function(network) {
@@ -125,7 +125,7 @@ ydn.social.MetaContact.prototype.getProfileDetail = function(network) {
   if (!profile) {
     return goog.async.Deferred.succeed(null);
   }
-  if (network == ydn.social.MetaContact.Network.TWITTER) {
+  if (network == ydn.social.Network.TWITTER) {
     var tw = {
       'path': 'users/show',
       'user_id': profile.id
@@ -138,10 +138,10 @@ ydn.social.MetaContact.prototype.getProfileDetail = function(network) {
 
 
 /**
- * @return {!goog.async.Deferred<Object>}
+ * @return {!goog.async.Deferred<!Array<Object>>}
  */
 ydn.social.MetaContact.prototype.getTweets = function() {
-  var profile = this.getProfile(ydn.social.MetaContact.Network.TWITTER);
+  var profile = this.getProfile(ydn.social.Network.TWITTER);
   if (!profile) {
     return goog.async.Deferred.succeed(null);
   }

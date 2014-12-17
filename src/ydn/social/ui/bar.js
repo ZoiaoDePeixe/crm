@@ -22,6 +22,7 @@
 
 
 goog.provide('ydn.social.ui.Bar');
+goog.require('goog.date.relative');
 goog.require('goog.log');
 goog.require('goog.ui.AdvancedTooltip');
 goog.require('goog.ui.Component');
@@ -29,6 +30,7 @@ goog.require('ydn.crm.Ch');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.ui');
 goog.require('ydn.msg');
+goog.require('ydn.time');
 goog.require('ydn.social.MetaContact');
 
 
@@ -88,7 +90,7 @@ ydn.social.ui.Bar.CSS_CLASS = 'social-bar';
 
 
 /**
- * @param {string} name
+ * @param {ydn.social.Network} name
  * @return {Element}
  * @private
  */
@@ -118,9 +120,20 @@ ydn.social.ui.Bar.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var root = this.getElement();
   root.classList.add(ydn.social.ui.Bar.CSS_CLASS);
-  var tw = this.createButton_('twitter');
+  var tw = this.createButton_(ydn.social.Network.TWITTER);
   root.appendChild(tw);
 
+};
+
+
+/**
+ * Get container element.
+ * @param {ydn.social.Network} network
+ * @return {Element}
+ */
+ydn.social.ui.Bar.prototype.getContainer = function(network) {
+  return this.getElement().querySelector('.' +
+      ydn.social.ui.Bar.CSS_CLASS_CONTAINER + '.' + network);
 };
 
 
@@ -148,15 +161,108 @@ ydn.social.ui.Bar.prototype.refresh = function() {
  * @param {Object} profile twitter profile record as return by: users/show API
  */
 ydn.social.ui.Bar.renderTwitterProfile = function(el, profile) {
-  var tid = 'template-detail-' + ydn.social.MetaContact.Network.TWITTER;
+  var tid = 'template-detail-' + ydn.social.Network.TWITTER;
   var t = ydn.ui.getTemplateById(tid).content;
   el.innerHTML = '';
   el.appendChild(t.cloneNode(true));
   goog.style.setElementShown(el, true);
-  var header = el.querySelector('header');
-  var content = el.querySelector('content');
-  header.querySelector('.name').textContent = profile['name'];
+  var header = el.querySelector('.header');
+  var name = header.querySelector('.name a');
+  name.textContent = profile['name'];
+  name.href = profile['url'];
+  header.querySelector('.description').textContent = profile['description'] || '';
   header.querySelector('.logo img').src = profile['profile_image_url_https'];
+  header.querySelector('.followers').textContent = profile['followers_count'];
+  header.querySelector('.following').textContent = profile['friends_count'];
+  header.querySelector('.location').textContent = profile['location'];
+};
+
+
+/**
+ * Render twitter profile
+ * @param {Element} ul element to render on.
+ * @param {Array<Object>} tweets list of tweets as return by:
+ * statuses/user_timeline API
+ */
+ydn.social.ui.Bar.renderTweet = function(ul, tweets) {
+  console.log(tweets);
+  ul.innerHTML = '';
+  var templ = ydn.ui.getTemplateById('template-tweet').content;
+  for (var i = 0; i < tweets.length; i++) {
+    var tweet = tweets[i];
+    var li = templ.cloneNode(true);
+    li.querySelector('.text').textContent = tweet['text'];
+    li.querySelector('.location').textContent = tweet['location'] || '';
+    var date = new Date(tweet['created_at']);
+    var created = date.getTime();
+    if (created > 0) {
+      li.querySelector('.time').textContent =
+          goog.date.relative.format(created) || date.toDateString();
+    }
+
+    ul.appendChild(li);
+  }
+};
+
+
+/**
+ * @private
+ * @return {!goog.async.Deferred<Object>}
+ */
+ydn.social.ui.Bar.prototype.refreshTweet_ = function() {
+  var container = this.getContainer(ydn.social.Network.TWITTER);
+  var detail = container.querySelector('.tweets');
+  container.classList.add('working');
+  return this.target.getTweets().addCallbacks(function(tweets) {
+    if (ydn.social.ui.Bar.DEBUG) {
+      window.console.log(tweets);
+    }
+    container.classList.remove('working');
+    if (!tweets) {
+      return;
+    }
+    container.classList.add('exist');
+    ydn.social.ui.Bar.renderTweet(detail, tweets);
+  }, function(e) {
+    ydn.crm.msg.Manager.addStatus('Fetching twitter fail: ' + String(e));
+    container.classList.remove('working');
+    if (e.name == ydn.crm.base.ErrorName.HOST_PERMISSION) {
+      container.classList.add('alert');
+    } else {
+      container.classList.add('error');
+    }
+  }, this);
+};
+
+
+/**
+ * @private
+ * @return {!goog.async.Deferred<Object>}
+ */
+ydn.social.ui.Bar.prototype.refreshTwitterProfile_ = function() {
+  var container = this.getContainer(ydn.social.Network.TWITTER);
+  var detail = container.querySelector('.' + ydn.social.ui.Bar.CSS_CLASS_DETAIL);
+  container.classList.add('working');
+  return this.target.getProfileDetail(ydn.social.Network.TWITTER)
+      .addCallbacks(function(dp) {
+        if (ydn.social.ui.Bar.DEBUG) {
+          window.console.log(dp);
+        }
+        container.classList.remove('working');
+        if (!dp) {
+          return;
+        }
+        container.classList.add('exist');
+        ydn.social.ui.Bar.renderTwitterProfile(detail, dp);
+      }, function(e) {
+        ydn.crm.msg.Manager.addStatus('Fetching twitter fail: ' + String(e));
+        container.classList.remove('working');
+        if (e.name == ydn.crm.base.ErrorName.HOST_PERMISSION) {
+          container.classList.add('alert');
+        } else {
+          container.classList.add('error');
+        }
+      }, this);
 };
 
 
@@ -164,40 +270,24 @@ ydn.social.ui.Bar.renderTwitterProfile = function(el, profile) {
  * @private
  */
 ydn.social.ui.Bar.prototype.refreshTwitter_ = function() {
-  var container = this.getElement().querySelector('.' +
-      ydn.social.ui.Bar.CSS_CLASS_CONTAINER + '.twitter');
+  var container = this.getContainer(ydn.social.Network.TWITTER);
   var detail = container.querySelector('.' + ydn.social.ui.Bar.CSS_CLASS_DETAIL);
   detail.innerHTML = '';
 
   var profile = this.target ? this.target.getProfile(
-      ydn.social.MetaContact.Network.TWITTER) : null;
-  if (!profile) {
-    container.classList.add('empty');
-    container.classList.remove('exit');
-    container.classList.remove('working');
-    return;
+      ydn.social.Network.TWITTER) : null;
+  container.classList.remove('exist');
+  container.classList.remove('working');
+  container.classList.remove('error');
+  container.classList.remove('alert');
+  container.classList.remove('empty');
+  if (profile) {
+    this.refreshTwitterProfile_().addBoth(function() {
+      this.refreshTweet_();
+    }, this);
   } else {
-    container.classList.remove('empty');
+    container.classList.add('empty');
   }
-  container.classList.add('working');
-  this.target.getProfileDetail(ydn.social.MetaContact.Network.TWITTER)
-      .addCallbacks(function(dp) {
-        container.classList.remove('working');
-        if (!dp) {
-          return;
-        }
-        container.classList.add('exit');
-        ydn.social.ui.Bar.renderTwitterProfile(detail, dp);
-      }, function(e) {
-        ydn.crm.msg.Manager.addStatus('Fetching twitter fail: ' + String(e));
-        container.classList.remove('working');
-        console.log(e);
-        if (e.name == ydn.crm.base.ErrorName.HOST_PERMISSION) {
-          container.classList.add('alert');
-        } else {
-          container.classList.add('error');
-        }
-      }, this);
 };
 
 
@@ -237,8 +327,10 @@ ydn.social.ui.Bar.prototype.enterDocument = function() {
  * @private
  */
 ydn.social.ui.Bar.prototype.onButtonClicked_ = function(ev) {
-  var media = ev.currentTarget.getAttribute('name');
-  this.setTargetByEmail('bart@fullcontact.com');
+  var network = ev.currentTarget.getAttribute('name');
+  if (network == ydn.social.Network.TWITTER) {
+    this.refreshTwitter_();
+  }
 };
 
 
@@ -257,3 +349,5 @@ ydn.social.ui.Bar.prototype.setTargetByEmail = function(email) {
     this.refresh();
   }, this);
 };
+
+
