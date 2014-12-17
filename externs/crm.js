@@ -367,5 +367,28 @@ YdnCrm.DoNotTrack.prototype.Deleted;
 
 
 
+/**
+ * Social cache record.
+ * @interface
+ */
+YdnCrm.SocialCache = function() {};
+
+
+/**
+ * @type {string}
+ */
+YdnCrm.SocialCache.prototype.id;
+
+
+/**
+ * @type {number}
+ */
+YdnCrm.SocialCache.prototype.updated;
+
+
+/**
+ * @type {*}
+ */
+YdnCrm.SocialCache.prototype.data;
 
 

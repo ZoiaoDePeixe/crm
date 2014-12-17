@@ -7,6 +7,7 @@ goog.provide('ydn.crm.AppSetting');
 goog.require('ydn.crm.tracking');
 goog.require('ydn.db.Storage');
 goog.require('ydn.gdata.Kind');
+goog.require('ydn.so');
 
 
 
@@ -74,7 +75,10 @@ ydn.crm.AppSetting.schema = /** @type {DatabaseSchema} */ (/** @type {Object} */
   }, ydn.db.base.entitySchema,
   ydn.crm.tracking.trackSchema,
   ydn.crm.tracking.accessSchema,
-  ydn.crm.tracking.dntTrackSchema]
+  ydn.crm.tracking.dntTrackSchema, {
+    name: ydn.so.STORE_NAME,
+    keyPath: 'id'
+  }]
 }));
 
 

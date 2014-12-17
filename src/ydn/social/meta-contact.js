@@ -89,8 +89,67 @@ ydn.social.MetaContact.fetchByEmail = function(email) {
 };
 
 
-ydn.social.MetaContact.prototype.getTwitterStatus = function() {
+/**
+ * @enum {string}
+ */
+ydn.social.MetaContact.Network = {
+  TWITTER: 'twitter'
+};
 
+
+/**
+ * Get social profile.
+ * @param {ydn.social.MetaContact.Network} network
+ * @return {?CrmApp.FullContact2SocialProfile}
+ */
+ydn.social.MetaContact.prototype.getProfile = function(network) {
+  if (this.data && this.data.fc) {
+    for (var i = 0; i < this.data.fc.socialProfiles.length; i++) {
+      var obj = this.data.fc.socialProfiles[i];
+      if (obj && obj.typeId == network) {
+        return obj;
+      }
+    }
+  }
+  return null;
+};
+
+
+/**
+ * Get twitter user profile.
+ * @param {ydn.social.MetaContact.Network} network
+ * @return {!goog.async.Deferred<Object>} Resulting object depends on network.
+ */
+ydn.social.MetaContact.prototype.getProfileDetail = function(network) {
+  var profile = this.getProfile(network);
+  if (!profile) {
+    return goog.async.Deferred.succeed(null);
+  }
+  if (network == ydn.social.MetaContact.Network.TWITTER) {
+    var tw = {
+      'path': 'users/show',
+      'user_id': profile.id
+    };
+    return ydn.msg.getChannel().send(ydn.crm.Ch.Req.TWITTER, tw);
+  } else {
+    throw new Error(network);
+  }
+};
+
+
+/**
+ * @return {!goog.async.Deferred<Object>}
+ */
+ydn.social.MetaContact.prototype.getTweets = function() {
+  var profile = this.getProfile(ydn.social.MetaContact.Network.TWITTER);
+  if (!profile) {
+    return goog.async.Deferred.succeed(null);
+  }
+  var tw = {
+    'path': 'statuses/user_timeline',
+    'user_id': profile.id
+  };
+  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.TWITTER, tw);
 };
 
 
