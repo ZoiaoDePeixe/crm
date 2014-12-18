@@ -30,8 +30,8 @@ goog.require('ydn.crm.Ch');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.ui');
 goog.require('ydn.msg');
-goog.require('ydn.time');
 goog.require('ydn.social.MetaContact');
+goog.require('ydn.time');
 
 
 
@@ -174,7 +174,11 @@ ydn.social.ui.Bar.renderTwitterProfile = function(el, profile) {
   header.querySelector('.logo img').src = profile['profile_image_url_https'];
   header.querySelector('.followers').textContent = profile['followers_count'];
   header.querySelector('.following').textContent = profile['friends_count'];
-  header.querySelector('.location').textContent = profile['location'];
+  if (profile['location'] && profile['location'] != 'Global') {
+    header.querySelector('.location').textContent = profile['location'];
+  } else {
+    goog.style.setElementShown(header.querySelector('.location'), false);
+  }
 };
 
 
@@ -192,7 +196,9 @@ ydn.social.ui.Bar.renderTweet = function(ul, tweets) {
     var tweet = tweets[i];
     var li = templ.cloneNode(true);
     li.querySelector('.text').textContent = tweet['text'];
-    li.querySelector('.location').textContent = tweet['location'] || '';
+    if (tweet['location'] && tweet['location'] != 'Global') {
+      li.querySelector('.location').textContent = tweet['location'];
+    }
     var date = new Date(tweet['created_at']);
     var created = date.getTime();
     if (created > 0) {
@@ -282,10 +288,12 @@ ydn.social.ui.Bar.prototype.refreshTwitter_ = function() {
   container.classList.remove('alert');
   container.classList.remove('empty');
   if (profile) {
+    goog.style.setElementShown(detail, true);
     this.refreshTwitterProfile_().addBoth(function() {
       this.refreshTweet_();
     }, this);
   } else {
+    goog.style.setElementShown(detail, false);
     container.classList.add('empty');
   }
 };

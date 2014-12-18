@@ -31,6 +31,11 @@ goog.require('ydn.crm.ui.StatusBar');
 
 /**
  * Context container.
+ * <pre>
+ *   var con = new ydn.crm.inj.GmailContextContainer(ob);
+ *   var el = con.getContentElement();
+ *   // use el as root node to render UI
+ * </pre>
  * @param {ydn.crm.gmail.GmailObserver} gmail_observer
  * @param {Element=} opt_root_ele
  * @constructor
@@ -104,7 +109,8 @@ ydn.crm.inj.ContextContainer.prototype.setEnabled = function(val) {
  * @protected
  * @type {goog.log.Logger}
  */
-ydn.crm.inj.ContextContainer.prototype.logger = goog.log.getLogger('ydn.crm.inj.ContextContainer');
+ydn.crm.inj.ContextContainer.prototype.logger =
+    goog.log.getLogger('ydn.crm.inj.ContextContainer');
 
 
 /**

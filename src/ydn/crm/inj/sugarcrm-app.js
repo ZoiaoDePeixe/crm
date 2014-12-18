@@ -30,7 +30,7 @@ goog.require('goog.ui.TabBar');
 goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.base');
 goog.require('ydn.crm.gmail.AttachmentInjector');
-goog.require('ydn.crm.gmail.ContextSidebar');
+goog.require('ydn.crm.gmail.ContextWidget');
 goog.require('ydn.crm.gmail.GmailObserver');
 goog.require('ydn.crm.gmail.MessageHeaderInjector');
 goog.require('ydn.crm.inj.GmailContextContainer');
@@ -73,9 +73,9 @@ ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer,
   this.attachment_injector_ = new ydn.crm.gmail.AttachmentInjector(gmail_observer);
   /**
    * @protected
-   * @type {ydn.crm.gmail.ContextSidebar}
+   * @type {ydn.crm.gmail.ContextWidget}
    */
-  this.context_panel = new ydn.crm.gmail.ContextSidebar(gmail_observer, compose_observer);
+  this.context_panel = new ydn.crm.gmail.ContextWidget(gmail_observer, compose_observer);
 
   this.context_panel.render(renderer.getContentElement());
 
@@ -178,17 +178,51 @@ ydn.crm.inj.SugarCrmApp.prototype.onUserStatusChange = function(e) {
   }
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   if (us.hasValidLogin()) {
-    this.context_panel.updateHeader();
     this.sidebar_panel.setVisible(true);
     this.updateSugarPanels_();
   } else {
     // we are not showing any UI if user is not login.
     // user should use browser bandage to login and refresh the page.
     this.heading_injector_.setSugar(null);
-    this.context_panel.updateHeader();
     this.sidebar_panel.setVisible(false);
     this.updateSugarPanels_();
   }
+};
+
+
+/**
+ * @param {SugarCrm.About} about
+ * @private
+ */
+ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(about) {
+
+
+  this.sidebar_panel.setSugarCrm(about);
+
+  var us = ydn.crm.ui.UserSetting.getInstance();
+
+  if (!us.hasValidLogin()) {
+    this.context_panel.setSugarCrm(null);
+    this.heading_injector_.setSugar(null);
+    this.attachment_injector_.setSugar(null);
+    return;
+  }
+
+  var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, about.domain);
+  ch.send(ydn.crm.Ch.SReq.DETAILS).addCallback(function(x) {
+    var details = /** @type {SugarCrm.Details} */ (x);
+    for (var i = 0; i < details.modulesInfo.length; i++) {
+      ydn.crm.sugarcrm.fixSugarCrmModuleMeta(details.modulesInfo[i]);
+    }
+    var ac = us.getLoginEmail();
+    var sugar = new ydn.crm.sugarcrm.model.GDataSugar(details.about,
+        details.modulesInfo, ac, details.serverInfo);
+    this.context_panel.setSugarCrm(sugar);
+    var archiver = new ydn.crm.sugarcrm.model.Archiver(sugar);
+    this.heading_injector_.setSugar(archiver);
+    this.attachment_injector_.setSugar(sugar);
+  }, this);
+
 };
 
 
@@ -205,8 +239,6 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarPanels_ = function() {
         if (ydn.crm.inj.SugarCrmApp.DEBUG) {
           window.console.log(arr);
         }
-        var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
-        var has_valid_login = us.hasValidLogin();
         var sugars = /** @type {Array<SugarCrm.About>} */ (arr);
         /**
          * @type {SugarCrm.About}
@@ -215,34 +247,16 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarPanels_ = function() {
         for (var i = 0; i < sugars.length; i++) {
           var obj = sugars[i];
           if (obj.isLogin) {
-            about = obj;
-            break;
+            this.updateSugarCrm_(obj);
+            return;
           }
         }
-        if (!about) {
-          if (ydn.crm.inj.SugarCrmApp.DEBUG) {
-            window.console.info('no sugarcrm instance');
-          }
-          this.attachment_injector_.setSugar(null);
-          this.sidebar_panel.setSugarCrm(null);
-          this.context_panel.updateSugarPanels([]);
-        } else {
-          var domains = [about.domain];
-          this.sidebar_panel.setSugarCrm(about);
-          this.context_panel.updateSugarPanels(domains).addCallback(function() {
-            // todo: need clean up
-            if (has_valid_login) {
-              var sugar = this.context_panel.getSugarModelClone(); // ?
-              var archiver = new ydn.crm.sugarcrm.model.Archiver(sugar);
-              this.heading_injector_.setSugar(archiver);
-              this.attachment_injector_.setSugar(sugar);
-            } else {
-              this.heading_injector_.setSugar(null);
-              this.attachment_injector_.setSugar(null);
-            }
-          }, this);
+        if (ydn.crm.inj.SugarCrmApp.DEBUG) {
+          window.console.info('no sugarcrm instance');
         }
-
+        this.attachment_injector_.setSugar(null);
+        this.sidebar_panel.setSugarCrm(null);
+        this.context_panel.setSugarCrm(null);
       }, this);
 };
 
