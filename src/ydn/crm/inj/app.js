@@ -28,7 +28,7 @@ goog.provide('ydn.crm.inj.App');
 goog.require('goog.dom');
 goog.require('goog.style');
 goog.require('ydn.crm.base');
-goog.require('ydn.crm.gmail.ContextWidget');
+goog.require('ydn.crm.sugarcrm.ContextWidget');
 goog.require('ydn.crm.gmail.GmailObserver');
 goog.require('ydn.crm.gmail.MessageHeaderWidget');
 goog.require('ydn.crm.inj.SugarCrmApp');

@@ -30,7 +30,7 @@ goog.require('goog.ui.TabBar');
 goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.base');
 goog.require('ydn.crm.gmail.AttachmentInjector');
-goog.require('ydn.crm.gmail.ContextWidget');
+goog.require('ydn.crm.sugarcrm.ContextWidget');
 goog.require('ydn.crm.gmail.GmailObserver');
 goog.require('ydn.crm.gmail.MessageHeaderInjector');
 goog.require('ydn.crm.inj.GmailContextContainer');
@@ -73,9 +73,9 @@ ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer,
   this.attachment_injector_ = new ydn.crm.gmail.AttachmentInjector(gmail_observer);
   /**
    * @protected
-   * @type {ydn.crm.gmail.ContextWidget}
+   * @type {ydn.crm.sugarcrm.ContextWidget}
    */
-  this.context_panel = new ydn.crm.gmail.ContextWidget(gmail_observer, compose_observer);
+  this.context_panel = new ydn.crm.sugarcrm.ContextWidget(gmail_observer, compose_observer);
 
   this.context_panel.render(renderer.getContentElement());
 
@@ -92,9 +92,7 @@ ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer,
   this.hud = hud;
 
   this.handler = new goog.events.EventHandler(this);
-  this.handler.listen(gmail_observer,
-      ydn.crm.gmail.GmailObserver.EventType.CONTEXT_CHANGE,
-      this.onGmailContextEvent_);
+
   this.handler.listen(this.attachment_injector_,
       ydn.crm.sugarcrm.events.EventType.VIEW_RECORD,
       this.onViewRecord_);
@@ -106,18 +104,6 @@ ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer,
  * @define {boolean} debug flag.
  */
 ydn.crm.inj.SugarCrmApp.DEBUG = false;
-
-
-/**
- * Sniff contact and set to model.
- * @param {ydn.crm.gmail.GmailObserver.ContextRightBarEvent} e
- * @private
- */
-ydn.crm.inj.SugarCrmApp.prototype.onGmailContextEvent_ = function(e) {
-
-  this.context_panel.updateForNewContact(e.context);
-
-};
 
 
 /**
