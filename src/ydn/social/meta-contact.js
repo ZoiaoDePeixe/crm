@@ -28,14 +28,19 @@ goog.provide('ydn.social.MetaContact');
 /**
  * Contact data obtained from social web sites.
  * @param {CrmApp.MetaContact} data
+ * @param {string=} opt_email target email.
  * @constructor
  * @struct
  */
-ydn.social.MetaContact = function(data) {
+ydn.social.MetaContact = function(data, opt_email) {
   /**
    * @type {!CrmApp.MetaContact}
    */
   this.data = data || /** @type {!CrmApp.MetaContact} */ ({});
+  /**
+   * @type {?string}
+   */
+  this.email = opt_email || null;
 };
 
 
@@ -91,9 +96,9 @@ ydn.social.MetaContact.fetchByEmail = function(email) {
     if (ydn.social.MetaContact.DEBUG) {
       window.console.log(data);
     }
-    return new ydn.social.MetaContact(data);
+    return new ydn.social.MetaContact(data, email);
   }, function(e) {
-    return new ydn.social.MetaContact(null);
+    return new ydn.social.MetaContact(null, email);
   });
 };
 

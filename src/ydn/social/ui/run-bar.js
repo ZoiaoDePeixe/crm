@@ -52,3 +52,4 @@ document.getElementById('tweet-btn').onclick = function(e) {
 };
 
 ydn.social.MetaContact.DEBUG =  true;
+ydn.social.ui.Bar.DEBUG =  true;
