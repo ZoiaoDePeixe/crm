@@ -14,7 +14,8 @@
 
 
 /**
- * @fileoverview Context container attached to right side of email message.
+ * @fileoverview Abstract Context container attached to right side of
+ * email message.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
@@ -24,20 +25,15 @@ goog.provide('ydn.crm.inj.ContextContainer');
 goog.require('goog.Disposable');
 goog.require('ydn.crm.gmail.ComposeObserver');
 goog.require('ydn.crm.gmail.GmailObserver');
-goog.require('ydn.crm.ui.AppStatusBar');
-goog.require('ydn.crm.ui.StatusBar');
+goog.require('ydn.crm.msg.StatusBar');
+goog.require('ydn.crm.ui');
 
 
 
 /**
- * Context container.
- * <pre>
- *   var con = new ydn.crm.inj.GmailContextContainer(ob);
- *   var el = con.getContentElement();
- *   // use el as root node to render UI
- * </pre>
+ * Abstract context container.
  * @param {ydn.crm.gmail.GmailObserver} gmail_observer
- * @param {Element=} opt_root_ele
+ * @param {Element=} opt_root_ele  // todo remove this
  * @constructor
  * @struct
  */
@@ -142,6 +138,13 @@ ydn.crm.inj.ContextContainer.CSS_CLASS_CONTAINER = 'container';
 
 
 /**
+ * @const
+ * @type {string}
+ */
+ydn.crm.inj.ContextContainer.CSS_CLASS_STATUS = 'sidebar-status';
+
+
+/**
  * @return {Element}
  */
 ydn.crm.inj.ContextContainer.prototype.createDom = function() {
@@ -174,6 +177,17 @@ ydn.crm.inj.ContextContainer.prototype.createDom = function() {
   header.appendChild(a);
   ele_root.firstElementChild.appendChild(header);
   goog.style.setElementShown(header, false);
+
+  // footer
+  var footer = document.createElement('div');
+  footer.classList.add(ydn.crm.ui.CSS_CLASS_FOOTER);
+  var status_el = document.createElement('div');
+  status_el.classList.add(ydn.crm.inj.ContextContainer.CSS_CLASS_STATUS);
+  footer.appendChild(status_el);
+  var status = new ydn.crm.msg.StatusBar(true);
+  status.render(status_el);
+  ydn.crm.msg.Manager.addConsumer(status);
+  ele_root.appendChild(footer);
 
   return ele_root;
 };
@@ -269,6 +283,7 @@ ydn.crm.inj.ContextContainer.prototype.onGmailPageChanged = function(e) {
  */
 ydn.crm.inj.ContextContainer.prototype.onGmailContextEvent_ = function(e) {
 
+  console.log(e.table.parentElement.innerHTML);
   this.attachToGmailRightBar(e.table);
 
 };

@@ -14,7 +14,7 @@
 
 
 /**
- * @fileoverview Container on gmail right bar.
+ * @fileoverview Context Container implemented for Gmail.
  *
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
@@ -27,7 +27,12 @@ goog.require('ydn.crm.inj.ContextContainer');
 
 
 /**
- * Container on gmail right bar.
+ * Context Container implemented for Gmail.
+ *  <pre>
+ *   var con = new ydn.crm.inj.GmailContextContainer(ob);
+ *   var el = con.getContentElement();
+ *   // use el as root node to render UI
+ * </pre>
  * @param {ydn.crm.gmail.GmailObserver} gmail_observer
  * @param {Element=} opt_ele
  * @constructor

@@ -22,23 +22,18 @@
 goog.provide('ydn.crm.inj.TrackingApp');
 goog.require('goog.dom');
 goog.require('goog.events');
-goog.require('goog.history.Html5History');
 goog.require('goog.style');
 goog.require('goog.ui.Component.EventType');
-goog.require('goog.ui.Tab');
-goog.require('goog.ui.TabBar');
-goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.base');
 goog.require('ydn.crm.gmail.GmailObserver');
 goog.require('ydn.crm.gmail.MessageHeaderInjector');
 goog.require('ydn.crm.inj.Hud');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
-goog.require('ydn.crm.sugarcrm.model.Archiver');
 goog.require('ydn.crm.tracking.GmailComposeTracker');
 goog.require('ydn.crm.tracking.GmailReplyTracker');
+goog.require('ydn.crm.tracking.result.ContextWidget');
 goog.require('ydn.crm.tracking.result.Sidebar');
-goog.require('ydn.debug');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
 
