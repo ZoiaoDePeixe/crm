@@ -51,3 +51,4 @@ document.getElementById('tweet-btn').onclick = function(e) {
   xhr.send();
 };
 
+ydn.social.MetaContact.DEBUG =  true;

@@ -40,6 +40,12 @@ ydn.social.MetaContact = function(data) {
 
 
 /**
+ * @define {boolean} debug flag.
+ */
+ydn.social.MetaContact.DEBUG = false;
+
+
+/**
  * @return {?string}
  */
 ydn.social.MetaContact.prototype.getFullName = function() {
@@ -82,6 +88,9 @@ ydn.social.MetaContact.fetchByEmail = function(email) {
   return ydn.msg.getChannel().send(ydn.crm.Ch.Req.SOCIAL_PROFILE, {
     'email': email
   }).addCallbacks(function(data) {
+    if (ydn.social.MetaContact.DEBUG) {
+      window.console.log(data);
+    }
     return new ydn.social.MetaContact(data);
   }, function(e) {
     return new ydn.social.MetaContact(null);

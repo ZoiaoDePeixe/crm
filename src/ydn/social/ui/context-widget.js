@@ -15,29 +15,43 @@
 
 
 /**
- * @fileoverview Context widget.
+ * @fileoverview Social context widget.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
 
 goog.provide('ydn.social.ui.ContextWidget');
-goog.require('ydn.crm.tracking.MsgModel');
-goog.require('ydn.crm.ui');
-goog.require('ydn.crm.ui.IMenuItemProvider');
-goog.require('ydn.crm.ui.UserSetting');
+goog.require('goog.events.EventHandler');
+goog.require('ydn.crm.gmail.GmailObserver');
+goog.require('ydn.social.ui.Bar');
 
 
 
 /**
- * Context widget.
- * @param {ydn.crm.inj.ContextContainer} context_container
+ * Social context widget.
+ * @param {ydn.crm.gmail.GmailObserver} gob
  * @constructor
  * @struct
  */
-ydn.social.ui.ContextWidget = function(context_container) {
+ydn.social.ui.ContextWidget = function(gob) {
+  /**
+   * @type {Element}
+   * @private
+   */
+  this.root_ = document.createElement('div');
 
+  /**
+   * @protected
+   * @type {ydn.social.ui.Bar}
+   */
+  this.bar = new ydn.social.ui.Bar();
 
+  this.handler = new goog.events.EventHandler(this);
+
+  this.handler.listen(gob,
+      ydn.crm.gmail.GmailObserver.EventType.CONTEXT_CHANGE,
+      this.onGmailContextEvent_);
 };
 
 
@@ -51,4 +65,27 @@ ydn.social.ui.ContextWidget.DEBUG = false;
  * @const
  * @type {string}
  */
-ydn.social.ui.ContextWidget.CSS_CLASS = 'tracking-result';
+ydn.social.ui.ContextWidget.CSS_CLASS = 'social-widget';
+
+
+/**
+ * Render UI.
+ * @param {Element} el
+ */
+ydn.social.ui.ContextWidget.prototype.render = function(el) {
+  this.root_.classList.add(ydn.social.ui.ContextWidget.CSS_CLASS);
+  el.appendChild(this.root_);
+  this.bar.render(this.root_);
+};
+
+
+/**
+ * Update target contact.
+ * @param {ydn.crm.gmail.GmailObserver.ContextRightBarEvent} e
+ * @private
+ */
+ydn.social.ui.ContextWidget.prototype.onGmailContextEvent_ = function(e) {
+
+  this.bar.showByEmail(e.context ? e.context.getEmail() : null);
+
+};

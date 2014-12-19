@@ -283,7 +283,6 @@ ydn.crm.inj.ContextContainer.prototype.onGmailPageChanged = function(e) {
  */
 ydn.crm.inj.ContextContainer.prototype.onGmailContextEvent_ = function(e) {
 
-  console.log(e.table.parentElement.innerHTML);
   this.attachToGmailRightBar(e.table);
 
 };

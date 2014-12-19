@@ -65,7 +65,7 @@ ydn.social.ui.Bar.prototype.logger =
 /**
  * @define {boolean} debug flag.
  */
-ydn.social.ui.Bar.DEBUG = true;
+ydn.social.ui.Bar.DEBUG = false;
 
 
 /**
@@ -189,7 +189,9 @@ ydn.social.ui.Bar.renderTwitterProfile = function(el, profile) {
  * statuses/user_timeline API
  */
 ydn.social.ui.Bar.renderTweet = function(ul, tweets) {
-  console.log(tweets);
+  if (ydn.social.ui.Bar.DEBUG) {
+    window.console.log(tweets);
+  }
   ul.innerHTML = '';
   var templ = ydn.ui.getTemplateById('template-tweet').content;
   for (var i = 0; i < tweets.length; i++) {
@@ -261,6 +263,7 @@ ydn.social.ui.Bar.prototype.refreshTwitterProfile_ = function() {
         container.classList.add('exist');
         ydn.social.ui.Bar.renderTwitterProfile(detail, dp);
       }, function(e) {
+        goog.style.setElementShown(detail, false);
         ydn.crm.msg.Manager.addStatus('Fetching twitter fail: ' + String(e));
         container.classList.remove('working');
         if (e.name == ydn.crm.base.ErrorName.HOST_PERMISSION) {
@@ -301,9 +304,13 @@ ydn.social.ui.Bar.prototype.refreshTwitter_ = function() {
 
 /**
  * Update contents.
- * @param {string} email
+ * @param {?string} email
  */
 ydn.social.ui.Bar.prototype.showByEmail = function(email) {
+  if (ydn.social.ui.Bar.DEBUG) {
+    window.console.log(email);
+  }
+
   if (!email) {
     this.setTarget(null);
     return;

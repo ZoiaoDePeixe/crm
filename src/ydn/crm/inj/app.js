@@ -38,6 +38,7 @@ goog.require('ydn.cs.ReplyPanelManager');
 goog.require('ydn.debug');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
+goog.require('ydn.social.ui.ContextWidget');
 
 
 
@@ -101,6 +102,11 @@ ydn.crm.inj.App = function() {
    */
   this.tracking_app = null;
 
+  /**
+   * @protected
+   * @type {ydn.social.ui.ContextWidget}
+   */
+  this.social_app = null;
 };
 
 
@@ -168,6 +174,9 @@ ydn.crm.inj.App.prototype.init = function() {
     this.sugar_app.init();
   }
 
+  this.social_app = new ydn.social.ui.ContextWidget(this.gmail_observer);
+  this.social_app.render(this.context_container.getContentElement());
+
 
   var delay = (0.5 + Math.random()) * 60 * 1000;
   setTimeout(function() {
@@ -199,7 +208,6 @@ ydn.crm.inj.App.runInjApp = function() {
   ydn.ui.setTemplateDocument(chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE));
 
   var tid2 = window.setTimeout(function() {
-
     app.init();
   }, 500);
 
