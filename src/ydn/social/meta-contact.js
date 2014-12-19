@@ -107,9 +107,10 @@ ydn.social.MetaContact.fetchByEmail = function(email) {
  * @enum {string}
  */
 ydn.social.Network = {
-  TWITTER: 'twitter',
+  ANGLE_LIST: 'angellist',
   G_PLUS: 'googleplus',
-  LINKED_IN: 'linkedin'
+  LINKED_IN: 'linkedin',
+  TWITTER: 'twitter'
 };
 
 
@@ -168,6 +169,12 @@ ydn.social.MetaContact.prototype.getProfileDetail = function(network) {
       'user_id': profile.id
     };
     return ydn.msg.getChannel().send(ydn.crm.Ch.Req.TWITTER, tw);
+  } else if (network == ydn.social.Network.ANGLE_LIST) {
+    var al = {
+      'path': 'users',
+      'id': profile.id
+    };
+    return ydn.msg.getChannel().send(ydn.crm.Ch.Req.ANGLE_LIST, al);
   } else if (network == ydn.social.Network.G_PLUS) {
     var gp = {
       'path': 'people/get',

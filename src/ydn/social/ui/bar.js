@@ -29,9 +29,10 @@ goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.ui');
 goog.require('ydn.msg');
 goog.require('ydn.social.MetaContact');
-goog.require('ydn.social.ui.Twitter');
+goog.require('ydn.social.ui.AngelList');
 goog.require('ydn.social.ui.GPlus');
 goog.require('ydn.social.ui.LinkedIn');
+goog.require('ydn.social.ui.Twitter');
 
 
 
@@ -85,9 +86,11 @@ ydn.social.ui.Bar.prototype.createDom = function() {
   var twitter = new ydn.social.ui.Twitter();
   var li = new ydn.social.ui.LinkedIn();
   var gp = new ydn.social.ui.GPlus();
+  var al = new ydn.social.ui.AngelList();
   this.addChild(twitter, true);
   this.addChild(gp, true);
   this.addChild(li, true);
+  this.addChild(al, true);
 };
 
 

@@ -53,6 +53,7 @@ ydn.crm.Ch.list = function() {
 ydn.crm.Ch.Req = {
   APP_SETTING: 'app-setting',
   ACK: 'ack', // acknowledge message
+  ANGLE_LIST: 'angle-list',
   BADGE_UPDATE: 'badge-update', // update browser action logo
   CLOSE: 'close',
   DNT_ADD: 'dnt-add',
