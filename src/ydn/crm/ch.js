@@ -67,6 +67,7 @@ ydn.crm.Ch.Req = {
   GDATA_LIST_CONTACT: 'gdata-list-contact', // list by 'email' or 'externalid'
   GDATA_TOKEN: 'gdata-token', //
   GDATA_TOKEN_REVOKE: 'gdata-token-revoke',
+  G_PLUS: 'google-plus',
   LIST_SUGAR: 'list-sugarcrm', // list sugarcrm about
   LIST_SUGAR_DOMAIN: 'list-sugarcrm-domain', // list sugarcrm domain
   LOG: 'log', // log bug

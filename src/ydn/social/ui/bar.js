@@ -30,6 +30,7 @@ goog.require('ydn.crm.ui');
 goog.require('ydn.msg');
 goog.require('ydn.social.MetaContact');
 goog.require('ydn.social.ui.Twitter');
+goog.require('ydn.social.ui.GPlus');
 goog.require('ydn.social.ui.LinkedIn');
 
 
@@ -83,7 +84,9 @@ ydn.social.ui.Bar.prototype.createDom = function() {
   root.classList.add(ydn.social.ui.Bar.CSS_CLASS);
   var twitter = new ydn.social.ui.Twitter();
   var li = new ydn.social.ui.LinkedIn();
+  var gp = new ydn.social.ui.GPlus();
   this.addChild(twitter, true);
+  this.addChild(gp, true);
   this.addChild(li, true);
 };
 

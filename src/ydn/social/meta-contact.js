@@ -108,6 +108,7 @@ ydn.social.MetaContact.fetchByEmail = function(email) {
  */
 ydn.social.Network = {
   TWITTER: 'twitter',
+  G_PLUS: 'googleplus',
   LINKED_IN: 'linkedin'
 };
 
@@ -167,6 +168,12 @@ ydn.social.MetaContact.prototype.getProfileDetail = function(network) {
       'user_id': profile.id
     };
     return ydn.msg.getChannel().send(ydn.crm.Ch.Req.TWITTER, tw);
+  } else if (network == ydn.social.Network.G_PLUS) {
+    var gp = {
+      'path': 'people/get',
+      'userId': profile.id
+    };
+    return ydn.msg.getChannel().send(ydn.crm.Ch.Req.G_PLUS, gp);
   } else {
     throw new Error(network);
   }

@@ -97,6 +97,15 @@ ydn.social.ui.Network.prototype.resetContainerClass = function() {
 
 
 /**
+ * @return {string}
+ * @protected
+ */
+ydn.social.ui.Network.prototype.getSvgSymbolName = function() {
+  return this.network;
+};
+
+
+/**
  * @override
  */
 ydn.social.ui.Network.prototype.createDom = function() {
@@ -108,7 +117,7 @@ ydn.social.ui.Network.prototype.createDom = function() {
   btn.classList.add('tooltip-host');
   details.classList.add(ydn.social.ui.Network.CSS_CLASS_DETAIL);
   goog.style.setElementShown(details, false);
-  var twitter = ydn.crm.ui.createSvgIcon(this.network);
+  var twitter = ydn.crm.ui.createSvgIcon(this.getSvgSymbolName());
   btn.classList.add(ydn.crm.ui.CSS_CLASS_SVG_BUTTON);
   btn.setAttribute('name', this.network);
   btn.appendChild(twitter);

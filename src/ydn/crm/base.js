@@ -311,5 +311,6 @@ ydn.crm.base.ContextPanelPositions = [
  */
 ydn.crm.base.ErrorName = {
   HOST_PERMISSION: 'HostPermissionError',
-  BACKEND_ERROR: 'BackendError'
+  BACKEND_ERROR: 'BackendError',
+  NOT_AUTHORIZE: 'NotAuthorizeError'
 };

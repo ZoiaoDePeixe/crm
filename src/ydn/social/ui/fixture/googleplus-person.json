@@ -1,0 +1,91 @@
+{
+  "kind": "plus#person",
+  "etag": "\"RqKWnRU4WW46-6W3rWhLR9iFZQM/glYr6croWFStGdcntOGsyuA0fug\"",
+  "occupation": "CEO",
+  "gender": "male",
+  "urls": [
+    {
+      "value": "http://www.linkedin.com/in/bartlorang",
+      "type": "otherProfile",
+      "label": "in/bartlorang"
+    },
+    {
+      "value": "http://twitter.com/lorangb",
+      "type": "otherProfile",
+      "label": "Twitter"
+    },
+    {
+      "value": "http://picasaweb.google.com/lorangb",
+      "type": "otherProfile",
+      "label": "Picasa Web Albums"
+    },
+    {
+      "value": "http://about.me/lorangb",
+      "type": "otherProfile",
+      "label": "About.Me"
+    },
+    {
+      "value": "https://profiles.google.com/114426306375480734745/buzz",
+      "type": "contributor",
+      "label": "Buzz"
+    },
+    {
+      "value": "http://fullcontact.com",
+      "type": "other",
+      "label": "FullContact"
+    }
+  ],
+  "objectType": "person",
+  "id": "114426306375480734745",
+  "displayName": "Bart Lorang",
+  "name": {
+    "familyName": "Lorang",
+    "givenName": "Bart"
+  },
+  "tagline": "CEO & Co-Founder of FullContact",
+  "url": "https://plus.google.com/114426306375480734745",
+  "image": {
+    "url": "https://lh6.googleusercontent.com/-EkI-dQC-4iM/AAAAAAAAAAI/AAAAAAAAAi0/SNeh57Hv1-c/photo.jpg?sz=50",
+    "isDefault": false
+  },
+  "organizations": [
+    {
+      "name": "University of Colorado, Boulder",
+      "title": "Computer Science",
+      "type": "school",
+      "startDate": "1997",
+      "endDate": "2000",
+      "primary": false
+    },
+    {
+      "name": "University of Denver, Daniels College of Business",
+      "title": "EMBA",
+      "type": "school",
+      "startDate": "2009",
+      "endDate": "2011",
+      "primary": false
+    },
+    {
+      "name": "FullContact",
+      "title": "CEO",
+      "type": "work",
+      "startDate": "2010",
+      "primary": true
+    }
+  ],
+  "placesLived": [
+    {
+      "value": "Denver, CO",
+      "primary": true
+    },
+    {
+      "value": "Bozeman, Montana"
+    },
+    {
+      "value": "Boulder, CO"
+    }
+  ],
+  "isPlusUser": true,
+  "circledByCount": 214,
+  "verified": false
+}
