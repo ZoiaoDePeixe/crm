@@ -81,6 +81,13 @@ ydn.social.ui.LinkedIn.prototype.refresh_ = function(profile) {
   } else {
     name.removeAttribute('href');
   }
+  var photo = this.target.getPhoto(this.network);
+  var img = header.querySelector('.logo img');
+  if (photo) {
+    img.src = photo;
+  } else {
+    img.removeAttribute('src');
+  }
   header.querySelector('.description').textContent = profile.bio || '';
   header.querySelector('.followers').textContent = profile.followers || '';
   header.querySelector('.following').textContent = profile.following || '';

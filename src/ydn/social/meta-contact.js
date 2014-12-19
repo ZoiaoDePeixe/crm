@@ -131,6 +131,27 @@ ydn.social.MetaContact.prototype.getProfile = function(network) {
 
 
 /**
+ * Get social profile.
+ * @param {ydn.social.Network} network
+ * @return {?string} image src, only https url will be used.
+ */
+ydn.social.MetaContact.prototype.getPhoto = function(network) {
+  if (this.data && this.data.fc) {
+    for (var i = 0; i < this.data.fc.photos.length; i++) {
+      var obj = this.data.fc.photos[i];
+      if (obj && obj.typeId == network) {
+        if (obj.url && goog.string.startsWith(obj.url, 'https')) {
+          return obj.url;
+        }
+        break;
+      }
+    }
+  }
+  return null;
+};
+
+
+/**
  * Get twitter user profile.
  * @param {ydn.social.Network} network
  * @return {!goog.async.Deferred<Object>} Resulting object depends on network.
