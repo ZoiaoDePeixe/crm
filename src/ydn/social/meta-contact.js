@@ -107,7 +107,8 @@ ydn.social.MetaContact.fetchByEmail = function(email) {
  * @enum {string}
  */
 ydn.social.Network = {
-  TWITTER: 'twitter'
+  TWITTER: 'twitter',
+  LINKED_IN: 'linkedin'
 };
 
 
