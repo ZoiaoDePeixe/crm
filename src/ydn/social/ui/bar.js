@@ -100,6 +100,9 @@ ydn.social.ui.Bar.prototype.createDom = function() {
   this.addChild(new ydn.social.ui.Network(ydn.social.Network.PINTEREST), true);
   this.addChild(new ydn.social.ui.Network(ydn.social.Network.TUMBLR), true);
   this.addChild(new ydn.social.ui.Network(ydn.social.Network.YELP), true);
+  this.addChild(new ydn.social.ui.Network(ydn.social.Network.MYSPACE), true);
+  this.addChild(new ydn.social.ui.Network(ydn.social.Network.BLOGGER), true);
+  this.addChild(new ydn.social.ui.Network(ydn.social.Network.YATHOO), true);
 };
 
 

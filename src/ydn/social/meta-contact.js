@@ -115,6 +115,9 @@ ydn.social.Network = {
   PINTEREST: 'pinterest',
   TUMBLR: 'tumblr',
   YELP: 'yelp',
+  BLOGGER: 'blogger',
+  YATHOO: 'yahoo',
+  MYSPACE: 'myspace',
   TWITTER: 'twitter'
 };
 

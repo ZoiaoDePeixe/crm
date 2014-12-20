@@ -106,11 +106,13 @@ ydn.social.ui.AngelList.prototype.redraw = function() {
   var profile = this.target ? this.target.getProfile(
       ydn.social.Network.ANGLE_LIST) : null;
   if (profile) {
+    goog.style.setElementShown(container, true);
     container.classList.add('exist');
     goog.style.setElementShown(detail, true);
     this.refreshByFC_(profile);
     this.fetchDetailAndRefresh_();
   } else {
+    goog.style.setElementShown(container, false);
     goog.style.setElementShown(detail, false);
     container.classList.add('empty');
   }
