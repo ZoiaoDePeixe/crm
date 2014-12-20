@@ -21,6 +21,7 @@ goog.require('ydn.db.Storage');
 goog.require('ydn.debug');
 goog.require('ydn.debug.DbLogger');
 goog.require('ydn.http');
+goog.require('ydn.so');
 goog.require('ydn.testing.ErrorLogger');
 
 
@@ -28,6 +29,74 @@ goog.require('ydn.testing.ErrorLogger');
  * @type {goog.log.Logger}
  */
 ydn.crm.shared.logger = goog.log.getLogger('ydn.crm');
+
+
+/**
+ * @type {boolean} flag to indicated init() has been called.
+ * @private
+ */
+ydn.crm.shared.init_ = false;
+
+
+/**
+ * Store name to store general data.
+ * @type {string}
+ */
+ydn.crm.shared.APP_STORE_NAME_DEFAULT = 'default';
+
+
+/**
+ * Key name in default store for install id.
+ * @type {string}
+ */
+ydn.crm.shared.INSTALL_ID_KEY = 'install-id';
+
+
+/**
+ * @const
+ * @type {boolean}
+ */
+ydn.crm.shared.USE_SERVER_ANALYTICS = true;
+
+
+/**
+ * Storage for the app.
+ * @type {ydn.db.Storage}
+ */
+ydn.crm.shared.app_db = null;
+
+
+/**
+ * Value of sync storage key, cached for async read.
+ * @type {Object}
+ * @protected
+ */
+ydn.crm.shared.sync_caches = {};
+
+
+/**
+ * @type {goog.net.XhrManager}
+ * @private
+ */
+ydn.crm.shared.xhr_manager_;
+
+
+/**
+ * @final
+ * @type {!DatabaseSchema} databse schema for application
+ */
+ydn.crm.shared.app_schema = /** @type {!DatabaseSchema} */ ({
+  'stores': [{
+    name: 'log',
+    keyPath: 'key'
+  }, ydn.debug.DbLogger.getStoreSchema(), {
+    name: ydn.crm.shared.APP_STORE_NAME_DEFAULT,
+    autoIncrement: true
+  }, {
+    name: ydn.so.STORE_NAME,
+    keyPath: 'id'
+  }]
+});
 
 
 /**
@@ -45,13 +114,6 @@ ydn.crm.shared.log = function(enabled) {
 
 
 /**
- * @type {goog.net.XhrManager}
- * @private
- */
-ydn.crm.shared.xhr_manager_;
-
-
-/**
  * Get default xhr manager.
  * @return {!goog.net.XhrManager}
  */
@@ -64,21 +126,6 @@ ydn.crm.shared.getXhrManager = function() {
   }
   return ydn.crm.shared.xhr_manager_;
 };
-
-
-/**
- * Storage for the app.
- * @type {ydn.db.Storage}
- */
-ydn.crm.shared.app_db = null;
-
-
-/**
- * Value of sync storage key, cached for async read.
- * @type {Object}
- * @protected
- */
-ydn.crm.shared.sync_caches = {};
 
 
 /**
@@ -124,13 +171,6 @@ ydn.crm.shared.setupGoogleAnalytic = function(id) {
   throw new Error('NotImpl');
 
 };
-
-
-/**
- * @const
- * @type {boolean}
- */
-ydn.crm.shared.USE_SERVER_ANALYTICS = true;
 
 
 /**
@@ -250,27 +290,6 @@ ydn.crm.shared.gaSend = function(category, action, opt_label, opt_value) {
     ydn.debug.ILogger.instance.log(data);
   }
 };
-
-
-/**
- * @type {boolean} flag to indicated init() has been called.
- * @private
- */
-ydn.crm.shared.init_ = false;
-
-
-/**
- * Store name to store general data.
- * @type {string}
- */
-ydn.crm.shared.APP_STORE_NAME_DEFAULT = 'default';
-
-
-/**
- * Key name in default store for install id.
- * @type {string}
- */
-ydn.crm.shared.INSTALL_ID_KEY = 'install-id';
 
 
 /**
@@ -473,23 +492,13 @@ ydn.crm.shared.init = function() {
   ydn.crm.shared.getFrontEndScriptName(); // initialize front end script.
   ydn.crm.shared.getClient(); // initialize default client
 
-  var log_store = ydn.debug.DbLogger.getStoreSchema();
-  var app_schema = /** @type {Object} */ ({
-    'stores': [{
-      name: 'log',
-      keyPath: 'key'
-    }, log_store, {
-      name: ydn.crm.shared.APP_STORE_NAME_DEFAULT,
-      autoIncrement: true
-    }]
-  });
   var db_options = {
     'isSerial': false,
     'policy': 'multi',
     'mechanisms': ['indexeddb']
   };
   ydn.crm.shared.app_db = new ydn.db.Storage('ydn.crm',
-      /** @type {!DatabaseSchema} */ (app_schema));
+      ydn.crm.shared.app_schema);
   ydn.debug.DbLogger.instance = new ydn.debug.DbLogger(ydn.crm.shared.app_db);
   ydn.debug.DbLogger.instance.setRecordLimit(10000);
   ydn.debug.DbLogger.instance.setLevelLimit(300);

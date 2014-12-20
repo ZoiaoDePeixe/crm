@@ -75,10 +75,7 @@ ydn.crm.AppSetting.schema = /** @type {DatabaseSchema} */ (/** @type {Object} */
   }, ydn.db.base.entitySchema,
   ydn.crm.tracking.trackSchema,
   ydn.crm.tracking.accessSchema,
-  ydn.crm.tracking.dntTrackSchema, {
-    name: ydn.so.STORE_NAME,
-    keyPath: 'id'
-  }]
+  ydn.crm.tracking.dntTrackSchema]
 }));
 
 

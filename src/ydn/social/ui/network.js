@@ -39,7 +39,6 @@ goog.require('ydn.crm.ui');
 ydn.social.ui.Network = function(network, opt_dom) {
   goog.base(this, opt_dom);
   /**
-   * @final
    * @type {ydn.social.Network}
    */
   this.network = network;
@@ -90,9 +89,37 @@ ydn.social.ui.Network.prototype.setTarget = function(obj) {
 
 
 /**
+ * Change network type.
+ * @param {ydn.social.Network} network
+ */
+ydn.social.ui.Network.prototype.setNetwork = function(network) {
+  this.network = network;
+};
+
+
+/**
  * @protected
  */
-ydn.social.ui.Network.prototype.redraw = goog.abstractMethod;
+ydn.social.ui.Network.prototype.redraw = function() {
+  var container = this.getContainer();
+  this.resetBaseClass();
+  var detail = this.getDetail();
+  detail.innerHTML = '';
+
+  var profile = this.target ? this.target.getProfile(this.network) : null;
+  if (ydn.social.ui.Network.DEBUG) {
+    window.console.log(this.network, profile);
+  }
+  if (profile) {
+    this.getButton().setAttribute('title', profile.typeName);
+    container.classList.add('exist');
+    goog.style.setElementShown(detail, true);
+    this.refreshProfile(profile);
+  } else {
+    goog.style.setElementShown(detail, false);
+    container.classList.add('empty');
+  }
+};
 
 
 /**
@@ -131,6 +158,49 @@ ydn.social.ui.Network.prototype.createDom = function() {
   btn.appendChild(twitter);
   container.appendChild(btn);
   container.appendChild(details);
+};
+
+
+/**
+ * @param {CrmApp.FullContact2SocialProfile} profile
+ * @protected
+ */
+ydn.social.ui.Network.prototype.refreshProfile = function(profile) {
+  var tid = 'template-detail-generic';
+  var t = ydn.ui.getTemplateById(tid).content;
+  var el = this.getDetail();
+  el.innerHTML = '';
+  el.appendChild(t.cloneNode(true));
+  goog.style.setElementShown(el, true);
+  var header = el.querySelector('.header');
+  var name = header.querySelector('.name a');
+  name.textContent = this.target.getFullName();
+  if (profile.url) {
+    name.href = profile.url;
+  } else {
+    name.removeAttribute('href');
+  }
+  var photo = this.target.getPhoto(this.network);
+  var img = header.querySelector('.logo img');
+  if (photo) {
+    img.src = photo;
+  } else {
+    img.removeAttribute('src');
+  }
+  header.querySelector('.description').textContent = profile.bio || '';
+  var followers = header.querySelector('.followers');
+  if (profile.followers) {
+    followers.textContent = profile.followers;
+  } else {
+    goog.style.setElementShown(followers.parentElement, false);
+  }
+  var following = header.querySelector('.following');
+  if (profile.followers) {
+    following.textContent = profile.following;
+  } else {
+    goog.style.setElementShown(following.parentElement, false);
+  }
+
 };
 
 

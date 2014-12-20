@@ -33,8 +33,6 @@ goog.require('ydn.social.ui.AngelList');
 goog.require('ydn.social.ui.Facebook');
 goog.require('ydn.social.ui.GPlus');
 goog.require('ydn.social.ui.LinkedIn');
-goog.require('ydn.social.ui.Meetup');
-goog.require('ydn.social.ui.Pinterest');
 goog.require('ydn.social.ui.Twitter');
 
 
@@ -90,9 +88,9 @@ ydn.social.ui.Bar.prototype.createDom = function() {
   var al = new ydn.social.ui.AngelList();
   var fb = new ydn.social.ui.Facebook();
   var li = new ydn.social.ui.LinkedIn();
-  var mp = new ydn.social.ui.Meetup();
+  var mp = new ydn.social.ui.Network(ydn.social.Network.MEETUP);
   var gp = new ydn.social.ui.GPlus();
-  var pt = new ydn.social.ui.Pinterest();
+  var pt = new ydn.social.ui.Network(ydn.social.Network.PINTEREST);
   this.addChild(twitter, true);
   this.addChild(fb, true);
   this.addChild(gp, true);
