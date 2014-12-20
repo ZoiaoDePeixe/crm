@@ -111,11 +111,13 @@ ydn.social.ui.Network.prototype.redraw = function() {
     window.console.log(this.network, profile);
   }
   if (profile) {
+    goog.style.setElementShown(container, true);
     this.getButton().setAttribute('title', profile.typeName);
     container.classList.add('exist');
     goog.style.setElementShown(detail, true);
     this.refreshProfile(profile);
   } else {
+    goog.style.setElementShown(container, false);
     goog.style.setElementShown(detail, false);
     container.classList.add('empty');
   }
@@ -136,7 +138,13 @@ ydn.social.ui.Network.prototype.resetBaseClass = function() {
  * @protected
  */
 ydn.social.ui.Network.prototype.getSvgSymbolName = function() {
-  return this.network;
+  if (ydn.social.networks.indexOf(this.network) >= 0) {
+    return this.network;
+  } else if (['meetup', 'pinterest'].indexOf(this.network) >= 0) {
+    return this.network;
+  } else {
+    return 'language'; // generic symbol
+  }
 };
 
 

@@ -118,6 +118,15 @@ ydn.social.Network = {
 
 
 /**
+ * List of default networks.
+ * @type {Array<ydn.social.Network>}
+ */
+ydn.social.networks = [ydn.social.Network.ANGLE_LIST,
+  ydn.social.Network.FACEBOOK, ydn.social.Network.G_PLUS,
+  ydn.social.Network.LINKED_IN, ydn.social.Network.TWITTER];
+
+
+/**
  * Get social profile.
  * @param {ydn.social.Network} network
  * @return {?CrmApp.FullContact2SocialProfile}
