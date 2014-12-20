@@ -108,8 +108,11 @@ ydn.social.MetaContact.fetchByEmail = function(email) {
  */
 ydn.social.Network = {
   ANGLE_LIST: 'angellist',
+  FACEBOOK: 'facebook',
   G_PLUS: 'googleplus',
   LINKED_IN: 'linkedin',
+  MEETUP: 'meetup',
+  PINTEREST: 'pinterest',
   TWITTER: 'twitter'
 };
 

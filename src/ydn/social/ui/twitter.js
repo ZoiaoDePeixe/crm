@@ -56,8 +56,7 @@ ydn.social.ui.Twitter.prototype.createDom = function() {
 ydn.social.ui.Twitter.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var hd = this.getHandler();
-  var button = this.getContainer().querySelector('.' +
-      ydn.crm.ui.CSS_CLASS_SVG_BUTTON);
+  var button = this.getButton();
   hd.listen(button, 'click', this.onButtonClicked_);
 };
 
@@ -143,6 +142,7 @@ ydn.social.ui.Twitter.prototype.refreshTweet_ = function() {
     container.classList.remove('working');
     if (e.name == ydn.crm.base.ErrorName.HOST_PERMISSION) {
       container.classList.add('alert');
+      this.getButton().setAttribute('title', 'Click to grant access to Twitter API');
     } else {
       container.classList.add('error');
     }
@@ -197,9 +197,10 @@ ydn.social.ui.Twitter.prototype.refresh_ = function() {
  */
 ydn.social.ui.Twitter.prototype.redraw = function() {
   var container = this.getContainer();
-  this.resetContainerClass();
+  this.resetBaseClass();
   var detail = this.getDetail();
   detail.innerHTML = '';
+  this.getButton().setAttribute('title', 'Twitter');
 
   var profile = this.target ? this.target.getProfile(
       ydn.social.Network.TWITTER) : null;

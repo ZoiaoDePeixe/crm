@@ -23,6 +23,7 @@
 
 goog.provide('ydn.social.ui.Network');
 goog.require('goog.ui.Component');
+goog.require('ydn.crm.ui');
 
 
 
@@ -72,6 +73,13 @@ ydn.social.ui.Network.CSS_CLASS_DETAIL = 'tooltip-detail';
 
 
 /**
+ * @const
+ * @type {string}
+ */
+ydn.social.ui.Network.CSS_CLASS_HOST = 'tooltip-host';
+
+
+/**
  * @param {ydn.social.MetaContact} obj
  * @final
  */
@@ -90,7 +98,7 @@ ydn.social.ui.Network.prototype.redraw = goog.abstractMethod;
 /**
  * @protected reset container element class to initial.
  */
-ydn.social.ui.Network.prototype.resetContainerClass = function() {
+ydn.social.ui.Network.prototype.resetBaseClass = function() {
   var el = this.getElement();
   el.className = ydn.social.ui.Network.CSS_CLASS_CONTAINER + ' ' + this.network;
 };
@@ -113,8 +121,8 @@ ydn.social.ui.Network.prototype.createDom = function() {
   var container = this.getElement();
   var btn = document.createElement('div');
   var details = document.createElement('div');
-  this.resetContainerClass();
-  btn.classList.add('tooltip-host');
+  this.resetBaseClass();
+  btn.classList.add(ydn.social.ui.Network.CSS_CLASS_HOST);
   details.classList.add(ydn.social.ui.Network.CSS_CLASS_DETAIL);
   goog.style.setElementShown(details, false);
   var twitter = ydn.crm.ui.createSvgIcon(this.getSvgSymbolName());
@@ -142,4 +150,14 @@ ydn.social.ui.Network.prototype.getContainer = function() {
 ydn.social.ui.Network.prototype.getDetail = function() {
   return this.getContainer().querySelector('.' +
       ydn.social.ui.Network.CSS_CLASS_DETAIL);
+};
+
+
+/**
+ * Get button host.
+ * @return {Element}
+ */
+ydn.social.ui.Network.prototype.getButton = function() {
+  return this.getContainer().querySelector('.' +
+      ydn.social.ui.Network.CSS_CLASS_HOST);
 };

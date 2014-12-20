@@ -64,8 +64,7 @@ ydn.social.ui.GPlus.prototype.getSvgSymbolName = function() {
 ydn.social.ui.GPlus.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var hd = this.getHandler();
-  var button = this.getContainer().querySelector('.' +
-      ydn.crm.ui.CSS_CLASS_SVG_BUTTON);
+  var button = this.getButton();
   hd.listen(button, 'click', this.onButtonClicked_);
 };
 
@@ -107,9 +106,10 @@ ydn.social.ui.GPlus.prototype.refreshByFC_ = function(profile) {
  */
 ydn.social.ui.GPlus.prototype.redraw = function() {
   var container = this.getContainer();
-  this.resetContainerClass();
+  this.resetBaseClass();
   var detail = this.getDetail();
   detail.innerHTML = '';
+  this.getButton().setAttribute('title', 'Google Plus');
 
   var profile = this.target ? this.target.getProfile(
       ydn.social.Network.G_PLUS) : null;
@@ -233,6 +233,8 @@ ydn.social.ui.GPlus.prototype.fetchDetailAndRefresh_ = function() {
         container.classList.remove('working');
         if (e.name == ydn.crm.base.ErrorName.HOST_PERMISSION) {
           container.classList.add('alert');
+          this.getButton().setAttribute('title', 'Click to grant access to ' +
+              'Google Plus API');
         } else {
           container.classList.add('error');
         }

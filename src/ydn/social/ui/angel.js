@@ -56,8 +56,7 @@ ydn.social.ui.AngelList.prototype.createDom = function() {
 ydn.social.ui.AngelList.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var hd = this.getHandler();
-  var button = this.getContainer().querySelector('.' +
-      ydn.crm.ui.CSS_CLASS_SVG_BUTTON);
+  var button = this.getButton();
   hd.listen(button, 'click', this.onButtonClicked_);
 };
 
@@ -99,7 +98,8 @@ ydn.social.ui.AngelList.prototype.refreshByFC_ = function(profile) {
  */
 ydn.social.ui.AngelList.prototype.redraw = function() {
   var container = this.getContainer();
-  this.resetContainerClass();
+  this.resetBaseClass();
+  this.getButton().setAttribute('title', 'AngelList');
   var detail = this.getDetail();
   detail.innerHTML = '';
 
@@ -205,6 +205,8 @@ ydn.social.ui.AngelList.prototype.fetchDetailAndRefresh_ = function() {
         container.classList.remove('working');
         if (e.name == ydn.crm.base.ErrorName.HOST_PERMISSION) {
           container.classList.add('alert');
+          this.getButton().setAttribute('title', 'Click to grant access to ' +
+              'AngelList API');
         } else {
           container.classList.add('error');
         }

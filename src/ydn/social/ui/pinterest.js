@@ -15,13 +15,13 @@
 
 
 /**
- * @fileoverview LinkedIn widget.
+ * @fileoverview Pinterest widget.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
 
-goog.provide('ydn.social.ui.LinkedIn');
+goog.provide('ydn.social.ui.Pinterest');
 goog.require('goog.date.relative');
 goog.require('ydn.social.ui.Network');
 goog.require('ydn.time');
@@ -29,23 +29,23 @@ goog.require('ydn.time');
 
 
 /**
- * LinkedIn widget.
+ * Pinterest widget.
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
  * @extends {ydn.social.ui.Network}
  */
-ydn.social.ui.LinkedIn = function(opt_dom) {
-  goog.base(this, ydn.social.Network.LINKED_IN, opt_dom);
+ydn.social.ui.Pinterest = function(opt_dom) {
+  goog.base(this, ydn.social.Network.PINTEREST, opt_dom);
 
 };
-goog.inherits(ydn.social.ui.LinkedIn, ydn.social.ui.Network);
+goog.inherits(ydn.social.ui.Pinterest, ydn.social.ui.Network);
 
 
 /**
  * @inheritDoc
  */
-ydn.social.ui.LinkedIn.prototype.createDom = function() {
+ydn.social.ui.Pinterest.prototype.createDom = function() {
   goog.base(this, 'createDom');
 };
 
@@ -53,7 +53,7 @@ ydn.social.ui.LinkedIn.prototype.createDom = function() {
 /**
  * @inheritDoc
  */
-ydn.social.ui.LinkedIn.prototype.enterDocument = function() {
+ydn.social.ui.Pinterest.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var hd = this.getHandler();
   var button = this.getButton();
@@ -65,8 +65,8 @@ ydn.social.ui.LinkedIn.prototype.enterDocument = function() {
  * @param {CrmApp.FullContact2SocialProfile} profile
  * @private
  */
-ydn.social.ui.LinkedIn.prototype.refresh_ = function(profile) {
-  var tid = 'template-detail-' + ydn.social.Network.TWITTER;
+ydn.social.ui.Pinterest.prototype.refresh_ = function(profile) {
+  var tid = 'template-detail-' + ydn.social.Network.PINTEREST;
   var t = ydn.ui.getTemplateById(tid).content;
   var el = this.getDetail();
   el.innerHTML = '';
@@ -96,15 +96,15 @@ ydn.social.ui.LinkedIn.prototype.refresh_ = function(profile) {
 /**
  * @override
  */
-ydn.social.ui.LinkedIn.prototype.redraw = function() {
+ydn.social.ui.Pinterest.prototype.redraw = function() {
   var container = this.getContainer();
   this.resetBaseClass();
   var detail = this.getDetail();
   detail.innerHTML = '';
-  this.getButton().setAttribute('title', 'LinkedIn');
+  this.getButton().setAttribute('title', 'Pinterest');
 
   var profile = this.target ? this.target.getProfile(
-      ydn.social.Network.LINKED_IN) : null;
+      ydn.social.Network.PINTEREST) : null;
   if (profile) {
     container.classList.add('exist');
     goog.style.setElementShown(detail, true);
@@ -120,6 +120,6 @@ ydn.social.ui.LinkedIn.prototype.redraw = function() {
  * @param {goog.events.BrowserEvent} ev
  * @private
  */
-ydn.social.ui.LinkedIn.prototype.onButtonClicked_ = function(ev) {
+ydn.social.ui.Pinterest.prototype.onButtonClicked_ = function(ev) {
 
 };
