@@ -113,6 +113,8 @@ ydn.social.Network = {
   LINKED_IN: 'linkedin',
   MEETUP: 'meetup',
   PINTEREST: 'pinterest',
+  TUMBLR: 'tumblr',
+  YELP: 'yelp',
   TWITTER: 'twitter'
 };
 
@@ -121,7 +123,7 @@ ydn.social.Network = {
  * List of default networks.
  * @type {Array<ydn.social.Network>}
  */
-ydn.social.networks = [ydn.social.Network.ANGLE_LIST,
+ydn.social.defaultNetworks = [ydn.social.Network.ANGLE_LIST,
   ydn.social.Network.FACEBOOK, ydn.social.Network.G_PLUS,
   ydn.social.Network.LINKED_IN, ydn.social.Network.TWITTER];
 
@@ -141,6 +143,31 @@ ydn.social.MetaContact.prototype.getProfile = function(network) {
     }
   }
   return null;
+};
+
+
+/**
+ * @return {number}
+ */
+ydn.social.MetaContact.prototype.getProfileCount = function() {
+  if (this.data && this.data.fc) {
+    return this.data.fc.socialProfiles.length;
+  } else {
+    return 0;
+  }
+};
+
+
+/**
+ * @param {number} idx
+ * @return {CrmApp.FullContact2SocialProfile}
+ */
+ydn.social.MetaContact.prototype.getProfileAt = function(idx) {
+  if (this.data && this.data.fc) {
+    return this.data.fc.socialProfiles[idx];
+  } else {
+    return null;
+  }
 };
 
 

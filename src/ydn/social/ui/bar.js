@@ -88,16 +88,18 @@ ydn.social.ui.Bar.prototype.createDom = function() {
   var al = new ydn.social.ui.AngelList();
   var fb = new ydn.social.ui.Facebook();
   var li = new ydn.social.ui.LinkedIn();
-  var mp = new ydn.social.ui.Network(ydn.social.Network.MEETUP);
   var gp = new ydn.social.ui.GPlus();
-  var pt = new ydn.social.ui.Network(ydn.social.Network.PINTEREST);
   this.addChild(twitter, true);
   this.addChild(fb, true);
   this.addChild(gp, true);
   this.addChild(li, true);
   this.addChild(al, true);
-  this.addChild(pt, true);
-  this.addChild(mp, true);
+
+  // optional networks
+  this.addChild(new ydn.social.ui.Network(ydn.social.Network.MEETUP), true);
+  this.addChild(new ydn.social.ui.Network(ydn.social.Network.PINTEREST), true);
+  this.addChild(new ydn.social.ui.Network(ydn.social.Network.TUMBLR), true);
+  this.addChild(new ydn.social.ui.Network(ydn.social.Network.YELP), true);
 };
 
 
@@ -110,10 +112,49 @@ ydn.social.ui.Bar.prototype.setTarget = function(target) {
     return;
   }
   this.target = target;
-  for (var i = 0; i < this.getChildCount(); i++) {
+  for (var i = 0; i < ydn.social.defaultNetworks.length; i++) {
     var ch = /** @type {ydn.social.ui.Network} */ (this.getChildAt(i));
     ch.setTarget(target);
   }
+  // show whatever available network
+  if (target) {
+    var n_opt = this.getChildCount() - ydn.social.defaultNetworks.length;
+    var opt = [];
+    var preferred = [ydn.social.Network.MEETUP, ydn.social.Network.YELP,
+      ydn.social.Network.PINTEREST, ydn.social.Network.TUMBLR];
+    for (var i = 0; i < preferred.length; i++) {
+      var profile = target.getProfile(preferred[i]);
+      if (profile) {
+        opt.push(preferred[i]);
+      }
+    }
+    var not_used = ['googleprofile', 'aboutme', 'gravatar'];
+    for (var i = 0; i < target.getProfileCount(); i++) {
+      var profile = target.getProfileAt(i);
+      var nid = profile.typeId;
+      var not_in_default = ydn.social.defaultNetworks.indexOf(nid) == -1;
+      if (not_in_default && opt.indexOf(nid) == -1 && not_used.indexOf(nid) == -1) {
+        opt.push(nid);
+      }
+    }
+    for (var i = ydn.social.defaultNetworks.length; i < this.getChildCount(); i++) {
+      var ch = /** @type {ydn.social.ui.Network} */ (this.getChildAt(i));
+      var j = i - ydn.social.defaultNetworks.length;
+      if (opt[j]) {
+        ch.setNetwork(/** @type {ydn.social.Network} */ (opt[j]));
+        ch.setTarget(target);
+      } else {
+        ch.setTarget(null);
+      }
+    }
+
+  } else {
+    for (var i = 5; i < this.getChildCount(); i++) {
+      var ch = /** @type {ydn.social.ui.Network} */ (this.getChildAt(i));
+      ch.setTarget(null);
+    }
+  }
+
 };
 
 

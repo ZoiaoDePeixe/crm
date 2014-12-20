@@ -94,6 +94,11 @@ ydn.social.ui.Network.prototype.setTarget = function(obj) {
  */
 ydn.social.ui.Network.prototype.setNetwork = function(network) {
   this.network = network;
+  var btn = this.getButton();
+  btn.innerHTML = '';
+  var svg = ydn.crm.ui.createSvgIcon(this.getSvgSymbolName());
+  btn.setAttribute('name', this.network);
+  btn.appendChild(svg);
 };
 
 
@@ -138,9 +143,10 @@ ydn.social.ui.Network.prototype.resetBaseClass = function() {
  * @protected
  */
 ydn.social.ui.Network.prototype.getSvgSymbolName = function() {
-  if (ydn.social.networks.indexOf(this.network) >= 0) {
+  if (ydn.social.defaultNetworks.indexOf(this.network) >= 0) {
     return this.network;
-  } else if (['meetup', 'pinterest'].indexOf(this.network) >= 0) {
+  } else if (['meetup', 'pinterest', 'yelp', 'tumblr', 'reddit', 'instagram',
+    'github', 'foursquare'].indexOf(this.network) >= 0) {
     return this.network;
   } else {
     return 'language'; // generic symbol
