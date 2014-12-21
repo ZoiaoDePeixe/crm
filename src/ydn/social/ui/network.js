@@ -147,7 +147,8 @@ ydn.social.ui.Network.prototype.getSvgSymbolName = function() {
     return this.network;
   } else if (['meetup', 'pinterest', 'yelp', 'tumblr', 'reddit', 'instagram',
     'github', 'foursquare', 'flickr', 'youtube', 'friendfeed',
-    'blogger', 'wordpress', 'quora', 'myspace', 'yahoo', 'delicious'].indexOf(this.network) >= 0) {
+    'blogger', 'wordpress', 'quora', 'myspace', 'yahoo', 'delicious',
+    'vimeo', 'klout'].indexOf(this.network) >= 0) {
     return this.network;
   } else {
     return 'language'; // generic symbol

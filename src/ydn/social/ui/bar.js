@@ -103,6 +103,12 @@ ydn.social.ui.Bar.prototype.createDom = function() {
   this.addChild(new ydn.social.ui.Network(ydn.social.Network.MYSPACE), true);
   this.addChild(new ydn.social.ui.Network(ydn.social.Network.BLOGGER), true);
   this.addChild(new ydn.social.ui.Network(ydn.social.Network.YATHOO), true);
+
+  for (var i = 0; i < this.getChildCount(); i++) {
+    var el = this.getChildAt(i).getElement().querySelector('.' +
+    ydn.social.ui.Network.CSS_CLASS_DETAIL);
+    el.classList.add('col-' + i); // for popup alignment
+  }
 };
 
 
