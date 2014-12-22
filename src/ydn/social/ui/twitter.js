@@ -90,15 +90,16 @@ ydn.social.ui.Twitter.renderTwitterProfile = function(el, profile) {
 
 /**
  * Render twitter profile
- * @param {Element} ul element to render on.
+ * @param {Element} detail element to render on.
  * @param {Array<Object>} tweets list of tweets as return by:
  * statuses/user_timeline API
  */
-ydn.social.ui.Twitter.renderTweet = function(ul, tweets) {
+ydn.social.ui.Twitter.renderTweet = function(detail, tweets) {
   if (ydn.social.ui.Network.DEBUG) {
     window.console.log(tweets);
   }
-  ul.innerHTML = '';
+  detail.innerHTML = '';
+
   var templ = ydn.ui.getTemplateById('template-tweet').content;
   for (var i = 0; i < tweets.length; i++) {
     var tweet = tweets[i];
@@ -114,7 +115,7 @@ ydn.social.ui.Twitter.renderTweet = function(ul, tweets) {
           goog.date.relative.format(created) || date.toDateString();
     }
 
-    ul.appendChild(li);
+    detail.appendChild(li);
   }
 };
 
@@ -126,6 +127,9 @@ ydn.social.ui.Twitter.renderTweet = function(ul, tweets) {
 ydn.social.ui.Twitter.prototype.refreshTweet_ = function() {
   var container = this.getContainer();
   var tweets_ul = container.querySelector('.tweets');
+  if (!tweets_ul) {
+    return goog.async.Deferred.succeed(null);
+  }
   container.classList.add('working');
   return this.target.getTweets().addCallbacks(function(tweets) {
     if (ydn.social.ui.Network.DEBUG) {
@@ -156,7 +160,7 @@ ydn.social.ui.Twitter.prototype.refreshTweet_ = function() {
  */
 ydn.social.ui.Twitter.prototype.refreshTwitterProfile_ = function() {
   var container = this.getContainer();
-  var detail = this.getDetail();
+
   container.classList.add('working');
   return this.target.getProfileDetail(ydn.social.Network.TWITTER)
       .addCallbacks(function(dp) {
@@ -168,12 +172,12 @@ ydn.social.ui.Twitter.prototype.refreshTwitterProfile_ = function() {
           return;
         }
         container.classList.add('exist');
-        ydn.social.ui.Twitter.renderTwitterProfile(detail, dp);
+        ydn.social.ui.Twitter.renderTwitterProfile(this.getDetail(), dp);
       }, function(e) {
-        goog.style.setElementShown(detail, false);
+        goog.style.setElementShown(this.getDetail(), false);
         ydn.crm.msg.Manager.addStatus('Fetching twitter fail: ' + String(e));
         container.classList.remove('working');
-        if (e.name == ydn.crm.base.ErrorName.HOST_PERMISSION) {
+        if (e && e.name == ydn.crm.base.ErrorName.HOST_PERMISSION) {
           container.classList.add('alert');
         } else {
           container.classList.add('error');
@@ -186,7 +190,7 @@ ydn.social.ui.Twitter.prototype.refreshTwitterProfile_ = function() {
  * @private
  */
 ydn.social.ui.Twitter.prototype.refresh_ = function() {
-  this.refreshTwitterProfile_().addBoth(function() {
+  this.refreshTwitterProfile_().addCallback(function() {
     this.refreshTweet_();
   }, this);
 };

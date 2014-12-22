@@ -22,6 +22,7 @@
 
 
 goog.provide('ydn.social.MetaContact');
+goog.require('ydn.msg');
 
 
 
@@ -205,10 +206,14 @@ ydn.social.MetaContact.prototype.getProfileDetail = function(network) {
   if (!profile) {
     return goog.async.Deferred.succeed(null);
   }
+  if (!profile.id && !profile.username) {
+    return goog.async.Deferred.succeed(null);
+  }
   if (network == ydn.social.Network.TWITTER) {
     var tw = {
       'path': 'users/show',
-      'user_id': profile.id
+      'user_id': profile.id,
+      'screen_name': profile.username
     };
     return ydn.msg.getChannel().send(ydn.crm.Ch.Req.TWITTER, tw);
   } else if (network == ydn.social.Network.ANGLE_LIST) {
@@ -239,7 +244,8 @@ ydn.social.MetaContact.prototype.getTweets = function() {
   }
   var tw = {
     'path': 'statuses/user_timeline',
-    'user_id': profile.id
+    'user_id': profile.id,
+    'screen_name': profile.username
   };
   return ydn.msg.getChannel().send(ydn.crm.Ch.Req.TWITTER, tw);
 };

@@ -229,7 +229,7 @@ ydn.social.ui.GPlus.prototype.fetchDetailAndRefresh_ = function() {
         ydn.social.ui.GPlus.renderGPlusProfile(detail, dp);
       }, function(e) {
         goog.style.setElementShown(detail, false);
-        ydn.crm.msg.Manager.addStatus('Fetching twitter fail: ' + String(e));
+        ydn.crm.msg.Manager.addStatus('Fetching Google Plus fail: ' + String(e));
         container.classList.remove('working');
         if (e.name == ydn.crm.base.ErrorName.HOST_PERMISSION) {
           container.classList.add('alert');
