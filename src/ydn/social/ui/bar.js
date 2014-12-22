@@ -96,19 +96,17 @@ ydn.social.ui.Bar.prototype.createDom = function() {
   this.addChild(al, true);
 
   // optional networks
-  this.addChild(new ydn.social.ui.Network(ydn.social.Network.MEETUP), true);
-  this.addChild(new ydn.social.ui.Network(ydn.social.Network.PINTEREST), true);
-  this.addChild(new ydn.social.ui.Network(ydn.social.Network.TUMBLR), true);
-  this.addChild(new ydn.social.ui.Network(ydn.social.Network.YELP), true);
-  this.addChild(new ydn.social.ui.Network(ydn.social.Network.MYSPACE), true);
-  this.addChild(new ydn.social.ui.Network(ydn.social.Network.BLOGGER), true);
-  this.addChild(new ydn.social.ui.Network(ydn.social.Network.YATHOO), true);
+  for (var i = 5; i < 18; i++) {
+    // here network name does not matter, since it will have to reset later.
+    this.addChild(new ydn.social.ui.Network(ydn.social.Network.MEETUP), true);
+  }
 
   for (var i = 0; i < this.getChildCount(); i++) {
-    var el = this.getChildAt(i).getElement().querySelector('.' +
-    ydn.social.ui.Network.CSS_CLASS_DETAIL);
-    el.classList.add('col-' + i); // for popup alignment
+    var ch = /** @type {ydn.social.ui.Network} */ (this.getChildAt(i));
+    var el = ch.getDetail();
+    el.classList.add('col-' +  (i % 9)); // for popup alignment
   }
+
 };
 
 

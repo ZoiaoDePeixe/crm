@@ -74,4 +74,4 @@ document.getElementById('gplus-btn').onclick = function(e) {
 
 ydn.social.MetaContact.DEBUG =  true;
 ydn.social.ui.Bar.DEBUG =  true;
-ydn.social.ui.Network.DEBUG =  true;
+// ydn.social.ui.Network.DEBUG =  true;
