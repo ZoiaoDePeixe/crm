@@ -131,7 +131,7 @@ ydn.social.ui.Twitter.prototype.refreshTweet_ = function() {
     return goog.async.Deferred.succeed(null);
   }
   container.classList.add('working');
-  return this.target.getTweets().addCallbacks(function(tweets) {
+  return this.target.getFeed(this.network).addCallbacks(function(tweets) {
     if (ydn.social.ui.Network.DEBUG) {
       window.console.log(tweets);
     }
@@ -144,7 +144,7 @@ ydn.social.ui.Twitter.prototype.refreshTweet_ = function() {
   }, function(e) {
     ydn.crm.msg.Manager.addStatus('Fetching twitter fail: ' + String(e));
     container.classList.remove('working');
-    if (e.name == ydn.crm.base.ErrorName.HOST_PERMISSION) {
+    if (e && e.name == ydn.crm.base.ErrorName.HOST_PERMISSION) {
       container.classList.add('alert');
       this.getButton().setAttribute('title', 'Click to grant access to Twitter API');
     } else {

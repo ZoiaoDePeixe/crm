@@ -235,19 +235,59 @@ ydn.social.MetaContact.prototype.getProfileDetail = function(network) {
 
 
 /**
+ * @param {ydn.social.Network} network
  * @return {!goog.async.Deferred<!Array<Object>>}
  */
-ydn.social.MetaContact.prototype.getTweets = function() {
-  var profile = this.getProfile(ydn.social.Network.TWITTER);
+ydn.social.MetaContact.prototype.getFeed = function(network) {
+  var profile = this.getProfile(network);
   if (!profile) {
     return goog.async.Deferred.succeed(null);
   }
-  var tw = {
-    'path': 'statuses/user_timeline',
-    'user_id': profile.id,
-    'screen_name': profile.username
-  };
-  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.TWITTER, tw);
+  if (network == ydn.social.Network.TWITTER) {
+    var tw = {
+      'path': 'statuses/user_timeline',
+      'user_id': profile.id,
+      'screen_name': profile.username
+    };
+    return ydn.msg.getChannel().send(ydn.crm.Ch.Req.TWITTER, tw);
+  } else {
+    return goog.async.Deferred.succeed(null);
+  }
+
+};
+
+
+
+/**
+ * Social network profile.
+ * @param {ydn.social.MetaContact} parent
+ * @param {ydn.social.Network} network
+ * @constructor
+ * @struct
+ */
+ydn.social.MetaNetwork = function(parent, network) {
+  /**
+   * @final
+   * @type {ydn.social.MetaContact}
+   */
+  this.parent = parent;
+  /**
+   * @final
+   * @type {ydn.social.Network}
+   */
+  this.network = network;
+  this.source_idx_ = 0; // the first available source
+  this.source_ = this.getSource_();
+};
+
+
+ydn.social.MetaNetwork.prototype.getSource_ = function() {
+
+}
+
+
+ydn.social.MetaNetwork.prototype.getFullname = function() {
+
 };
 
 
