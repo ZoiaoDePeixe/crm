@@ -429,5 +429,154 @@
       }
     ]
   },
-  "cb": null
+  "cb": {
+    "id": "4fd86a38-61fe-4a63-8dad-ec1d5e67d45d",
+    "name": {
+      "fullName": "Jeremy Stoppelman",
+      "givenName": "Jeremy",
+      "familyName": "Stoppelman"
+    },
+    "email": "jeremy@yelp.com",
+    "gender": null,
+    "location": "San Francisco, CA, USA",
+    "geo": {
+      "city": "SF",
+      "state": "CA",
+      "country": "US",
+      "lat": 37.7749295,
+      "lng": -122.4194155
+    },
+    "bio": "Co-founder and CEO of Yelp",
+    "site": "http://www.yelp.com/yelpmobile",
+    "avatar": "https://d1ts43dypk8bqh.cloudfront.net/v1/avatars/4fd86a38-61fe-4a63-8dad-ec1d5e67d45d",
+    "employment": {
+      "name": "Yelp",
+      "title": "CEO",
+      "domain": "yelp.com"
+    },
+    "facebook": {
+      "handle": null
+    },
+    "github": {
+      "handle": null,
+      "avatar": null,
+      "company": null,
+      "blog": null,
+      "followers": null,
+      "following": null
+    },
+    "twitter": {
+      "handle": "jeremys",
+      "id": 5968272,
+      "bio": "Co-founder and CEO of Yelp",
+      "followers": 189270,
+      "following": 235,
+      "location": "San Francisco",
+      "site": "http://www.yelp.com/yelpmobile",
+      "avatar": "https://pbs.twimg.com/profile_images/517370322136223744/aV9bP9Ti.jpeg"
+    },
+    "linkedin": {
+      "handle": "in/jeremystoppelman"
+    },
+    "googleplus": {
+      "handle": null
+    },
+    "angellist": {
+      "handle": "jeremys",
+      "bio": "Co-founder and CEO of @yelp",
+      "blog": "http://jeremy.stoppelman.com/",
+      "site": "",
+      "followers": 9541,
+      "avatar": "https://d1qb2nb5cznatu.cloudfront.net/users/116-medium_jpg?1405432982"
+    },
+    "klout": {
+      "handle": null,
+      "score": null
+    },
+    "foursquare": {
+      "handle": null
+    },
+    "aboutme": {
+      "handle": null,
+      "bio": null,
+      "avatar": null
+    },
+    "gravatar": {
+      "handle": null,
+      "urls": null,
+      "avatar": null,
+      "avatars": []
+    },
+    "fuzzy": false,
+    "company": {
+      "id": "5d938030-7686-4b15-a68f-228aeda44a24",
+      "name": "Yelp",
+      "legalName": "Yelp, Inc.",
+      "domain": "yelp.com",
+      "url": "http://Official website",
+      "site": {
+        "url": "http://yelp.com",
+        "title": null,
+        "h1": null,
+        "metaDescription": null,
+        "metaAuthor": null
+      },
+      "categories": [
+        "Customer Service",
+        "Reviews and Recommendations",
+        "Search",
+        "Business ratings and reviews",
+        "web-based urban guide"
+      ],
+      "description": "Yelp is an online urban guide that helps people find recommended destinations based on the informed opinions and reviews of a community.",
+      "founders": [
+        "Russel Simmons",
+        "Jeremy Stoppelman"
+      ],
+      "raised": 121000000,
+      "location": "San Francisco, California, United States",
+      "employees": 5000,
+      "logo": "https://dqus23xyrtg1i.cloudfront.net/v1/logos/5d938030-7686-4b15-a68f-228aeda44a24",
+      "google": {
+        "rank": 7
+      },
+      "alexa": {
+        "usRank": 121,
+        "globalRank": 131
+      },
+      "facebook": {
+        "handle": "joiito"
+      },
+      "linkedin": {
+        "handle": "company/yelp.com"
+      },
+      "twitter": {
+        "handle": "Yelp",
+        "id": 17215802,
+        "bio": "Connecting people to great local businesses in communities around the world. Follow us for Yelpy news & insight! Customer support: http://t.co/yEvgEtRiFJ",
+        "followers": 86376,
+        "following": 243,
+        "location": "20+ countries worldwide",
+        "site": "http://officialblog.yelp.com/",
+        "avatar": "https://pbs.twimg.com/profile_images/532675697685176320/JoD5bESQ_normal.png"
+      },
+      "angellist": {
+        "id": 32689,
+        "handle": "yelp",
+        "description": "This year we're focused on three things: \n\nAmazing features specifically for the creators of Yelp's unmatched local review content - namely our incredible community.\n\nInternational expansion - bringing Yelp to the world. \n\nClosing the loop with local businesses - Yelp Platform and more tools to help businesses see the value they're getting from Yelp.",
+        "followers": 738,
+        "blogUrl": "http://officialblog.yelp.com"
+      },
+      "crunchbase": {
+        "handle": "yelp"
+      },
+      "emailProvider": false,
+      "personal": false
+    },
+    "_options": {
+      "api": "person",
+      "path": "/people/email/<%= email %>",
+      "queryKeys": "subscribe"
+    }
+  }
 }
