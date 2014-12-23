@@ -260,6 +260,9 @@ ydn.social.MetaContact.prototype.getFeed = function(network) {
 
 /**
  * Social network profile.
+ * This class will select suitable source to get personal profile for given
+ * network.
+ * List of available sources and source can be selected.
  * @param {ydn.social.MetaContact} parent
  * @param {ydn.social.Network} network
  * @constructor
@@ -277,17 +280,155 @@ ydn.social.MetaNetwork = function(parent, network) {
    */
   this.network = network;
   this.source_idx_ = 0; // the first available source
-  this.source_ = this.getSource_();
+  /**
+   * Get list os sources.
+   * @final
+   * @type {!Array<string>}
+   * @private
+   */
+  this.sources_ = [];
+  this.profiles_index_ = [];
+  if (this.parent.data && this.parent.data.fc && this.parent.data.fc.socialProfiles) {
+    var ps = this.parent.data.fc.socialProfiles;
+    for (var i = 0; i < ps.length; i++) {
+      var p = ps[i];
+      if (p.typeId == network && (p.id || p.username || p.url)) {
+        this.sources_.push('fc');
+        this.profiles_index_.push(i);
+        break;
+      }
+    }
+  }
+  if (this.parent.data && this.parent.data.pp && this.parent.data.pp.socialProfiles) {
+    var ps = this.parent.data.pp.socialProfiles;
+    for (var i = 0; i < ps.length; i++) {
+      var p = ps[i];
+      if (p.typeId == network && (p.id || p.username || p.url)) {
+        this.sources_.push('pp');
+        this.profiles_index_.push(i);
+        break;
+      }
+    }
+  }
 };
 
 
-ydn.social.MetaNetwork.prototype.getSource_ = function() {
-
-}
-
-
-ydn.social.MetaNetwork.prototype.getFullname = function() {
-
+/**
+ * Switch to next data source provider.
+ */
+ydn.social.MetaNetwork.prototype.nextSource = function() {
+  this.source_idx_++;
+  if (this.source_idx_ >= this.source_idx_) {
+    this.source_idx_ = 0;
+  }
 };
+
+
+/**
+ * @return {string}
+ */
+ydn.social.MetaNetwork.prototype.getSourceName = function() {
+  if (this.sources_[this.source_idx_] == 'fc') {
+    return 'FullContact';
+  } else if (this.sources_[this.source_idx_] == 'pp') {
+    return 'Pipl';
+  } else if (this.sources_[this.source_idx_] == 'cb') {
+    return 'ClearBit';
+  } else {
+    return '';
+  }
+};
+
+
+/**
+ * @return {boolean}
+ */
+ydn.social.MetaNetwork.prototype.hasProfile = function() {
+  return this.sources_.length > 0;
+};
+
+
+/**
+ * Get list of social network having profiles.
+ * @return {!Array<string>} must treat as readonly.
+ */
+ydn.social.MetaNetwork.prototype.getSources = function() {
+  return this.sources_;
+};
+
+
+/**
+ * @return {CrmApp.FullContact2SocialProfile}
+ * @private
+ */
+ydn.social.MetaNetwork.prototype.getProfileAsFullContact_ = function() {
+  var i = this.profiles_index_[this.source_idx_];
+  if (this.sources_[this.source_idx_] == 'pp') {
+    return this.parent.data.pp.socialProfiles[i];
+  } else if (this.sources_[this.source_idx_] == 'fc') {
+    return this.parent.data.fc.socialProfiles[i];
+  } else {
+    throw new Error('not pp or fc');
+  }
+};
+
+
+/**
+ * Get screen name.
+ * @return {string}
+ */
+ydn.social.MetaNetwork.prototype.getScreenName = function() {
+  var pf = this.getProfileAsFullContact_();
+  if (pf.username) {
+    if (this.network == ydn.social.Network.TWITTER) {
+      return '@' + pf.username;
+    }
+    return pf.username;
+  } else if (pf.id) {
+    return pf.id;
+  } else {
+    return this.parent.getFullName() || '';
+  }
+};
+
+
+/**
+ * Get social network profile URL.
+ * @return {string|undefined}
+ */
+ydn.social.MetaNetwork.prototype.getProfileUrl = function() {
+  var pf = this.getProfileAsFullContact_();
+  return pf.url;
+};
+
+
+/**
+ * Get a short summary of the user.
+ * @return {string|undefined}
+ */
+ydn.social.MetaNetwork.prototype.getBio = function() {
+  var pf = this.getProfileAsFullContact_();
+  return pf.bio;
+};
+
+
+/**
+ * @return {number|undefined}
+ */
+ydn.social.MetaNetwork.prototype.getFollowers = function() {
+  var pf = this.getProfileAsFullContact_();
+  return pf.followers;
+};
+
+
+/**
+ * @return {number|undefined}
+ */
+ydn.social.MetaNetwork.prototype.getFollowing = function() {
+  var pf = this.getProfileAsFullContact_();
+  return pf.following;
+};
+
+
 
 
