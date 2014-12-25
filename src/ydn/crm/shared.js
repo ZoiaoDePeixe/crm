@@ -240,7 +240,8 @@ ydn.crm.shared.logAnalytic = function(data) {
       'content-type': 'application/json'
     };
     var client = ydn.crm.shared.getLoginClient();
-    client.request(new ydn.client.HttpRequestData('/ga/', 'POST',
+    var key = ydn.crm.shared.install_id + '/' + goog.now();
+    client.request(new ydn.client.HttpRequestData('/ga/' + key, 'POST',
         null, headers, JSON.stringify(data))).execute(null);
   }
 };
@@ -530,7 +531,7 @@ ydn.crm.shared.init = function() {
           } else {
             ydn.crm.shared.install_id = obj[ydn.crm.shared.INSTALL_ID_KEY];
           }
-          ydn.debug.ILogger.instance.setPrefix('ce/' +
+          ydn.debug.ILogger.instance.setPrefix('ga/' +
               ydn.crm.shared.install_id + '/');
         });
   });
@@ -569,7 +570,7 @@ ydn.crm.shared.init = function() {
     return data;
   };
   ydn.debug.ILogger.instance = new ydn.testing.ErrorLogger(ydn.crm.shared.app_db, log_filter);
-  ydn.debug.ILogger.instance.setPrefix('ce/');
+  ydn.debug.ILogger.instance.setPrefix('ga/');
   ydn.client.error_logger = ydn.debug.ILogger.instance;
   // goog.asserts.assert(!window.onerror, 'window.onerror already defined.');
   window['onerror'] = function winOnError(msg, url, lineNumber, error) {
