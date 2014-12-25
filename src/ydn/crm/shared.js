@@ -256,14 +256,12 @@ ydn.crm.shared.logAnalytic = function(data) {
  * @param {(number|Object|string)=} opt_value 'image2'
  */
 ydn.crm.shared.gaSend = function(category, action, opt_label, opt_value) {
-  /* if (ydn.crm.shared.cpaTracker_) {
-    ydn.crm.shared.cpaTracker_.sendEvent(category, action, opt_label, opt_value);
-  } else
+
   if (location.host == 'gehcogaddkopajdfhbfgokbongbfijnh') {
     // not send for dev.
     return;
   }
-   */
+
   var value = 0;
   var detail = '';
   if (opt_value) {
