@@ -228,6 +228,25 @@ ydn.crm.shared.auditUserActivity = function() {
 
 
 /**
+ * Log server side analytics.
+ * @param {Object} data
+ */
+ydn.crm.shared.logAnalytic = function(data) {
+  data['installId'] = ydn.crm.shared.install_id;
+  if (ydn.testing.ErrorLogger.ENABLED) {
+    ydn.debug.ILogger.instance.log(data);
+  } else {
+    var headers = {
+      'content-type': 'application/json'
+    };
+    var client = ydn.crm.shared.getLoginClient();
+    client.request(new ydn.client.HttpRequestData('/ga/', 'POST',
+        null, headers, JSON.stringify(data))).execute(null);
+  }
+};
+
+
+/**
  * Send event to Google Analytics.
  *
  * @param {string} category 'login'
@@ -238,11 +257,12 @@ ydn.crm.shared.auditUserActivity = function() {
 ydn.crm.shared.gaSend = function(category, action, opt_label, opt_value) {
   /* if (ydn.crm.shared.cpaTracker_) {
     ydn.crm.shared.cpaTracker_.sendEvent(category, action, opt_label, opt_value);
-  } else */
+  } else
   if (location.host == 'gehcogaddkopajdfhbfgokbongbfijnh') {
     // not send for dev.
     return;
   }
+   */
   var value = 0;
   var detail = '';
   if (opt_value) {
@@ -256,19 +276,13 @@ ydn.crm.shared.gaSend = function(category, action, opt_label, opt_value) {
   }
   if (ydn.crm.shared.USE_SERVER_ANALYTICS) {
     var data = {
-      'installId': ydn.crm.shared.install_id,
       'category': category,
       'action': action,
       'label': opt_label || '',
       'value': value,
       'detail': detail
     };
-    var headers = {
-      'content-type': 'application/json'
-    };
-    var client = ydn.crm.shared.getLoginClient();
-    client.request(new ydn.client.HttpRequestData('/ga/', 'POST',
-        null, headers, JSON.stringify(data))).execute(null);
+    ydn.crm.shared.logAnalytic(data);
   } else if (goog.global['_gaq']) {
     if (goog.global['_gaq'].length > 100) {
       return;
@@ -516,7 +530,8 @@ ydn.crm.shared.init = function() {
           } else {
             ydn.crm.shared.install_id = obj[ydn.crm.shared.INSTALL_ID_KEY];
           }
-          ydn.debug.ILogger.instance.setSubfix(ydn.crm.shared.install_id);
+          ydn.debug.ILogger.instance.setPrefix('ce/' +
+              ydn.crm.shared.install_id + '/');
         });
   });
 
@@ -554,6 +569,7 @@ ydn.crm.shared.init = function() {
     return data;
   };
   ydn.debug.ILogger.instance = new ydn.testing.ErrorLogger(ydn.crm.shared.app_db, log_filter);
+  ydn.debug.ILogger.instance.setPrefix('ce/');
   ydn.client.error_logger = ydn.debug.ILogger.instance;
   // goog.asserts.assert(!window.onerror, 'window.onerror already defined.');
   window['onerror'] = function winOnError(msg, url, lineNumber, error) {
@@ -563,6 +579,7 @@ ydn.crm.shared.init = function() {
       tr = error.stack + '';
     }
     var obj = {
+      'type': 'window.onerror',
       'message': msg,
       'url': url,
       'lineNumber': lineNumber,
