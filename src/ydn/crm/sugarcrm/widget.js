@@ -91,9 +91,24 @@ ydn.crm.sugarcrm.Widget.prototype.render = function(ele) {
     this.root.querySelector('h3').style.display = 'none';
   }
 
+  var detail = this.root.querySelector('details');
+  detail.addEventListener('click', this.onDetailsClick_.bind(this), false);
+
   ele.appendChild(this.root);
 
   this.refresh();
+};
+
+
+/**
+ * @param {Event} ev
+ * @private
+ */
+ydn.crm.sugarcrm.Widget.prototype.onDetailsClick_ = function(ev) {
+  var is_open = !ev.currentTarget.hasAttribute('open');
+  if (is_open) {
+    this.showStats(true);
+  }
 };
 
 
@@ -193,7 +208,8 @@ ydn.crm.sugarcrm.Widget.prototype.refresh = function() {
         if (info && !(info instanceof Error)) {
           info_div.textContent = info.version + ' ' + info.flavor;
         }
-        this.showStats();
+        var stats = this.root.querySelector('div[name=stats-panel]');
+        goog.style.setElementShown(stats, true);
       }, this);
       this.model.hasHostPermission(function(grant) {
         permission_panel.style.display = grant ? 'none' : '';
