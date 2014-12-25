@@ -94,9 +94,53 @@ ydn.crm.sugarcrm.Widget.prototype.render = function(ele) {
   var detail = this.root.querySelector('details');
   detail.addEventListener('click', this.onDetailsClick_.bind(this), false);
 
+  var clear_cache = this.root.querySelector('button[name=clear-cache]');
+  clear_cache.onclick = this.onClearCache_.bind(this);
+
+  var update_now = this.root.querySelector('button[name=update-now]');
+  update_now.onclick = this.onUpdateNow_.bind(this);
+
   ele.appendChild(this.root);
 
   this.refresh();
+};
+
+
+/**
+ * @param {Event} ev
+ * @private
+ */
+ydn.crm.sugarcrm.Widget.prototype.onClearCache_ = function(ev) {
+  var btn = ev.currentTarget;
+  btn.setAttribute('disabled', 'disabled');
+  this.getModel().getChannel().send(ydn.crm.Ch.SReq.CLEAR_CACHE)
+      .addBoth(function(e) {
+        this.showStats(true).addBoth(function() {
+          btn.removeAttribute('disabled');
+        });
+        if (e && e.message) {
+          alert(e.message);
+        }
+      }, this);
+};
+
+
+/**
+ * @param {Event} ev
+ * @private
+ */
+ydn.crm.sugarcrm.Widget.prototype.onUpdateNow_ = function(ev) {
+  var btn = ev.currentTarget;
+  btn.setAttribute('disabled', 'disabled');
+  this.getModel().getChannel().send(ydn.crm.Ch.SReq.UPDATE_NOW)
+      .addBoth(function(e) {
+        this.showStats(true).addBoth(function() {
+          btn.removeAttribute('disabled');
+        });
+        if (e && e.message) {
+          alert(e.message);
+        }
+      }, this);
 };
 
 
@@ -206,7 +250,7 @@ ydn.crm.sugarcrm.Widget.prototype.refresh = function() {
       this.model.getInfo().addCallback(function(info) {
         var info_div = info_panel.querySelector('span[name=instance-info]');
         if (info && !(info instanceof Error)) {
-          info_div.textContent = info.version + ' ' + info.flavor;
+          info_div.textContent = (info.version || '') + ' ' + (info.flavor || '');
         }
         var stats = this.root.querySelector('div[name=stats-panel]');
         goog.style.setElementShown(stats, true);
@@ -237,6 +281,7 @@ ydn.crm.sugarcrm.Widget.prototype.refresh = function() {
 /**
  * Display number of records in cached modules.
  * @param {boolean=} opt_val
+ * @return {goog.async.Deferred}
  */
 ydn.crm.sugarcrm.Widget.prototype.showStats = function(opt_val) {
   if (goog.isDef(opt_val)) {
@@ -244,7 +289,9 @@ ydn.crm.sugarcrm.Widget.prototype.showStats = function(opt_val) {
   }
   var stats = this.root.querySelector('div[name=stats-panel]');
   if (this.show_stats && this.model.isLogin()) {
-    this.model.getChannel().send(ydn.crm.Ch.SReq.STATS).addCallback(function(arr) {
+    goog.style.setElementShown(stats, true);
+    var ch = this.model.getChannel();
+    return ch.send(ydn.crm.Ch.SReq.STATS).addCallback(function(arr) {
       var ul = stats.querySelector('ul');
       ul.innerHTML = '';
       // console.log(arr);
@@ -272,9 +319,9 @@ ydn.crm.sugarcrm.Widget.prototype.showStats = function(opt_val) {
         ul.appendChild(li);
       }
     }, this);
-    goog.style.setElementShown(stats, true);
   } else {
     goog.style.setElementShown(stats, false);
+    return goog.async.Deferred.succeed(null);
   }
 };
 

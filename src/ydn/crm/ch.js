@@ -145,6 +145,7 @@ ydn.crm.Ch.SReq = {
    */
   UNLINK: 'unlink',
   UPLOAD_DOC: 'upload-doc', // upload document.
+  UPDATE_NOW: 'update-now', // begin database update process
   VALUES: 'values' // record values query
 };
 
