@@ -55,7 +55,7 @@ ydn.crm.gdata.CredentialWidget.prototype.revoke_ = function(e) {
   var a_revoke = this.root.querySelector('a[name=gdata-token-revoke]');
   var ok = window.confirm('Are you sure you want to revoke your Google offline access token in YDN server?');
   if (ok) {
-    ydn.msg.getChannel().send('gdata-token-revoke').addCallbacks(function() {
+    ydn.msg.getChannel().send(ydn.crm.Ch.Req.TOKEN_REVOKE_GDATA).addCallbacks(function() {
       a_revoke.textContent = 'Done';
       a_revoke.setAttribute('title', 'successfully revoked');
       a_revoke.removeAttribute('href');
@@ -77,7 +77,7 @@ ydn.crm.gdata.CredentialWidget.prototype.revoke_ = function(e) {
  * @template T
  */
 ydn.crm.gdata.CredentialWidget.prototype.refresh = function(opt_cb, opt_scope) {
-  ydn.msg.getChannel().send('gdata-token', window.location.href).addCallback(function(data) {
+  ydn.msg.getChannel().send(ydn.crm.Ch.Req.TOKEN_GDATA, window.location.href).addCallback(function(data) {
     var token = /** @type {YdnApiToken} */ (data);
 
     var authorize_panel = this.root.querySelector('.authorize');

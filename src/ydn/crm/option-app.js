@@ -226,14 +226,14 @@ ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
  * @private
  */
 ydn.crm.OptionPageApp.prototype.processWithSugarSetup_ = function(sugar) {
-  var sugarcrm = /** @type {ydn.crm.sugarcrm.HomePage} */ this.pages_['sugarcrm'];
+  var sugarcrm = /** @type {ydn.crm.sugarcrm.HomePage} */ (this.pages_['sugarcrm']);
   if (!sugarcrm.hasGDataCredential()) {
     return;
   }
   var main_menu = document.getElementById('main-menu');
   var sync = main_menu.querySelector('li[name=sync]');
   goog.style.setElementShown(sync, true);
-  var page = /** @type {ydn.crm.sugarcrm.SyncPage} */ this.pages_['sync'];
+  var page = /** @type {ydn.crm.sugarcrm.SyncPage} */ (this.pages_['sync']);
   page.setModel(sugar);
 };
 

@@ -66,8 +66,6 @@ ydn.crm.Ch.Req = {
   GDATA_UPDATE: 'gdata-update',  // update from server
   GDATA_CONTACT_MERGE: 'gdcm', // merge contact data
   GDATA_LIST_CONTACT: 'gdata-list-contact', // list by 'email' or 'externalid'
-  GDATA_TOKEN: 'gdata-token', //
-  GDATA_TOKEN_REVOKE: 'gdata-token-revoke',
   G_PLUS: 'google-plus',
   LIST_SUGAR: 'list-sugarcrm', // list sugarcrm about
   LIST_SUGAR_DOMAIN: 'list-sugarcrm-domain', // list sugarcrm domain
@@ -84,6 +82,8 @@ ydn.crm.Ch.Req = {
   SERVER_AUDIT_LOG: 'server-audit-log',
   SOCIAL_PROFILE: 'social-profile',
   SUGAR_SERVER_INFO: 'sugar-server-info',
+  TOKEN_GDATA: 'token-gdata', //
+  TOKEN_REVOKE_GDATA: 'token-revoke-gdata',
   TRACKING_CLEAR_DNT: 'tracking-clear-dnt',
   TRACKING_SELF_OPEN: 'tracking-self-open', // notify self access
   TRACKING_QUERY: 'tracking-query',

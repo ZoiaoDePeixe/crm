@@ -117,7 +117,7 @@ ydn.crm.sugarcrm.SyncPage.prototype.decorate_ = function() {
 ydn.crm.sugarcrm.SyncPage.prototype.refreshCount_ = function() {
   var sync_div = this.root_.querySelector('.' +
       ydn.crm.sugarcrm.SyncPage.CSS_CLASS_SYNC_CONTENT + ' .header .count');
-  ydn.msg.getChannel(ydn.crm.Ch.Req.GDATA_LIST_CONTACT)
+  ydn.msg.getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT);
 };
 
 
