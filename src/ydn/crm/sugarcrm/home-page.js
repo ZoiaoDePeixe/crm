@@ -21,7 +21,7 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.Page');
+goog.provide('ydn.crm.sugarcrm.HomePage');
 goog.require('ydn.crm.gdata.CredentialWidget');
 goog.require('ydn.crm.sugarcrm.Widget');
 goog.require('ydn.crm.sugarcrm.WidgetModel');
@@ -35,7 +35,7 @@ goog.require('ydn.crm.tracking.setting.Main');
  * @implements {ydn.crm.IPage}
  * @struct
  */
-ydn.crm.sugarcrm.Page = function() {
+ydn.crm.sugarcrm.HomePage = function() {
   /**
    * @type {Element}
    * @private
@@ -60,7 +60,7 @@ ydn.crm.sugarcrm.Page = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.Page.prototype.render = function(el) {
+ydn.crm.sugarcrm.HomePage.prototype.render = function(el) {
   var temp = ydn.ui.getTemplateById('sugarcrm-home-template').content;
   this.root_.appendChild(temp.cloneNode(true));
   var gdata_ele = this.root_.querySelector('#gdata');
@@ -76,9 +76,17 @@ ydn.crm.sugarcrm.Page.prototype.render = function(el) {
 
 
 /**
+ * @return {boolean}
+ */
+ydn.crm.sugarcrm.HomePage.prototype.hasGDataCredential = function() {
+  return this.gdata_widget.hasCredential();
+};
+
+
+/**
  * @override
  */
-ydn.crm.sugarcrm.Page.prototype.onPageShow = function() {
+ydn.crm.sugarcrm.HomePage.prototype.onPageShow = function() {
   if (this.model_updated_after_login_) {
     return;
   }
@@ -101,6 +109,6 @@ ydn.crm.sugarcrm.Page.prototype.onPageShow = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.Page.prototype.toString = function() {
+ydn.crm.sugarcrm.HomePage.prototype.toString = function() {
   return 'Home';
 };

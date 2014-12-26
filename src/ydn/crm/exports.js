@@ -7,7 +7,7 @@
 goog.require('ydn.crm.tracking.Panel');
 goog.require('ydn.crm.OptionPageApp');
 goog.require('ydn.crm.msg.SimpleStatusBar');
-goog.require('ydn.crm.sugarcrm.Page');
+goog.require('ydn.crm.sugarcrm.HomePage');
 goog.require('ydn.crm.sugarcrm.ui.SearchPanel');
 goog.require('ydn.crm.sugarcrm.ui.SyncPanel');
 goog.require('ydn.crm.tracking.Panel');
@@ -22,7 +22,7 @@ goog.exportSymbol('ydn.crm.AboutPage', ydn.crm.AboutPage);
 goog.exportProperty(ydn.crm.OptionPageApp, 'run',
     ydn.crm.OptionPageApp.prototype.run);
 
-goog.exportSymbol('ydn.crm.sugarcrm.Page', ydn.crm.sugarcrm.Page);
+goog.exportSymbol('ydn.crm.sugarcrm.HomePage', ydn.crm.sugarcrm.HomePage);
 goog.exportSymbol('ydn.crm.tracking.Panel', ydn.crm.tracking.Panel);
 
 

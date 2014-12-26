@@ -104,3 +104,14 @@ ydn.crm.gdata.CredentialWidget.prototype.refresh = function(opt_cb, opt_scope) {
     }
   }, this);
 };
+
+
+/**
+ * Check gdata token.
+ * This has to be query only after refresh.
+ * @return {boolean}
+ */
+ydn.crm.gdata.CredentialWidget.prototype.hasCredential = function() {
+  var authorize_panel = this.root.querySelector('.authorize');
+  return !!authorize_panel.style.display;
+};
