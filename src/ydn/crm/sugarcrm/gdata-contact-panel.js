@@ -59,7 +59,7 @@ ydn.crm.sugarcrm.GDataContactPanel = function(m) {
   this.offset_ = 0;
   this.limit_ = 50;
   this.order_by_ = '';
-  this.reverse_ = true;
+  this.reverse_ = false;
 
   this.sync_pair_templ = ydn.ui.getTemplateById('sync-pair-template').content;
   this.gdata_templ = ydn.ui.getTemplateById('sync-gdata-entry-template').content;

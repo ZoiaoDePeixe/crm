@@ -54,6 +54,8 @@ ydn.crm.sugarcrm.SyncPage = function() {
    * @private
    */
   this.gdata_contact_panel_ = null;
+  
+  this.need_refresh_ = false;
 };
 
 
@@ -77,13 +79,7 @@ ydn.crm.sugarcrm.SyncPage.prototype.render = function(el) {
  * @private
  */
 ydn.crm.sugarcrm.SyncPage.prototype.onPanelChange_ = function(e) {
-  var idx = e.currentTarget.selectedIndex;
-  if (idx == 0) {
-    this.gdata_contact_panel_.setVisible(true);
-  } else {
-    this.gdata_contact_panel_.setVisible(false);
-
-  }
+  this.refreshContent_();
 };
 
 
@@ -106,6 +102,7 @@ ydn.crm.sugarcrm.SyncPage.prototype.setModel = function(sugar) {
  * @override
  */
 ydn.crm.sugarcrm.SyncPage.prototype.onPageShow = function() {
+  this.need_refresh_ = true;
   this.decorate_();
 };
 
@@ -128,6 +125,9 @@ ydn.crm.sugarcrm.SyncPage.prototype.decorate_ = function() {
   var content = this.root_.querySelector('.' +
       ydn.crm.sugarcrm.SyncPage.CSS_CLASS_SYNC_CONTACT);
   if (content) {
+    if (this.need_refresh_) {
+      this.refresh_();
+    }
     return;
   }
   var templ = ydn.ui.getTemplateById('sync-content-template').content;
@@ -140,10 +140,11 @@ ydn.crm.sugarcrm.SyncPage.prototype.decorate_ = function() {
   this.gdata_contact_panel_.render(content, toolbar);
 
   var select = this.root_.querySelector('select[name=select-panel]');
-  select.selectedIndex = -1;
   select.onchange = this.onPanelChange_.bind(this);
 
-  this.refresh_();
+  if (this.need_refresh_) {
+    this.refresh_();
+  }
 };
 
 
@@ -176,8 +177,23 @@ ydn.crm.sugarcrm.SyncPage.prototype.refreshCount_ = function() {
 /**
  * @private
  */
+ydn.crm.sugarcrm.SyncPage.prototype.refreshContent_ = function() {
+  var select = this.root_.querySelector('select[name=select-panel]');
+  var idx = select.selectedIndex;
+  if (idx == 0) {
+    this.gdata_contact_panel_.setVisible(true);
+  } else {
+    this.gdata_contact_panel_.setVisible(false);
+  }
+};
+
+
+/**
+ * @private
+ */
 ydn.crm.sugarcrm.SyncPage.prototype.refresh_ = function() {
   this.refreshCount_();
+  this.refreshContent_();
 };
 
 
