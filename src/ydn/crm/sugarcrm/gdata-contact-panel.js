@@ -105,6 +105,80 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.refreshFooter_ = function() {
 
 
 /**
+ * Score range fro 0 to 1. 1 being surely match.
+ * @typedef {{
+ *   score: number,
+ *   record: SugarCrm.Record
+ * }}
+ */
+ydn.crm.sugarcrm.GDataContactPanel.SimilarityResult;
+
+
+/**
+ * @param {Array<ydn.crm.sugarcrm.GDataContactPanel.SimilarityResult>} arr sorted
+ * array by score.
+ * @param {SugarCrm.ContactSimilarityResult} res result to put into arr.
+ * @private
+ */
+ydn.crm.sugarcrm.GDataContactPanel.enrichFor_ = function(arr, res) {
+  for (var i = 0; i < res.result.length; i++) {
+    var record = res.result[i];
+    var ex_idx = -1;
+    for (var k = 0; k < arr.length; k++) {
+      if (arr[k].record.id == record.id) {
+        ex_idx = k;
+        break;
+      }
+    }
+    var score = 0;
+    if (res.index == 'ydn$emails') {
+      score = 1;
+    } else if (res.index == 'ydn$phones') {
+      score = 0.5;
+    } else {
+      score = 0.2; // name
+    }
+    if (ex_idx == -1) {
+      var obj = {
+        score: score,
+        record: record
+      };
+      goog.array.binaryInsert(arr, obj, function(a, b) {
+        return a.score > b.score ? 1 : -1;
+      });
+    } else {
+      arr[ex_idx].score += score;
+    }
+  }
+};
+
+
+/**
+ * Enrich query result by combining similar records into a bin.
+ * @param {Array<SugarCrm.ContactSimilarityResult>} results
+ * @return {Object<Array<ydn.crm.sugarcrm.GDataContactPanel.SimilarityResult>>}
+ * Results for for each module. Results are order by score with higher score
+ * comes first.
+ */
+ydn.crm.sugarcrm.GDataContactPanel.enrich = function(results) {
+  var out = {};
+  out[ydn.crm.sugarcrm.ModuleName.ACCOUNTS] = [];
+  out[ydn.crm.sugarcrm.ModuleName.CONTACTS] = [];
+  out[ydn.crm.sugarcrm.ModuleName.LEADS] = [];
+  for (var i = 0; i < results.length; i++) {
+    var res = results[i];
+    var arr = out[res.module];
+    if (!arr) {
+      window.console.warn('Invalid result of module: ' + res.module);
+      continue;
+    }
+    ydn.crm.sugarcrm.GDataContactPanel.enrichFor_(arr, res);
+  }
+  return out;
+};
+
+
+/**
  * @param {Element} el
  * @param {ydn.gdata.m8.ContactEntry} entry
  * @return {!goog.async.Deferred}
@@ -114,17 +188,29 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.renderEntry_ = function(el, entry) 
   var primary = el.querySelector('.primary');
   var secondary = el.querySelector('.secondary');
 
-  var main = this.gdata_templ.cloneNode(true);
-  var name = main.querySelector('span[name=name]');
+  primary.appendChild(this.gdata_templ.cloneNode(true));
+  var name = primary.querySelector('span[name=name]');
   name.textContent = entry.getFullName();
-  var email = main.querySelector('span[name=emails]');
+  var email = primary.querySelector('span[name=emails]');
   email.textContent = entry.getEmails().join(', ');
-  primary.appendChild(main);
 
   var ch = this.model_.getChannel();
   var ce = entry.getData();
-  return ch.send(ydn.crm.Ch.SReq.QUERY_SIMILAR, ce).addCallback(function(data) {
-    console.log(data);
+  return ch.send(ydn.crm.Ch.SReq.QUERY_SIMILAR, ce).addCallback(function(results) {
+    if (ydn.crm.sugarcrm.GDataContactPanel.DEBUG) {
+      window.console.log(JSON.stringify(results, null, 2));
+    }
+    var ip_btn = primary.querySelector('button[name=import]');
+    if (results.length > 0) {
+      for (var i = 0; i < results.length; i++) {
+        var res = results[i];
+        if (res['index'] == 'ydn$emails') {
+          // consider exact match, and not allow to create a new record,
+          // but instead must sync with it.
+          ip_btn.setAttribute('disabled', 'disabled');
+        }
+      }
+    }
   }, this);
 };
 
