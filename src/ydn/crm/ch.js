@@ -65,6 +65,7 @@ ydn.crm.Ch.Req = {
   FEED_LOG_INFO: 'feed-log-info', // list of info log
   GDATA_UPDATE: 'gdata-update',  // update from server
   GDATA_CONTACT_MERGE: 'gdcm', // merge contact data
+  GDATA_COUNT: 'gdc', // count contact data
   GDATA_LIST_CONTACT: 'gdata-list-contact', // list by 'email' or 'externalid'
   G_PLUS: 'google-plus',
   LIST_SUGAR: 'list-sugarcrm', // list sugarcrm about
@@ -115,6 +116,7 @@ ydn.crm.Ch.SReq = {
   ACTIVITY_STREAM: 'activity-stream',
   ACTIVITY_UPCOMING: 'activity-upcoming',
   CLEAR_CACHE: 'clear-cache', // delete database
+  COUNT: 'count', // count number of record in a module
   DELETE_RECORD: 'delete-record', //
   DETAILS: 'details',
   FETCH_MODULE: 'fetch-module', // fetch module entries
@@ -134,6 +136,7 @@ ydn.crm.Ch.SReq = {
   NEW_RECORD: 'new-record', // create a new record
   PUT_RECORD: 'put-record', //
   QUERY: 'query',
+  QUERY_SIMILAR: 'query-similar',
   REST: 'rest', // SugarCRM REST request
   SEARCH: 'search', // free text query
   SERVER_INFO: 'server-info',

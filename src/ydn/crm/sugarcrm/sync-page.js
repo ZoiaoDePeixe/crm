@@ -23,7 +23,9 @@
 
 goog.provide('ydn.crm.sugarcrm.SyncPage');
 goog.require('goog.style');
+goog.require('ydn.crm.sugarcrm.GDataContactPanel');
 goog.require('ydn.crm.sugarcrm.model.Sugar');
+goog.require('ydn.gdata.Kind');
 goog.require('ydn.ui');
 
 
@@ -46,6 +48,12 @@ ydn.crm.sugarcrm.SyncPage = function() {
    * @private
    */
   this.model_ = null;
+
+  /**
+   * @type {ydn.crm.sugarcrm.GDataContactPanel}
+   * @private
+   */
+  this.gdata_contact_panel_ = null;
 };
 
 
@@ -53,12 +61,29 @@ ydn.crm.sugarcrm.SyncPage = function() {
  * @override
  */
 ydn.crm.sugarcrm.SyncPage.prototype.render = function(el) {
+  this.root_.classList.add('sync-page');
   var temp = ydn.ui.getTemplateById('sugarcrm-sync-template').content;
   this.root_.appendChild(temp.cloneNode(true));
   el.appendChild(this.root_);
   goog.style.setElementShown(this.root_, false);
   var content = this.root_.querySelector('.content');
   goog.style.setElementShown(content, false);
+
+};
+
+
+/**
+ * @param {Event} e
+ * @private
+ */
+ydn.crm.sugarcrm.SyncPage.prototype.onPanelChange_ = function(e) {
+  var idx = e.currentTarget.selectedIndex;
+  if (idx == 0) {
+    this.gdata_contact_panel_.setVisible(true);
+  } else {
+    this.gdata_contact_panel_.setVisible(false);
+
+  }
 };
 
 
@@ -105,8 +130,17 @@ ydn.crm.sugarcrm.SyncPage.prototype.decorate_ = function() {
   if (content) {
     return;
   }
-  content = ydn.ui.getTemplateById('sync-content-template').content.cloneNode(true);
-  this.root_.appendChild(content);
+  var templ = ydn.ui.getTemplateById('sync-content-template').content;
+  this.root_.appendChild(templ.cloneNode(true));
+  this.gdata_contact_panel_ = new ydn.crm.sugarcrm.GDataContactPanel(this.model_);
+  content = this.root_.querySelector('.' +
+      ydn.crm.sugarcrm.SyncPage.CSS_CLASS_SYNC_CONTENT + ' .content');
+  this.gdata_contact_panel_.render(content);
+
+  var select = this.root_.querySelector('select[name=select-panel]');
+  select.selectedIndex = -1;
+  select.onchange = this.onPanelChange_.bind(this);
+
   this.refresh_();
 };
 
@@ -117,7 +151,23 @@ ydn.crm.sugarcrm.SyncPage.prototype.decorate_ = function() {
 ydn.crm.sugarcrm.SyncPage.prototype.refreshCount_ = function() {
   var sync_div = this.root_.querySelector('.' +
       ydn.crm.sugarcrm.SyncPage.CSS_CLASS_SYNC_CONTENT + ' .header .count');
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT);
+
+  var gch = this.model_.getChannel();
+  gch.send(ydn.crm.Ch.SReq.COUNT, {'module': ydn.crm.sugarcrm.ModuleName.ACCOUNTS})
+      .addCallback(function(cnt) {
+        var el = sync_div.querySelector('a[name=sugarcrm-account-count]');
+        el.textContent = String(cnt);
+      }, this);
+  gch.send(ydn.crm.Ch.SReq.COUNT, {'module': ydn.crm.sugarcrm.ModuleName.CONTACTS})
+      .addCallback(function(cnt) {
+        var el = sync_div.querySelector('a[name=sugarcrm-contact-count]');
+        el.textContent = String(cnt);
+      }, this);
+  gch.send(ydn.crm.Ch.SReq.COUNT, {'module': ydn.crm.sugarcrm.ModuleName.LEADS})
+      .addCallback(function(cnt) {
+        var el = sync_div.querySelector('a[name=sugarcrm-lead-count]');
+        el.textContent = String(cnt);
+      }, this);
 };
 
 
