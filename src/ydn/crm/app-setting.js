@@ -90,6 +90,9 @@ ydn.crm.AppSetting.schema_gdata = /** @type {DatabaseSchema} */ (/** @type {Obje
     keyPath: 'id.$t',
     type: 'TEXT',
     indexes: [{
+      name: 'name',
+      keyPath: 'gd$name.gd$fullName.$t'
+    }, {
       name: 'updated.$t',
       type: 'TEXT'
     }, {
