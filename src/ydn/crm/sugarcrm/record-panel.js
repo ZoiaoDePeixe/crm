@@ -94,7 +94,67 @@ ydn.crm.sugarcrm.RecordPanel.prototype.renderToolbar = function(toolbar) {
  */
 ydn.crm.sugarcrm.RecordPanel.prototype.appendItem = function(prepend,
                                                              should_remove) {
-  return goog.async.Deferred.fail(0);
+  var ul = this.root.querySelector('UL.infinite-scroll');
+  /**
+   * @type {ydn.db.KeyRange|undefined}
+   */
+  var key_range = undefined;
+  var id;
+  var rev = this.reverse;
+  if (prepend) {
+    rev = !rev;
+    if (!!ul.firstElementChild) {
+      id = ul.firstElementChild.getAttribute('data-key');
+      key_range = ydn.db.KeyRange.where('<', id);
+    }
+  } else {
+    if (!!ul.lastElementChild) {
+      id = ul.lastElementChild.getAttribute('data-key');
+      key_range = ydn.db.KeyRange.where('>', id);
+    }
+  }
+  var index = this.order_by;
+  var query = {
+    'store': this.module_,
+    'index': index,
+    'limit': 1,
+    'reverse': rev,
+    'keyRange': key_range ? key_range.toJSON() : undefined
+  };
+  var ch = this.model.getChannel();
+  return ch.send(ydn.crm.Ch.SReq.QUERY, [query]).addCallbacks(function(arr) {
+    var result = /** @type {CrmApp.QueryResult} */ (arr[0]);
+    var item = result.result[0];
+    if (ydn.crm.sugarcrm.RecordPanel.DEBUG) {
+      window.console.log(id, (item ? item['id'] : null), item);
+    }
+    if (item) {
+      var li = this.sync_pair_templ.cloneNode(true).querySelector('li');
+      if (prepend && ul.firstElementChild) {
+        if (should_remove) {
+          ul.removeChild(ul.lastElementChild);
+        }
+        ul.insertBefore(li, ul.firstElementChild);
+      } else {
+        if (should_remove) {
+          ul.removeChild(ul.firstElementChild);
+        }
+        ul.appendChild(li);
+      }
+
+      var entry = new ydn.crm.sugarcrm.Record(this.model.getDomain(), this.module_,
+          item);
+      var key = this.order_by ? entry.value(this.order_by) : entry.getId();
+
+      li.setAttribute('data-id', entry.getId());
+      li.setAttribute('data-index', this.order_by);
+      li.setAttribute('data-key', key);
+
+      return this.renderEntry_(li, entry);
+    }
+  }, function(e) {
+    window.console.error(String(e));
+  }, this);
 };
 
 
@@ -113,7 +173,6 @@ ydn.crm.sugarcrm.RecordPanel.prototype.onOrderChanged_ = function(e) {
  * @private
  */
 ydn.crm.sugarcrm.RecordPanel.prototype.onDirChanged_ = function(e) {
-  console.log(e);
   if (e.currentTarget.value == 'asc') {
     this.reverse = false;
   } else if (e.currentTarget.value == 'des') {
@@ -197,7 +256,7 @@ ydn.crm.sugarcrm.RecordPanel.prototype.renderNextEntry_ = function(entries, idx)
   ul.appendChild(li);
   var entry = new ydn.crm.sugarcrm.Record(this.model.getDomain(), this.module_,
       entries[idx]);
-  var key = entry.value(this.order_by);
+  var key = this.order_by ? entry.value(this.order_by) : entry.getId();
 
   li.setAttribute('data-id', entry.getId());
   li.setAttribute('data-index', this.order_by);
