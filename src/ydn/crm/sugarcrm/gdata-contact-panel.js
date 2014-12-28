@@ -29,6 +29,7 @@ goog.require('ydn.crm.ui');
 goog.require('ydn.gdata.Kind');
 goog.require('ydn.gdata.m8.ContactEntry');
 goog.require('ydn.ui');
+goog.require('ydn.ui.FlyoutMenu');
 
 
 
@@ -65,7 +66,7 @@ goog.inherits(ydn.crm.sugarcrm.GDataContactPanel, ydn.crm.sugarcrm.SyncPanel);
 /**
  * @define {boolean} debug flag
  */
-ydn.crm.sugarcrm.GDataContactPanel.DEBUG = false;
+ydn.crm.sugarcrm.GDataContactPanel.DEBUG = true;
 
 
 /**
@@ -82,15 +83,18 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.renderContent = function() {
  * @private
  */
 ydn.crm.sugarcrm.GDataContactPanel.prototype.onContentClick_ = function(ev) {
-  if (ev.target.tagName == goog.dom.TagName.BUTTON) {
-    var name = ev.target.getAttribute('name');
-    if (name == 'import') {
-      var li = goog.dom.getAncestorByTagNameAndClass(
-          /** @type {Node} */(ev.target), 'LI');
-      var id = li.getAttribute('data-id');
-      this.import_(id, ydn.crm.sugarcrm.ModuleName.CONTACTS);
+
+  var name = ydn.ui.FlyoutMenu.handleClick(ev);
+  if (name) {
+    var li = goog.dom.getAncestorByTagNameAndClass(
+        /** @type {Element} */ (ev.target), 'LI');
+    var id = li.getAttribute('data-id');
+    if (ydn.crm.sugarcrm.GDataContactPanel.DEBUG) {
+      window.console.log('import', name, id);
     }
+    this.import_(id, /** @type {ydn.crm.sugarcrm.ModuleName} */ (name));
   }
+
 };
 
 
@@ -112,6 +116,9 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.import_ = function(id, mn) {
     window.console.info('sending ' + req + ' ' + JSON.stringify(data));
   }
   return this.model.getChannel().send(req, data).addCallbacks(function(data) {
+    if (ydn.crm.sugarcrm.GDataContactPanel.DEBUG) {
+      window.console.log(data);
+    }
   }, function(e) {
     ydn.crm.msg.Manager.addStatus(String(e));
   }, this);
@@ -203,7 +210,7 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.appendItem = function(prepend,
  */
 ydn.crm.sugarcrm.GDataContactPanel.prototype.onOrderChanged_ = function(e) {
   this.order_by = e.currentTarget.value;
-  this.resetContent_();
+  this.refreshContent();
 };
 
 
@@ -220,7 +227,7 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.onDirChanged_ = function(e) {
   } else {
     throw new Error('direction ' + e.target.value);
   }
-  this.resetContent_();
+  this.refreshContent();
 };
 
 
@@ -313,6 +320,25 @@ ydn.crm.sugarcrm.GDataContactPanel.enrich = function(domain, results) {
 
 
 /**
+ * @const
+ * @type {!Array<ydn.ui.FlyoutMenu.ItemOption>}
+ */
+ydn.crm.sugarcrm.GDataContactPanel.importMenuItems = [{
+  label: 'Accounts',
+  name: 'Accounts',
+  title: 'Import Gmail contact into SugarCRM Account record'
+}, {
+  label: 'Contacts',
+  name: 'Contacts',
+  title: 'Import Gmail contact into SugarCRM Contact record'
+}, {
+  label: 'Leads',
+  name: 'Leads',
+  title: 'Import Gmail contact into SugarCRM Lead record'
+}];
+
+
+/**
  * @param {Element} el
  * @param {ydn.gdata.m8.ContactEntry} entry
  * @return {!goog.async.Deferred<number>} return 1.
@@ -323,8 +349,11 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.renderEntry_ = function(el, entry) 
   var secondary = el.querySelector('.secondary');
 
   primary.appendChild(this.primary_templ_.cloneNode(true));
-  var svg_import = ydn.crm.ui.createSvgIcon('input');
-  primary.querySelector('span[name=import]').appendChild(svg_import);
+
+  var btn_import = primary.querySelector('span[name=import]');
+  ydn.ui.FlyoutMenu.decoratePopupMenu(btn_import,
+      ydn.crm.sugarcrm.GDataContactPanel.importMenuItems,
+      {iconName: 'input', isRightMenu: true});
 
   var name = primary.querySelector('span[name=name]');
   name.textContent = entry.getFullName();
@@ -428,7 +457,7 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.renderNextEntryRecursive_ = functio
           } else {
             key = entry.getId();
           }
-          li.setAttribute('data-id', entry.getSingleId());
+          li.setAttribute('data-id', entry.getEntryId());
           li.setAttribute('data-index', index);
           li.setAttribute('data-key', key);
           return this.renderEntry_(li, entry).addCallback(function() {
@@ -442,28 +471,61 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.renderNextEntryRecursive_ = functio
 
 
 /**
- * @override
+ * Iteratively render resulting gdata contact entry.
+ * @param {Array<!ContactEntry>} arr
+ * @param {number} idx
+ * @return {!goog.async.Deferred<number>}
+ * @private
  */
-ydn.crm.sugarcrm.GDataContactPanel.prototype.refreshContent = function() {
-  if (this.render_next_df_) {
-    return;
+ydn.crm.sugarcrm.GDataContactPanel.prototype.renderNextEntry_ = function(arr, idx) {
+  if (!arr[idx]) {
+    return goog.async.Deferred.succeed(0);
   }
-  this.render_next_df_ = this.renderNextEntryRecursive_().addBoth(function() {
-    var me = this;
-    setTimeout(function() {
-      me.render_next_df_ = null;
-    }, 100);
+  var ul = this.root.querySelector('.content UL');
+  var li = this.sync_pair_templ.cloneNode(true).querySelector('li');
+  ul.appendChild(li);
+  var entry = new ydn.gdata.m8.ContactEntry(arr[idx]);
+  var key;
+  var index = this.order_by;
+  if (index == 'updated.$t') {
+    key = ydn.db.utils.getValueByKeys(arr[idx], index);
+  } else if (index == 'name') {
+    key = entry.getFullName();
+  } else {
+    key = entry.getId();
+  }
+  li.setAttribute('data-id', entry.getEntryId());
+  li.setAttribute('data-index', index);
+  li.setAttribute('data-key', key);
+  return this.renderEntry_(li, entry).addCallback(function() {
+    idx++;
+    return this.renderNextEntry_(arr, idx).addBoth(function(cnt) {
+      return cnt + 1;
+    }, this);
   }, this);
 };
 
 
 /**
- * @private
+ * @override
  */
-ydn.crm.sugarcrm.GDataContactPanel.prototype.resetContent_ = function() {
+ydn.crm.sugarcrm.GDataContactPanel.prototype.refreshContent = function() {
   var ul = this.root.querySelector('.content UL');
   ul.innerHTML = '';
-  this.refreshContent();
-};
 
+  var index = this.order_by;
+  var query = {
+    'index': index,
+    'limit': 20,
+    'reverse': this.reverse
+  };
+  ydn.msg.getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, query)
+      .addCallback(function(arr) {
+        if (ydn.crm.sugarcrm.GDataContactPanel.DEBUG) {
+          window.console.log(arr);
+        }
+        this.renderNextEntry_(arr, 0);
+      }, this);
+
+};
 
