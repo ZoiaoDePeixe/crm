@@ -15,7 +15,7 @@
 
 
 /**
- * @fileoverview Home page for SugarCRM in CRMinInbox suite.
+ * @fileoverview GData contact sync panel.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
@@ -31,29 +31,25 @@ goog.require('ydn.ui');
 
 
 /**
- * Synchronization panel.
+ * GData contact sync panel.
  * @param {ydn.crm.sugarcrm.model.Sugar} m
  * @constructor
  * @struct
  * @extends {ydn.crm.sugarcrm.SyncPanel}
  */
 ydn.crm.sugarcrm.GDataContactPanel = function(m) {
-  goog.base(this);
+  goog.base(this, m);
 
   /**
-   * @type {ydn.crm.sugarcrm.model.Sugar}
    * @private
    */
-  this.model_ = m;
-  /**
-   * @private
-   */
-  this.primary_templ_ = ydn.ui.getTemplateById('sync-gdata-entry-template').content;
+  this.primary_templ_ =
+      ydn.ui.getTemplateById('sync-gdata-primary-template').content;
   /**
    * @private
    */
   this.secondary_templ_ = ydn.ui.getTemplateById(
-      'sync-secondary-sugarcrm-record-template').content;
+      'sync-gdata-secondary-template').content;
 
   /**
    * @type {goog.async.Deferred}
@@ -71,13 +67,10 @@ ydn.crm.sugarcrm.GDataContactPanel.DEBUG = false;
 
 
 /**
- * Render UI.
- * @param {Element} el
- * @param {Element} toolbar
+ * @override
  */
-ydn.crm.sugarcrm.GDataContactPanel.prototype.render = function(el, toolbar) {
-  goog.base(this, 'render', el, toolbar);
-  var temp_tb = ydn.ui.getTemplateById('gdata-sync-toolbar-template').content;
+ydn.crm.sugarcrm.GDataContactPanel.prototype.renderToolbar = function(toolbar) {
+  var temp_tb = ydn.ui.getTemplateById('sync-gdata-toolbar-template').content;
   this.toolbar.appendChild(temp_tb.cloneNode(true));
   toolbar.appendChild(this.toolbar);
 
@@ -282,14 +275,14 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.renderEntry_ = function(el, entry) 
   var email = primary.querySelector('span[name=emails]');
   email.textContent = entry.getEmails().join(', ');
 
-  var ch = this.model_.getChannel();
+  var ch = this.model.getChannel();
   var ce = entry.getData();
   return ch.send(ydn.crm.Ch.SReq.QUERY_SIMILAR, ce).addCallback(function(arr) {
     if (ydn.crm.sugarcrm.GDataContactPanel.DEBUG) {
       window.console.log(arr);
     }
     var ip_btn = primary.querySelector('button[name=import]');
-    var domain = this.model_.getDomain();
+    var domain = this.model.getDomain();
     var results = ydn.crm.sugarcrm.GDataContactPanel.enrich(domain, arr);
     for (var i = 0; i < results.length; i++) {
       var res = results[i];
@@ -306,7 +299,7 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.renderEntry_ = function(el, entry) 
       sec_el.classList.add(m_name);
       sec_el.setAttribute('data-module', m_name);
       sec_el.setAttribute('data-id', id);
-      label.href = this.model_.getRecordViewLink(m_name, id);
+      label.href = this.model.getRecordViewLink(m_name, id);
       var icon = sec_el.querySelector('.icon');
       icon.textContent = ydn.crm.sugarcrm.toModuleSymbol(m_name);
       secondary.appendChild(sec_el);
@@ -394,11 +387,10 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.renderNextEntryRecursive_ = functio
 
 /**
  * @override
- * @return {!goog.async.Deferred}
  */
 ydn.crm.sugarcrm.GDataContactPanel.prototype.refreshContent = function() {
   if (this.render_next_df_) {
-    return this.render_next_df_;
+    return;
   }
   this.render_next_df_ = this.renderNextEntryRecursive_().addBoth(function() {
     var me = this;
@@ -406,7 +398,6 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.refreshContent = function() {
       me.render_next_df_ = null;
     }, 100);
   }, this);
-  return this.render_next_df_;
 };
 
 

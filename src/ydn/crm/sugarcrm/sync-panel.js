@@ -22,6 +22,7 @@
 
 
 goog.provide('ydn.crm.sugarcrm.SyncPanel');
+goog.require('goog.asserts');
 goog.require('goog.style');
 goog.require('ydn.dom');
 goog.require('ydn.ui');
@@ -31,11 +32,18 @@ goog.require('ydn.ui.InfiniteScrollDecorator');
 
 /**
  * Synchronization panel.
+ * @param {ydn.crm.sugarcrm.model.Sugar} m
  * @constructor
  * @struct
  * @implements {ydn.ui.InfiniteScrollItemProvider}
  */
-ydn.crm.sugarcrm.SyncPanel = function() {
+ydn.crm.sugarcrm.SyncPanel = function(m) {
+
+  /**
+   * @type {ydn.crm.sugarcrm.model.Sugar}
+   * @protected
+   */
+  this.model = m;
   /**
    * @type {Element}
    * @protected
@@ -75,12 +83,6 @@ ydn.crm.sugarcrm.SyncPanel.DEBUG = false;
 
 
 /**
- * @override
- */
-ydn.crm.sugarcrm.SyncPanel.prototype.appendItem = goog.abstractMethod;
-
-
-/**
  * Render UI.
  * @param {Element} el
  * @param {Element} toolbar
@@ -95,7 +97,16 @@ ydn.crm.sugarcrm.SyncPanel.prototype.render = function(el, toolbar) {
   var scroll = new ydn.ui.InfiniteScrollDecorator(ul, this);
   ul.style.top = '80px';
   ul.style.bottom = '20px';
+
+  this.renderToolbar(toolbar);
 };
+
+
+/**
+ * @param {Element} toolbar_el
+ * @protected
+ */
+ydn.crm.sugarcrm.SyncPanel.prototype.renderToolbar = goog.abstractMethod;
 
 
 /**
@@ -105,7 +116,21 @@ ydn.crm.sugarcrm.SyncPanel.prototype.appendItem = goog.abstractMethod;
 
 
 /**
+ * @protected
+ */
+ydn.crm.sugarcrm.SyncPanel.prototype.refreshFooter = goog.abstractMethod;
+
+
+/**
+ * Re-render content.
+ * @protected
+ */
+ydn.crm.sugarcrm.SyncPanel.prototype.refreshContent = goog.abstractMethod;
+
+
+/**
  * @param {boolean} val
+ * @final
  */
 ydn.crm.sugarcrm.SyncPanel.prototype.setVisible = function(val) {
   goog.style.setElementShown(this.root, val);
@@ -117,22 +142,12 @@ ydn.crm.sugarcrm.SyncPanel.prototype.setVisible = function(val) {
 
 
 /**
+ * Refresh will be called only when model is set and caller will show the UI.
  * @protected
- */
-ydn.crm.sugarcrm.SyncPanel.prototype.refreshFooter = goog.abstractMethod;
-
-
-/**
- * @protected
- * @return {!goog.async.Deferred}
- */
-ydn.crm.sugarcrm.SyncPanel.prototype.refreshContent = goog.abstractMethod;
-
-
-/**
- * @protected
+ * @final
  */
 ydn.crm.sugarcrm.SyncPanel.prototype.refresh = function() {
+  goog.asserts.assert(this.model);
   this.refreshFooter();
   this.refreshContent();
 };

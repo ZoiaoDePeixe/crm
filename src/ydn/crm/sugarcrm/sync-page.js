@@ -24,6 +24,7 @@
 goog.provide('ydn.crm.sugarcrm.SyncPage');
 goog.require('goog.style');
 goog.require('ydn.crm.sugarcrm.GDataContactPanel');
+goog.require('ydn.crm.sugarcrm.RecordPanel');
 goog.require('ydn.crm.sugarcrm.model.Sugar');
 goog.require('ydn.gdata.Kind');
 goog.require('ydn.ui');
@@ -54,6 +55,12 @@ ydn.crm.sugarcrm.SyncPage = function() {
    * @private
    */
   this.gdata_contact_panel_ = null;
+
+  /**
+   * @type {ydn.crm.sugarcrm.RecordPanel}
+   * @private
+   */
+  this.record_panel_ = null;
   
   this.need_refresh_ = false;
 };
@@ -132,12 +139,17 @@ ydn.crm.sugarcrm.SyncPage.prototype.decorate_ = function() {
   }
   var templ = ydn.ui.getTemplateById('sync-content-template').content;
   this.root_.appendChild(templ.cloneNode(true));
-  this.gdata_contact_panel_ = new ydn.crm.sugarcrm.GDataContactPanel(this.model_);
+
   content = this.root_.querySelector('.' +
       ydn.crm.sugarcrm.SyncPage.CSS_CLASS_SYNC_CONTACT + ' .content');
   var toolbar = this.root_.querySelector('.' +
       ydn.crm.sugarcrm.SyncPage.CSS_CLASS_SYNC_CONTACT + ' .header .toolbar');
+
+  this.gdata_contact_panel_ = new ydn.crm.sugarcrm.GDataContactPanel(this.model_);
   this.gdata_contact_panel_.render(content, toolbar);
+
+  this.record_panel_ = new ydn.crm.sugarcrm.RecordPanel(this.model_);
+  this.record_panel_.render(content, toolbar);
 
   var select = this.root_.querySelector('select[name=select-panel]');
   select.onchange = this.onPanelChange_.bind(this);
@@ -151,39 +163,22 @@ ydn.crm.sugarcrm.SyncPage.prototype.decorate_ = function() {
 /**
  * @private
  */
-ydn.crm.sugarcrm.SyncPage.prototype.refreshCount_ = function() {
-  var sync_div = this.root_.querySelector('.' +
-      ydn.crm.sugarcrm.SyncPage.CSS_CLASS_SYNC_CONTACT + ' .header .count');
-
-  var gch = this.model_.getChannel();
-  gch.send(ydn.crm.Ch.SReq.COUNT, {'module': ydn.crm.sugarcrm.ModuleName.ACCOUNTS})
-      .addCallback(function(cnt) {
-        var el = sync_div.querySelector('a[name=sugarcrm-account-count]');
-        el.textContent = String(cnt);
-      }, this);
-  gch.send(ydn.crm.Ch.SReq.COUNT, {'module': ydn.crm.sugarcrm.ModuleName.CONTACTS})
-      .addCallback(function(cnt) {
-        var el = sync_div.querySelector('a[name=sugarcrm-contact-count]');
-        el.textContent = String(cnt);
-      }, this);
-  gch.send(ydn.crm.Ch.SReq.COUNT, {'module': ydn.crm.sugarcrm.ModuleName.LEADS})
-      .addCallback(function(cnt) {
-        var el = sync_div.querySelector('a[name=sugarcrm-lead-count]');
-        el.textContent = String(cnt);
-      }, this);
-};
-
-
-/**
- * @private
- */
 ydn.crm.sugarcrm.SyncPage.prototype.refreshContent_ = function() {
   var select = this.root_.querySelector('select[name=select-panel]');
   var idx = select.selectedIndex;
   if (idx == 0) {
+    this.record_panel_.setVisible(false);
     this.gdata_contact_panel_.setVisible(true);
   } else {
     this.gdata_contact_panel_.setVisible(false);
+    if (idx == 2) {
+      this.record_panel_.setModule(ydn.crm.sugarcrm.ModuleName.CONTACTS);
+    } else if (idx == 3) {
+      this.record_panel_.setModule(ydn.crm.sugarcrm.ModuleName.LEADS);
+    } else {
+      this.record_panel_.setModule(ydn.crm.sugarcrm.ModuleName.ACCOUNTS);
+    }
+    this.record_panel_.setVisible(true);
   }
 };
 
@@ -192,7 +187,6 @@ ydn.crm.sugarcrm.SyncPage.prototype.refreshContent_ = function() {
  * @private
  */
 ydn.crm.sugarcrm.SyncPage.prototype.refresh_ = function() {
-  this.refreshCount_();
   this.refreshContent_();
 };
 
