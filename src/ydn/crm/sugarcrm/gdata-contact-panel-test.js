@@ -26,10 +26,10 @@ var loadData = function(name) {
 
 
 function testEnrichEmailMatch() {
-  var res = ydn.crm.sugarcrm.GDataContactPanel.enrich(resultData['email_match']);
+  var res = ydn.crm.sugarcrm.GDataContactPanel.enrich('localhost', resultData['email_match']);
   assertEquals(1, res.length);
   assertEquals(1, res[0].score);
-  assertEquals(ydn.crm.sugarcrm.ModuleName.CONTACTS, res[0].module);
+  assertEquals(ydn.crm.sugarcrm.ModuleName.CONTACTS, res[0].record.getModule());
 }
 
 

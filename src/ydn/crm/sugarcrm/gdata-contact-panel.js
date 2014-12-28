@@ -110,19 +110,6 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.render = function(el, toolbar) {
 /**
  * @override
  */
-ydn.crm.sugarcrm.GDataContactPanel.prototype.removeItem = function(first) {
-  var ul = this.root_.querySelector('UL.infinite-scroll');
-  if (first) {
-    ul.removeChild(ul.firstElementChild);
-  } else {
-    ul.removeChild(ul.lastElementChild);
-  }
-};
-
-
-/**
- * @override
- */
 ydn.crm.sugarcrm.GDataContactPanel.prototype.appendItem = function(prepend,
                                                                    should_remove) {
   var ul = this.root_.querySelector('UL.infinite-scroll');

@@ -41,7 +41,6 @@ function testGetSources() {
 
 
 function testScreenName() {
-  console.log(metaContactData.brat);
   var meta = new ydn.social.MetaContact(metaContactData.brat);
   var tw = new ydn.social.MetaNetwork(meta, ydn.social.Network.TWITTER);
   var gp = new ydn.social.MetaNetwork(meta, ydn.social.Network.G_PLUS);
