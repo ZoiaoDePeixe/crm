@@ -28,6 +28,7 @@ goog.require('ydn.dom');
 goog.require('ydn.gdata.Kind');
 goog.require('ydn.gdata.m8.ContactEntry');
 goog.require('ydn.ui');
+goog.require('ydn.ui.InfiniteScrollDecorator');
 
 
 
@@ -36,6 +37,7 @@ goog.require('ydn.ui');
  * @param {ydn.crm.sugarcrm.model.Sugar} m
  * @constructor
  * @struct
+ * @implements {ydn.ui.InfiniteScrollItemProvider}
  */
 ydn.crm.sugarcrm.GDataContactPanel = function(m) {
   /**
@@ -77,7 +79,7 @@ ydn.crm.sugarcrm.GDataContactPanel = function(m) {
 /**
  * @define {boolean} debug flag
  */
-ydn.crm.sugarcrm.GDataContactPanel.DEBUG = true;
+ydn.crm.sugarcrm.GDataContactPanel.DEBUG = false;
 
 
 /**
@@ -99,7 +101,78 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.render = function(el, toolbar) {
   var ul = this.root_.querySelector('UL.infinite-scroll');
   order_by.onchange = this.onOrderChanged_.bind(this);
   direction.onchange = this.onDirChanged_.bind(this);
-  ul.addEventListener('scroll', this.onScroll_.bind(this), false);
+  var scroll = new ydn.ui.InfiniteScrollDecorator(ul, this);
+  ul.style.top = '80px';
+  ul.style.bottom = '20px';
+};
+
+
+/**
+ * @override
+ */
+ydn.crm.sugarcrm.GDataContactPanel.prototype.removeItem = function(first) {
+  var ul = this.root_.querySelector('UL.infinite-scroll');
+  if (first) {
+    ul.removeChild(ul.firstElementChild);
+  } else {
+    ul.removeChild(ul.lastElementChild);
+  }
+};
+
+
+/**
+ * @override
+ */
+ydn.crm.sugarcrm.GDataContactPanel.prototype.appendItem = function(prepend) {
+  var ul = this.root_.querySelector('UL.infinite-scroll');
+  var id = undefined;
+  var rev = this.reverse_;
+  if (prepend) {
+    rev = !rev;
+    if (!!ul.firstElementChild) {
+      id = ul.firstElementChild.getAttribute('data-key');
+    }
+  } else {
+    if (!!ul.lastElementChild) {
+      id = ul.lastElementChild.getAttribute('data-key');
+    }
+  }
+  var index = this.order_by_;
+  var query = {
+    'index': index,
+    'limit': 1,
+    'reverse': rev,
+    'after': id
+  };
+  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, query)
+      .addCallback(function(arr) {
+        var item = arr[0];
+        if (ydn.crm.sugarcrm.GDataContactPanel.DEBUG) {
+          window.console.log(id,
+              goog.object.getValueByKeys(item || {}, 'id', '$t'), item);
+        }
+        if (item) {
+          var li = this.sync_pair_templ.cloneNode(true).querySelector('li');
+          if (prepend && ul.firstElementChild) {
+            ul.insertBefore(li, ul.firstElementChild);
+          } else {
+            ul.appendChild(li);
+          }
+          var entry = new ydn.gdata.m8.ContactEntry(item);
+          var key;
+          if (index == 'updated.$t') {
+            key = ydn.db.utils.getValueByKeys(item, index);
+          } else if (index == 'name') {
+            key = entry.getFullName();
+          } else {
+            key = entry.getId();
+          }
+          li.setAttribute('data-id', entry.getSingleId());
+          li.setAttribute('data-index', index);
+          li.setAttribute('data-key', key);
+          return this.renderEntry_(li, entry);
+        }
+      }, this);
 };
 
 
@@ -108,6 +181,7 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.render = function(el, toolbar) {
  * @private
  */
 ydn.crm.sugarcrm.GDataContactPanel.prototype.onScroll_ = function(e) {
+  console.log(e.currentTarget.scrollTop);
   this.refreshContent_();
 };
 
