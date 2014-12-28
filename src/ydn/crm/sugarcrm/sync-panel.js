@@ -92,21 +92,32 @@ ydn.crm.sugarcrm.SyncPanel.prototype.render = function(el, toolbar) {
   var temp = ydn.ui.getTemplateById('sync-panel-template').content;
   this.root.appendChild(temp.cloneNode(true));
   el.appendChild(this.root);
+  toolbar.appendChild(this.toolbar);
 
   var ul = this.root.querySelector('UL.infinite-scroll');
   var scroll = new ydn.ui.InfiniteScrollDecorator(ul, this);
   ul.style.top = '70px';
   ul.style.bottom = '20px';
 
-  this.renderToolbar(toolbar);
+  this.renderContent();
+  this.renderToolbar();
 };
 
 
 /**
- * @param {Element} toolbar_el
  * @protected
  */
-ydn.crm.sugarcrm.SyncPanel.prototype.renderToolbar = goog.abstractMethod;
+ydn.crm.sugarcrm.SyncPanel.prototype.renderContent = function() {
+
+};
+
+
+/**
+ * @protected
+ */
+ydn.crm.sugarcrm.SyncPanel.prototype.renderToolbar = function() {
+
+};
 
 
 /**

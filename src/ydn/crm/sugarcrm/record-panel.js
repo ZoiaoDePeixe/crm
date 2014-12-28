@@ -77,10 +77,9 @@ ydn.crm.sugarcrm.RecordPanel.prototype.setModule = function(m) {
 /**
  * @override
  */
-ydn.crm.sugarcrm.RecordPanel.prototype.renderToolbar = function(toolbar) {
+ydn.crm.sugarcrm.RecordPanel.prototype.renderToolbar = function() {
   var temp_tb = ydn.ui.getTemplateById('sync-record-toolbar-template').content;
   this.toolbar.appendChild(temp_tb.cloneNode(true));
-  toolbar.appendChild(this.toolbar);
 
   var order_by = this.toolbar.querySelector('select[name=order-by]');
   var direction = this.toolbar.querySelector('select[name=direction]');
@@ -142,8 +141,8 @@ ydn.crm.sugarcrm.RecordPanel.prototype.appendItem = function(prepend,
         ul.appendChild(li);
       }
 
-      var entry = new ydn.crm.sugarcrm.Record(this.model.getDomain(), this.module_,
-          item);
+      var entry = new ydn.crm.sugarcrm.Record(this.model.getDomain(),
+          this.module_, item);
       var key = this.order_by ? entry.value(this.order_by) : entry.getId();
 
       li.setAttribute('data-id', entry.getId());
@@ -189,9 +188,10 @@ ydn.crm.sugarcrm.RecordPanel.prototype.onDirChanged_ = function(e) {
  */
 ydn.crm.sugarcrm.RecordPanel.prototype.refreshFooter = function() {
   var query = {
-    'kind': ydn.gdata.Kind.M8_CONTACT
+    'module': this.module_
   };
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.GDATA_COUNT, query)
+  var ch = this.model.getChannel();
+  ch.send(ydn.crm.Ch.SReq.COUNT, query)
       .addCallback(function(cnt) {
         var el = this.toolbar.querySelector('span[name=record-count]');
         el.textContent = String(cnt);
