@@ -94,7 +94,7 @@ ydn.crm.sugarcrm.RecordPanel.prototype.renderToolbar = function(toolbar) {
  */
 ydn.crm.sugarcrm.RecordPanel.prototype.appendItem = function(prepend,
                                                              should_remove) {
-
+  return goog.async.Deferred.fail(0);
 };
 
 
@@ -150,6 +150,7 @@ ydn.crm.sugarcrm.RecordPanel.prototype.refreshContent = function() {
   var query = {
     'store': this.module_,
     'index': this.order_by || '',
+    'reverse': this.reverse,
     'limit': 20
   };
   return ch.send(ydn.crm.Ch.SReq.QUERY, [query]).addCallbacks(function(arr) {

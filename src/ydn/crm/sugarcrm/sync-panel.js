@@ -95,7 +95,7 @@ ydn.crm.sugarcrm.SyncPanel.prototype.render = function(el, toolbar) {
 
   var ul = this.root.querySelector('UL.infinite-scroll');
   var scroll = new ydn.ui.InfiniteScrollDecorator(ul, this);
-  ul.style.top = '80px';
+  ul.style.top = '70px';
   ul.style.bottom = '20px';
 
   this.renderToolbar(toolbar);
