@@ -123,7 +123,8 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.removeItem = function(first) {
 /**
  * @override
  */
-ydn.crm.sugarcrm.GDataContactPanel.prototype.appendItem = function(prepend) {
+ydn.crm.sugarcrm.GDataContactPanel.prototype.appendItem = function(prepend,
+                                                                   should_remove) {
   var ul = this.root_.querySelector('UL.infinite-scroll');
   var id = undefined;
   var rev = this.reverse_;
@@ -154,8 +155,14 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.appendItem = function(prepend) {
         if (item) {
           var li = this.sync_pair_templ.cloneNode(true).querySelector('li');
           if (prepend && ul.firstElementChild) {
+            if (should_remove) {
+              ul.removeChild(ul.lastElementChild);
+            }
             ul.insertBefore(li, ul.firstElementChild);
           } else {
+            if (should_remove) {
+              ul.removeChild(ul.firstElementChild);
+            }
             ul.appendChild(li);
           }
           var entry = new ydn.gdata.m8.ContactEntry(item);
