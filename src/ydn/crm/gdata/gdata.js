@@ -147,27 +147,30 @@ ydn.crm.sugarcrm.gdata.gdataContact2Record = function(domain, module, entry, obj
     }
   }
   // email
-  // Note only three emails can be import to sugar
   var emails = [];
   for (var i = 0; entry.gd$email && i < entry.gd$email.length; i++) {
     var email = entry.gd$email[i];
-    if (email.rel == 'http://schemas.google.com/g/2005#work') {
-      if (obj['email1'] != email.address) {
-        changes++;
-        obj['email1'] = email.address;
-      }
-    } else if (email.rel == 'http://schemas.google.com/g/2005#home') {
-      if (obj['email2'] != email.address) {
-        changes++;
-        obj['email2'] = email.address;
-      }
-    } else if (email.rel == 'http://schemas.google.com/g/2005#other') {
-      if (obj['email'] != email.address) {
-        changes++;
-        obj['email'] = email.address;
-      }
+    if (email.primary) {
+      emails.unshift(email.address);
+    } else {
+      emails.push(email.address);
     }
   }
+  // Note only two emails can be import to sugar
+  // email fields is bean array, but ready only?
+  if (emails[0]) {
+    changes++;
+    obj['email1'] = emails[0];
+  }
+  if (emails[1]) {
+    changes++;
+    obj['email2'] = emails[1];
+  }
+  if (emails[2]) {
+    changes++;
+    obj['email_addresses_non_primary'] = emails[2];
+  }
+
   // name
   if (entry.gd$name) {
     if (entry.gd$name.gd$namePrefix) {
