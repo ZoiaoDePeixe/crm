@@ -130,12 +130,16 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.link_ = function(gdata_id, mn,
   var query = {
     'kind': ydn.gdata.Kind.M8_CONTACT,
     'gdataId': gdata_id,
-    'externalId': xp.getValue()
+    'externalId': xp.toExternalId()
   };
-  return this.model.getChannel().send(ydn.crm.Ch.SReq.LINK, query).addCallbacks(function(x) {
-
+  var sid = gdata_id.match(/\w+$/)[0];
+  var mid = ydn.crm.msg.Manager.addStatus('Linking Gmail contact ' + sid +
+      ' with SugarCRM ' + mn + ' ' + record_id);
+  var ch = this.model.getChannel();
+  return ch.send(ydn.crm.Ch.SReq.LINK, query).addCallbacks(function(x) {
+    ydn.crm.msg.Manager.updateStatus(mid, 'done. Merging records...');
   }, function(e) {
-
+    ydn.crm.msg.Manager.updateStatus(mid, ' failed. ' + String(e));
   }, this);
 };
 
