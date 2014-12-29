@@ -115,10 +115,17 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.import_ = function(id, mn) {
   if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
     window.console.info('sending ' + req + ' ' + JSON.stringify(data));
   }
+  var sid = id.match(/\w+$/)[0];
+  var mid = ydn.crm.msg.Manager.addStatus('Importing Gmail contact ' + sid);
   return this.model.getChannel().send(req, data).addCallbacks(function(data) {
     if (ydn.crm.sugarcrm.GDataContactPanel.DEBUG) {
       window.console.log(data);
     }
+    ydn.crm.msg.Manager.setStatus(mid, 'Gmail contact imported to ' + mn + ' ' +
+        data['id']);
+    var url = this.model.getRecordViewLink(mn, data['id']);
+    ydn.crm.msg.Manager.setLink(mid, url, data['id'], 'View in SugarCRM');
+    this.refreshEntry_(id);
   }, function(e) {
     ydn.crm.msg.Manager.addStatus(String(e));
   }, this);
@@ -194,7 +201,7 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.appendItem = function(prepend,
           } else {
             key = entry.getId();
           }
-          li.setAttribute('data-id', entry.getSingleId());
+          li.setAttribute('data-id', entry.getEntryId());
           li.setAttribute('data-index', index);
           li.setAttribute('data-key', key);
           dfs.push(this.renderEntry_(li, entry));
@@ -336,6 +343,41 @@ ydn.crm.sugarcrm.GDataContactPanel.importMenuItems = [{
   name: 'Leads',
   title: 'Import Gmail contact into SugarCRM Lead record'
 }];
+
+
+/**
+ * Refresh given entry.
+ * @param {string} id
+ * @private
+ */
+ydn.crm.sugarcrm.GDataContactPanel.prototype.refreshEntry_ = function(id) {
+  var ul = this.root.querySelector('.content UL');
+  var li = ul.querySelector('li[data-id="' + id + '"]');
+  if (!li) {
+    window.console.warn('Entry ' + id + ' not in list.');
+    return;
+  }
+  var ch = ydn.msg.getChannel();
+  var query = {
+    'from': id,
+    'limit': 1
+  };
+  ch.send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, query).addCallbacks(function(arr) {
+    if (ydn.crm.sugarcrm.GDataContactPanel.DEBUG) {
+      window.console.log(arr[0]);
+    }
+    if (!arr[0]) {
+      window.console.warn('Entry ' + id + ' not found.');
+      return;
+    }
+    var entry = new ydn.gdata.m8.ContactEntry(arr[0]);
+    li.innerHTML = '';
+    li.appendChild(this.sync_pair_templ.cloneNode(true));
+    this.renderEntry_(li, entry);
+  }, function(e) {
+    window.console.error(String(e));
+  }, this);
+};
 
 
 /**
