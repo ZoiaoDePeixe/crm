@@ -128,7 +128,7 @@ ydn.crm.Ch.SReq = {
    * @desc link contact gdata with sugar record by ExternalId attribute.
    * @see #UNLINK
    */
-  LINK: 'link',
+  LINK: 'link',  // should be GDATA_LINK
   LIST: 'list',  // list records (all module) by an email.
   LIST_MODULE: 'list-module',
   LOGIN: 'login',

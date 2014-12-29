@@ -85,13 +85,13 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.onContentClick_ = function(ev) {
   var el = /** @type {Element} */ (ev.target);
   if (el.tagName == 'BUTTON') {
     var name = el.getAttribute('name');
-    if (name == 'sync') {
+    if (name == 'link') {
       var li = goog.dom.getAncestorByTagNameAndClass(el, 'LI');
       var gdata_id = li.getAttribute('data-id');
       var el_record = li.querySelector('.secondary .record');
       var mn = el_record.getAttribute('data-module');
       var record_id = el_record.getAttribute('data-id');
-      this.sync_(gdata_id, /** @type {ydn.crm.sugarcrm.ModuleName} */(mn), record_id);
+      this.link_(gdata_id, /** @type {ydn.crm.sugarcrm.ModuleName} */(mn), record_id);
     }
   } else {
     var name = ydn.ui.FlyoutMenu.handleClick(ev);
@@ -109,17 +109,34 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.onContentClick_ = function(ev) {
 
 
 /**
- * Import GData contact to sugarcrm record.
+ * Link GData contact to sugarcrm record.
  * @param {string} gdata_id
  * @param {ydn.crm.sugarcrm.ModuleName} mn
  * @param {string} record_id
  * @return {!goog.async.Deferred}
  * @private
  */
-ydn.crm.sugarcrm.GDataContactPanel.prototype.sync_ = function(gdata_id, mn, record_id) {
+ydn.crm.sugarcrm.GDataContactPanel.prototype.link_ = function(gdata_id, mn,
+                                                              record_id) {
   if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
     window.console.info('sync ', gdata_id, mn, record_id);
   }
+  if (!record_id || !gdata_id || !mn) {
+    window.console.error('invalid id');
+    return goog.async.Deferred.fail('invalid id');
+  }
+  var xp = new ydn.gdata.m8.ExternalId(ydn.gdata.m8.ExternalId.Scheme.SUGARCRM,
+      this.model.getDomain(), mn, record_id);
+  var query = {
+    'kind': ydn.gdata.Kind.M8_CONTACT,
+    'gdataId': gdata_id,
+    'externalId': xp.getValue()
+  };
+  return this.model.getChannel().send(ydn.crm.Ch.SReq.LINK, query).addCallbacks(function(x) {
+
+  }, function(e) {
+
+  }, this);
 };
 
 
