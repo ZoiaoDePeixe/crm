@@ -54,11 +54,6 @@ ydn.crm.sugarcrm.GDataContactPanel = function(m) {
   this.secondary_templ_ = ydn.ui.getTemplateById(
       'sync-gdata-secondary-template').content;
 
-  /**
-   * @type {goog.async.Deferred}
-   * @private
-   */
-  this.render_next_df_ = null;
 };
 goog.inherits(ydn.crm.sugarcrm.GDataContactPanel, ydn.crm.sugarcrm.SyncPanel);
 
@@ -84,17 +79,47 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.renderContent = function() {
  */
 ydn.crm.sugarcrm.GDataContactPanel.prototype.onContentClick_ = function(ev) {
 
-  var name = ydn.ui.FlyoutMenu.handleClick(ev);
-  if (name) {
-    var li = goog.dom.getAncestorByTagNameAndClass(
-        /** @type {Element} */ (ev.target), 'LI');
-    var id = li.getAttribute('data-id');
-    if (ydn.crm.sugarcrm.GDataContactPanel.DEBUG) {
-      window.console.log('import', name, id);
+  if (!(ev.target instanceof Element)) {
+    return;
+  }
+  var el = /** @type {Element} */ (ev.target);
+  if (el.tagName == 'BUTTON') {
+    var name = el.getAttribute('name');
+    if (name == 'sync') {
+      var li = goog.dom.getAncestorByTagNameAndClass(el, 'LI');
+      var gdata_id = li.getAttribute('data-id');
+      var el_record = li.querySelector('.secondary .record');
+      var mn = el_record.getAttribute('data-module');
+      var record_id = el_record.getAttribute('data-id');
+      this.sync_(gdata_id, /** @type {ydn.crm.sugarcrm.ModuleName} */(mn), record_id);
     }
-    this.import_(id, /** @type {ydn.crm.sugarcrm.ModuleName} */ (name));
+  } else {
+    var name = ydn.ui.FlyoutMenu.handleClick(ev);
+    if (name) {
+      var li = goog.dom.getAncestorByTagNameAndClass(el, 'LI');
+      var id = li.getAttribute('data-id');
+      if (ydn.crm.sugarcrm.GDataContactPanel.DEBUG) {
+        window.console.log('import', name, id);
+      }
+      this.import_(id, /** @type {ydn.crm.sugarcrm.ModuleName} */ (name));
+    }
   }
 
+};
+
+
+/**
+ * Import GData contact to sugarcrm record.
+ * @param {string} gdata_id
+ * @param {ydn.crm.sugarcrm.ModuleName} mn
+ * @param {string} record_id
+ * @return {!goog.async.Deferred}
+ * @private
+ */
+ydn.crm.sugarcrm.GDataContactPanel.prototype.sync_ = function(gdata_id, mn, record_id) {
+  if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
+    window.console.info('sync ', gdata_id, mn, record_id);
+  }
 };
 
 
@@ -110,7 +135,7 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.import_ = function(id, mn) {
   var data = {
     'module': mn,
     'kind': ydn.gdata.Kind.M8_CONTACT,
-    'gdata-id': id
+    'gdataId': id
   };
   if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
     window.console.info('sending ' + req + ' ' + JSON.stringify(data));
@@ -433,82 +458,6 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.renderEntry_ = function(el, entry) 
     }
     return 1;
   }, this);
-};
-
-
-/**
- * Maximun number of li.
- * @type {number}
- */
-ydn.crm.sugarcrm.GDataContactPanel.MAX_LI = 50;
-
-
-/**
- * Maximun number of li.
- * @type {number}
- */
-ydn.crm.sugarcrm.GDataContactPanel.OVERSHOOT = 3;
-
-
-/**
- * Render entry if last entry is showing and continue rendering recursively.
- * @private
- * @return {!goog.async.Deferred}
- */
-ydn.crm.sugarcrm.GDataContactPanel.prototype.renderNextEntryRecursive_ = function() {
-
-  var ul = this.root.querySelector('.content UL');
-  var id = undefined;
-  if (ul.childElementCount > ydn.crm.sugarcrm.GDataContactPanel.OVERSHOOT) {
-    var li = ul.children[ul.childElementCount - ydn.crm.sugarcrm.GDataContactPanel.OVERSHOOT - 1];
-    if (!ydn.dom.isElementVisible(li)) {
-      if (ydn.crm.sugarcrm.GDataContactPanel.DEBUG) {
-        window.console.log(li.getAttribute('data-id'), ' not visible');
-      }
-      return goog.async.Deferred.fail(0);
-    }
-    id = ul.lastElementChild.getAttribute('data-key');
-  }
-  if (ydn.crm.sugarcrm.GDataContactPanel.DEBUG) {
-    window.console.log('rendering next entry');
-  }
-  if (ul.childElementCount > ydn.crm.sugarcrm.GDataContactPanel.MAX_LI) {
-    ul.removeChild(ul.firstElementChild);
-  }
-  var index = this.order_by;
-  var query = {
-    'index': index,
-    'limit': 1,
-    'reverse': this.reverse,
-    'after': id
-  };
-  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, query)
-      .addCallback(function(arr) {
-        if (ydn.crm.sugarcrm.GDataContactPanel.DEBUG) {
-          window.console.log(arr[0]);
-        }
-        if (arr[0]) {
-          var li = this.sync_pair_templ.cloneNode(true).querySelector('li');
-          ul.appendChild(li);
-          var entry = new ydn.gdata.m8.ContactEntry(arr[0]);
-          var key;
-          if (index == 'updated.$t') {
-            key = ydn.db.utils.getValueByKeys(arr[0], index);
-          } else if (index == 'name') {
-            key = entry.getFullName();
-          } else {
-            key = entry.getId();
-          }
-          li.setAttribute('data-id', entry.getEntryId());
-          li.setAttribute('data-index', index);
-          li.setAttribute('data-key', key);
-          return this.renderEntry_(li, entry).addCallback(function() {
-            return this.renderNextEntryRecursive_().addBoth(function(cnt) {
-              return cnt + 1;
-            }, this);
-          }, this);
-        }
-      }, this);
 };
 
 

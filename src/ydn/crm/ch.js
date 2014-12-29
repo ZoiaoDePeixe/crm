@@ -141,7 +141,6 @@ ydn.crm.Ch.SReq = {
   SEARCH: 'search', // free text query
   SERVER_INFO: 'server-info',
   STATS: 'stats', // statistic of cached data
-  SYNC_ENTRY: 'sync-entry',
   /**
    * @desc remove ExternalId that link contact gdata with sugar record.
    * @see #LINK
