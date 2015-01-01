@@ -447,7 +447,7 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.renderRecordBySimilarity_ = functio
     if (res.score >= 1.0) {
       // consider exact match, and not allow to create a new record,
       // but instead must sync with it.
-      ip_btn.setAttribute('disabled', 'disabled');
+      goog.style.setElementShown(ip_btn, false);
     }
     var sec_el = this.secondary_templ_.cloneNode(true).firstElementChild;
     var label = sec_el.querySelector('[name=label]');
@@ -463,6 +463,43 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.renderRecordBySimilarity_ = functio
     secondary.appendChild(sec_el);
   }
 
+};
+
+
+/**
+ * Render secondary entry.
+ * @param {Element} el
+ * @param {ydn.gdata.m8.ContactEntry} entry
+ * @param {SugarCrm.Record} r
+ * @private
+ */
+ydn.crm.sugarcrm.GDataContactPanel.prototype.renderRecordByLink_ = function(
+    el, entry, r) {
+
+  if (ydn.crm.sugarcrm.GDataContactPanel.DEBUG) {
+    window.console.log(entry, r);
+  }
+
+  var primary = el.querySelector('.primary');
+  var secondary = el.querySelector('.secondary');
+
+  var ip_btn = primary.querySelector('span[name=import]');
+  goog.style.setElementShown(ip_btn, false);
+
+  var mn = /** @type {ydn.crm.sugarcrm.ModuleName} */(r._module);
+  var record = new ydn.crm.sugarcrm.Record(this.model.getDomain(), mn, r);
+  var sec_el = this.secondary_templ_.cloneNode(true).firstElementChild;
+  var label = sec_el.querySelector('[name=label]');
+  label.textContent = record.getLabel();
+  var m_name = record.getModule();
+  var id = record.getId();
+  sec_el.classList.add(m_name);
+  sec_el.setAttribute('data-module', m_name);
+  sec_el.setAttribute('data-id', id);
+  label.href = this.model.getRecordViewLink(m_name, id);
+  var icon = sec_el.querySelector('.icon');
+  icon.textContent = ydn.crm.sugarcrm.toModuleSymbol(m_name);
+  secondary.appendChild(sec_el);
 };
 
 
@@ -511,20 +548,6 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.renderEntry_ = function(el, entry) 
   }, function(e) {
     window.console.error(e);
   }, this);
-
-};
-
-
-/**
- * Render secondary entry.
- * @param {Element} el
- * @param {ydn.gdata.m8.ContactEntry} entry
- * @param {SugarCrm.Record} record
- * @private
- */
-ydn.crm.sugarcrm.GDataContactPanel.prototype.renderRecordByLink_ = function(
-    el, entry, record) {
-  window.console.log(entry, record);
 
 };
 
