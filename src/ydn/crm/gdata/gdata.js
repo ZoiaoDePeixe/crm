@@ -122,7 +122,8 @@ ydn.crm.sugarcrm.gdata.compileAddress = function(obj, data, prefix) {
 
 
 /**
- * @define {boolean}
+ * @const
+ * @type {boolean}
  */
 ydn.crm.sugarcrm.gdata.SYNC_ORGANIZATION = false;
 
@@ -133,7 +134,7 @@ ydn.crm.sugarcrm.gdata.SYNC_ORGANIZATION = false;
  * @param {ydn.crm.sugarcrm.ModuleName} module
  * @param {!ContactEntry} entry
  * @param {!SugarCrm.Record} obj record
- * @return {number} true if record has been changed.
+ * @return {number} number of changes.
  */
 ydn.crm.sugarcrm.gdata.gdataContact2Record = function(domain, module, entry, obj) {
   // https://developers.google.com/gdata/docs/2.0/elements

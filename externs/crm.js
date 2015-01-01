@@ -392,3 +392,41 @@ YdnCrm.SocialCache.prototype.updated;
 YdnCrm.SocialCache.prototype.data;
 
 
+
+/**
+ * Social cache record.
+ * @interface
+ */
+YdnCrm.SyncRecord = function() {};
+
+
+/**
+ * @type {string}
+ */
+YdnCrm.SyncRecord.prototype.gmail;
+
+
+/**
+ * @type {string}
+ */
+YdnCrm.SyncRecord.prototype.key;
+
+
+/**
+ * @type {string}
+ */
+YdnCrm.SyncRecord.prototype.modified;
+
+
+/**
+ * @type {Array<number>}
+ */
+YdnCrm.SyncRecord.prototype.timestamps;
+
+
+/**
+ * @type {boolean|undefined}
+ */
+YdnCrm.SyncRecord.prototype.deleted;
+
+

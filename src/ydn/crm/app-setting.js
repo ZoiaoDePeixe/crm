@@ -63,6 +63,27 @@ ydn.crm.AppSetting.STORE_SUGAR = 'sugar';
 
 
 /**
+ * @const
+ * @type {string}
+ */
+ydn.crm.AppSetting.STORE_SYNC = 'sync';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ydn.crm.AppSetting.SYNC_TOKEN_PATH = 'modified';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ydn.crm.AppSetting.SYNC_KEY_PATH = 'key';
+
+
+/**
  * Schema.
  * @const
  * @type {DatabaseSchema}
@@ -75,7 +96,15 @@ ydn.crm.AppSetting.schema = /** @type {DatabaseSchema} */ (/** @type {Object} */
   }, ydn.db.base.entitySchema,
   ydn.crm.tracking.trackSchema,
   ydn.crm.tracking.accessSchema,
-  ydn.crm.tracking.dntTrackSchema]
+  ydn.crm.tracking.dntTrackSchema, {
+    name: ydn.crm.AppSetting.STORE_SYNC,
+    autoIncrement: true,
+    indexes: [
+      {
+        name: ydn.crm.AppSetting.SYNC_TOKEN_PATH
+      }
+    ]
+  }]
 }));
 
 
