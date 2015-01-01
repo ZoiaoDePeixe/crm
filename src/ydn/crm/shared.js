@@ -232,6 +232,12 @@ ydn.crm.shared.auditUserActivity = function() {
  * @param {Object} data
  */
 ydn.crm.shared.logAnalytic = function(data) {
+
+  if (location.host == 'gehcogaddkopajdfhbfgokbongbfijnh') {
+    // not send for dev.
+    return;
+  }
+
   data['installId'] = ydn.crm.shared.install_id;
   if (ydn.testing.ErrorLogger.ENABLED) {
     ydn.debug.ILogger.instance.log(data);

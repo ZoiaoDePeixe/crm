@@ -128,9 +128,10 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.link_ = function(gdata_id, mn,
   var xp = new ydn.gdata.m8.ExternalId(ydn.gdata.m8.ExternalId.Scheme.SUGARCRM,
       this.model.getDomain(), mn, record_id);
   var query = {
-    'kind': ydn.gdata.Kind.M8_CONTACT,
-    'gdataId': gdata_id,
-    'externalId': xp.toExternalId()
+    'domain': this.model.getDomain(),
+    'module': mn,
+    'recordId': record_id,
+    'entryId': gdata_id
   };
   var sid = gdata_id.match(/\w+$/)[0];
   var mid = ydn.crm.msg.Manager.addStatus('Linking Gmail contact ' + sid +
@@ -220,9 +221,11 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.appendItem = function(prepend,
   };
   return ydn.msg.getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, query)
       .addCallback(function(arr) {
+        /*
         if (ydn.crm.sugarcrm.GDataContactPanel.DEBUG) {
           window.console.log(id, arr);
         }
+        */
         var dfs = [];
         for (var k = 0; k < arr.length; k++) {
           var item = arr[k];
@@ -427,6 +430,43 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.refreshEntry_ = function(id) {
 
 
 /**
+ * Render secondary entry.
+ * @param {Element} el
+ * @param {Array<ydn.crm.sugarcrm.GDataContactPanel.SimilarityResult>} results
+ * @private
+ */
+ydn.crm.sugarcrm.GDataContactPanel.prototype.renderRecordBySimilarity_ = function(
+    el, results) {
+  var primary = el.querySelector('.primary');
+  var secondary = el.querySelector('.secondary');
+
+  var ip_btn = primary.querySelector('span[name=import]');
+
+  for (var i = 0; i < results.length; i++) {
+    var res = results[i];
+    if (res.score >= 1.0) {
+      // consider exact match, and not allow to create a new record,
+      // but instead must sync with it.
+      ip_btn.setAttribute('disabled', 'disabled');
+    }
+    var sec_el = this.secondary_templ_.cloneNode(true).firstElementChild;
+    var label = sec_el.querySelector('[name=label]');
+    label.textContent = res.record.getLabel();
+    var m_name = res.record.getModule();
+    var id = res.record.getId();
+    sec_el.classList.add(m_name);
+    sec_el.setAttribute('data-module', m_name);
+    sec_el.setAttribute('data-id', id);
+    label.href = this.model.getRecordViewLink(m_name, id);
+    var icon = sec_el.querySelector('.icon');
+    icon.textContent = ydn.crm.sugarcrm.toModuleSymbol(m_name);
+    secondary.appendChild(sec_el);
+  }
+
+};
+
+
+/**
  * @param {Element} el
  * @param {ydn.gdata.m8.ContactEntry} entry
  * @return {!goog.async.Deferred<number>} return 1.
@@ -448,37 +488,44 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.renderEntry_ = function(el, entry) 
   var email = primary.querySelector('span[name=emails]');
   email.textContent = entry.getEmails().join(', ');
 
-  var ch = this.model.getChannel();
-  var ce = entry.getData();
-  return ch.send(ydn.crm.Ch.SReq.QUERY_SIMILAR, ce).addCallback(function(arr) {
-    if (ydn.crm.sugarcrm.GDataContactPanel.DEBUG) {
-      window.console.log(arr);
+  var ch = ydn.msg.getChannel();
+  var q = {'entryId': entry.getEntryId()};
+  return ch.send(ydn.crm.Ch.Req.SYNC_QUERY, q).addCallbacks(function(arr) {
+    var syncs = /** @type {!Array<!SugarCrm.Record>} */(arr);
+    if (arr[0]) {
+      this.renderRecordByLink_(el, entry, arr[0]);
+    } else {
+      var sch = this.model.getChannel();
+      var ce = entry.getData();
+      sch.send(ydn.crm.Ch.SReq.QUERY_SIMILAR, ce).addCallbacks(function(arr) {
+        if (ydn.crm.sugarcrm.GDataContactPanel.DEBUG) {
+          window.console.log(arr[0]);
+        }
+        var domain = this.model.getDomain();
+        var results = ydn.crm.sugarcrm.GDataContactPanel.enrich(domain, arr);
+        this.renderRecordBySimilarity_(el, results);
+      }, function(e) {
+        window.console.error(e);
+      }, this);
     }
-    var ip_btn = primary.querySelector('span[name=import]');
-    var domain = this.model.getDomain();
-    var results = ydn.crm.sugarcrm.GDataContactPanel.enrich(domain, arr);
-    for (var i = 0; i < results.length; i++) {
-      var res = results[i];
-      if (res.score >= 1.0) {
-        // consider exact match, and not allow to create a new record,
-        // but instead must sync with it.
-        ip_btn.setAttribute('disabled', 'disabled');
-      }
-      var sec_el = this.secondary_templ_.cloneNode(true).firstElementChild;
-      var label = sec_el.querySelector('[name=label]');
-      label.textContent = res.record.getLabel();
-      var m_name = res.record.getModule();
-      var id = res.record.getId();
-      sec_el.classList.add(m_name);
-      sec_el.setAttribute('data-module', m_name);
-      sec_el.setAttribute('data-id', id);
-      label.href = this.model.getRecordViewLink(m_name, id);
-      var icon = sec_el.querySelector('.icon');
-      icon.textContent = ydn.crm.sugarcrm.toModuleSymbol(m_name);
-      secondary.appendChild(sec_el);
-    }
-    return 1;
+  }, function(e) {
+    window.console.error(e);
   }, this);
+
+};
+
+
+/**
+ * Render secondary entry.
+ * @param {Element} el
+ * @param {ydn.gdata.m8.ContactEntry} entry
+ * @param {SugarCrm.Record} record
+ * @private
+ */
+ydn.crm.sugarcrm.GDataContactPanel.prototype.renderRecordByLink_ = function(
+    el, entry, record) {
+  window.console.log(entry, record);
+
 };
 
 

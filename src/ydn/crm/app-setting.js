@@ -102,6 +102,15 @@ ydn.crm.AppSetting.schema = /** @type {DatabaseSchema} */ (/** @type {Object} */
     indexes: [
       {
         name: ydn.crm.AppSetting.SYNC_TOKEN_PATH
+      }, {
+        name: 'gdataId',
+        generator: function(obj) {
+          var key = obj['key'];
+          if (key) {
+            var parts = key.split('/');
+            return parts[3] + '/' + parts[4] + '/' + parts[5];
+          }
+        }
       }
     ]
   }]
