@@ -188,8 +188,10 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.renderToolbar = function() {
 
   var order_by = this.toolbar.querySelector('select[name=order-by]');
   var direction = this.toolbar.querySelector('select[name=direction]');
+  var sync = this.toolbar.querySelector('button[name=sync]');
   order_by.onchange = this.onOrderChanged_.bind(this);
   direction.onchange = this.onDirChanged_.bind(this);
+  sync.onclick = this.onSync_.bind(this);
 };
 
 
@@ -274,6 +276,23 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.onOrderChanged_ = function(e) {
  * @param {Event} e
  * @private
  */
+ydn.crm.sugarcrm.GDataContactPanel.prototype.onSync_ = function(e) {
+  var btn = e.target;
+  btn.setAttribute('disabled', 'disabled');
+  ydn.msg.getChannel().send(ydn.crm.Ch.Req.SYNC).addCallbacks(function(msg) {
+    btn.removeAttribute('disabled');
+    ydn.crm.msg.Manager.addStatus(String(msg));
+  }, function(e) {
+    btn.removeAttribute('disabled');
+    ydn.crm.msg.Manager.addStatus(String(e));
+  }, this);
+};
+
+
+/**
+ * @param {Event} e
+ * @private
+ */
 ydn.crm.sugarcrm.GDataContactPanel.prototype.onDirChanged_ = function(e) {
   console.log(e);
   if (e.currentTarget.value == 'asc') {
@@ -298,6 +317,14 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.refreshFooter = function() {
       .addCallback(function(cnt) {
         var el = this.toolbar.querySelector('span[name=gdata-contact-count]');
         el.textContent = String(cnt);
+      }, this);
+  ydn.msg.getChannel().send(ydn.crm.Ch.Req.SYNC_GET_LAST)
+      .addCallback(function(ts) {
+        if (!ts) {
+          return;
+        }
+        var btn = this.toolbar.querySelector('button[name=sync]');
+        btn.setAttribute('title', 'Last sync on ' + (new Date(ts)).toLocaleString());
       }, this);
 };
 
@@ -500,6 +527,9 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.renderRecordByLink_ = function(
   var icon = sec_el.querySelector('.icon');
   icon.textContent = ydn.crm.sugarcrm.toModuleSymbol(m_name);
   secondary.appendChild(sec_el);
+
+  var btn_link = sec_el.querySelector('button[name=link]');
+  goog.style.setElementShown(btn_link, false);
 };
 
 

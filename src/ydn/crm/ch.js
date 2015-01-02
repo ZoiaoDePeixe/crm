@@ -83,7 +83,10 @@ ydn.crm.Ch.Req = {
   SERVER_AUDIT_LOG: 'server-audit-log',
   SOCIAL_PROFILE: 'social-profile',
   SUGAR_SERVER_INFO: 'sugar-server-info',
-  SYNC_QUERY: 'sync-query', // query sync record data
+  SYNC: 'sync', // begin sync between gdata and record
+  SYNC_FOR: 'sync-for', // sync given sync record
+  SYNC_GET_LAST: 'sync-gl', // get last sync time
+  SYNC_QUERY: 'sync-q', // query sync record data
   TOKEN_GDATA: 'token-gdata', //
   TOKEN_REVOKE_GDATA: 'token-revoke-gdata',
   TRACKING_CLEAR_DNT: 'tracking-clear-dnt',

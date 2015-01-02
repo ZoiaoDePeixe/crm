@@ -101,6 +101,9 @@ ydn.crm.AppSetting.schema = /** @type {DatabaseSchema} */ (/** @type {Object} */
     autoIncrement: true,
     indexes: [
       {
+        name: ydn.crm.AppSetting.SYNC_KEY_PATH
+      },
+      {
         name: ydn.crm.AppSetting.SYNC_TOKEN_PATH
       }, {
         name: 'gdataId',
