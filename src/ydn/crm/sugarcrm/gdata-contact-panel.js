@@ -139,6 +139,15 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.link_ = function(gdata_id, mn,
   var ch = this.model.getChannel();
   return ch.send(ydn.crm.Ch.SReq.LINK, query).addCallbacks(function(x) {
     ydn.crm.msg.Manager.updateStatus(mid, 'done. Merging records...');
+    var sync = /** @type {YdnCrm.SyncRecord} */(x);
+    var mch = ydn.msg.getChannel();
+    mch.send(ydn.crm.Ch.Req.SYNC_FOR, sync).addCallbacks(function(x) {
+      ydn.crm.msg.Manager.updateStatus(mid, 'done.');
+      window.console.log(x);
+    }, function(e) {
+      ydn.crm.msg.Manager.updateStatus(mid, 'done. merging records failed. ' +
+          String(e));
+    }, this);
   }, function(e) {
     ydn.crm.msg.Manager.updateStatus(mid, ' failed. ' + String(e));
   }, this);

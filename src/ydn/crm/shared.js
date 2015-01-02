@@ -229,13 +229,36 @@ ydn.crm.shared.auditUserActivity = function() {
 
 /**
  * Log server side analytics.
- * @param {Object} data
+ * <pre>
+ *    ydn.crm.shared.logAnalytic({
+      'category': 'setup',
+      'action': 'login',
+      'label': 'some@email.com',
+      'value': 0,
+      'detail': '{"message": "invalid password"}'
+    })
+ * <pre>
+ * If object `detail field is instance of `Error` or `Object` it will be serialized.
+ * @param {Object} data object to be logged.
  */
 ydn.crm.shared.logAnalytic = function(data) {
 
   if (location.host == 'gehcogaddkopajdfhbfgokbongbfijnh') {
     // not send for dev.
     return;
+  }
+
+  if (data['detail']) {
+    if (data['detail'] instanceof Error) {
+      var e = /** @type {Error} */(data['detail']);
+      data['detail'] = JSON.stringify({
+        'name': e.name,
+        'message': e.message,
+        'stack': String(e.stack)
+      });
+    } else if (goog.isObject(data['detail'])) {
+      data['detail'] = JSON.stringify(data['detail']);
+    }
   }
 
   data['installId'] = ydn.crm.shared.install_id;

@@ -338,6 +338,7 @@ ydn.crm.sugarcrm.gdata.record2GDataContact = function(sugar_record, entry) {
     }
     return -1;
   };
+
   /**
    * Find email by rel
    * @param {string} address
@@ -354,6 +355,7 @@ ydn.crm.sugarcrm.gdata.record2GDataContact = function(sugar_record, entry) {
     }
     return -1;
   };
+
   var checkEmail = function(name, rel) {
     if (record[name]) {
       if (!entry.gd$email) {
@@ -374,7 +376,8 @@ ydn.crm.sugarcrm.gdata.record2GDataContact = function(sugar_record, entry) {
           'rel': rel,
           'address': record[name]
         };
-        entry.gd$email.push(em1); // FIXME: Uncaught TypeError: Object #<Object> has no method 'push'
+        // FIXME: Uncaught TypeError: Object #<Object> has no method 'push'
+        entry.gd$email.push(em1);
         done_emails.push(entry.gd$email.length - 1);
         changes++;
       }
@@ -382,8 +385,8 @@ ydn.crm.sugarcrm.gdata.record2GDataContact = function(sugar_record, entry) {
   };
   checkEmail('email1', 'http://schemas.google.com/g/2005#work');
   checkEmail('email2', 'http://schemas.google.com/g/2005#home');
-  checkEmail('email', 'http://schemas.google.com/g/2005#other');
-
+  // Note: `email` field is not used in sugarcrm rest api.
+  // checkEmail('email', 'http://schemas.google.com/g/2005#other');
 
   var ensureGdName = function() {
     if (!entry.gd$name) {
@@ -482,7 +485,7 @@ ydn.crm.sugarcrm.gdata.record2GDataContact = function(sugar_record, entry) {
   if (record['birthdate']) {
     if (!entry.gContact$birthday || entry.gContact$birthday.when != record['birthdate']) {
       entry.gContact$birthday = /** @type {ContactBirthday} */ (/** @type {Object} */ (
-      {'when': record['birthdate']}));
+          {'when': record['birthdate']}));
       changes++;
     }
   }
@@ -576,7 +579,5 @@ ydn.crm.sugarcrm.gdata.record2GDataContact = function(sugar_record, entry) {
 
   return changes;
 };
-
-
 
 
