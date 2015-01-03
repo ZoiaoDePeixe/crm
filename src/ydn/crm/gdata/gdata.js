@@ -170,15 +170,15 @@ ydn.crm.sugarcrm.gdata.gdataContact2Record = function(domain, module, entry, obj
   }
   // Note only two emails can be import to sugar
   // email fields is bean array, but ready only?
-  if (emails[0]) {
+  if (emails[0] != obj['email1']) {
     changes++;
     obj['email1'] = emails[0];
   }
-  if (emails[1]) {
+  if (emails[1] != obj['email2']) {
     changes++;
     obj['email2'] = emails[1];
   }
-  if (emails[2]) {
+  if (emails[2] != obj['email_addresses_non_primary']) {
     changes++;
     obj['email_addresses_non_primary'] = emails[2];
   }

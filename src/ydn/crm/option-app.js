@@ -179,7 +179,7 @@ ydn.crm.OptionPageApp.prototype.createTrackingPanel = function() {
  */
 ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
 
-  var pages = ['sugarcrm', 'sync', 'tracking', 'about-sugarcrm'];
+  var pages = ['sugarcrm', 'tracking', 'about-sugarcrm'];
   var asn = ydn.crm.AppSetting.getAppShortName();
   var is_tracker_app = asn == ydn.crm.base.AppShortName.EMAIL_TRACKER ||
       asn == ydn.crm.base.AppShortName.EMAIL_TRACKER_GMAIL;
