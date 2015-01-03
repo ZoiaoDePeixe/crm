@@ -117,6 +117,17 @@ ydn.crm.sugarcrm.gdata.compileAddress = function(obj, data, prefix) {
   checkItem('gd$neighborhood', '_address_street_2');
   checkItem('gd$city', '_address_street_3');
 
+  if (changes && !data.rel) {
+    if (prefix == 'primary') {
+      data.rel = 'http://schemas.google.com/g/2005#work';
+      data.primary = 'true';
+    } else if (prefix == 'alt') {
+      data.rel = 'http://schemas.google.com/g/2005#home';
+    } else {
+      data.rel = 'http://schemas.google.com/g/2005#other';
+    }
+  }
+
   return changes;
 };
 
