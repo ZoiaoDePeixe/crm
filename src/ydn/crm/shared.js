@@ -102,9 +102,10 @@ ydn.crm.shared.app_schema = /** @type {!DatabaseSchema} */ ({
 /**
  * Log to console.
  * @param {boolean} enabled enable or disable logging on 'ydn.crm' namespace.
+ * @see ydn.crm.shared.setLogging
  */
 ydn.crm.shared.log = function(enabled) {
-  ydn.crm.shared.setLogging('ydn.crm', 'finer');
+  ydn.crm.shared.setLogging('ydn.crm', 'fine');
   var obj = {};
   obj[ydn.crm.base.ChromeSyncKey.LOGGING_CAPTURE_ON_CONSOLE] = !!enabled;
   chrome.storage.sync.set(obj);

@@ -456,8 +456,6 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.refreshEntry_ = function(id) {
       return;
     }
     var entry = new ydn.gdata.m8.ContactEntry(arr[0]);
-    li.innerHTML = '';
-    li.appendChild(this.sync_pair_templ.cloneNode(true));
     this.renderEntry_(li, entry);
   }, function(e) {
     window.console.error(String(e));
@@ -551,6 +549,8 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.renderRecordByLink_ = function(
 ydn.crm.sugarcrm.GDataContactPanel.prototype.renderEntry_ = function(el, entry) {
   var primary = el.querySelector('.primary');
   var secondary = el.querySelector('.secondary');
+  primary.innerHTML = '';
+  secondary.innerHTML = '';
 
   primary.appendChild(this.primary_templ_.cloneNode(true));
 
