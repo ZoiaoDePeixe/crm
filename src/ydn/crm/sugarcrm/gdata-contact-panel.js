@@ -143,7 +143,10 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.link_ = function(gdata_id, mn,
     var mch = ydn.msg.getChannel();
     mch.send(ydn.crm.Ch.Req.SYNC_FOR, sync).addCallbacks(function(x) {
       ydn.crm.msg.Manager.updateStatus(mid, 'done.');
-      window.console.log(x);
+      if (ydn.crm.sugarcrm.model.GDataSugar.DEBUG) {
+        window.console.log(x);
+      }
+      this.refreshEntry_(gdata_id);
     }, function(e) {
       ydn.crm.msg.Manager.updateStatus(mid, 'done. merging records failed. ' +
           String(e));
@@ -177,11 +180,13 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.import_ = function(id, mn) {
     if (ydn.crm.sugarcrm.GDataContactPanel.DEBUG) {
       window.console.log(data);
     }
+    var rid = data['id'];
     ydn.crm.msg.Manager.setStatus(mid, 'Gmail contact imported to ' + mn + ' ' +
-        data['id']);
-    var url = this.model.getRecordViewLink(mn, data['id']);
-    ydn.crm.msg.Manager.setLink(mid, url, data['id'], 'View in SugarCRM');
+        rid);
+    var url = this.model.getRecordViewLink(mn, rid);
+    ydn.crm.msg.Manager.setLink(mid, url, rid, 'View in SugarCRM');
     this.refreshEntry_(id);
+    return this.link_(id, mn, rid);
   }, function(e) {
     ydn.crm.msg.Manager.addStatus(String(e));
   }, this);

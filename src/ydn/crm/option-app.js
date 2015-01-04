@@ -25,6 +25,7 @@
 
 
 goog.provide('ydn.crm.OptionPageApp');
+goog.require('goog.array');
 goog.require('goog.style');
 goog.require('ydn.crm.AboutPage');
 goog.require('ydn.crm.Ch');
@@ -180,6 +181,9 @@ ydn.crm.OptionPageApp.prototype.createTrackingPanel = function() {
 ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
 
   var pages = ['sugarcrm', 'tracking', 'about-sugarcrm'];
+  if (location.hostname == 'gehcogaddkopajdfhbfgokbongbfijnh') {
+    goog.array.insertAt(pages, 'sync', 1);
+  }
   var asn = ydn.crm.AppSetting.getAppShortName();
   var is_tracker_app = asn == ydn.crm.base.AppShortName.EMAIL_TRACKER ||
       asn == ydn.crm.base.AppShortName.EMAIL_TRACKER_GMAIL;

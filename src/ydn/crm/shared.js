@@ -230,6 +230,26 @@ ydn.crm.shared.auditUserActivity = function() {
 
 /**
  * Log server side analytics.
+ * @param {string} category
+ * @param {string} action
+ * @param {string=} opt_label
+ * @param {number=} opt_value
+ * @param {(string|Object|Error)=} opt_detail
+ */
+ydn.crm.shared.logAnalyticValue = function(category, action, opt_label,
+                                           opt_value, opt_detail) {
+  ydn.crm.shared.logAnalytic({
+    'category': category,
+    'action': action,
+    'label': opt_label || '',
+    'value': opt_value || 0,
+    'detail': opt_detail
+  });
+};
+
+
+/**
+ * Log server side analytics.
  * <pre>
  *    ydn.crm.shared.logAnalytic({
       'category': 'setup',
@@ -240,7 +260,7 @@ ydn.crm.shared.auditUserActivity = function() {
     })
  * <pre>
  * If object `detail field is instance of `Error` or `Object` it will be serialized.
- * @param {Object} data object to be logged.
+ * @param {!Object} data object to be logged.
  */
 ydn.crm.shared.logAnalytic = function(data) {
 
@@ -249,16 +269,16 @@ ydn.crm.shared.logAnalytic = function(data) {
     return;
   }
 
-  if (data['detail']) {
-    if (data['detail'] instanceof Error) {
-      var e = /** @type {Error} */(data['detail']);
-      data['detail'] = JSON.stringify({
+  if (data.detail) {
+    if (data.detail instanceof Error) {
+      var e = /** @type {Error} */(data.detail);
+      data.detail = JSON.stringify({
         'name': e.name,
         'message': e.message,
         'stack': String(e.stack)
       });
-    } else if (goog.isObject(data['detail'])) {
-      data['detail'] = JSON.stringify(data['detail']);
+    } else if (goog.isObject(data.detail)) {
+      data.detail = JSON.stringify(data.detail);
     }
   }
 
@@ -304,14 +324,8 @@ ydn.crm.shared.gaSend = function(category, action, opt_label, opt_value) {
     }
   }
   if (ydn.crm.shared.USE_SERVER_ANALYTICS) {
-    var data = {
-      'category': category,
-      'action': action,
-      'label': opt_label || '',
-      'value': value,
-      'detail': detail
-    };
-    ydn.crm.shared.logAnalytic(data);
+
+    ydn.crm.shared.logAnalyticValue(category, action, opt_label, value, detail);
   } else if (goog.global['_gaq']) {
     if (goog.global['_gaq'].length > 100) {
       return;
