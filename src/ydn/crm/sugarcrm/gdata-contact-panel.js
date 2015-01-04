@@ -28,6 +28,7 @@ goog.require('ydn.crm.sugarcrm.model.Sugar');
 goog.require('ydn.crm.ui');
 goog.require('ydn.gdata.Kind');
 goog.require('ydn.gdata.m8.ContactEntry');
+goog.require('ydn.gmail.Utils');
 goog.require('ydn.ui');
 goog.require('ydn.ui.FlyoutMenu');
 
@@ -564,10 +565,15 @@ ydn.crm.sugarcrm.GDataContactPanel.prototype.renderEntry_ = function(el, entry) 
       ydn.crm.sugarcrm.GDataContactPanel.importMenuItems,
       {iconName: 'input', isRightMenu: true});
 
-  var name = primary.querySelector('span[name=name]');
+  var name = primary.querySelector('a[name=name]');
+  name.href = entry.getGmailViewLink(ydn.gmail.Utils.getGoogleAcui());
   name.textContent = entry.getFullName();
   var email = primary.querySelector('span[name=emails]');
   email.textContent = entry.getEmails().join(', ');
+  var svg = ydn.crm.ui.createSvgIcon('google');
+  var icon = primary.querySelector('.badge-icon');
+  icon.appendChild(svg);
+
 
   var ch = ydn.msg.getChannel();
   var q = {'entryId': entry.getEntryId()};
