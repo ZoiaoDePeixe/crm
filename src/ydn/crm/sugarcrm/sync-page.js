@@ -195,5 +195,5 @@ ydn.crm.sugarcrm.SyncPage.prototype.refresh_ = function() {
  * @override
  */
 ydn.crm.sugarcrm.SyncPage.prototype.toString = function() {
-  return 'Sync';
+  return 'SugarCRM';
 };
