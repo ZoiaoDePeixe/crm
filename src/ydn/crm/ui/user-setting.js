@@ -26,6 +26,7 @@ goog.require('ydn.ui.MessageBox');
  * @constructor
  * @extends {goog.events.EventTarget}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
+ * @struct
  */
 ydn.crm.ui.UserSetting = function() {
   goog.base(this);

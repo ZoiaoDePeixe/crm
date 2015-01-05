@@ -177,12 +177,6 @@ ydn.crm.inj.App.prototype.init = function() {
   this.social_app = new ydn.social.ui.ContextWidget(this.gmail_observer);
   this.social_app.render(this.context_container.getContentElement());
 
-
-  var delay = (0.5 + Math.random()) * 60 * 1000;
-  setTimeout(function() {
-    ydn.debug.ILogger.instance.beginUploading();
-  }, delay);
-
   us.onReady();
 
 };

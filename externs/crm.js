@@ -419,9 +419,15 @@ YdnCrm.SyncRecord.prototype.modified;
 
 
 /**
- * @type {Array<number>}
+ * @type {?Array<number>}
  */
 YdnCrm.SyncRecord.prototype.timestamps;
+
+
+/**
+ * @type {?Array<number>} previous timestamps for auditing purpose
+ */
+YdnCrm.SyncRecord.prototype.timestamps_old;
 
 
 /**

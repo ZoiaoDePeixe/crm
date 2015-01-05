@@ -7,22 +7,12 @@
 
 goog.provide('ydn.crm.shared');
 goog.require('goog.log');
-goog.require('goog.net.XhrManager');
-goog.require('ydn.client.AdaptorClient');
-goog.require('ydn.client.Client');
-goog.require('ydn.client.FilteredClient');
-goog.require('ydn.client.OAuthProvider');
-goog.require('ydn.client.Proxy');
-goog.require('ydn.client.RichClient');
-goog.require('ydn.client.SimpleClient');
 goog.require('ydn.crm.base');
 goog.require('ydn.crm.base.ContextPanelPosition');
-goog.require('ydn.db.Storage');
 goog.require('ydn.debug');
-goog.require('ydn.debug.DbLogger');
+goog.require('ydn.debug.ILogger');
 goog.require('ydn.http');
 goog.require('ydn.so');
-goog.require('ydn.testing.ErrorLogger');
 
 
 /**
@@ -39,13 +29,6 @@ ydn.crm.shared.init_ = false;
 
 
 /**
- * Store name to store general data.
- * @type {string}
- */
-ydn.crm.shared.APP_STORE_NAME_DEFAULT = 'default';
-
-
-/**
  * Key name in default store for install id.
  * @type {string}
  */
@@ -53,17 +36,10 @@ ydn.crm.shared.INSTALL_ID_KEY = 'install-id';
 
 
 /**
- * @const
- * @type {boolean}
+ * Install id, consider unchanged until app was uninstalled.
+ * @type {string}
  */
-ydn.crm.shared.USE_SERVER_ANALYTICS = true;
-
-
-/**
- * Storage for the app.
- * @type {ydn.db.Storage}
- */
-ydn.crm.shared.app_db = null;
+ydn.crm.shared.install_id = '';
 
 
 /**
@@ -72,61 +48,6 @@ ydn.crm.shared.app_db = null;
  * @protected
  */
 ydn.crm.shared.sync_caches = {};
-
-
-/**
- * @type {goog.net.XhrManager}
- * @private
- */
-ydn.crm.shared.xhr_manager_;
-
-
-/**
- * @final
- * @type {!DatabaseSchema} databse schema for application
- */
-ydn.crm.shared.app_schema = /** @type {!DatabaseSchema} */ ({
-  'stores': [{
-    name: 'log',
-    keyPath: 'key'
-  }, ydn.debug.DbLogger.getStoreSchema(), {
-    name: ydn.crm.shared.APP_STORE_NAME_DEFAULT,
-    autoIncrement: true
-  }, {
-    name: ydn.so.STORE_NAME,
-    keyPath: 'id'
-  }]
-});
-
-
-/**
- * Log to console.
- * @param {boolean} enabled enable or disable logging on 'ydn.crm' namespace.
- * @see ydn.crm.shared.setLogging
- */
-ydn.crm.shared.log = function(enabled) {
-  ydn.crm.shared.setLogging('ydn.crm', 'fine');
-  var obj = {};
-  obj[ydn.crm.base.ChromeSyncKey.LOGGING_CAPTURE_ON_CONSOLE] = !!enabled;
-  chrome.storage.sync.set(obj);
-  ydn.debug.log('ydn.crm', 'finer');
-  ydn.debug.captureOnConsole(!!enabled);
-};
-
-
-/**
- * Get default xhr manager.
- * @return {!goog.net.XhrManager}
- */
-ydn.crm.shared.getXhrManager = function() {
-  if (!ydn.crm.shared.xhr_manager_) {
-    /**
-     * @final
-     */
-    ydn.crm.shared.xhr_manager_ = new goog.net.XhrManager(0);
-  }
-  return ydn.crm.shared.xhr_manager_;
-};
 
 
 /**
@@ -141,9 +62,7 @@ ydn.crm.shared.handleStorageChange = function(obj, name) {
     if (goog.isObject(obj[ydn.crm.base.ChromeSyncKey.LOGGING_CAPTURE_ON_CONSOLE])) {
       ydn.debug.captureOnConsole(!!obj[ydn.crm.base.ChromeSyncKey.LOGGING_CAPTURE_ON_CONSOLE].newValue);
     }
-    if (goog.isObject(obj[ydn.crm.base.ChromeSyncKey.LOGGING_BUG_REPORT])) {
-      ydn.debug.DbLogger.instance.setCapturing(!!obj[ydn.crm.base.ChromeSyncKey.LOGGING_BUG_REPORT].newValue);
-    }
+
     if (goog.isObject(obj[ydn.crm.base.ChromeSyncKey.CONTEXT_PANEL_POSITION])) {
       // update with default value.
       ydn.crm.shared.sync_caches[ydn.crm.base.ChromeSyncKey.CONTEXT_PANEL_POSITION] =
@@ -161,204 +80,6 @@ ydn.crm.shared.handleStorageChange = function(obj, name) {
 ydn.crm.shared.getValueBySyncKey = function(key) {
   return ydn.crm.shared.sync_caches[key];
 };
-
-
-/**
- * Inject Universal google analytics for background page.
- * @param {string} id google analytics id
- */
-ydn.crm.shared.setupGoogleAnalytic = function(id) {
-
-  throw new Error('NotImpl');
-
-};
-
-
-/**
- * Ad hoc for analytics query.
- * <pre>
- *   var xp = app.xp();
- *   xp.qa({
- *     'email': 'a@b.c',
- *     'category': 'setup',
- *     'list': 'email'        // list unique email
- *   });
- * </pre>
- * @param {Object=} opt_params
- * @param {Function=} opt_cb
- */
-ydn.crm.shared.queryAnalytics = function(opt_params, opt_cb) {
-  var params = opt_params || {};
-  var client = ydn.crm.shared.getLoginClient();
-  var hd = new ydn.client.HttpRequestData('/ga/', 'GET', params);
-  client.request(hd).execute(function(data) {
-    if (opt_cb) {
-      opt_cb(data);
-    } else {
-      delete data['installId'];
-      window.console.table(data);
-    }
-  });
-};
-
-
-/**
- * @protected
- */
-ydn.crm.shared.auditListUser = function() {
-  ydn.crm.shared.queryAnalytics({'list': 'email'}, function(arr) {
-    for (var i = 0; i < arr.length; i++) {
-      var obj = arr[i];
-      window.console.log(obj['email']);
-    }
-  });
-};
-
-
-/**
- * @protected
- */
-ydn.crm.shared.auditUserActivity = function() {
-  ydn.crm.shared.queryAnalytics({'list': 'email'}, function(arr) {
-    for (var i = 0; i < arr.length; i++) {
-      var obj = arr[i];
-      window.console.log(obj['email']);
-    }
-  });
-};
-
-
-/**
- * Log server side analytics.
- * @param {string} category
- * @param {string} action
- * @param {string=} opt_label
- * @param {number=} opt_value
- * @param {(string|Object|Error)=} opt_detail
- * @param {Object=} opt_state
- */
-ydn.crm.shared.logAnalyticValue = function(category, action, opt_label,
-                                           opt_value, opt_detail, opt_state) {
-  ydn.crm.shared.logAnalytic({
-    'category': category,
-    'action': action,
-    'label': opt_label || '',
-    'value': opt_value || 0,
-    'detail': opt_detail,
-    'state': opt_state
-  });
-};
-
-
-/**
- * Log server side analytics.
- * <pre>
- *    ydn.crm.shared.logAnalytic({
-      'category': 'setup',
-      'action': 'login',
-      'label': 'some@email.com',
-      'value': 0,
-      'detail': '{"message": "invalid password"}',
-      'state': {"value": "OK"}
-    })
- * <pre>
- * If object `detail field is instance of `Error` or `Object` it will be serialized.
- * @param {!Object} data object to be logged.
- */
-ydn.crm.shared.logAnalytic = function(data) {
-
-  if (data['detail']) {
-    if (data['detail'] instanceof Error) {
-      var e = /** @type {Error} */(data['detail']);
-      data['detail'] = JSON.stringify({
-        'name': e.name,
-        'message': e.message,
-        'stack': String(e.stack)
-      });
-    } else if (goog.isObject(data['detail'])) {
-      data['detail'] = JSON.stringify(data['detail']);
-    }
-  }
-  if (data['state']) {
-    if (goog.isObject(data['state'])) {
-      data['state'] = JSON.stringify(data['state']);
-    }
-  }
-
-  data['installId'] = ydn.crm.shared.install_id;
-  if (ydn.testing.ErrorLogger.ENABLED) {
-    ydn.debug.ILogger.instance.log(data);
-  } else {
-    var headers = {
-      'content-type': 'application/json'
-    };
-    var client = ydn.crm.shared.getLoginClient();
-    var key = ydn.crm.shared.install_id + '/' + goog.now();
-    client.request(new ydn.client.HttpRequestData('/ga/' + key, 'POST',
-        null, headers, JSON.stringify(data))).execute(null);
-  }
-};
-
-
-/**
- * Send event to Google Analytics.
- *
- * @param {string} category 'login'
- * @param {string} action 'click'
- * @param {string=} opt_label 'user-name'
- * @param {(number|Object|string)=} opt_value 'image2'
- */
-ydn.crm.shared.gaSend = function(category, action, opt_label, opt_value) {
-
-  var value = 0;
-  var detail = '';
-  if (opt_value) {
-    if (goog.isNumber(opt_value)) {
-      value = opt_value;
-    } else if (goog.isString(opt_value)) {
-      detail = opt_value;
-    } else {
-      detail = JSON.stringify(opt_value);
-    }
-  }
-  if (ydn.crm.shared.USE_SERVER_ANALYTICS) {
-
-    ydn.crm.shared.logAnalyticValue(category, action, opt_label, value, detail);
-  } else if (goog.global['_gaq']) {
-    if (goog.global['_gaq'].length > 100) {
-      return;
-    }
-    var arg = ['_trackEvent'];
-    for (var i = 0; i < arguments.length; i++) {
-      arg.push(arguments[i]);
-    }
-    goog.global['_gaq']['push'](arg);
-  } else if (goog.global['googleAnalytic']) {
-    goog.global['googleAnalytic']('send', category, action, action, opt_value);
-  } else {
-    var data = {
-      'category': category,
-      'label': action || '',
-      'value': opt_value || '',
-      'action': action || ''
-    };
-    ydn.debug.ILogger.instance.log(data);
-  }
-};
-
-
-/**
- * Install id, consider unchanged until app was uninstalled.
- * @type {string}
- */
-ydn.crm.shared.install_id = '';
-
-
-/**
- * @const
- * @type {number}
- */
-ydn.crm.shared.uptime = goog.now();
 
 
 /**
@@ -387,82 +108,6 @@ ydn.crm.shared.getFrontEndScriptName = function() {
     chrome.storage.local.set(obj);
   });
   return df;
-};
-
-
-/**
- * Get Google Analytics UA string.
- * @return {?string} return null if not running under chrome extension.
- */
-ydn.crm.shared.getGaUa = function() {
-  if (!chrome || !chrome.runtime || !chrome.runtime.id) {
-    return null;
-  }
-  var ua = 'UA-33861582-';
-  var uap = '9'; // for dev
-  if (chrome.runtime.id == 'ldikiokclnbceabnlbkabmcacpiednop') {
-    // Gmail tracker
-    uap = '8';
-  } else if (chrome.runtime.id == 'iccdnijlhdogaccaiafdpjmbakdcdakk') {
-    // SugarCRM
-    uap = '6';
-  }
-  return ua + uap;
-};
-
-
-/**
- * Initialize chrome platform analytics.
- * Tracking with CPA requires host permission to "https://www.google-analytics.com/"
- * See @link https://github.com/GoogleChrome/chrome-platform-analytics/
- * @private
- * @see ydn.crm.shared.initGa_ not used both
- * @deprecated use ydn.crm.shared.initGa_ instead
- */
-ydn.crm.shared.initChromePlatformAnalytics_ = function() {
-  throw new Error('Not using');
-  /*
-  var ua = ydn.crm.shared.getGaUa();
-  if (!ua) {
-    return;
-  }
-  var service = analytics.getService(chrome.runtime.id);
-
-  ydn.crm.shared.cpaTracker_ = service.getTracker(ua);
-  ydn.crm.shared.cpaTracker_.sendAppView('BackgroundView');
-  */
-};
-
-
-/**
- * Initialize (old) Google Analytics.
- * @private
- * @see ydn.crm.shared.initChromePlatformAnalytics_ no use both
- */
-ydn.crm.shared.initGa_ = function() {
-  if (location.protocol != 'chrome-extension:') {
-    // we track only from chrome extension only.
-    return;
-  }
-  var ua = ydn.crm.shared.getGaUa();
-  if (!ua) {
-    return;
-  }
-  if (goog.global['_gaq']) {
-    return;
-  }
-  goog.global['_gaq'] = [];
-  goog.global['_gaq'].push(['_setAccount', ua]);
-  goog.global['_gaq'].push(['_gat._forceSSL']);
-  goog.global['_gaq'].push(['_trackPageview']);
-
-  var ga = document.createElement('script');
-  ga.type = 'text/javascript';
-  ga.async = true;
-  ga.src = 'https://ssl.google-analytics.com/ga.js';
-  var s = document.getElementsByTagName('script')[0];
-  s.parentNode.insertBefore(ga, s);
-
 };
 
 
@@ -545,36 +190,6 @@ ydn.crm.shared.init = function() {
   ydn.debug.captureOnConsole(false);
 
   ydn.crm.shared.getFrontEndScriptName(); // initialize front end script.
-  ydn.crm.shared.getClient(); // initialize default client
-
-  var db_options = {
-    'isSerial': false,
-    'policy': 'multi',
-    'mechanisms': ['indexeddb']
-  };
-  ydn.crm.shared.app_db = new ydn.db.Storage('ydn.crm',
-      ydn.crm.shared.app_schema);
-  ydn.debug.DbLogger.instance = new ydn.debug.DbLogger(ydn.crm.shared.app_db);
-  ydn.debug.DbLogger.instance.setRecordLimit(10000);
-  ydn.debug.DbLogger.instance.setLevelLimit(300);
-  ydn.debug.DbLogger.instance.addFilter('ydn.db.tr.DbOperator');
-  ydn.debug.DbLogger.instance.setCapturing(false); // default to log.
-
-  ydn.crm.shared.app_db.onReady(function(x) {
-    ydn.crm.shared.app_db.get(ydn.crm.shared.APP_STORE_NAME_DEFAULT, ydn.crm.shared.INSTALL_ID_KEY)
-        .addCallback(function(obj) {
-          if (!obj) {
-            ydn.crm.shared.install_id = goog.now() + Math.random().toFixed(8).substr(2);
-            obj = {};
-            obj[ydn.crm.shared.INSTALL_ID_KEY] = ydn.crm.shared.install_id;
-            ydn.crm.shared.app_db.put(ydn.crm.shared.APP_STORE_NAME_DEFAULT, obj, ydn.crm.shared.INSTALL_ID_KEY);
-          } else {
-            ydn.crm.shared.install_id = obj[ydn.crm.shared.INSTALL_ID_KEY];
-          }
-          ydn.debug.ILogger.instance.setPrefix('ga/' +
-              ydn.crm.shared.install_id + '/');
-        });
-  });
 
   ydn.crm.shared.logger.info('Starting ydn.crm.App:' + ydn.crm.version);
   // local store application setting.
@@ -594,25 +209,6 @@ ydn.crm.shared.init = function() {
   });
   chrome.storage.onChanged.addListener(ydn.crm.shared.handleStorageChange);
 
-  var log_filter = function(data) {
-    if (!data) {
-      return null;
-    }
-    /*
-    var user = ydn.api.User.getInstance();
-    if (user && user.isLogin()) {
-      data['id'] = user.getEmail();
-    }
-     data['uptime'] = uptime;
-
-    data['install-id'] = ydn.crm.shared.install_id;
-     */
-    return data;
-  };
-  ydn.debug.ILogger.instance = new ydn.testing.ErrorLogger(ydn.crm.shared.app_db, log_filter);
-  ydn.debug.ILogger.instance.setPrefix('ga/');
-  ydn.client.error_logger = ydn.debug.ILogger.instance;
-  // goog.asserts.assert(!window.onerror, 'window.onerror already defined.');
   window['onerror'] = function winOnError(msg, url, lineNumber, error) {
     // about forth parameter: https://code.google.com/p/chromium/issues/detail?id=147127
     var tr = '';
@@ -629,98 +225,4 @@ ydn.crm.shared.init = function() {
     // console.log(msg, url, error);
     ydn.debug.ILogger.log(obj);
   };
-};
-
-
-/**
- * @private
- * @type {ydn.client.SimpleClient}
- */
-ydn.crm.shared.client_;
-
-
-/**
- * @return {ydn.client.SimpleClient} Get default client.
- */
-ydn.crm.shared.getClient = function() {
-  if (!ydn.crm.shared.client_) {
-    ydn.crm.shared.client_ = new ydn.client.SimpleClient(
-        ydn.crm.shared.getXhrManager());
-    ydn.client.setClient(ydn.crm.shared.client_, ydn.http.Scopes.DEFAULT); // set default client.
-  }
-  return ydn.crm.shared.client_;
-};
-
-
-/**
- * Setup clients after login.
- * @param {ydn.client.OAuthProvider} token_provider
- */
-ydn.crm.shared.setupClients = function(token_provider) {
-  ydn.crm.shared.getLoginClient();
-  ydn.crm.shared.getProxyClient();
-  ydn.crm.shared.getAppClient();
-  var gdata_client = new ydn.client.OAuthClient(token_provider, ydn.crm.shared.xhr_manager_, false);
-  ydn.client.setClient(gdata_client, ydn.http.Scopes.GOOGLE_CLIENT);
-  var proxy_url = ydn.crm.base.LOGIN_ORIGIN + '/proxy/';
-  var gdata_proxy = new ydn.client.Proxy(gdata_client, proxy_url, true);
-  var gse = new ydn.client.FilteredClient(function(req) {
-    return req.method == 'GET';
-  }, gdata_client, gdata_proxy);
-  ydn.client.setClient(gse, ydn.http.Scopes.GSE);
-};
-
-
-/**
- * @return {ydn.client.Client}
- */
-ydn.crm.shared.getLoginClient = function() {
-  var client = ydn.client.getClient(ydn.http.Scopes.LOGIN);
-  if (!client) {
-    ydn.crm.shared.getClient();
-    client = new ydn.client.RichClient(
-        ydn.crm.shared.getXhrManager(), undefined, ydn.crm.base.LOGIN_ORIGIN, 0, true);
-    ydn.client.setClient(client, ydn.http.Scopes.LOGIN);
-  }
-  return client;
-};
-
-
-/**
- * @return {ydn.client.Client}
- */
-ydn.crm.shared.getProxyClient = function() {
-  var client = ydn.client.getClient(ydn.http.Scopes.PROXY);
-  if (!client) {
-    client = new ydn.client.Proxy(ydn.crm.shared.getLoginClient(), '/proxy/');
-    ydn.client.setClient(client, ydn.http.Scopes.PROXY);
-  }
-  return client;
-};
-
-
-/**
- * @return {ydn.client.Client}
- */
-ydn.crm.shared.getAppClient = function() {
-  var client = ydn.client.getClient(ydn.http.Scopes.AUTH);
-  if (!client) {
-    client = new ydn.client.RichClient(
-        ydn.crm.shared.getXhrManager(), undefined, ydn.crm.base.LOGIN_ORIGIN +
-        '/a/' + ydn.crm.base.APP_ID, 0, true);
-    ydn.client.setClient(client, ydn.http.Scopes.AUTH);
-  }
-  return client;
-};
-
-
-/**
- * Log database static.
- * @param {ydn.db.crud.Storage} db
- */
-ydn.crm.shared.logDbStat = function(db) {
-  db.getStat().addCallback(function(stat) {
-    var name = db.getName();
-    ydn.crm.shared.logAnalyticValue('database', 'log', name, 0, stat);
-  });
 };

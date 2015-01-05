@@ -269,6 +269,9 @@ ydn.crm.base.analytic = {
   },
   sync: {
     sync: true
+  },
+  logging: {
+    debugLogger: false
   }
 };
 
