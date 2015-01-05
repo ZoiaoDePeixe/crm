@@ -235,15 +235,17 @@ ydn.crm.shared.auditUserActivity = function() {
  * @param {string=} opt_label
  * @param {number=} opt_value
  * @param {(string|Object|Error)=} opt_detail
+ * @param {Object=} opt_state
  */
 ydn.crm.shared.logAnalyticValue = function(category, action, opt_label,
-                                           opt_value, opt_detail) {
+                                           opt_value, opt_detail, opt_state) {
   ydn.crm.shared.logAnalytic({
     'category': category,
     'action': action,
     'label': opt_label || '',
     'value': opt_value || 0,
-    'detail': opt_detail
+    'detail': opt_detail,
+    'state': opt_state
   });
 };
 
@@ -256,7 +258,8 @@ ydn.crm.shared.logAnalyticValue = function(category, action, opt_label,
       'action': 'login',
       'label': 'some@email.com',
       'value': 0,
-      'detail': '{"message": "invalid password"}'
+      'detail': '{"message": "invalid password"}',
+      'state': {"value": "OK"}
     })
  * <pre>
  * If object `detail field is instance of `Error` or `Object` it will be serialized.
@@ -264,21 +267,21 @@ ydn.crm.shared.logAnalyticValue = function(category, action, opt_label,
  */
 ydn.crm.shared.logAnalytic = function(data) {
 
-  if (location.host == 'gehcogaddkopajdfhbfgokbongbfijnh') {
-    // not send for dev.
-    return;
-  }
-
-  if (data.detail) {
-    if (data.detail instanceof Error) {
-      var e = /** @type {Error} */(data.detail);
-      data.detail = JSON.stringify({
+  if (data['detail']) {
+    if (data['detail'] instanceof Error) {
+      var e = /** @type {Error} */(data['detail']);
+      data['detail'] = JSON.stringify({
         'name': e.name,
         'message': e.message,
         'stack': String(e.stack)
       });
-    } else if (goog.isObject(data.detail)) {
-      data.detail = JSON.stringify(data.detail);
+    } else if (goog.isObject(data['detail'])) {
+      data['detail'] = JSON.stringify(data['detail']);
+    }
+  }
+  if (data['state']) {
+    if (goog.isObject(data['state'])) {
+      data['state'] = JSON.stringify(data['state']);
     }
   }
 
@@ -306,11 +309,6 @@ ydn.crm.shared.logAnalytic = function(data) {
  * @param {(number|Object|string)=} opt_value 'image2'
  */
 ydn.crm.shared.gaSend = function(category, action, opt_label, opt_value) {
-
-  if (location.host == 'gehcogaddkopajdfhbfgokbongbfijnh') {
-    // not send for dev.
-    return;
-  }
 
   var value = 0;
   var detail = '';
@@ -715,3 +713,14 @@ ydn.crm.shared.getAppClient = function() {
   return client;
 };
 
+
+/**
+ * Log database static.
+ * @param {ydn.db.crud.Storage} db
+ */
+ydn.crm.shared.logDbStat = function(db) {
+  db.getStat().addCallback(function(stat) {
+    var name = db.getName();
+    ydn.crm.shared.logAnalyticValue('database', 'log', name, 0, stat);
+  });
+};

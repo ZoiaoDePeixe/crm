@@ -526,6 +526,9 @@ ydn.crm.sugarcrm.gdata.record2GDataContact = function(sugar_record, entry) {
           changes++;
         }
       } else {
+        if (!goog.isArray(entry.gd$phoneNumber)) {
+          entry.gd$phoneNumber = [entry.gd$phoneNumber];
+        }
         entry.gd$phoneNumber.push({
           'rel': rel,
           '$t': record[name]
