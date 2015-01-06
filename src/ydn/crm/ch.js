@@ -66,7 +66,11 @@ ydn.crm.Ch.Req = {
   GDATA_UPDATE: 'gdata-update',  // update from server
   GDATA_CONTACT_MERGE: 'gdcm', // merge contact data
   GDATA_COUNT: 'gdc', // count contact data
-  GDATA_LIST_CONTACT: 'gdata-list-contact', // list by 'email' or 'externalid'
+  /**
+   * @desc list by 'email' or 'externalid'
+   * @see {ydn.crm.app.App#gdataQuery}
+   */
+  GDATA_LIST_CONTACT: 'gdata-list-contact',
   G_PLUS: 'google-plus',
   LIST_SUGAR: 'list-sugarcrm', // list sugarcrm about
   LIST_SUGAR_DOMAIN: 'list-sugarcrm-domain', // list sugarcrm domain
@@ -84,7 +88,11 @@ ydn.crm.Ch.Req = {
   SOCIAL_PROFILE: 'social-profile',
   SUGAR_SERVER_INFO: 'sugar-server-info',
   SYNC: 'sync', // begin sync between gdata and record
-  SYNC_FOR: 'sync-for', // sync given sync record
+  /**
+   * @desc sync a given sync record
+   * @see {ydn.crm.app.App#syncFor}
+   */
+  SYNC_FOR: 'sync-for',
   SYNC_GET_LAST: 'sync-gl', // get last sync time
   SYNC_QUERY: 'sync-q', // query sync record data
   TOKEN_GDATA: 'token-gdata', //
@@ -129,7 +137,8 @@ ydn.crm.Ch.SReq = {
   INFO_MODULE: 'info-module', // list module field
   KEYS: 'keys', // list keys
   /**
-   * @desc link contact gdata with sugar record by ExternalId attribute.
+   * @desc link contact gdata with sugar record.
+   * @see {ydn.crm.app.App#link}
    * @see #UNLINK
    */
   LINK: 'link',  // should be GDATA_LINK
@@ -146,7 +155,8 @@ ydn.crm.Ch.SReq = {
   SERVER_INFO: 'server-info',
   STATS: 'stats', // statistic of cached data
   /**
-   * @desc remove ExternalId that link contact gdata with sugar record.
+   * @desc remove sync record that link contact gdata with sugar record.
+   * @see {ydn.crm.app.App#unlink}
    * @see #LINK
    */
   UNLINK: 'unlink',
