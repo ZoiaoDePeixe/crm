@@ -94,7 +94,11 @@ ydn.crm.Ch.Req = {
    */
   SYNC_FOR: 'sync-for',
   SYNC_GET_LAST: 'sync-gl', // get last sync time
-  SYNC_QUERY: 'sync-q', // query sync record data
+  /**
+   * @desc query sync record data
+   * @see {ydn.crm.app.App#syncQuery}
+   */
+  SYNC_QUERY: 'sync-q',
   TOKEN_GDATA: 'token-gdata', //
   TOKEN_REVOKE_GDATA: 'token-revoke-gdata',
   TRACKING_CLEAR_DNT: 'tracking-clear-dnt',

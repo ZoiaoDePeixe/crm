@@ -160,8 +160,10 @@ ydn.crm.sugarcrm.gdata.gdataContact2Record = function(domain, module, entry, obj
   }
   // email
   var emails = [];
-  for (var i = 0; entry.gd$email && i < entry.gd$email.length; i++) {
-    var email = entry.gd$email[i];
+  var gd$emails = entry.gd$email ?
+      goog.isArray(entry.gd$email) ? entry.gd$email : [entry.gd$email] : [];
+  for (var i = 0; i < gd$emails.length; i++) {
+    var email = gd$emails[i];
     if (email.primary) {
       emails.unshift(email.address);
     } else {
@@ -252,8 +254,11 @@ ydn.crm.sugarcrm.gdata.gdataContact2Record = function(domain, module, entry, obj
     }
   }
   // phone number
-  for (var i = 0; entry.gd$phoneNumber && i < entry.gd$phoneNumber.length; i++) {
-    var ph = entry.gd$phoneNumber[i];
+  var gd$phoneNumber = entry.gd$phoneNumber ?
+      goog.isArray(entry.gd$phoneNumber) ? entry.gd$phoneNumber :
+          [entry.gd$phoneNumber] : [];
+  for (var i = 0; i < gd$phoneNumber.length; i++) {
+    var ph = gd$phoneNumber[i];
     if (!ph.$t) {
       continue;
     }
