@@ -146,12 +146,24 @@ ydn.crm.Ch.SReq = {
    * @see #UNLINK
    */
   LINK: 'link',  // should be GDATA_LINK
-  LIST: 'list',  // list records (all module) by an email.
+  /**
+   * @desc list of available modules.
+   * @see {ydn.crm.sugarcrm.Client#getAvailableModules}
+   */
   LIST_MODULE: 'list-module',
+  /**
+   * @desc list all name and id in module.
+   * @see {ydn.crm.sugarcrm.Client#listName}
+   */
+  LIST_NAME: 'list-name',
   LOGIN: 'login',
   LOGIN_USER: 'login-user', // current login user record (Users module)
   NEW_RECORD: 'new-record', // create a new record
   PUT_RECORD: 'put-record', //
+  /**
+   * @desc Generic query
+   * @see {ydn.crm.sugarcrm.Client#query}
+   */
   QUERY: 'query',
   QUERY_SIMILAR: 'query-similar',
   REST: 'rest', // SugarCRM REST request
