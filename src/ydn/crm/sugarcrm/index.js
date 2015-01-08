@@ -119,7 +119,8 @@ ydn.crm.sugarcrm.assertModuleName = function(name) {
  * List of modules that sync. Synchronization will queue in this order.
  * @type {Array.<ydn.crm.sugarcrm.ModuleName>}
  */
-ydn.crm.sugarcrm.CacheModules = [ydn.crm.sugarcrm.ModuleName.ACCOUNTS,
+ydn.crm.sugarcrm.CacheModules = [ydn.crm.sugarcrm.ModuleName.USERS,
+  ydn.crm.sugarcrm.ModuleName.ACCOUNTS,
   ydn.crm.sugarcrm.ModuleName.CONTACTS,
   ydn.crm.sugarcrm.ModuleName.DOCUMENTS,
   ydn.crm.sugarcrm.ModuleName.EMAIL_TEMPLATES,
@@ -306,16 +307,20 @@ ydn.crm.sugarcrm.fixSugarCrmModuleMeta = function(info) {
     var mf = info.module_fields[name];
 
     if (['created_by', 'created_by_name', 'date_entered', 'date_modified',
-          'deleted', 'modified_user_id', 'modified_by_name',
-          'id'].indexOf(name) >= 0) {
+      'deleted', 'modified_user_id', 'modified_by_name',
+      'id'].indexOf(name) >= 0) {
       mf.calculated = true;
     }
 
     if (info.module_name == ydn.crm.sugarcrm.ModuleName.CALLS &&
-        ['date_start', 'date_end', 'duration_hours', 'duration_minutes'].indexOf(name) >= 0) {
+        ['date_start', 'date_end', 'duration_hours', 'duration_minutes'
+        ].indexOf(name) >= 0) {
       mf.group = 'appointment';
-    } else if (['salutation', 'name', 'last_name', 'first_name', 'full_name'].indexOf(name) >= 0) {
+    } else if (['salutation', 'name', 'last_name', 'first_name', 'full_name'
+    ].indexOf(name) >= 0) {
       mf.group = 'name';
+    } else if (['assigned_user_name'].indexOf(name) >= 0) {
+      mf.group = 'assigned_user_name';
     } else if (/^email\d?$/.test(name)) {
       mf.group = 'email';
     } else if (/^phone?/.test(name)) {
