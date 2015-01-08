@@ -7,11 +7,12 @@
 
 goog.provide('ydn.crm.test');
 goog.setTestOnly('ydn.crm.test');
-goog.require('ydn.msg.MockPipe');
 goog.require('ydn.crm.base');
+goog.require('ydn.msg.MockPipe');
 goog.require('ydn.testing.mockExtension');
 
 ydn.crm.base.SVG_PAGE = '/cwork/image/all-icons.svg';
+
 
 /**
  * var main = ydn.msg.getChannel();
@@ -26,11 +27,11 @@ ydn.crm.test.sugar = {};
 
 
 ydn.crm.test.sugar['about'] = {
-  "baseUrl": "https://cjokmo3316.trial.sugarcrm.com",
-  "domain": "cjokmo3316.trial.sugarcrm.com",
-  "userName": "jane",
-  "isLogin": true,
-  "hostPermission": true
+  'baseUrl': 'https://cjokmo3316.trial.sugarcrm.com',
+  'domain': 'cjokmo3316.trial.sugarcrm.com',
+  'userName': 'jane',
+  'isLogin': true,
+  'hostPermission': true
 };
 
 
@@ -38,14 +39,14 @@ ydn.crm.test.sugar['about'] = {
  * main.send('login-info').addBoth(function(x) {console.log(JSON.stringify(x, null, 2))})
  */
 ydn.crm.test.main['login-info'] = {
-  "Id": {
-    "type": "GAE_USER_ID",
-    "$t": "114726852735554931402"
+  'Id': {
+    'type': 'GAE_USER_ID',
+    '$t': '114726852735554931402'
   },
-  "email": "kyawtun@yathit.com",
-  "is_login": true,
-  "logout_url": "https://yathit-app.appspot.com/_ah/logout?continue=https://www.google.com/a…://fmhdpfhfppingdiiefgnanjceieflpkj/crm-ex/option-page.html%26service%3Dah",
-  "updated": 1407314883814
+  'email': 'kyawtun@yathit.com',
+  'is_login': true,
+  'logout_url': 'https://yathit-app.appspot.com/_ah/logout?continue=https://www.google.com/a…://fmhdpfhfppingdiiefgnanjceieflpkj/crm-ex/option-page.html%26service%3Dah',
+  'updated': 1407314883814
 };
 
 
@@ -53,87 +54,93 @@ ydn.crm.test.main['list-sugarcrm'] = [
   ydn.crm.test.sugar['about']
 ];
 
+ydn.crm.test.main['server-info-ce'] = {
+  "flavor": "CE",
+  "version": "6.5.17",
+  "gmt_time": "2015-01-03 15:06:26"
+};
+
 
 /**
  * sugar.send('login-user').addBoth(function(x) {console.log(JSON.stringify(x, null, 2))})
  */
 ydn.crm.test.sugar['login-user'] = {
-  "modified_by_name": "Jen Smith",
-  "created_by_name": "Jen Smith",
-  "id": "68792b39-91f1-273c-caa7-523cf941d004",
-  "user_name": "jane",
-  "user_hash": "",
-  "system_generated_password": "0",
-  "pwd_last_changed": "2013-09-28 20:37:43",
-  "authenticate_id": "",
-  "sugar_login": "1",
-  "picture": "baf1b7f7-8b46-b296-766d-52462d420862",
-  "first_name": "Jane",
-  "last_name": "Fitzpatrick",
-  "full_name": "Jane Fitzpatrick",
-  "name": "Jane Fitzpatrick",
-  "is_admin": "0",
-  "external_auth_only": "0",
-  "receive_notifications": "1",
-  "description": "",
-  "date_entered": "2013-09-21 01:44:05",
-  "date_modified": "2013-09-28 20:37:43",
-  "modified_user_id": "1",
-  "created_by": "1",
-  "title": "VP Marketing",
-  "department": "Marketing",
-  "phone_home": "",
-  "phone_mobile": "",
-  "phone_work": "",
-  "phone_other": "",
-  "phone_fax": "",
-  "status": "Active",
-  "address_street": "Wiltshire Road",
-  "address_city": "",
-  "address_state": "California",
-  "address_country": "USA",
-  "address_postalcode": "",
-  "UserType": "",
-  "default_team": "1",
-  "team_id": "1",
-  "team_set_id": "1",
-  "team_count": "",
-  "team_name": "Global",
-  "deleted": "0",
-  "portal_only": "0",
-  "show_on_employees": "1",
-  "employee_status": "Active",
-  "messenger_id": "",
-  "messenger_type": "",
-  "reports_to_id": "",
-  "reports_to_name": "",
-  "email1": "jane@example.com",
-  "email": [
+  'modified_by_name': 'Jen Smith',
+  'created_by_name': 'Jen Smith',
+  'id': '68792b39-91f1-273c-caa7-523cf941d004',
+  'user_name': 'jane',
+  'user_hash': '',
+  'system_generated_password': '0',
+  'pwd_last_changed': '2013-09-28 20:37:43',
+  'authenticate_id': '',
+  'sugar_login': '1',
+  'picture': 'baf1b7f7-8b46-b296-766d-52462d420862',
+  'first_name': 'Jane',
+  'last_name': 'Fitzpatrick',
+  'full_name': 'Jane Fitzpatrick',
+  'name': 'Jane Fitzpatrick',
+  'is_admin': '0',
+  'external_auth_only': '0',
+  'receive_notifications': '1',
+  'description': '',
+  'date_entered': '2013-09-21 01:44:05',
+  'date_modified': '2013-09-28 20:37:43',
+  'modified_user_id': '1',
+  'created_by': '1',
+  'title': 'VP Marketing',
+  'department': 'Marketing',
+  'phone_home': '',
+  'phone_mobile': '',
+  'phone_work': '',
+  'phone_other': '',
+  'phone_fax': '',
+  'status': 'Active',
+  'address_street': 'Wiltshire Road',
+  'address_city': '',
+  'address_state': 'California',
+  'address_country': 'USA',
+  'address_postalcode': '',
+  'UserType': '',
+  'default_team': '1',
+  'team_id': '1',
+  'team_set_id': '1',
+  'team_count': '',
+  'team_name': 'Global',
+  'deleted': '0',
+  'portal_only': '0',
+  'show_on_employees': '1',
+  'employee_status': 'Active',
+  'messenger_id': '',
+  'messenger_type': '',
+  'reports_to_id': '',
+  'reports_to_name': '',
+  'email1': 'jane@example.com',
+  'email': [
     {
-      "email_address": "jane@example.com",
-      "email_address_caps": "JANE@EXAMPLE.COM",
-      "invalid_email": "0",
-      "opt_out": "0",
-      "date_created": "2013-09-24 18:08:43",
-      "date_modified": "2013-09-24 18:08:43",
-      "id": "b970d281-8b99-967a-135a-5241d5d1c63d",
-      "email_address_id": "b98e09f7-889a-d580-d735-5241d551ba62",
-      "bean_id": "68792b39-91f1-273c-caa7-523cf941d004",
-      "bean_module": "Users",
-      "primary_address": "1",
-      "reply_to_address": "0",
-      "deleted": "0"
+      'email_address': 'jane@example.com',
+      'email_address_caps': 'JANE@EXAMPLE.COM',
+      'invalid_email': '0',
+      'opt_out': '0',
+      'date_created': '2013-09-24 18:08:43',
+      'date_modified': '2013-09-24 18:08:43',
+      'id': 'b970d281-8b99-967a-135a-5241d5d1c63d',
+      'email_address_id': 'b98e09f7-889a-d580-d735-5241d551ba62',
+      'bean_id': '68792b39-91f1-273c-caa7-523cf941d004',
+      'bean_module': 'Users',
+      'primary_address': '1',
+      'reply_to_address': '0',
+      'deleted': '0'
     }
   ],
-  "email_link_type": "",
-  "is_group": "0",
-  "c_accept_status_fields": "",
-  "m_accept_status_fields": "",
-  "accept_status_id": "",
-  "accept_status_name": "",
-  "accept_status_calls": "",
-  "accept_status_meetings": "",
-  "preferred_language": "en_us"
+  'email_link_type': '',
+  'is_group': '0',
+  'c_accept_status_fields': '',
+  'm_accept_status_fields': '',
+  'accept_status_id': '',
+  'accept_status_name': '',
+  'accept_status_calls': '',
+  'accept_status_meetings': '',
+  'preferred_language': 'en_us'
 };
 
 
@@ -191,7 +198,7 @@ ydn.crm.test.getData = function(name) {
 
 /**
  * Get mocked pipe.
- * @returns {!ydn.msg.MockPipe}
+ * @return {!ydn.msg.MockPipe}
  */
 ydn.crm.test.getMain = function() {
   if (!ydn.msg.main_) {
@@ -218,18 +225,18 @@ ydn.crm.test.createGDataSugar = function() {
 /**
  * @param {string=} opt_account gmail, default: kyawtun@yathit.com
  * @param {string=} opt_id contact id, default: '1'
- * @returns {{gd$etag: string, id: {$t: string}, updated: {$t: string}, app$edited: {xmlns$app: string, $t: string}, category: {scheme: string, term: string}[], title: {$t: string}, link: *[], gd$name: {gd$fullName: {$t: string}, gd$givenName: {$t: string}, gd$familyName: {$t: string}}, gd$email: {rel: string, address: string, primary: string}[], ydn$emails: string[], ydn$externalIds: Array}}
+ * @return {{gd$etag: string, id: {$t: string}, updated: {$t: string}, app$edited: {xmlns$app: string, $t: string}, category: {scheme: string, term: string}[], title: {$t: string}, link: *[], gd$name: {gd$fullName: {$t: string}, gd$givenName: {$t: string}, gd$familyName: {$t: string}}, gd$email: {rel: string, address: string, primary: string}[], ydn$emails: string[], ydn$externalIds: Array}}
  */
 ydn.crm.test.createGDataContact = function(opt_account, opt_id) {
   var account = opt_account ? opt_account.replace('@', '%40') : 'kyawtun%40yathit.com';
   var encoded_account = account.replace('@', '%40');
   var id = opt_id || '1';
-  var val = {"gd$etag": "\"SHg4cTVSLit7I2A9WhJaF0kPTgE.\"",
-    "id": {"$t": "http://www.google.com/m8/feeds/contacts/" + encoded_account + "/base/" + id},
-    "updated": {"$t": "2012-10-09T01:25:59.639Z"},
-    "title": {"$t": "Kyaw Tun"}, "gd$name": {"gd$fullName": {"$t": "Kyaw Tun"}, "gd$givenName": {"$t": "Kyaw"}, "gd$familyName": {"$t": "Tun"}},
-    "gd$email": [
-    {"rel": "http://schemas.google.com/g/2005#other", "address": account, "primary": "true"}
+  var val = {'gd$etag': '\"SHg4cTVSLit7I2A9WhJaF0kPTgE.\"',
+    'id': {'$t': 'http://www.google.com/m8/feeds/contacts/' + encoded_account + '/base/' + id},
+    'updated': {'$t': '2012-10-09T01:25:59.639Z'},
+    'title': {'$t': 'Kyaw Tun'}, 'gd$name': {'gd$fullName': {'$t': 'Kyaw Tun'}, 'gd$givenName': {'$t': 'Kyaw'}, 'gd$familyName': {'$t': 'Tun'}},
+    'gd$email': [
+    {'rel': 'http://schemas.google.com/g/2005#other', 'address': account, 'primary': 'true'}
   ]};
 
   return val;
@@ -246,7 +253,8 @@ ydn.crm.test.createSugar = function() {
   for (var x in ydn.crm.test.sugar.modules_info) {
     modules_info_arr.push(ydn.crm.test.sugar.modules_info[x]);
   }
-  return new ydn.crm.sugarcrm.model.Sugar(about, modules_info_arr);
+  return new ydn.crm.sugarcrm.model.Sugar(about, modules_info_arr,
+      ydn.crm.test.sugar['server-info-ce'], ydn.crm.test.sugar['login-user']);
 };
 
 
@@ -281,7 +289,7 @@ ydn.crm.test.createContactRecord = function(opt_sugar, opt_obj) {
  *   ydn.crm.test.createRecord(null, 'Calls');
  * </pre>
  * @param {ydn.crm.sugarcrm.model.Sugar=} opt_sugar
- * @param {ydn.crm.sugar.ModuleName=} opt_mn
+ * @param {ydn.crm.sugarcrm.ModuleName=} opt_mn
  * @param {(SugarCrm.Record|string)=} opt_obj provide `{}` to create a empty record.
  * use file name for load from file.
  * @return {ydn.crm.sugarcrm.model.Record}
