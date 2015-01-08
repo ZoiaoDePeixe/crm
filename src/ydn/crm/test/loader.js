@@ -243,17 +243,29 @@ ydn.crm.test.createGDataContact = function(opt_account, opt_id) {
 };
 
 
+ydn.crm.test.modules_info_arr = null;
+
+ydn.crm.test.getModuleInfoArr = function() {
+  if (!ydn.crm.test.modules_info_arr) {
+    var modules_info_arr = [];
+    for (var x in ydn.crm.test.sugar.modules_info) {
+      var info = ydn.crm.test.sugar.modules_info[x];
+      ydn.crm.sugarcrm.fixSugarCrmModuleMeta(info);
+      modules_info_arr.push(info);
+    }
+    return ydn.crm.test.modules_info_arr = modules_info_arr;
+  }
+  return ydn.crm.test.modules_info_arr;
+};
+
+
 /**
  * @return {ydn.crm.sugarcrm.model.Sugar}
  */
 ydn.crm.test.createSugar = function() {
 
   var about = ydn.crm.test.sugar.about;
-  var modules_info_arr = [];
-  for (var x in ydn.crm.test.sugar.modules_info) {
-    modules_info_arr.push(ydn.crm.test.sugar.modules_info[x]);
-  }
-  return new ydn.crm.sugarcrm.model.Sugar(about, modules_info_arr,
+  return new ydn.crm.sugarcrm.model.Sugar(about, ydn.crm.test.getModuleInfoArr(),
       ydn.crm.test.sugar['server-info-ce'], ydn.crm.test.sugar['login-user']);
 };
 
@@ -321,8 +333,6 @@ ydn.crm.test.sugar['list-module'] = ydn.crm.test.getData('list-module');
 
 
 ydn.crm.test.sugar.modules_info = ydn.crm.test.getData('module_info');
-
-
 
 
 
