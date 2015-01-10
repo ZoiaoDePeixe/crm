@@ -108,6 +108,20 @@ ydn.crm.ui.CSS_CLASS_FOOTER = 'footer';
 
 /**
  * @const
+ * @type {string} CSS class name for editing record.
+ */
+ydn.crm.ui.CSS_CLASS_EDIT = 'edit';
+
+
+/**
+ * @const
+ * @type {string} CSS class name for viewing record.
+ */
+ydn.crm.ui.CSS_CLASS_VIEW = 'view';
+
+
+/**
+ * @const
  * @type {string}
  */
 ydn.crm.ui.CSS_CLASS_NORMALLY_HIDE = 'normally-hide';
