@@ -197,8 +197,8 @@ ydn.social.MetaContact.prototype.getPhoto = function(network) {
 
 
 /**
- * Get twitter user profile.
- * @param {ydn.social.Network} network
+ * Get user profile detail.
+ * @param {ydn.social.Network} network network type.
  * @return {!goog.async.Deferred<Object>} Resulting object depends on network.
  */
 ydn.social.MetaContact.prototype.getProfileDetail = function(network) {
@@ -235,8 +235,10 @@ ydn.social.MetaContact.prototype.getProfileDetail = function(network) {
 
 
 /**
- * @param {ydn.social.Network} network
- * @return {!goog.async.Deferred<!Array<Object>>}
+ * Fetch user activity feed.
+ * @param {ydn.social.Network} network network type.
+ * @return {!goog.async.Deferred<!Array<Object>>} Result format depends
+ * on network type.
  */
 ydn.social.MetaContact.prototype.getFeed = function(network) {
   var profile = this.getProfile(network);
