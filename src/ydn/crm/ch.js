@@ -134,6 +134,10 @@ ydn.crm.Ch.SReq = {
   CLEAR_CACHE: 'clear-cache', // delete database
   COUNT: 'count', // count number of record in a module
   DELETE_RECORD: 'delete-record', //
+  /**
+   * @desc sugarcrm detail info
+   * @see {ydn.crm.sugarcrm.Client#getDetails}
+   */
   DETAILS: 'details',
   FETCH_MODULE: 'fetch-module', // fetch module entries
   GET: 'get', // get module entry
@@ -158,6 +162,11 @@ ydn.crm.Ch.SReq = {
   LIST_NAME: 'list-name',
   LOGIN: 'login',
   LOGIN_USER: 'login-user', // current login user record (Users module)
+  /**
+   * @desc login information or user setting in sugarcrm
+   * @see {ydn.crm.sugarcrm.Client#login_info_}
+   */
+  LOGIN_INFO: 'login-info',
   NEW_RECORD: 'new-record', // create a new record
   PUT_RECORD: 'put-record', //
   /**
