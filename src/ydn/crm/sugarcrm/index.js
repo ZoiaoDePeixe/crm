@@ -314,7 +314,8 @@ ydn.crm.sugarcrm.fixSugarCrmModuleMeta = function(info) {
     }
 
     // fix group assignment
-    if ([ydn.crm.sugarcrm.ModuleName.CALLS, ydn.crm.sugarcrm.ModuleName.TASKS].indexOf(info.module_name) >= 0 &&
+    if ([ydn.crm.sugarcrm.ModuleName.CALLS, ydn.crm.sugarcrm.ModuleName.MEETINGS,
+          ydn.crm.sugarcrm.ModuleName.TASKS].indexOf(info.module_name) >= 0 &&
         ['date_start', 'date_end', 'date_due', 'duration_hours', 'duration_minutes'
         ].indexOf(name) >= 0) {
       mf.group = 'appointment';
