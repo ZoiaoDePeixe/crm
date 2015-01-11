@@ -23,7 +23,11 @@ ydn.crm.test.main = {};
 /**
  *
  */
-ydn.crm.test.sugar = {};
+ydn.crm.test.sugar = {
+  'login-info': {
+    "user_id": "seed_jim_id"
+  }
+};
 
 
 ydn.crm.test.sugar['about'] = {
