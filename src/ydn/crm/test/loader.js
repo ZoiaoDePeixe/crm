@@ -320,6 +320,8 @@ ydn.crm.test.createRecord = function(opt_sugar, opt_mn, opt_obj) {
   } else {
     if (m_name == ydn.crm.sugarcrm.ModuleName.CALLS) {
       obj = ydn.crm.test.getData('call');
+    } else if (m_name == ydn.crm.sugarcrm.ModuleName.TASKS) {
+      obj = ydn.crm.test.getData('task');
     } else if (m_name == ydn.crm.sugarcrm.ModuleName.CONTACTS) {
       obj = ydn.crm.test.getData('contact');
     }

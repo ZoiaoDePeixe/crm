@@ -306,14 +306,16 @@ ydn.crm.sugarcrm.fixSugarCrmModuleMeta = function(info) {
      */
     var mf = info.module_fields[name];
 
+    // fix calculated field
     if (['created_by', 'created_by_name', 'date_entered', 'date_modified',
       'deleted', 'modified_user_id', 'modified_by_name',
       'id'].indexOf(name) >= 0) {
       mf.calculated = true;
     }
 
-    if (info.module_name == ydn.crm.sugarcrm.ModuleName.CALLS &&
-        ['date_start', 'date_end', 'duration_hours', 'duration_minutes'
+    // fix group assignment
+    if ([ydn.crm.sugarcrm.ModuleName.CALLS, ydn.crm.sugarcrm.ModuleName.TASKS].indexOf(info.module_name) >= 0 &&
+        ['date_start', 'date_end', 'date_due', 'duration_hours', 'duration_minutes'
         ].indexOf(name) >= 0) {
       mf.group = 'appointment';
     } else if (['salutation', 'name', 'last_name', 'first_name', 'full_name'
