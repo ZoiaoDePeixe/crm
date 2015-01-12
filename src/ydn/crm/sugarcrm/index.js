@@ -63,6 +63,7 @@ ydn.crm.sugarcrm.Version = {
  */
 ydn.crm.sugarcrm.ModuleName = {
   ACCOUNTS: 'Accounts',
+  CASES: 'Cases',
   CALLS: 'Calls',
   CAMPAIGNS: 'Campaigns',
   CONTACTS: 'Contacts',
@@ -89,6 +90,7 @@ ydn.crm.sugarcrm.ModuleName = {
 ydn.crm.sugarcrm.Modules = [ydn.crm.sugarcrm.ModuleName.ACCOUNTS,
   ydn.crm.sugarcrm.ModuleName.CALLS,
   ydn.crm.sugarcrm.ModuleName.CAMPAIGNS,
+  ydn.crm.sugarcrm.ModuleName.CASES,
   ydn.crm.sugarcrm.ModuleName.CONTACTS,
   ydn.crm.sugarcrm.ModuleName.DOCUMENTS,
   ydn.crm.sugarcrm.ModuleName.MEETINGS,
@@ -129,6 +131,7 @@ ydn.crm.sugarcrm.CacheModules = [ydn.crm.sugarcrm.ModuleName.USERS,
   ydn.crm.sugarcrm.ModuleName.TASKS,
   ydn.crm.sugarcrm.ModuleName.MEETINGS,
   ydn.crm.sugarcrm.ModuleName.CALLS,
+  ydn.crm.sugarcrm.ModuleName.CASES,
   ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES,
   ydn.crm.sugarcrm.ModuleName.EMAILS
 ];
@@ -190,6 +193,7 @@ ydn.crm.sugarcrm.SIMPLE_MODULES = [ydn.crm.sugarcrm.ModuleName.NOTES];
  * @type {Array.<ydn.crm.sugarcrm.ModuleName>}
  */
 ydn.crm.sugarcrm.EDITABLE_MODULES = [ydn.crm.sugarcrm.ModuleName.ACCOUNTS,
+  ydn.crm.sugarcrm.ModuleName.CASES,
   ydn.crm.sugarcrm.ModuleName.CONTACTS,
   ydn.crm.sugarcrm.ModuleName.LEADS,
   ydn.crm.sugarcrm.ModuleName.NOTES,
@@ -208,6 +212,7 @@ ydn.crm.sugarcrm.EDITABLE_MODULES = [ydn.crm.sugarcrm.ModuleName.ACCOUNTS,
 ydn.crm.sugarcrm.ACTIVITY_MODULES = [ydn.crm.sugarcrm.ModuleName.MEETINGS,
   ydn.crm.sugarcrm.ModuleName.CALLS,
   ydn.crm.sugarcrm.ModuleName.TASKS,
+  ydn.crm.sugarcrm.ModuleName.CASES,
   ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES
 ];
 
