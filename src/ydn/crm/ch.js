@@ -176,7 +176,11 @@ ydn.crm.Ch.SReq = {
   QUERY: 'query',
   QUERY_SIMILAR: 'query-similar',
   REST: 'rest', // SugarCRM REST request
-  SEARCH: 'search', // free text query
+  /**
+   * @desc free text query for full text search
+   * @see {ydn.crm.sugarcrm.Client#search}
+   */
+  SEARCH: 'search',
   SERVER_INFO: 'server-info',
   STATS: 'stats', // statistic of cached data
   /**
