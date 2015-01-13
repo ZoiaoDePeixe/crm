@@ -324,7 +324,15 @@ ydn.crm.sugarcrm.fixSugarCrmModuleMeta = function(info) {
         ['date_start', 'date_end', 'date_due', 'duration_hours', 'duration_minutes'
         ].indexOf(name) >= 0) {
       mf.group = 'appointment';
-    } else if (['salutation', 'name', 'last_name', 'first_name', 'full_name'
+    }
+
+    // fix group account
+    if ([ydn.crm.sugarcrm.ModuleName.CONTACTS, ydn.crm.sugarcrm.ModuleName.CASES].indexOf(info.module_name) >= 0 &&
+        ['account_name', 'account_name1', 'account_id'].indexOf(name) >= 0) {
+      mf.group = 'account';
+    }
+
+    if (['salutation', 'name', 'last_name', 'first_name', 'full_name'
     ].indexOf(name) >= 0) {
       mf.group = 'name';
     } else if (['assigned_user_name'].indexOf(name) >= 0) {
