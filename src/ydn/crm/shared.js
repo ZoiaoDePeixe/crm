@@ -226,3 +226,10 @@ ydn.crm.shared.init = function() {
     ydn.debug.ILogger.log(obj);
   };
 };
+
+
+/**
+ * @type {string}
+ */
+ydn.crm.shared.application_name = 'Yathit CRM';
+
