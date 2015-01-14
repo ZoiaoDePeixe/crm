@@ -31,7 +31,7 @@ ydn.crm.base.LocalKey = {
   USER_SETTING: 'st',
   TRACK: 'ydn-crm-track',
   FRONT_END_SRC: 'front-end-src',
-  LAST_LOGIN_USER_ID: 'last-login'
+  LAST_LOGIN_ID: 'last-login'
 };
 
 
