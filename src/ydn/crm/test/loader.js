@@ -218,10 +218,7 @@ ydn.crm.test.getMain = function() {
 ydn.crm.test.createGDataSugar = function() {
 
   var about = ydn.crm.test.sugar.about;
-  var modules_info_arr = [];
-  for (var x in ydn.crm.test.sugar.modules_info) {
-    modules_info_arr.push(ydn.crm.test.sugar.modules_info[x]);
-  }
+  var modules_info_arr = ydn.crm.test.getModuleInfoArr();
   return new ydn.crm.sugarcrm.model.GDataSugar(about, modules_info_arr, 'test@yathit.com');
 };
 
@@ -251,13 +248,13 @@ ydn.crm.test.modules_info_arr = null;
 
 ydn.crm.test.getModuleInfoArr = function() {
   if (!ydn.crm.test.modules_info_arr) {
-    var modules_info_arr = [];
-    for (var x in ydn.crm.test.sugar.modules_info) {
-      var info = ydn.crm.test.sugar.modules_info[x];
+    ydn.crm.test.modules_info_arr = [];
+    var infos = ydn.crm.test.sugar['list-module'];
+    for (var x = 0; x < infos.length; x++) {
+      var info = infos[x];
       ydn.crm.sugarcrm.fixSugarCrmModuleMeta(info);
-      modules_info_arr.push(info);
+      ydn.crm.test.modules_info_arr.push(info);
     }
-    return ydn.crm.test.modules_info_arr = modules_info_arr;
   }
   return ydn.crm.test.modules_info_arr;
 };
@@ -328,6 +325,10 @@ ydn.crm.test.createRecord = function(opt_sugar, opt_mn, opt_obj) {
       obj = ydn.crm.test.getData('task');
     } else if (m_name == ydn.crm.sugarcrm.ModuleName.CONTACTS) {
       obj = ydn.crm.test.getData('contact');
+    } else if (m_name == ydn.crm.sugarcrm.ModuleName.CASES) {
+      obj = ydn.crm.test.getData('case');
+    } else if (m_name == ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES) {
+      obj = ydn.crm.test.getData('opportunity');
     }
   }
   var r = new ydn.crm.sugarcrm.Record(sugar.getDomain(), m_name, obj);
@@ -338,7 +339,6 @@ ydn.crm.test.createRecord = function(opt_sugar, opt_mn, opt_obj) {
 ydn.crm.test.sugar['list-module'] = ydn.crm.test.getData('list-module');
 
 
-ydn.crm.test.sugar.modules_info = ydn.crm.test.getData('module_info');
 
 
 

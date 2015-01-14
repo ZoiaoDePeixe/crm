@@ -327,15 +327,20 @@ ydn.crm.sugarcrm.fixSugarCrmModuleMeta = function(info) {
     }
 
     // fix group account
-    if ([ydn.crm.sugarcrm.ModuleName.CONTACTS, ydn.crm.sugarcrm.ModuleName.CASES].indexOf(info.module_name) >= 0 &&
+    if ([ydn.crm.sugarcrm.ModuleName.CONTACTS, ydn.crm.sugarcrm.ModuleName.CASES,
+      ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES].indexOf(info.module_name) >= 0 &&
         ['account_name', 'account_name1', 'account_id'].indexOf(name) >= 0) {
       mf.group = 'account';
     }
 
-    if (['salutation', 'name', 'last_name', 'first_name', 'full_name'
-    ].indexOf(name) >= 0) {
+    if ([ydn.crm.sugarcrm.ModuleName.ACCOUNTS, ydn.crm.sugarcrm.ModuleName.CONTACTS,
+      ydn.crm.sugarcrm.ModuleName.LEADS].indexOf(info.module_name) >= 0 &&
+        ['salutation', 'name', 'last_name', 'first_name', 'full_name'
+        ].indexOf(name) >= 0) {
       mf.group = 'name';
-    } else if (['assigned_user_name'].indexOf(name) >= 0) {
+    }
+
+    if (['assigned_user_name'].indexOf(name) >= 0) {
       mf.group = 'assigned_user_name';
     } else if (/^email\d?$/.test(name)) {
       mf.group = 'email';
