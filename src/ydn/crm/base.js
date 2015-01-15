@@ -319,7 +319,11 @@ ydn.crm.base.ContextPanelPositions = [
  * @enum {string}
  */
 ydn.crm.base.ErrorName = {
-  HOST_PERMISSION: 'HostPermissionError',
   BACKEND_ERROR: 'BackendError',
+  HOST_PERMISSION: 'HostPermissionError',
+  INPUT_ARG: 'InputArgumentError',
+  INVALID_LOGIN: 'InvalidLoginError',
+  INVALID_SESSION: 'Invalid SessionError',
+  NETWORK: 'NetworkError',
   NOT_AUTHORIZE: 'NotAuthorizeError'
 };
