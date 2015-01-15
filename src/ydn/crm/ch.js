@@ -79,7 +79,11 @@ ydn.crm.Ch.Req = {
   LOGGED_IN: 'logged-in', // has been logged to server.
   LOGGED_OUT: 'logged-out',
   NEW_ENTRY: 'new-entry',
-  NEW_SUGAR: 'new-sugarcrm', // create a new sugar channel, if not already exist.
+  /**
+   * @desc create a new sugar channel, if not already exist.
+   * @see {ydn.crm.app.App#initSugarClient}
+   */
+  NEW_SUGAR: 'new-sugarcrm',
   NUKE: 'nk', // clear db
   REMOVE_SUGAR: 'remove-sugar',
   REQUEST: 'request', // send request to database

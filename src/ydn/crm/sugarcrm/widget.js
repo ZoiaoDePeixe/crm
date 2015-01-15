@@ -345,7 +345,7 @@ ydn.crm.sugarcrm.Widget.prototype.handleLogin = function(e) {
 
   var btn_new_sugar = this.root.querySelector('button');
   btn_new_sugar.textContent = 'logging in...';
-  btn_new_sugar.setAttribute('disabled', '1');
+  btn_new_sugar.setAttribute('disabled', 'disabled');
 
   var model = this.model;
   chrome.permissions.request(this.model.getPermissionObject(), function(grant) {
