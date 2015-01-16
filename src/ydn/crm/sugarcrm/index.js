@@ -193,14 +193,13 @@ ydn.crm.sugarcrm.SIMPLE_MODULES = [ydn.crm.sugarcrm.ModuleName.NOTES];
  * @type {Array.<ydn.crm.sugarcrm.ModuleName>}
  */
 ydn.crm.sugarcrm.EDITABLE_MODULES = [ydn.crm.sugarcrm.ModuleName.ACCOUNTS,
+  ydn.crm.sugarcrm.ModuleName.CALLS,
   ydn.crm.sugarcrm.ModuleName.CASES,
   ydn.crm.sugarcrm.ModuleName.CONTACTS,
   ydn.crm.sugarcrm.ModuleName.LEADS,
-  ydn.crm.sugarcrm.ModuleName.NOTES,
-  ydn.crm.sugarcrm.ModuleName.TASKS,
   ydn.crm.sugarcrm.ModuleName.MEETINGS,
-  ydn.crm.sugarcrm.ModuleName.CALLS,
-  ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES];
+  ydn.crm.sugarcrm.ModuleName.NOTES,
+  ydn.crm.sugarcrm.ModuleName.TASKS];
 
 
 /**
