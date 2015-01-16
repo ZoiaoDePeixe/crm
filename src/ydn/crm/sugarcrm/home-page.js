@@ -97,8 +97,13 @@ ydn.crm.sugarcrm.HomePage.prototype.onPageShow = function() {
       if (model.isLogin()) {
         this.model_updated_after_login_ = true;
         this.sugar_widget.setModel(model);
-        break;
+        return;
       }
+    }
+    if (models.length > 0) {
+      this.model_updated_after_login_ = true;
+      console.log(models[0]);
+      this.sugar_widget.setModel(models[0]);
     }
   }, function(e) {
     ydn.crm.msg.Manager.addStatus('listing sugarcrm model fail ' + (e.message || e));

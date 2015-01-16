@@ -42,6 +42,13 @@ ydn.crm.sugarcrm.WidgetModel = function(opt_about) {
    */
   this.info = null;
 
+  /**
+   * New or existing instance.
+   * @type {boolean}
+   * @private
+   */
+  this.is_new_ = !opt_about;
+
 };
 
 
@@ -111,7 +118,7 @@ ydn.crm.sugarcrm.WidgetModel.prototype.hasHostPermission = function(opt_cb, opt_
  */
 ydn.crm.sugarcrm.WidgetModel.prototype.requestHostPermission = function(cb, scope) {
   var domain = this.getDomain();
-  console.assert(!!domain);
+  // console.assert(!!domain);
   var permissions = {
     origins: ['http://' + domain + '/*', 'https://' + domain + '/*']
   };
@@ -203,10 +210,19 @@ ydn.crm.sugarcrm.WidgetModel.prototype.login = function(url, username, password)
 
   // whether user give permission or not, we still continue login.
   // console.log(permission, me.data);
-  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.NEW_SUGAR, this.data).addCallback(function(info) {
-    // console.log(info);
-    this.data = info;
-  }, this);
+  if (this.is_new_) {
+    return ydn.msg.getChannel().send(ydn.crm.Ch.Req.NEW_SUGAR, this.data)
+        .addCallback(function(info) {
+          // console.log(info);
+          this.data = info;
+        }, this);
+  } else {
+    return this.getChannel().send(ydn.crm.Ch.SReq.LOGIN, this.data)
+        .addCallback(function(info) {
+          // console.log(info);
+          this.data = info;
+        }, this);
+  }
 
 };
 

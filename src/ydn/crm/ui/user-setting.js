@@ -193,8 +193,8 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
 
       }, function(e) {
         this.login_info = null;
-        ydn.crm.msg.Manager.addStatus('login error.');
-        goog.log.warning(this.logger, 'login fail');
+        ydn.crm.msg.Manager.addStatus('login error ' + e);
+        goog.log.warning(this.logger, 'login fail: ' + e);
         this.dispatchEvent(new goog.events.Event(ydn.crm.ui.UserSetting.EventType.LOGOUT, this));
       }, this);
 
