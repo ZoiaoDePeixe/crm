@@ -324,13 +324,6 @@ ydn.crm.sugarcrm.fixSugarCrmModuleMeta = function(info) {
       mf.group = 'appointment';
     }
 
-    // fix account group
-    if ([ydn.crm.sugarcrm.ModuleName.CONTACTS, ydn.crm.sugarcrm.ModuleName.CASES,
-      ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES].indexOf(info.module_name) >= 0 &&
-        ['account_name', 'account_name1', 'account_id'].indexOf(name) >= 0) {
-      mf.group = 'account';
-    }
-
     // fix name group
     if ([ydn.crm.sugarcrm.ModuleName.ACCOUNTS, ydn.crm.sugarcrm.ModuleName.CONTACTS,
       ydn.crm.sugarcrm.ModuleName.LEADS].indexOf(info.module_name) >= 0 &&
@@ -338,18 +331,15 @@ ydn.crm.sugarcrm.fixSugarCrmModuleMeta = function(info) {
         ].indexOf(name) >= 0) {
       mf.group = 'name';
     }
-
-
-    // fix contact relation group
-    if ([ydn.crm.sugarcrm.ModuleName.NOTES].indexOf(info.module_name) >= 0 &&
-        ['contact_name', 'contact_phone', 'contact_email', 'contact_id'].indexOf(name) >= 0) {
-      mf.group = 'contact';
-    }
-
+add
     if (['amount', 'amount_usdollar', 'best_case', 'worst_case'].indexOf(name) >= 0) {
       mf.group = 'amount';
     } else if (['assigned_user_name'].indexOf(name) >= 0) {
       mf.group = 'assigned_user_name';
+    } else if (['contact_name', 'contact_phone', 'contact_email', 'contact_id'].indexOf(name) >= 0) {
+      mf.group = 'contact';
+    } else if (['account_name', 'account_name1', 'account_id'].indexOf(name) >= 0) {
+      mf.group = 'account';
     } else if (/^email\d?$/.test(name)) {
       mf.group = 'email';
     } else if (/^phone?/.test(name)) {
