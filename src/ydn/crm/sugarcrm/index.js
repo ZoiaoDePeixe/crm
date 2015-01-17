@@ -331,7 +331,7 @@ ydn.crm.sugarcrm.fixSugarCrmModuleMeta = function(info) {
         ].indexOf(name) >= 0) {
       mf.group = 'name';
     }
-add
+
     if (['amount', 'amount_usdollar', 'best_case', 'worst_case'].indexOf(name) >= 0) {
       mf.group = 'amount';
     } else if (['assigned_user_name'].indexOf(name) >= 0) {
