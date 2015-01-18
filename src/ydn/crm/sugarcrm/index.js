@@ -316,16 +316,14 @@ ydn.crm.sugarcrm.fixSugarCrmModuleMeta = function(info) {
       mf.calculated = true;
     }
 
-    // fix assignment group
-    if ([ydn.crm.sugarcrm.ModuleName.CALLS, ydn.crm.sugarcrm.ModuleName.MEETINGS,
-      ydn.crm.sugarcrm.ModuleName.TASKS].indexOf(info.module_name) >= 0 &&
-        ['date_start', 'date_end', 'date_due', 'duration_hours', 'duration_minutes'
-        ].indexOf(name) >= 0) {
+    // fix appointment group
+    if (['date_start', 'date_end', 'date_due', 'duration_hours',
+      'duration_minutes'].indexOf(name) >= 0) {
       mf.group = 'appointment';
     }
 
     // fix name group
-    if ([ydn.crm.sugarcrm.ModuleName.ACCOUNTS, ydn.crm.sugarcrm.ModuleName.CONTACTS,
+    if ([ydn.crm.sugarcrm.ModuleName.CONTACTS,
       ydn.crm.sugarcrm.ModuleName.LEADS].indexOf(info.module_name) >= 0 &&
         ['salutation', 'name', 'last_name', 'first_name', 'full_name'
         ].indexOf(name) >= 0) {
@@ -340,6 +338,8 @@ ydn.crm.sugarcrm.fixSugarCrmModuleMeta = function(info) {
       mf.group = 'contact';
     } else if (['account_name', 'account_name1', 'account_id'].indexOf(name) >= 0) {
       mf.group = 'account';
+    } else if (['parent_name', 'parent_type', 'parentt_id'].indexOf(name) >= 0) {
+      mf.group = 'parent';
     } else if (/^email\d?$/.test(name)) {
       mf.group = 'email';
     } else if (/^phone?/.test(name)) {
