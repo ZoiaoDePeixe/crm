@@ -330,6 +330,12 @@ ydn.crm.sugarcrm.fixSugarCrmModuleMeta = function(info) {
       mf.group = 'name';
     }
 
+    if ([ydn.crm.sugarcrm.ModuleName.CONTACTS,
+      ydn.crm.sugarcrm.ModuleName.LEADS].indexOf(info.module_name) >= 0 &&
+        ['assistant', 'assistant_phone'].indexOf(name) >= 0) {
+      mf.group = 'assistant';
+    }
+
     if (['amount', 'amount_usdollar', 'best_case', 'worst_case'].indexOf(name) >= 0) {
       mf.group = 'amount';
     } else if (['assigned_user_name'].indexOf(name) >= 0) {
