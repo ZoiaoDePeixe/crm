@@ -187,6 +187,11 @@ ydn.crm.Ch.SReq = {
    */
   QUERY: 'query',
   /**
+   * @desc List embedded records.
+   * @see {ydn.crm.sugarcrm.Client#queryEmbedded}
+   */
+  QUERY_EMBEDDED: 'query-embedded',
+  /**
    * @desc List related records.
    * @see {ydn.crm.sugarcrm.Client#queryRelated}
    */

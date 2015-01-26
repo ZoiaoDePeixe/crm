@@ -91,7 +91,7 @@ ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer,
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.inj.SugarCrmApp.DEBUG = true;
+ydn.crm.inj.SugarCrmApp.DEBUG = false;
 
 
 /**
