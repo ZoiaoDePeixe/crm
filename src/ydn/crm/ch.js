@@ -120,6 +120,14 @@ ydn.crm.Ch.Req = {
 ydn.crm.Ch.BReq = {
   // LIST_DOMAINS: 'list-sugarcrm-domains', // list of domain name of sugarcrm
   HOST_PERMISSION: 'host-permission',
+  /**
+   * SugarCRM message. Data object has, 'type', 'about' and 'domain' attribute.
+   * 'type' could be 'init', 'login', or 'remove'. In case of login and init,
+   * 'about' data is available. In case of 'remove' only 'domain' is available.
+   * @see ydn.crm.app.App#doSugarLogin
+   * @see ydn.crm.app.App#handleClientLogin
+   * @see ydn.crm.app.App#removeSugarClient
+   */
   SUGARCRM: 'sugarcrm', // changes in sugarcrm instance. login, logout
   LOGGED_OUT: 'logout',
   LOGGED_IN: 'login',
@@ -178,6 +186,15 @@ ydn.crm.Ch.SReq = {
    * @see {ydn.crm.sugarcrm.Client#query}
    */
   QUERY: 'query',
+  /**
+   * @desc List related records.
+   * @see {ydn.crm.sugarcrm.Client#queryRelated}
+   */
+  QUERY_RELATED: 'query-related',
+  /**
+   * @desc Query records similar to given gdata contact entry.
+   * @see {ydn.crm.sugarcrm.Client#querySimilar}
+   */
   QUERY_SIMILAR: 'query-similar',
   REST: 'rest', // SugarCRM REST request
   /**
