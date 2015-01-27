@@ -122,10 +122,11 @@ ydn.crm.sugarcrm.assertModuleName = function(name) {
  * @type {Array.<ydn.crm.sugarcrm.ModuleName>}
  */
 ydn.crm.sugarcrm.CacheModules = [ydn.crm.sugarcrm.ModuleName.USERS,
+  // sync template first, so that it is appear immediately after login.
+  ydn.crm.sugarcrm.ModuleName.EMAIL_TEMPLATES,
   ydn.crm.sugarcrm.ModuleName.ACCOUNTS,
   ydn.crm.sugarcrm.ModuleName.CONTACTS,
   ydn.crm.sugarcrm.ModuleName.DOCUMENTS,
-  ydn.crm.sugarcrm.ModuleName.EMAIL_TEMPLATES,
   ydn.crm.sugarcrm.ModuleName.LEADS,
   ydn.crm.sugarcrm.ModuleName.NOTES,
   ydn.crm.sugarcrm.ModuleName.TASKS,
