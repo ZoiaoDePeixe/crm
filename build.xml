@@ -62,7 +62,7 @@
                 <arg line='--path "${work.dir}/ydn-db-sync/src"'/>
                 <arg line='--path "${work.dir}/gdata/src"'/>
                 <arg line='--path "${work.dir}/crm/src"'/>
-                <arg line='--path "${work.dir}/crm-ex/src"'/>
+                <arg line='--path "${work.dir}/crm-front/src"'/>
                 <arg line='--path "${crm.dir}/src"'/>
             </deps-options>
         </jstd-gen>
