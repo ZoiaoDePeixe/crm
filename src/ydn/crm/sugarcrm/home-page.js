@@ -21,10 +21,10 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.HomePage');
+goog.provide('ydn.crm.su.HomePage');
 goog.require('ydn.crm.gdata.CredentialWidget');
-goog.require('ydn.crm.sugarcrm.Widget');
-goog.require('ydn.crm.sugarcrm.WidgetModel');
+goog.require('ydn.crm.su.Widget');
+goog.require('ydn.crm.su.WidgetModel');
 goog.require('ydn.crm.tracking.setting.Main');
 
 
@@ -35,7 +35,7 @@ goog.require('ydn.crm.tracking.setting.Main');
  * @implements {ydn.crm.IPage}
  * @struct
  */
-ydn.crm.sugarcrm.HomePage = function() {
+ydn.crm.su.HomePage = function() {
   /**
    * @type {Element}
    * @private
@@ -43,9 +43,9 @@ ydn.crm.sugarcrm.HomePage = function() {
   this.root_ = document.createElement('div');
   /**
    * @protected
-   * @type {ydn.crm.sugarcrm.Widget}
+   * @type {ydn.crm.su.Widget}
    */
-  this.sugar_widget = new ydn.crm.sugarcrm.Widget(new ydn.crm.sugarcrm.WidgetModel());
+  this.sugar_widget = new ydn.crm.su.Widget(new ydn.crm.su.WidgetModel());
   this.sugar_widget.show_stats = true;
   this.model_updated_after_login_ = false; // ugly
 
@@ -60,7 +60,7 @@ ydn.crm.sugarcrm.HomePage = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.HomePage.prototype.render = function(el) {
+ydn.crm.su.HomePage.prototype.render = function(el) {
   var temp = ydn.ui.getTemplateById('sugarcrm-home-template').content;
   this.root_.appendChild(temp.cloneNode(true));
   var gdata_ele = this.root_.querySelector('#gdata');
@@ -78,7 +78,7 @@ ydn.crm.sugarcrm.HomePage.prototype.render = function(el) {
 /**
  * @return {boolean}
  */
-ydn.crm.sugarcrm.HomePage.prototype.hasGDataCredential = function() {
+ydn.crm.su.HomePage.prototype.hasGDataCredential = function() {
   return this.gdata_widget.hasCredential();
 };
 
@@ -86,12 +86,12 @@ ydn.crm.sugarcrm.HomePage.prototype.hasGDataCredential = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.HomePage.prototype.onPageShow = function() {
+ydn.crm.su.HomePage.prototype.onPageShow = function() {
   if (this.model_updated_after_login_) {
     return;
   }
   this.gdata_widget.refresh();
-  ydn.crm.sugarcrm.WidgetModel.list().addCallbacks(function(models) {
+  ydn.crm.su.WidgetModel.list().addCallbacks(function(models) {
     for (var i = 0; i < models.length; i++) {
       var model = models[i];
       if (model.isLogin()) {
@@ -114,6 +114,6 @@ ydn.crm.sugarcrm.HomePage.prototype.onPageShow = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.HomePage.prototype.toString = function() {
+ydn.crm.su.HomePage.prototype.toString = function() {
   return 'Home';
 };

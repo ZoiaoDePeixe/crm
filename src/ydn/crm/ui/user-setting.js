@@ -14,6 +14,7 @@ goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.Ch');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
+goog.require('ydn.crm.su');
 goog.require('ydn.gmail.Utils');
 goog.require('ydn.msg');
 goog.require('ydn.object');
@@ -274,10 +275,10 @@ ydn.crm.ui.UserSetting.prototype.getModuleInfo = function(name) {
     return channel.send(ydn.crm.Ch.SReq.INFO_MODULE).addCallback(function(x) {
       if (goog.isArray(x)) {
         for (var i = 0; i < x.length; i++) {
-          ydn.crm.sugarcrm.fixSugarCrmModuleMeta(x[i]);
+          ydn.crm.su.fixSugarCrmModuleMeta(x[i]);
         }
       } else {
-        ydn.crm.sugarcrm.fixSugarCrmModuleMeta(x);
+        ydn.crm.su.fixSugarCrmModuleMeta(x);
       }
       return x;
     }, this);
@@ -353,8 +354,8 @@ ydn.crm.ui.UserSetting.prototype.setSetting = function(val, key, var_args) {
  */
 ydn.crm.ui.UserSetting.getDefaultSugarCrmSetting_ = function() {
   var obj = /** @type {!CrmApp.SugarCrmSetting} */ ({'Module': {}});
-  for (var i = 0; i < ydn.crm.sugarcrm.CacheModules.length; i++) {
-    var name = ydn.crm.sugarcrm.CacheModules[i];
+  for (var i = 0; i < ydn.crm.su.CacheModules.length; i++) {
+    var name = ydn.crm.su.CacheModules[i];
     obj.Module[name] = /** @type {!CrmApp.SugarCrmModuleSetting} */ (
         {'Group': {}, 'Field': {}});
   }

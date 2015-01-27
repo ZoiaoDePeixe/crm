@@ -3,23 +3,23 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.Widget');
+goog.provide('ydn.crm.su.Widget');
 goog.require('goog.date.relative');
-goog.require('ydn.crm.sugarcrm.WidgetModel');
+goog.require('ydn.crm.su.WidgetModel');
 
 
 
 /**
  * GData credential widget.
- * @param {ydn.crm.sugarcrm.WidgetModel} model
+ * @param {ydn.crm.su.WidgetModel} model
  * @param {boolean=} opt_hide_title
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.Widget = function(model, opt_hide_title) {
+ydn.crm.su.Widget = function(model, opt_hide_title) {
   /**
    * @protected
-   * @type {ydn.crm.sugarcrm.WidgetModel}
+   * @type {ydn.crm.su.WidgetModel}
    */
   this.model = model;
   /**
@@ -38,21 +38,21 @@ ydn.crm.sugarcrm.Widget = function(model, opt_hide_title) {
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.sugarcrm.Widget.DEBUG = false;
+ydn.crm.su.Widget.DEBUG = false;
 
 
 /**
- * @return {ydn.crm.sugarcrm.WidgetModel}
+ * @return {ydn.crm.su.WidgetModel}
  */
-ydn.crm.sugarcrm.Widget.prototype.getModel = function() {
+ydn.crm.su.Widget.prototype.getModel = function() {
   return this.model;
 };
 
 
 /**
- * @param {ydn.crm.sugarcrm.WidgetModel} model
+ * @param {ydn.crm.su.WidgetModel} model
  */
-ydn.crm.sugarcrm.Widget.prototype.setModel = function(model) {
+ydn.crm.su.Widget.prototype.setModel = function(model) {
   this.model = model;
   this.refresh();
 };
@@ -61,7 +61,7 @@ ydn.crm.sugarcrm.Widget.prototype.setModel = function(model) {
 /**
  * @param {Element} ele
  */
-ydn.crm.sugarcrm.Widget.prototype.render = function(ele) {
+ydn.crm.su.Widget.prototype.render = function(ele) {
 
   var template = ydn.ui.getTemplateById('sugarcrm-template').content;
   this.root.appendChild(template.cloneNode(true));
@@ -110,7 +110,7 @@ ydn.crm.sugarcrm.Widget.prototype.render = function(ele) {
  * @param {Event} ev
  * @private
  */
-ydn.crm.sugarcrm.Widget.prototype.onClearCache_ = function(ev) {
+ydn.crm.su.Widget.prototype.onClearCache_ = function(ev) {
   var btn = ev.currentTarget;
   btn.setAttribute('disabled', 'disabled');
   this.getModel().getChannel().send(ydn.crm.Ch.SReq.CLEAR_CACHE)
@@ -129,7 +129,7 @@ ydn.crm.sugarcrm.Widget.prototype.onClearCache_ = function(ev) {
  * @param {Event} ev
  * @private
  */
-ydn.crm.sugarcrm.Widget.prototype.onUpdateNow_ = function(ev) {
+ydn.crm.su.Widget.prototype.onUpdateNow_ = function(ev) {
   var btn = ev.currentTarget;
   btn.setAttribute('disabled', 'disabled');
   this.getModel().getChannel().send(ydn.crm.Ch.SReq.UPDATE_NOW)
@@ -148,7 +148,7 @@ ydn.crm.sugarcrm.Widget.prototype.onUpdateNow_ = function(ev) {
  * @param {Event} ev
  * @private
  */
-ydn.crm.sugarcrm.Widget.prototype.onDetailsClick_ = function(ev) {
+ydn.crm.su.Widget.prototype.onDetailsClick_ = function(ev) {
   var is_open = !ev.currentTarget.hasAttribute('open');
   if (is_open) {
     this.showStats(true);
@@ -160,7 +160,7 @@ ydn.crm.sugarcrm.Widget.prototype.onDetailsClick_ = function(ev) {
  * Handle on domain blur.
  * @param {Event} e
  */
-ydn.crm.sugarcrm.Widget.prototype.onDomainBlur = function(e) {
+ydn.crm.su.Widget.prototype.onDomainBlur = function(e) {
   var input = this.root.querySelector('input[name="domain"]');
   var ele_message = input.nextElementSibling;
   ele_message.textContent = '';
@@ -191,7 +191,7 @@ ydn.crm.sugarcrm.Widget.prototype.onDomainBlur = function(e) {
  * @param {Event} e
  * @private
  */
-ydn.crm.sugarcrm.Widget.prototype.handleHostPermissionRequest_ = function(e) {
+ydn.crm.su.Widget.prototype.handleHostPermissionRequest_ = function(e) {
   e.preventDefault();
   this.model.requestHostPermission(function(grant) {
     if (grant) {
@@ -208,7 +208,7 @@ ydn.crm.sugarcrm.Widget.prototype.handleHostPermissionRequest_ = function(e) {
  * @param {Event} e
  * @private
  */
-ydn.crm.sugarcrm.Widget.prototype.remove_ = function(e) {
+ydn.crm.su.Widget.prototype.remove_ = function(e) {
   e.preventDefault();
   var a = e.target;
   var domain = this.model.getDomain();
@@ -225,7 +225,7 @@ ydn.crm.sugarcrm.Widget.prototype.remove_ = function(e) {
 /**
  * Refresh the data.
  */
-ydn.crm.sugarcrm.Widget.prototype.refresh = function() {
+ydn.crm.su.Widget.prototype.refresh = function() {
   var h3 = this.root.querySelector('h3');
   if (!this.model.getDomain()) {
     h3.textContent = 'Add a new SugarCRM instance';
@@ -237,7 +237,7 @@ ydn.crm.sugarcrm.Widget.prototype.refresh = function() {
   var info_panel = this.root.querySelector('div[name=info-panel]');
   var remove_panel = this.root.querySelector('div[name=remove-panel]');
   var permission_panel = this.root.querySelector('#grant-host-permission');
-  if (ydn.crm.sugarcrm.Widget.DEBUG) {
+  if (ydn.crm.su.Widget.DEBUG) {
     window.console.log('refreshing', about);
   }
   if (about) {
@@ -283,7 +283,7 @@ ydn.crm.sugarcrm.Widget.prototype.refresh = function() {
  * @param {boolean=} opt_val
  * @return {goog.async.Deferred}
  */
-ydn.crm.sugarcrm.Widget.prototype.showStats = function(opt_val) {
+ydn.crm.su.Widget.prototype.showStats = function(opt_val) {
   if (goog.isDef(opt_val)) {
     this.show_stats = opt_val;
   }
@@ -330,7 +330,7 @@ ydn.crm.sugarcrm.Widget.prototype.showStats = function(opt_val) {
  * Handle login button click.
  * @param {Event} e
  */
-ydn.crm.sugarcrm.Widget.prototype.handleLogin = function(e) {
+ydn.crm.su.Widget.prototype.handleLogin = function(e) {
   var root = this.root;
   var ele_msg = root.querySelector('.message');
   ele_msg.textContent = '';

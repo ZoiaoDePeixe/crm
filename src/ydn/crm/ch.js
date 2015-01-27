@@ -148,7 +148,7 @@ ydn.crm.Ch.SReq = {
   DELETE_RECORD: 'delete-record', //
   /**
    * @desc sugarcrm detail info
-   * @see {ydn.crm.sugarcrm.Client#getDetails}
+   * @see {ydn.crm.su.Client#getDetails}
    */
   DETAILS: 'details',
   FETCH_MODULE: 'fetch-module', // fetch module entries
@@ -164,47 +164,47 @@ ydn.crm.Ch.SReq = {
   LINK: 'link',  // should be GDATA_LINK
   /**
    * @desc list of available modules.
-   * @see {ydn.crm.sugarcrm.Client#getAvailableModules}
+   * @see {ydn.crm.su.Client#getAvailableModules}
    */
   LIST_MODULE: 'list-module',
   /**
    * @desc list all name and id in module.
-   * @see {ydn.crm.sugarcrm.Client#listName}
+   * @see {ydn.crm.su.Client#listName}
    */
   LIST_NAME: 'list-name',
   LOGIN: 'login',
   LOGIN_USER: 'login-user', // current login user record (Users module)
   /**
    * @desc login information or user setting in sugarcrm
-   * @see {ydn.crm.sugarcrm.Client#login_info_}
+   * @see {ydn.crm.su.Client#login_info_}
    */
   LOGIN_INFO: 'login-info',
   NEW_RECORD: 'new-record', // create a new record
   PUT_RECORD: 'put-record', //
   /**
    * @desc Generic query
-   * @see {ydn.crm.sugarcrm.Client#query}
+   * @see {ydn.crm.su.Client#query}
    */
   QUERY: 'query',
   /**
    * @desc List embedded records.
-   * @see {ydn.crm.sugarcrm.Client#queryEmbedded}
+   * @see {ydn.crm.su.Client#queryEmbedded}
    */
   QUERY_EMBEDDED: 'query-embedded',
   /**
    * @desc List related records.
-   * @see {ydn.crm.sugarcrm.Client#queryRelated}
+   * @see {ydn.crm.su.Client#queryRelated}
    */
   QUERY_RELATED: 'query-related',
   /**
    * @desc Query records similar to given gdata contact entry.
-   * @see {ydn.crm.sugarcrm.Client#querySimilar}
+   * @see {ydn.crm.su.Client#querySimilar}
    */
   QUERY_SIMILAR: 'query-similar',
   REST: 'rest', // SugarCRM REST request
   /**
    * @desc free text query for full text search
-   * @see {ydn.crm.sugarcrm.Client#search}
+   * @see {ydn.crm.su.Client#search}
    */
   SEARCH: 'search',
   SERVER_INFO: 'server-info',

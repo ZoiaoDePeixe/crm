@@ -21,7 +21,7 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.SyncPanel');
+goog.provide('ydn.crm.su.SyncPanel');
 goog.require('goog.asserts');
 goog.require('goog.style');
 goog.require('ydn.dom');
@@ -32,15 +32,15 @@ goog.require('ydn.ui.InfiniteScrollDecorator');
 
 /**
  * Synchronization panel.
- * @param {ydn.crm.sugarcrm.model.Sugar} m
+ * @param {ydn.crm.su.model.Sugar} m
  * @constructor
  * @struct
  * @implements {ydn.ui.InfiniteScrollItemProvider}
  */
-ydn.crm.sugarcrm.SyncPanel = function(m) {
+ydn.crm.su.SyncPanel = function(m) {
 
   /**
-   * @type {ydn.crm.sugarcrm.model.Sugar}
+   * @type {ydn.crm.su.model.Sugar}
    * @protected
    */
   this.model = m;
@@ -79,7 +79,7 @@ ydn.crm.sugarcrm.SyncPanel = function(m) {
 /**
  * @define {boolean} debug flag
  */
-ydn.crm.sugarcrm.SyncPanel.DEBUG = false;
+ydn.crm.su.SyncPanel.DEBUG = false;
 
 
 /**
@@ -87,7 +87,7 @@ ydn.crm.sugarcrm.SyncPanel.DEBUG = false;
  * @param {Element} el
  * @param {Element} toolbar
  */
-ydn.crm.sugarcrm.SyncPanel.prototype.render = function(el, toolbar) {
+ydn.crm.su.SyncPanel.prototype.render = function(el, toolbar) {
   this.root.classList.add('gdata-sync-panel');
   var temp = ydn.ui.getTemplateById('sync-panel-template').content;
   this.root.appendChild(temp.cloneNode(true));
@@ -107,7 +107,7 @@ ydn.crm.sugarcrm.SyncPanel.prototype.render = function(el, toolbar) {
 /**
  * @protected
  */
-ydn.crm.sugarcrm.SyncPanel.prototype.renderContent = function() {
+ydn.crm.su.SyncPanel.prototype.renderContent = function() {
 
 };
 
@@ -115,7 +115,7 @@ ydn.crm.sugarcrm.SyncPanel.prototype.renderContent = function() {
 /**
  * @protected
  */
-ydn.crm.sugarcrm.SyncPanel.prototype.renderToolbar = function() {
+ydn.crm.su.SyncPanel.prototype.renderToolbar = function() {
 
 };
 
@@ -123,27 +123,27 @@ ydn.crm.sugarcrm.SyncPanel.prototype.renderToolbar = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.SyncPanel.prototype.appendItem = goog.abstractMethod;
+ydn.crm.su.SyncPanel.prototype.appendItem = goog.abstractMethod;
 
 
 /**
  * @protected
  */
-ydn.crm.sugarcrm.SyncPanel.prototype.refreshFooter = goog.abstractMethod;
+ydn.crm.su.SyncPanel.prototype.refreshFooter = goog.abstractMethod;
 
 
 /**
  * Re-render content.
  * @protected
  */
-ydn.crm.sugarcrm.SyncPanel.prototype.refreshContent = goog.abstractMethod;
+ydn.crm.su.SyncPanel.prototype.refreshContent = goog.abstractMethod;
 
 
 /**
  * @param {boolean} val
  * @final
  */
-ydn.crm.sugarcrm.SyncPanel.prototype.setVisible = function(val) {
+ydn.crm.su.SyncPanel.prototype.setVisible = function(val) {
   goog.style.setElementShown(this.root, val);
   goog.style.setElementShown(this.toolbar, val);
   if (val) {
@@ -157,7 +157,7 @@ ydn.crm.sugarcrm.SyncPanel.prototype.setVisible = function(val) {
  * @protected
  * @final
  */
-ydn.crm.sugarcrm.SyncPanel.prototype.refresh = function() {
+ydn.crm.su.SyncPanel.prototype.refresh = function() {
   goog.asserts.assert(this.model);
   this.refreshFooter();
   this.refreshContent();

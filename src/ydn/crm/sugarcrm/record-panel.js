@@ -21,9 +21,9 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.RecordPanel');
-goog.require('ydn.crm.sugarcrm.SyncPanel');
-goog.require('ydn.crm.sugarcrm.model.Sugar');
+goog.provide('ydn.crm.su.RecordPanel');
+goog.require('ydn.crm.su.SyncPanel');
+goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.gdata.Kind');
 goog.require('ydn.gdata.m8.ContactEntry');
 goog.require('ydn.ui');
@@ -32,19 +32,19 @@ goog.require('ydn.ui');
 
 /**
  * Sugarcrm record sync panel.
- * @param {ydn.crm.sugarcrm.model.Sugar} m
+ * @param {ydn.crm.su.model.Sugar} m
  * @constructor
  * @struct
- * @extends {ydn.crm.sugarcrm.SyncPanel}
+ * @extends {ydn.crm.su.SyncPanel}
  */
-ydn.crm.sugarcrm.RecordPanel = function(m) {
+ydn.crm.su.RecordPanel = function(m) {
   goog.base(this, m);
 
   /**
-   * @type {ydn.crm.sugarcrm.ModuleName}
+   * @type {ydn.crm.su.ModuleName}
    * @private
    */
-  this.module_ = ydn.crm.sugarcrm.ModuleName.CONTACTS;
+  this.module_ = ydn.crm.su.ModuleName.CONTACTS;
   /**
    * @private
    */
@@ -57,19 +57,19 @@ ydn.crm.sugarcrm.RecordPanel = function(m) {
       'sync-record-secondary-template').content;
 
 };
-goog.inherits(ydn.crm.sugarcrm.RecordPanel, ydn.crm.sugarcrm.SyncPanel);
+goog.inherits(ydn.crm.su.RecordPanel, ydn.crm.su.SyncPanel);
 
 
 /**
  * @define {boolean} debug flag
  */
-ydn.crm.sugarcrm.RecordPanel.DEBUG = true;
+ydn.crm.su.RecordPanel.DEBUG = true;
 
 
 /**
- * @param {ydn.crm.sugarcrm.ModuleName} m
+ * @param {ydn.crm.su.ModuleName} m
  */
-ydn.crm.sugarcrm.RecordPanel.prototype.setModule = function(m) {
+ydn.crm.su.RecordPanel.prototype.setModule = function(m) {
   this.module_ = m;
 };
 
@@ -77,7 +77,7 @@ ydn.crm.sugarcrm.RecordPanel.prototype.setModule = function(m) {
 /**
  * @override
  */
-ydn.crm.sugarcrm.RecordPanel.prototype.renderToolbar = function() {
+ydn.crm.su.RecordPanel.prototype.renderToolbar = function() {
   var temp_tb = ydn.ui.getTemplateById('sync-record-toolbar-template').content;
   this.toolbar.appendChild(temp_tb.cloneNode(true));
 
@@ -91,7 +91,7 @@ ydn.crm.sugarcrm.RecordPanel.prototype.renderToolbar = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.RecordPanel.prototype.appendItem = function(prepend,
+ydn.crm.su.RecordPanel.prototype.appendItem = function(prepend,
                                                              should_remove) {
   var ul = this.root.querySelector('UL.infinite-scroll');
   /**
@@ -124,7 +124,7 @@ ydn.crm.sugarcrm.RecordPanel.prototype.appendItem = function(prepend,
   return ch.send(ydn.crm.Ch.SReq.QUERY, [query]).addCallbacks(function(arr) {
     var result = /** @type {CrmApp.QueryResult} */ (arr[0]);
     var item = result.result[0];
-    if (ydn.crm.sugarcrm.RecordPanel.DEBUG) {
+    if (ydn.crm.su.RecordPanel.DEBUG) {
       window.console.log(id, (item ? item['id'] : null), item);
     }
     if (item) {
@@ -141,7 +141,7 @@ ydn.crm.sugarcrm.RecordPanel.prototype.appendItem = function(prepend,
         ul.appendChild(li);
       }
 
-      var entry = new ydn.crm.sugarcrm.Record(this.model.getDomain(),
+      var entry = new ydn.crm.su.Record(this.model.getDomain(),
           this.module_, item);
       var key = this.order_by ? entry.value(this.order_by) : entry.getId();
 
@@ -161,7 +161,7 @@ ydn.crm.sugarcrm.RecordPanel.prototype.appendItem = function(prepend,
  * @param {Event} e
  * @private
  */
-ydn.crm.sugarcrm.RecordPanel.prototype.onOrderChanged_ = function(e) {
+ydn.crm.su.RecordPanel.prototype.onOrderChanged_ = function(e) {
   this.order_by = e.currentTarget.value;
   this.refreshContent();
 };
@@ -171,7 +171,7 @@ ydn.crm.sugarcrm.RecordPanel.prototype.onOrderChanged_ = function(e) {
  * @param {Event} e
  * @private
  */
-ydn.crm.sugarcrm.RecordPanel.prototype.onDirChanged_ = function(e) {
+ydn.crm.su.RecordPanel.prototype.onDirChanged_ = function(e) {
   if (e.currentTarget.value == 'asc') {
     this.reverse = false;
   } else if (e.currentTarget.value == 'des') {
@@ -186,7 +186,7 @@ ydn.crm.sugarcrm.RecordPanel.prototype.onDirChanged_ = function(e) {
 /**
  * @protected
  */
-ydn.crm.sugarcrm.RecordPanel.prototype.refreshFooter = function() {
+ydn.crm.su.RecordPanel.prototype.refreshFooter = function() {
   var query = {
     'module': this.module_
   };
@@ -202,7 +202,7 @@ ydn.crm.sugarcrm.RecordPanel.prototype.refreshFooter = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.RecordPanel.prototype.refreshContent = function() {
+ydn.crm.su.RecordPanel.prototype.refreshContent = function() {
   var ul = this.root.querySelector('.content UL');
   ul.innerHTML = '';
   var ch = this.model.getChannel();
@@ -214,7 +214,7 @@ ydn.crm.sugarcrm.RecordPanel.prototype.refreshContent = function() {
   };
   return ch.send(ydn.crm.Ch.SReq.QUERY, [query]).addCallbacks(function(arr) {
     var query = arr[0];
-    if (ydn.crm.sugarcrm.RecordPanel.DEBUG) {
+    if (ydn.crm.su.RecordPanel.DEBUG) {
       window.console.log(query);
     }
     return this.renderNextEntry_(query['result'], 0);
@@ -226,11 +226,11 @@ ydn.crm.sugarcrm.RecordPanel.prototype.refreshContent = function() {
 
 /**
  * @param {Element} el
- * @param {ydn.crm.sugarcrm.Record} entry
+ * @param {ydn.crm.su.Record} entry
  * @return {!goog.async.Deferred<number>} return 1.
  * @private
  */
-ydn.crm.sugarcrm.RecordPanel.prototype.renderEntry_ = function(el, entry) {
+ydn.crm.su.RecordPanel.prototype.renderEntry_ = function(el, entry) {
   var primary = el.querySelector('.primary');
   var secondary = el.querySelector('.secondary');
 
@@ -247,14 +247,14 @@ ydn.crm.sugarcrm.RecordPanel.prototype.renderEntry_ = function(el, entry) {
  * @param {number} idx
  * @private
  */
-ydn.crm.sugarcrm.RecordPanel.prototype.renderNextEntry_ = function(entries, idx) {
+ydn.crm.su.RecordPanel.prototype.renderNextEntry_ = function(entries, idx) {
   if (idx >= entries.length) {
     return;
   }
   var ul = this.root.querySelector('.content UL');
   var li = this.sync_pair_templ.cloneNode(true).querySelector('li');
   ul.appendChild(li);
-  var entry = new ydn.crm.sugarcrm.Record(this.model.getDomain(), this.module_,
+  var entry = new ydn.crm.su.Record(this.model.getDomain(), this.module_,
       entries[idx]);
   var key = this.order_by ? entry.value(this.order_by) : entry.getId();
 

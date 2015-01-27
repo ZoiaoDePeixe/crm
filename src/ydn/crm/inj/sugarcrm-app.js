@@ -26,8 +26,8 @@ goog.require('goog.style');
 goog.require('ydn.crm.base');
 goog.require('ydn.crm.gmail.AttachmentInjector');
 goog.require('ydn.crm.shared');
-goog.require('ydn.crm.sugarcrm.ContextWidget');
-goog.require('ydn.crm.sugarcrm.model.Archiver');
+goog.require('ydn.crm.su.ContextWidget');
+goog.require('ydn.crm.su.model.Archiver');
 goog.require('ydn.crm.ui.SidebarPanel');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
@@ -61,9 +61,9 @@ ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer,
   this.attachment_injector_ = new ydn.crm.gmail.AttachmentInjector(gmail_observer);
   /**
    * @protected
-   * @type {ydn.crm.sugarcrm.ContextWidget}
+   * @type {ydn.crm.su.ContextWidget}
    */
-  this.context_panel = new ydn.crm.sugarcrm.ContextWidget(gmail_observer, compose_observer);
+  this.context_panel = new ydn.crm.su.ContextWidget(gmail_observer, compose_observer);
 
   this.context_panel.render(renderer.getContentElement());
 
@@ -82,7 +82,7 @@ ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer,
   this.handler = new goog.events.EventHandler(this);
 
   this.handler.listen(this.attachment_injector_,
-      ydn.crm.sugarcrm.events.EventType.VIEW_RECORD,
+      ydn.crm.su.events.EventType.VIEW_RECORD,
       this.onViewRecord_);
 
 };
@@ -96,7 +96,7 @@ ydn.crm.inj.SugarCrmApp.DEBUG = false;
 
 /**
  * Sniff contact and set to model.
- * @param {ydn.crm.sugarcrm.events.RecordViewEvent} e
+ * @param {ydn.crm.su.events.RecordViewEvent} e
  * @private
  */
 ydn.crm.inj.SugarCrmApp.prototype.onViewRecord_ = function(e) {
@@ -186,13 +186,13 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(about) {
   ch.send(ydn.crm.Ch.SReq.DETAILS).addCallback(function(x) {
     var details = /** @type {SugarCrm.Details} */ (x);
     for (var i = 0; i < details.modulesInfo.length; i++) {
-      ydn.crm.sugarcrm.fixSugarCrmModuleMeta(details.modulesInfo[i]);
+      ydn.crm.su.fixSugarCrmModuleMeta(details.modulesInfo[i]);
     }
     var ac = us.getLoginEmail();
-    var sugar = new ydn.crm.sugarcrm.model.GDataSugar(details.about,
+    var sugar = new ydn.crm.su.model.GDataSugar(details.about,
         details.modulesInfo, ac, details.serverInfo);
     this.context_panel.setSugarCrm(sugar);
-    var archiver = new ydn.crm.sugarcrm.model.Archiver(sugar);
+    var archiver = new ydn.crm.su.model.Archiver(sugar);
     this.heading_injector_.setSugar(archiver);
     this.attachment_injector_.setSugar(sugar);
   }, this);

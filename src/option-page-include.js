@@ -3,7 +3,7 @@
  */
 
 goog.require('ydn.crm.inj.App');
-goog.require('ydn.crm.sugarcrm.utils');
+goog.require('ydn.crm.su.utils');
 goog.require('ydn.crm.tracking.DbModel');
 goog.require('ydn.crm.tracking.Service');
 goog.require('ydn.crm.AboutPage');

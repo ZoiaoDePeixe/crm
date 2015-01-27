@@ -1,9 +1,9 @@
-goog.provide('ydn.crm.sugarcrm.GDataContactPanelTest');
-goog.setTestOnly('ydn.crm.sugarcrm.GDataContactPanelTest');
+goog.provide('ydn.crm.su.GDataContactPanelTest');
+goog.setTestOnly('ydn.crm.su.GDataContactPanelTest');
 
 goog.require('goog.testing.asserts');
 goog.require('goog.testing.jsunit');
-goog.require('ydn.crm.sugarcrm.GDataContactPanel');
+goog.require('ydn.crm.su.GDataContactPanel');
 goog.require('ydn.crm.test');
 
 
@@ -26,10 +26,10 @@ var loadData = function(name) {
 
 
 function testEnrichEmailMatch() {
-  var res = ydn.crm.sugarcrm.GDataContactPanel.enrich('localhost', resultData['email_match']);
+  var res = ydn.crm.su.GDataContactPanel.enrich('localhost', resultData['email_match']);
   assertEquals(1, res.length);
   assertEquals(1, res[0].score);
-  assertEquals(ydn.crm.sugarcrm.ModuleName.CONTACTS, res[0].record.getModule());
+  assertEquals(ydn.crm.su.ModuleName.CONTACTS, res[0].record.getModule());
 }
 
 

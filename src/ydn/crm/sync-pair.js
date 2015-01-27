@@ -6,7 +6,7 @@
 
 goog.provide('ydn.crm.sync.SyncPair');
 goog.require('goog.asserts');
-goog.require('ydn.crm.sugarcrm.Record');
+goog.require('ydn.crm.su.Record');
 goog.require('ydn.gdata.m8.ContactEntry');
 
 
@@ -14,7 +14,7 @@ goog.require('ydn.gdata.m8.ContactEntry');
 /**
  * Synchronization pair.
  * @param {!YdnCrm.SyncRecord} sync
- * @param {!ydn.crm.sugarcrm.Record} record
+ * @param {!ydn.crm.su.Record} record
  * @param {?ContactEntry} entry
  * @constructor
  */
@@ -26,7 +26,7 @@ ydn.crm.sync.SyncPair = function(sync, record, entry) {
    */
   this.sync = sync;
   /**
-   * @type {!ydn.crm.sugarcrm.Record}
+   * @type {!ydn.crm.su.Record}
    */
   this.record = record;
   /**
@@ -39,7 +39,7 @@ ydn.crm.sync.SyncPair = function(sync, record, entry) {
 /**
  * @typedef {{
  *   domain: string,
- *   module: ydn.crm.sugarcrm.ModuleName,
+ *   module: ydn.crm.su.ModuleName,
  *   record_id: string,
  *   entry_id: string
  * }}
@@ -51,7 +51,7 @@ ydn.crm.sync.SyncPair.KeyComponents;
 /**
  * Make key for `YdnCrm.SyncRecord`.
  * @param {string} domain sugarcrm domain.
- * @param {ydn.crm.sugarcrm.ModuleName} mn module name.
+ * @param {ydn.crm.su.ModuleName} mn module name.
  * @param {string} rid sugarcrm record id.
  * @param {string} gmail gdata account user email. may or may not be URI encoded.
  * @param {ydn.gdata.Kind} kind gdata kind
@@ -62,7 +62,7 @@ ydn.crm.sync.SyncPair.makeKey = function(domain, mn, rid, gmail, kind, eid) {
   if (!domain || !mn || !rid || !gmail || !kind || !eid) {
     throw new Error('Invalid key parts');
   }
-  if (ydn.crm.sugarcrm.PEOPLE_MODULES.indexOf(mn) == -1) {
+  if (ydn.crm.su.PEOPLE_MODULES.indexOf(mn) == -1) {
     throw new Error('Invalid module name: ' + mn);
   }
   gmail = gmail.replace('%40', '@');
@@ -96,7 +96,7 @@ ydn.crm.sync.SyncPair.parseKey = function(key) {
       gmail.replace('@', '%40') + '/base/' + sid;
   return {
     domain: parts[0],
-    module: /** @type {ydn.crm.sugarcrm.ModuleName} */ (parts[1]),
+    module: /** @type {ydn.crm.su.ModuleName} */ (parts[1]),
     record_id: parts[2],
     entry_id: eid
   };

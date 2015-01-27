@@ -169,9 +169,9 @@ ydn.crm.PopupPageApp.prototype.initSugarCrm_ = function() {
 
   this.initGDataToken_(); // SugarCRM require GData token.
 
-  ydn.crm.sugarcrm.model.Sugar.list().addCallback(function(models) {
+  ydn.crm.su.model.Sugar.list().addCallback(function(models) {
     for (var i = 0; i < models.length; i++) {
-      var model = /** @type {ydn.crm.sugarcrm.model.Sugar} */ (models[i]);
+      var model = /** @type {ydn.crm.su.model.Sugar} */ (models[i]);
       if (model.isLogin() && !model.hasHostPermission()) {
         var ul = document.querySelector('ul.host-permission');
         var li = document.createElement('li');

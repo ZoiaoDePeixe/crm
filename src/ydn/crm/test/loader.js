@@ -213,13 +213,13 @@ ydn.crm.test.getMain = function() {
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.GDataSugar}
+ * @return {ydn.crm.su.model.GDataSugar}
  */
 ydn.crm.test.createGDataSugar = function() {
 
   var about = ydn.crm.test.sugar.about;
   var modules_info_arr = ydn.crm.test.getModuleInfoArr();
-  return new ydn.crm.sugarcrm.model.GDataSugar(about, modules_info_arr, 'test@yathit.com');
+  return new ydn.crm.su.model.GDataSugar(about, modules_info_arr, 'test@yathit.com');
 };
 
 
@@ -252,7 +252,7 @@ ydn.crm.test.getModuleInfoArr = function() {
     var infos = ydn.crm.test.sugar['list-module'];
     for (var x = 0; x < infos.length; x++) {
       var info = infos[x];
-      ydn.crm.sugarcrm.fixSugarCrmModuleMeta(info);
+      ydn.crm.su.fixSugarCrmModuleMeta(info);
       ydn.crm.test.modules_info_arr.push(info);
     }
   }
@@ -261,12 +261,12 @@ ydn.crm.test.getModuleInfoArr = function() {
 
 
 /**
- * @return {ydn.crm.sugarcrm.model.Sugar}
+ * @return {ydn.crm.su.model.Sugar}
  */
 ydn.crm.test.createSugar = function() {
 
   var about = ydn.crm.test.sugar.about;
-  return new ydn.crm.sugarcrm.model.Sugar(about, ydn.crm.test.getModuleInfoArr(),
+  return new ydn.crm.su.model.Sugar(about, ydn.crm.test.getModuleInfoArr(),
       ydn.crm.test.sugar['server-info-ce'], ydn.crm.test.sugar['login-user']);
 };
 
@@ -281,9 +281,9 @@ ydn.crm.test.createContactSugarCrmRecord = function() {
 
 
 /**
- * @param {ydn.crm.sugarcrm.model.Sugar=} opt_sugar
+ * @param {ydn.crm.su.model.Sugar=} opt_sugar
  * @param {SugarCrm.Record=} opt_obj provide `{}` to create a empty record.
- * @return {ydn.crm.sugarcrm.model.Record}
+ * @return {ydn.crm.su.model.Record}
  */
 ydn.crm.test.createContactRecord = function(opt_sugar, opt_obj) {
   var sugar = opt_sugar || ydn.crm.test.createSugar();
@@ -292,8 +292,8 @@ ydn.crm.test.createContactRecord = function(opt_sugar, opt_obj) {
    */
   var m_name = 'Contacts';
   var obj = opt_obj || ydn.crm.test.createContactSugarCrmRecord();
-  var r = new ydn.crm.sugarcrm.Record(sugar.getDomain(), m_name, obj);
-  return new ydn.crm.sugarcrm.model.Record(sugar, r);
+  var r = new ydn.crm.su.Record(sugar.getDomain(), m_name, obj);
+  return new ydn.crm.su.model.Record(sugar, r);
 };
 
 
@@ -301,38 +301,38 @@ ydn.crm.test.createContactRecord = function(opt_sugar, opt_obj) {
  * <pre>
  *   ydn.crm.test.createRecord(null, 'Calls');
  * </pre>
- * @param {ydn.crm.sugarcrm.model.Sugar=} opt_sugar
- * @param {ydn.crm.sugarcrm.ModuleName=} opt_mn
+ * @param {ydn.crm.su.model.Sugar=} opt_sugar
+ * @param {ydn.crm.su.ModuleName=} opt_mn
  * @param {(SugarCrm.Record|string)=} opt_obj provide `{}` to create a empty record.
  * use file name for load from file.
- * @return {ydn.crm.sugarcrm.model.Record}
+ * @return {ydn.crm.su.model.Record}
  */
 ydn.crm.test.createRecord = function(opt_sugar, opt_mn, opt_obj) {
   var sugar = opt_sugar || ydn.crm.test.createSugar();
   /**
-   * @type {ydn.crm.sugarcrm.ModuleName}
+   * @type {ydn.crm.su.ModuleName}
    */
-  var m_name = opt_mn || ydn.crm.sugarcrm.ModuleName.CONTACTS;
+  var m_name = opt_mn || ydn.crm.su.ModuleName.CONTACTS;
   var obj = opt_obj;
   if (opt_obj) {
     if (goog.isString(opt_obj)) {
       obj = ydn.crm.test.getData(opt_obj);
     }
   } else {
-    if (m_name == ydn.crm.sugarcrm.ModuleName.CALLS) {
+    if (m_name == ydn.crm.su.ModuleName.CALLS) {
       obj = ydn.crm.test.getData('call');
-    } else if (m_name == ydn.crm.sugarcrm.ModuleName.TASKS) {
+    } else if (m_name == ydn.crm.su.ModuleName.TASKS) {
       obj = ydn.crm.test.getData('task');
-    } else if (m_name == ydn.crm.sugarcrm.ModuleName.CONTACTS) {
+    } else if (m_name == ydn.crm.su.ModuleName.CONTACTS) {
       obj = ydn.crm.test.getData('contact');
-    } else if (m_name == ydn.crm.sugarcrm.ModuleName.CASES) {
+    } else if (m_name == ydn.crm.su.ModuleName.CASES) {
       obj = ydn.crm.test.getData('case');
-    } else if (m_name == ydn.crm.sugarcrm.ModuleName.OPPORTUNITIES) {
+    } else if (m_name == ydn.crm.su.ModuleName.OPPORTUNITIES) {
       obj = ydn.crm.test.getData('opportunity');
     }
   }
-  var r = new ydn.crm.sugarcrm.Record(sugar.getDomain(), m_name, obj);
-  return new ydn.crm.sugarcrm.model.Record(sugar, r);
+  var r = new ydn.crm.su.Record(sugar.getDomain(), m_name, obj);
+  return new ydn.crm.su.model.Record(sugar, r);
 };
 
 

@@ -21,11 +21,11 @@
  */
 
 
-goog.provide('ydn.crm.sugarcrm.SyncPage');
+goog.provide('ydn.crm.su.SyncPage');
 goog.require('goog.style');
-goog.require('ydn.crm.sugarcrm.GDataContactPanel');
-goog.require('ydn.crm.sugarcrm.RecordPanel');
-goog.require('ydn.crm.sugarcrm.model.Sugar');
+goog.require('ydn.crm.su.GDataContactPanel');
+goog.require('ydn.crm.su.RecordPanel');
+goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.gdata.Kind');
 goog.require('ydn.ui');
 
@@ -37,7 +37,7 @@ goog.require('ydn.ui');
  * @implements {ydn.crm.IPage}
  * @struct
  */
-ydn.crm.sugarcrm.SyncPage = function() {
+ydn.crm.su.SyncPage = function() {
   /**
    * @type {Element}
    * @private
@@ -45,19 +45,19 @@ ydn.crm.sugarcrm.SyncPage = function() {
   this.root_ = document.createElement('div');
 
   /**
-   * @type {ydn.crm.sugarcrm.model.Sugar}
+   * @type {ydn.crm.su.model.Sugar}
    * @private
    */
   this.model_ = null;
 
   /**
-   * @type {ydn.crm.sugarcrm.GDataContactPanel}
+   * @type {ydn.crm.su.GDataContactPanel}
    * @private
    */
   this.gdata_contact_panel_ = null;
 
   /**
-   * @type {ydn.crm.sugarcrm.RecordPanel}
+   * @type {ydn.crm.su.RecordPanel}
    * @private
    */
   this.record_panel_ = null;
@@ -69,7 +69,7 @@ ydn.crm.sugarcrm.SyncPage = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.SyncPage.prototype.render = function(el) {
+ydn.crm.su.SyncPage.prototype.render = function(el) {
   this.root_.classList.add('sync-page');
   var temp = ydn.ui.getTemplateById('sugarcrm-sync-template').content;
   this.root_.appendChild(temp.cloneNode(true));
@@ -85,7 +85,7 @@ ydn.crm.sugarcrm.SyncPage.prototype.render = function(el) {
  * @param {Event} e
  * @private
  */
-ydn.crm.sugarcrm.SyncPage.prototype.onPanelChange_ = function(e) {
+ydn.crm.su.SyncPage.prototype.onPanelChange_ = function(e) {
   this.refreshContent_();
 };
 
@@ -93,9 +93,9 @@ ydn.crm.sugarcrm.SyncPage.prototype.onPanelChange_ = function(e) {
 /**
  * Set SugarCRM model.
  * This should set only when gdata credential exists.
- * @param {ydn.crm.sugarcrm.model.Sugar} sugar
+ * @param {ydn.crm.su.model.Sugar} sugar
  */
-ydn.crm.sugarcrm.SyncPage.prototype.setModel = function(sugar) {
+ydn.crm.su.SyncPage.prototype.setModel = function(sugar) {
   this.model_ = sugar;
   goog.style.setElementShown(this.root_, true);
   var domain = this.root_.querySelector('.header .domain');
@@ -108,7 +108,7 @@ ydn.crm.sugarcrm.SyncPage.prototype.setModel = function(sugar) {
 /**
  * @override
  */
-ydn.crm.sugarcrm.SyncPage.prototype.onPageShow = function() {
+ydn.crm.su.SyncPage.prototype.onPageShow = function() {
   this.need_refresh_ = true;
   this.decorate_();
 };
@@ -118,19 +118,19 @@ ydn.crm.sugarcrm.SyncPage.prototype.onPageShow = function() {
  * @const
  * @type {string}
  */
-ydn.crm.sugarcrm.SyncPage.CSS_CLASS_SYNC_CONTACT = 'sync-contact';
+ydn.crm.su.SyncPage.CSS_CLASS_SYNC_CONTACT = 'sync-contact';
 
 
 /**
  * Refresh DOM whee model is set and element is not rendered.
  * @private
  */
-ydn.crm.sugarcrm.SyncPage.prototype.decorate_ = function() {
+ydn.crm.su.SyncPage.prototype.decorate_ = function() {
   if (!this.model_) {
     return;
   }
   var content = this.root_.querySelector('.' +
-      ydn.crm.sugarcrm.SyncPage.CSS_CLASS_SYNC_CONTACT);
+      ydn.crm.su.SyncPage.CSS_CLASS_SYNC_CONTACT);
   if (content) {
     if (this.need_refresh_) {
       this.refresh_();
@@ -141,14 +141,14 @@ ydn.crm.sugarcrm.SyncPage.prototype.decorate_ = function() {
   this.root_.appendChild(templ.cloneNode(true));
 
   content = this.root_.querySelector('.' +
-      ydn.crm.sugarcrm.SyncPage.CSS_CLASS_SYNC_CONTACT + ' .content');
+      ydn.crm.su.SyncPage.CSS_CLASS_SYNC_CONTACT + ' .content');
   var toolbar = this.root_.querySelector('.' +
-      ydn.crm.sugarcrm.SyncPage.CSS_CLASS_SYNC_CONTACT + ' .header .toolbar');
+      ydn.crm.su.SyncPage.CSS_CLASS_SYNC_CONTACT + ' .header .toolbar');
 
-  this.gdata_contact_panel_ = new ydn.crm.sugarcrm.GDataContactPanel(this.model_);
+  this.gdata_contact_panel_ = new ydn.crm.su.GDataContactPanel(this.model_);
   this.gdata_contact_panel_.render(content, toolbar);
 
-  this.record_panel_ = new ydn.crm.sugarcrm.RecordPanel(this.model_);
+  this.record_panel_ = new ydn.crm.su.RecordPanel(this.model_);
   this.record_panel_.render(content, toolbar);
 
   var select = this.root_.querySelector('select[name=select-panel]');
@@ -163,7 +163,7 @@ ydn.crm.sugarcrm.SyncPage.prototype.decorate_ = function() {
 /**
  * @private
  */
-ydn.crm.sugarcrm.SyncPage.prototype.refreshContent_ = function() {
+ydn.crm.su.SyncPage.prototype.refreshContent_ = function() {
   var select = this.root_.querySelector('select[name=select-panel]');
   var idx = select.selectedIndex;
   if (idx == 0) {
@@ -172,11 +172,11 @@ ydn.crm.sugarcrm.SyncPage.prototype.refreshContent_ = function() {
   } else {
     this.gdata_contact_panel_.setVisible(false);
     if (idx == 2) {
-      this.record_panel_.setModule(ydn.crm.sugarcrm.ModuleName.CONTACTS);
+      this.record_panel_.setModule(ydn.crm.su.ModuleName.CONTACTS);
     } else if (idx == 3) {
-      this.record_panel_.setModule(ydn.crm.sugarcrm.ModuleName.LEADS);
+      this.record_panel_.setModule(ydn.crm.su.ModuleName.LEADS);
     } else {
-      this.record_panel_.setModule(ydn.crm.sugarcrm.ModuleName.ACCOUNTS);
+      this.record_panel_.setModule(ydn.crm.su.ModuleName.ACCOUNTS);
     }
     this.record_panel_.setVisible(true);
   }
@@ -186,7 +186,7 @@ ydn.crm.sugarcrm.SyncPage.prototype.refreshContent_ = function() {
 /**
  * @private
  */
-ydn.crm.sugarcrm.SyncPage.prototype.refresh_ = function() {
+ydn.crm.su.SyncPage.prototype.refresh_ = function() {
   this.refreshContent_();
 };
 
@@ -194,6 +194,6 @@ ydn.crm.sugarcrm.SyncPage.prototype.refresh_ = function() {
 /**
  * @override
  */
-ydn.crm.sugarcrm.SyncPage.prototype.toString = function() {
+ydn.crm.su.SyncPage.prototype.toString = function() {
   return 'SugarCRM';
 };

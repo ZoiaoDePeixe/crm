@@ -31,9 +31,9 @@ goog.require('ydn.crm.AboutPage');
 goog.require('ydn.crm.Ch');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.msg.StatusBar');
-goog.require('ydn.crm.sugarcrm.HomePage');
-goog.require('ydn.crm.sugarcrm.SyncPage');
-goog.require('ydn.crm.sugarcrm.model.Sugar');
+goog.require('ydn.crm.su.HomePage');
+goog.require('ydn.crm.su.SyncPage');
+goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.crm.tracking.LazyDbModel');
 goog.require('ydn.crm.tracking.MsgModel');
 goog.require('ydn.crm.tracking.Panel');
@@ -200,14 +200,14 @@ ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
       var about = new ydn.crm.AboutPage('about-template');
       this.addPage(name, about.toString(), about);
     } else if (name == 'sync') {
-      var sync = new ydn.crm.sugarcrm.SyncPage();
+      var sync = new ydn.crm.su.SyncPage();
       var me = this.addPage(name, sync.toString(), sync);
       goog.style.setElementShown(me, false);
     } else if (name == 'about-tracking') {
       var about_tk = new ydn.crm.AboutPage('tracking-about-template');
       this.addPage(name, about_tk.toString(), about_tk);
     } else if (name == 'sugarcrm') {
-      var sugar = new ydn.crm.sugarcrm.HomePage();
+      var sugar = new ydn.crm.su.HomePage();
       this.addPage(name, sugar.toString(), sugar);
     } else if (name == 'tracking-setting') {
       var tracking_setup = new ydn.crm.tracking.SettingPage();
@@ -226,18 +226,18 @@ ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
 
 /**
  * Setup when a valid sugarcrm instance exists.
- * @param {ydn.crm.sugarcrm.model.Sugar} sugar
+ * @param {ydn.crm.su.model.Sugar} sugar
  * @private
  */
 ydn.crm.OptionPageApp.prototype.processWithSugarSetup_ = function(sugar) {
-  var sugarcrm = /** @type {ydn.crm.sugarcrm.HomePage} */ (this.pages_['sugarcrm']);
+  var sugarcrm = /** @type {ydn.crm.su.HomePage} */ (this.pages_['sugarcrm']);
   if (!sugarcrm.hasGDataCredential()) {
     return;
   }
   var main_menu = document.getElementById('main-menu');
   var sync = main_menu.querySelector('li[name=sync]');
   goog.style.setElementShown(sync, true);
-  var page = /** @type {ydn.crm.sugarcrm.SyncPage} */ (this.pages_['sync']);
+  var page = /** @type {ydn.crm.su.SyncPage} */ (this.pages_['sync']);
   page.setModel(sugar);
 };
 
@@ -252,7 +252,7 @@ ydn.crm.OptionPageApp.prototype.processSugarCRMSetup_ = function() {
     for (var i = 0; i < sugars.length; i++) {
       var about = sugars[i];
       if (about.isLogin) {
-        ydn.crm.sugarcrm.model.Sugar.load(about).addCallback(function(sugar) {
+        ydn.crm.su.model.Sugar.load(about).addCallback(function(sugar) {
           this.processWithSugarSetup_(sugar);
         }, this);
         break;

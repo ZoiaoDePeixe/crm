@@ -20,8 +20,8 @@
 
 
 
-goog.provide('ydn.crm.sugarcrm.gdata');
-goog.require('ydn.crm.sugarcrm.Record');
+goog.provide('ydn.crm.su.gdata');
+goog.require('ydn.crm.su.Record');
 goog.require('ydn.string');
 
 
@@ -32,7 +32,7 @@ goog.require('ydn.string');
  * @param {string} prefix either of 'alt' or 'primary'
  * @return {number} number of changes
  */
-ydn.crm.sugarcrm.gdata.collectAddress = function(obj, data, prefix) {
+ydn.crm.su.gdata.collectAddress = function(obj, data, prefix) {
   // https://developers.google.com/gdata/docs/2.0/elements#gdStructuredPostalAddress
   // https://developers.google.com/google-apps/contacts/v3/reference#structuredPostalAddressRestrictions
   var changes = 0;
@@ -92,7 +92,7 @@ ydn.crm.sugarcrm.gdata.collectAddress = function(obj, data, prefix) {
  * @param {string} prefix either of 'alt' or 'primary'
  * @return {number}
  */
-ydn.crm.sugarcrm.gdata.compileAddress = function(obj, data, prefix) {
+ydn.crm.su.gdata.compileAddress = function(obj, data, prefix) {
   // https://developers.google.com/gdata/docs/2.0/elements#gdStructuredPostalAddress
   var changes = 0;
   if (!obj) {
@@ -136,18 +136,18 @@ ydn.crm.sugarcrm.gdata.compileAddress = function(obj, data, prefix) {
  * @const
  * @type {boolean}
  */
-ydn.crm.sugarcrm.gdata.SYNC_ORGANIZATION = false;
+ydn.crm.su.gdata.SYNC_ORGANIZATION = false;
 
 
 /**
  * Convert GData contact entry to sugarcrm Contacts entry
  * @param {string} domain
- * @param {ydn.crm.sugarcrm.ModuleName} module
+ * @param {ydn.crm.su.ModuleName} module
  * @param {!ContactEntry} entry
  * @param {!SugarCrm.Record} obj record
  * @return {number} number of changes.
  */
-ydn.crm.sugarcrm.gdata.gdataContact2Record = function(domain, module, entry, obj) {
+ydn.crm.su.gdata.gdataContact2Record = function(domain, module, entry, obj) {
   // https://developers.google.com/gdata/docs/2.0/elements
   // https://developers.google.com/google-apps/contacts/v3/reference
   var changes = 0;
@@ -308,8 +308,8 @@ ydn.crm.sugarcrm.gdata.gdataContact2Record = function(domain, module, entry, obj
       alt = primary;
       alt = -1;
     }
-    changes += ydn.crm.sugarcrm.gdata.collectAddress(obj, entry.gd$structuredPostalAddress[primary], 'primary');
-    changes += ydn.crm.sugarcrm.gdata.collectAddress(obj, entry.gd$structuredPostalAddress[alt], 'alt');
+    changes += ydn.crm.su.gdata.collectAddress(obj, entry.gd$structuredPostalAddress[primary], 'primary');
+    changes += ydn.crm.su.gdata.collectAddress(obj, entry.gd$structuredPostalAddress[alt], 'alt');
   }
 
   return changes;
@@ -318,11 +318,11 @@ ydn.crm.sugarcrm.gdata.gdataContact2Record = function(domain, module, entry, obj
 
 /**
  * To Contact GData entry.
- * @param {!ydn.crm.sugarcrm.Record} sugar_record
+ * @param {!ydn.crm.su.Record} sugar_record
  * @param {!ContactEntry} entry
  * @return {number} if changed were made on gdata entry.
  */
-ydn.crm.sugarcrm.gdata.record2GDataContact = function(sugar_record, entry) {
+ydn.crm.su.gdata.record2GDataContact = function(sugar_record, entry) {
   var domain = sugar_record.getDomain();
   var module = sugar_record.getModule();
   var record = sugar_record.getData();
@@ -565,13 +565,13 @@ ydn.crm.sugarcrm.gdata.record2GDataContact = function(sugar_record, entry) {
   }
 
   if (primary_address >= 0) {
-    changes += ydn.crm.sugarcrm.gdata.compileAddress(record, entry.gd$structuredPostalAddress[primary_address],
+    changes += ydn.crm.su.gdata.compileAddress(record, entry.gd$structuredPostalAddress[primary_address],
         'primary');
   } else {
     var address = /** @type {StructuredPostalAddress} */ (/** @type {Object} */ ({}));
     address.primary = 'true';
     address.rel = 'http://schemas.google.com/g/2005#work';
-    var ch = ydn.crm.sugarcrm.gdata.compileAddress(record, address, 'primary');
+    var ch = ydn.crm.su.gdata.compileAddress(record, address, 'primary');
     if (ch > 0) {
       if (!entry.gd$structuredPostalAddress) {
         entry.gd$structuredPostalAddress = [];
@@ -582,11 +582,11 @@ ydn.crm.sugarcrm.gdata.record2GDataContact = function(sugar_record, entry) {
   }
 
   if (alt_address >= 0) {
-    changes += ydn.crm.sugarcrm.gdata.compileAddress(record, entry.gd$structuredPostalAddress[alt_address],
+    changes += ydn.crm.su.gdata.compileAddress(record, entry.gd$structuredPostalAddress[alt_address],
         'alt');
   } else {
     var address = /** @type {StructuredPostalAddress} */ (/** @type {Object} */ ({}));
-    var ch = ydn.crm.sugarcrm.gdata.compileAddress(record, address, 'alt');
+    var ch = ydn.crm.su.gdata.compileAddress(record, address, 'alt');
     if (ch > 0) {
       if (!entry.gd$structuredPostalAddress) {
         entry.gd$structuredPostalAddress = [];

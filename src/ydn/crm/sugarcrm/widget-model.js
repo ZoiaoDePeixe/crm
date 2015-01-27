@@ -20,7 +20,7 @@
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
-goog.provide('ydn.crm.sugarcrm.WidgetModel');
+goog.provide('ydn.crm.su.WidgetModel');
 goog.require('goog.crypt');
 goog.require('goog.crypt.Md5');
 
@@ -32,7 +32,7 @@ goog.require('goog.crypt.Md5');
  * @constructor
  * @struct
  */
-ydn.crm.sugarcrm.WidgetModel = function(opt_about) {
+ydn.crm.su.WidgetModel = function(opt_about) {
   /**
    * @type {SugarCrm.About}
    */
@@ -56,7 +56,7 @@ ydn.crm.sugarcrm.WidgetModel = function(opt_about) {
  * Return detail.
  * @return {SugarCrm.About}
  */
-ydn.crm.sugarcrm.WidgetModel.prototype.getDetails = function() {
+ydn.crm.su.WidgetModel.prototype.getDetails = function() {
   return this.data;
 };
 
@@ -65,7 +65,7 @@ ydn.crm.sugarcrm.WidgetModel.prototype.getDetails = function() {
  * Get domain name of the instance.
  * @return {?string}
  */
-ydn.crm.sugarcrm.WidgetModel.prototype.getDomain = function() {
+ydn.crm.su.WidgetModel.prototype.getDomain = function() {
   return this.data ? this.data.domain : null;
 };
 
@@ -74,7 +74,7 @@ ydn.crm.sugarcrm.WidgetModel.prototype.getDomain = function() {
  * Check login status.
  * @return {boolean}
  */
-ydn.crm.sugarcrm.WidgetModel.prototype.isLogin = function() {
+ydn.crm.su.WidgetModel.prototype.isLogin = function() {
   return this.data ? !!this.data.isLogin : false;
 };
 
@@ -82,7 +82,7 @@ ydn.crm.sugarcrm.WidgetModel.prototype.isLogin = function() {
 /**
  * @return {!ydn.msg.Channel}
  */
-ydn.crm.sugarcrm.WidgetModel.prototype.getChannel = function() {
+ydn.crm.su.WidgetModel.prototype.getChannel = function() {
   var domain = this.getDomain();
   goog.asserts.assert(domain, 'not ready');
   return ydn.msg.getMain().getChannel(ydn.msg.Group.SUGAR, domain);
@@ -96,7 +96,7 @@ ydn.crm.sugarcrm.WidgetModel.prototype.getChannel = function() {
  * @template T
  * @return {boolean}
  */
-ydn.crm.sugarcrm.WidgetModel.prototype.hasHostPermission = function(opt_cb, opt_scope) {
+ydn.crm.su.WidgetModel.prototype.hasHostPermission = function(opt_cb, opt_scope) {
   var permissions = {
     origins: ['http://' + this.data.domain + '/*', 'https://' + this.data.domain + '/*']
   };
@@ -116,7 +116,7 @@ ydn.crm.sugarcrm.WidgetModel.prototype.hasHostPermission = function(opt_cb, opt_
  * @param {T} scope
  * @template T
  */
-ydn.crm.sugarcrm.WidgetModel.prototype.requestHostPermission = function(cb, scope) {
+ydn.crm.su.WidgetModel.prototype.requestHostPermission = function(cb, scope) {
   var domain = this.getDomain();
   // console.assert(!!domain);
   var permissions = {
@@ -134,7 +134,7 @@ ydn.crm.sugarcrm.WidgetModel.prototype.requestHostPermission = function(cb, scop
  * @param {string} url
  * @return {!goog.async.Deferred<SugarCrm.ServerInfo>}
  */
-ydn.crm.sugarcrm.WidgetModel.prototype.getServerInfo = function(url) {
+ydn.crm.su.WidgetModel.prototype.getServerInfo = function(url) {
   this.setInstanceUrl(url);
   return ydn.msg.getChannel().send('sugar-server-info', url).addCallback(function(info) {
     // console.log(info);
@@ -148,7 +148,7 @@ ydn.crm.sugarcrm.WidgetModel.prototype.getServerInfo = function(url) {
  * Set domain.
  * @param {string} url sugarcrm instance url
  */
-ydn.crm.sugarcrm.WidgetModel.prototype.setInstanceUrl = function(url) {
+ydn.crm.su.WidgetModel.prototype.setInstanceUrl = function(url) {
   url = url.trim();
   if (url.length < 3 || !/\./.test(url)) {
     return goog.async.Deferred.fail(new Error('Invalid instance ' + url));
@@ -172,7 +172,7 @@ ydn.crm.sugarcrm.WidgetModel.prototype.setInstanceUrl = function(url) {
  * Get Sugarcrm basic info.
  * @return {!goog.async.Deferred} `null` if no info is available.
  */
-ydn.crm.sugarcrm.WidgetModel.prototype.getInfo = function() {
+ydn.crm.su.WidgetModel.prototype.getInfo = function() {
   if (!this.isLogin()) {
     throw new Error('NotLogin');
   }
@@ -193,7 +193,7 @@ ydn.crm.sugarcrm.WidgetModel.prototype.getInfo = function() {
  * @param {string} password
  * @return {!goog.async.Deferred.<SugarCrm.About>} cb
  */
-ydn.crm.sugarcrm.WidgetModel.prototype.login = function(url, username, password) {
+ydn.crm.su.WidgetModel.prototype.login = function(url, username, password) {
   this.setInstanceUrl(url);
   window.console.assert(!!this.data, 'Not initialized');
   if (username) {
@@ -231,7 +231,7 @@ ydn.crm.sugarcrm.WidgetModel.prototype.login = function(url, username, password)
  * Chrome host permission request object.
  * @return {{origins: (Array.<string>|undefined), permissions: (Array.<string>|undefined)}}
  */
-ydn.crm.sugarcrm.WidgetModel.prototype.getPermissionObject = function() {
+ydn.crm.su.WidgetModel.prototype.getPermissionObject = function() {
   return {'origins': ['http://' + this.data.domain + '/*',
     'https://' + this.data.domain + '/*']};
 };
@@ -239,14 +239,14 @@ ydn.crm.sugarcrm.WidgetModel.prototype.getPermissionObject = function() {
 
 /**
  * List SugarCrm available.
- * @return {!goog.async.Deferred.<Array.<ydn.crm.sugarcrm.WidgetModel>>} cb
+ * @return {!goog.async.Deferred.<Array.<ydn.crm.su.WidgetModel>>} cb
  */
-ydn.crm.sugarcrm.WidgetModel.list = function() {
+ydn.crm.su.WidgetModel.list = function() {
   return ydn.msg.getChannel().send('list-sugarcrm').addCallback(function(abouts) {
     var models = [];
     for (var i = 0; i < abouts.length; i++) {
       var about = /** @type {SugarCrm.About} */ (abouts[i]);
-      models[i] = new ydn.crm.sugarcrm.WidgetModel(about);
+      models[i] = new ydn.crm.su.WidgetModel(about);
     }
     return models;
   });
