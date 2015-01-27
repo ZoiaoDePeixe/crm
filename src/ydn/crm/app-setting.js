@@ -316,17 +316,17 @@ ydn.crm.AppSetting.isEmailTracker = function() {
 
 
 /**
- * @param {ydn.crm.base.Feature} feature
+ * @param {ydn.crm.base.AppFeature} feature
  * @return {boolean}
  */
 ydn.crm.AppSetting.hasFeature = function(feature) {
   var features = [];
   var app_name = ydn.crm.AppSetting.getAppShortName();
-  if (feature == ydn.crm.base.Feature.TRACKING) {
+  if (feature == ydn.crm.base.AppFeature.TRACKING) {
     return true;
-  } else if (feature == ydn.crm.base.Feature.SUGARCRM) {
+  } else if (feature == ydn.crm.base.AppFeature.SUGARCRM) {
     return app_name == ydn.crm.base.AppShortName.SUGARCRM;
-  } else if (feature == ydn.crm.base.Feature.GDATA_CONTACT) {
+  } else if (feature == ydn.crm.base.AppFeature.GDATA_CONTACT) {
     return app_name == ydn.crm.base.AppShortName.SUGARCRM;
   }
   return false;

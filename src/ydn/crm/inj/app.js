@@ -147,6 +147,7 @@ ydn.crm.inj.App.prototype.handleUserLogin_ = function(e) {
 
 /**
  * Init UI.
+ * @return {!goog.async.Deferred} when user is ready.
  */
 ydn.crm.inj.App.prototype.init = function() {
   goog.log.fine(this.logger, 'initializing ' + this);
@@ -159,7 +160,7 @@ ydn.crm.inj.App.prototype.init = function() {
         ydn.crm.ui.UserSetting.EventType.LOGIN],
       this.handleUserLogin_, false, this);
 
-  if (ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.TRACKING)) {
+  if (ydn.crm.AppSetting.hasFeature(ydn.crm.base.AppFeature.TRACKING)) {
     this.tracking_app = new ydn.crm.inj.TrackingApp(this.header_injector_,
         this.gmail_observer, this.compose_observer, this.context_container,
         this.reply_panel_manager, this.hud);
@@ -167,7 +168,7 @@ ydn.crm.inj.App.prototype.init = function() {
     this.tracking_app.init();
   }
 
-  if (ydn.crm.ui.UserSetting.hasFeature(ydn.crm.base.Feature.SUGARCRM)) {
+  if (ydn.crm.AppSetting.hasFeature(ydn.crm.base.AppFeature.SUGARCRM)) {
     this.sugar_app = new ydn.crm.inj.SugarCrmApp(this.header_injector_,
         this.gmail_observer, this.compose_observer, this.context_container, this.hud);
     goog.log.fine(this.logger, 'initializing sugarcrm app');
@@ -177,7 +178,7 @@ ydn.crm.inj.App.prototype.init = function() {
   this.social_app = new ydn.social.ui.ContextWidget(this.gmail_observer);
   this.social_app.render(this.context_container.getContentElement());
 
-  us.onReady();
+  return us.onReady();
 
 };
 

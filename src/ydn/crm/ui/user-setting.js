@@ -155,6 +155,8 @@ ydn.crm.ui.UserSetting.prototype.getContextPanelPosition = function() {
 ydn.crm.ui.UserSetting.prototype.onReady = function() {
   if (!this.df_) {
     // init data.
+    this.df_ = new goog.async.Deferred();
+
     var me = this;
 
     chrome.storage.sync.get(ydn.crm.base.SyncKey.USER_SETTING, function(val) {
@@ -201,7 +203,6 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
 
     }, this);
 
-    this.df_ = new goog.async.Deferred();
     df.chainDeferred(this.df_);
   }
   return this.df_.branch();
@@ -216,7 +217,7 @@ ydn.crm.ui.UserSetting.prototype.invalidate = function() {
   this.login_info = null;
   this.user_setting = null;
   this.df_ = null;
-  // this.gmail_ = null; // cannot be changed.
+  // this.gmail_ = null; // does not changed, as long as same url.
   return this.onReady();
 };
 
@@ -547,10 +548,10 @@ ydn.crm.ui.UserSetting.prototype.show = function() {
 
 
 /**
- * @param {ydn.crm.base.Feature} feature
+ * @param {ydn.crm.base.AppFeature} feature
  * @return {boolean}
  */
-ydn.crm.ui.UserSetting.hasFeature = function(feature) {
-  return ydn.crm.AppSetting.hasFeature(feature);
+ydn.crm.ui.UserSetting.prototype.hasFeature = function(feature) {
+  return true;
 };
 

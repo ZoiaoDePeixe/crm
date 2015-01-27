@@ -245,3 +245,4 @@ ydn.crm.ui.createSvgIconBySymbol = function(fileName, name) {
   svg.appendChild(use);
   return svg;
 };
+

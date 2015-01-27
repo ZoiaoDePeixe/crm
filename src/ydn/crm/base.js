@@ -219,12 +219,25 @@ ydn.crm.base.AppShortName = {
 
 
 /**
- * @enum {string}
+ * @enum {string} Application feature.
  */
-ydn.crm.base.Feature = {
+ydn.crm.base.AppFeature = {
   GDATA_CONTACT: 'gc',
   TRACKING: 'tk',
   SUGARCRM: 'su'
+};
+
+
+/**
+ * @enum {string} Feature limited by user license.
+ */
+ydn.crm.base.Feature = {
+  EDIT_RECORD: 'er',
+  SYNC: 'sy',
+  TEMPLATE: 'tm',
+  ATTACHMENT: 'at',
+  SOCIAL: 'so',
+  TRACKING: 'tr'
 };
 
 

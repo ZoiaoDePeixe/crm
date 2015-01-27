@@ -98,8 +98,8 @@ ydn.crm.inj.Hud.prototype.render = function() {
   a_option.href = chrome.extension.getURL(ydn.crm.base.OPTION_PAGE);
 
   /*
-  var has_widget = ydn.crm.AppSetting.hasFeature(ydn.crm.base.Feature.GDATA_CONTACT) ||
-      ydn.crm.AppSetting.hasFeature(ydn.crm.base.Feature.SUGARCRM);
+  var has_widget = ydn.crm.AppSetting.hasFeature(ydn.crm.base.AppFeature.GDATA_CONTACT) ||
+      ydn.crm.AppSetting.hasFeature(ydn.crm.base.AppFeature.SUGARCRM);
   goog.style.setElementShown(this.root_el_, has_widget);
   */
 
