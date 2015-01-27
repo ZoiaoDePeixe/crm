@@ -436,3 +436,54 @@ YdnCrm.SyncRecord.prototype.timestamps_old;
 YdnCrm.SyncRecord.prototype.deleted;
 
 
+
+/**
+ * License.
+ * @interface
+ */
+YdnCrm.License = function() {};
+
+
+/**
+ * @type {string}
+ */
+YdnCrm.License.prototype.edition;
+
+
+
+/**
+ * User license.
+ * @interface
+ */
+YdnCrm.UserLicense = function() {};
+
+
+/**
+ * @type {boolean}
+ */
+YdnCrm.UserLicense.prototype.active;
+
+
+/**
+ * @type {string}
+ */
+YdnCrm.UserLicense.prototype.assignEmail;
+
+
+/**
+ * @type {number}
+ */
+YdnCrm.UserLicense.prototype.begin;
+
+
+/**
+ * @type {number}
+ */
+YdnCrm.UserLicense.prototype.end;
+
+
+/**
+ * @type {YdnCrm.License}
+ */
+YdnCrm.UserLicense.prototype.license;
+

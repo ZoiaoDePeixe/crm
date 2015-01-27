@@ -109,7 +109,12 @@ ydn.crm.Ch.Req = {
   TRACKING_SELF_OPEN: 'tracking-self-open', // notify self access
   TRACKING_QUERY: 'tracking-query',
   TRACKING_UPDATE: 'tracking-update',
-  TWITTER: 'twitter'
+  TWITTER: 'twitter',
+  /**
+   * @desc user license.
+   * @see {ydn.crm.AppSetting#getUserLicense}
+   */
+  USER_LICENSE: 'user-license'
 };
 
 

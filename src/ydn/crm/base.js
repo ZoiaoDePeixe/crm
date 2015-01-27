@@ -242,6 +242,16 @@ ydn.crm.base.Feature = {
 
 
 /**
+ * @enum {string}
+ */
+ydn.crm.base.LicenseEdition = {
+  BASIC: 'BASIC',
+  EXPRESS: 'EXPRESS',
+  STANDARD: 'STANDARD'
+};
+
+
+/**
  * Message token broadcast across documents.
  * @enum {string}
  */

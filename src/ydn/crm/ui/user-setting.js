@@ -64,6 +64,12 @@ ydn.crm.ui.UserSetting = function() {
    */
   this.login_id_md5_ = '';
 
+  /**
+   * @type {YdnCrm.UserLicense}
+   * @private
+   */
+  this.user_license = null;
+
   goog.events.listen(ydn.msg.getMain(),
       [ydn.crm.Ch.BReq.LOGGED_OUT, ydn.crm.Ch.BReq.LOGGED_IN],
       this.handleLoginProcess_, false, this);
@@ -150,6 +156,16 @@ ydn.crm.ui.UserSetting.prototype.getContextPanelPosition = function() {
 
 
 /**
+ * @private
+ */
+ydn.crm.ui.UserSetting.prototype.loadUserLicense_ = function() {
+  ydn.msg.getChannel().send(ydn.crm.Ch.Req.USER_LICENSE).addCallback(function(x) {
+    this.user_license = x || null;
+  }, this);
+};
+
+
+/**
  * @return {!goog.async.Deferred}
  */
 ydn.crm.ui.UserSetting.prototype.onReady = function() {
@@ -216,6 +232,7 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
 ydn.crm.ui.UserSetting.prototype.invalidate = function() {
   this.login_info = null;
   this.user_setting = null;
+  this.user_license = null;
   this.df_ = null;
   // this.gmail_ = null; // does not changed, as long as same url.
   return this.onReady();
@@ -548,10 +565,32 @@ ydn.crm.ui.UserSetting.prototype.show = function() {
 
 
 /**
- * @param {ydn.crm.base.AppFeature} feature
+ * @const
+ * @type {!Array<ydn.crm.base.Feature>}
+ */
+ydn.crm.ui.UserSetting.features_not_in_express = [
+  ydn.crm.base.Feature.SOCIAL,
+  ydn.crm.base.Feature.TRACKING
+];
+
+
+/**
+ * @param {ydn.crm.base.Feature} feature
  * @return {boolean}
  */
 ydn.crm.ui.UserSetting.prototype.hasFeature = function(feature) {
+  if (this.user_license) {
+    if (this.user_license.license == ydn.crm.base.LicenseEdition.STANDARD) {
+      return true;
+    } else if (this.user_license.license == ydn.crm.base.LicenseEdition.EXPRESS) {
+      return ydn.crm.ui.UserSetting.features_not_in_express.indexOf(feature) == -1;
+    } else if (this.user_license.license == ydn.crm.base.LicenseEdition.BASIC) {
+      return false;
+    } else {
+      // trial
+      return true;
+    }
+  }
   return true;
 };
 
