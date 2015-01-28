@@ -32,13 +32,9 @@ goog.require('ydn.crm.Ch');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.msg.StatusBar');
 goog.require('ydn.crm.su.HomePage');
-goog.require('ydn.crm.su.SyncPage');
 goog.require('ydn.crm.su.model.Sugar');
-goog.require('ydn.crm.tracking.LazyDbModel');
-goog.require('ydn.crm.tracking.MsgModel');
-goog.require('ydn.crm.tracking.Panel');
-goog.require('ydn.crm.tracking.SettingPage');
 goog.require('ydn.crm.ui.AdminPage');
+goog.require('ydn.crm.ui.LogPage');
 goog.require('ydn.crm.ui.SugarListPanel');
 goog.require('ydn.crm.ui.UserSetting');
 goog.require('ydn.msg.Pipe');
@@ -155,127 +151,33 @@ ydn.crm.AdminPageApp.prototype.updateUserInfo_ = function(user_info) {
 
 
 /**
- * @define {boolean} model selection.
- */
-ydn.crm.AdminPageApp.USE_MSG_MODEL = false;
-
-
-/**
- * @protected
- * @return {ydn.crm.tracking.Panel}
- */
-ydn.crm.AdminPageApp.prototype.createTrackingPanel = function() {
-  var model;
-  if (ydn.crm.AdminPageApp.USE_MSG_MODEL) {
-    model = new ydn.crm.tracking.MsgModel();
-  } else {
-    model = new ydn.crm.tracking.LazyDbModel();
-  }
-  return new ydn.crm.tracking.Panel(model);
-};
-
-
-/**
  * Process after login.
  * @protected
  */
 ydn.crm.AdminPageApp.prototype.processUserPageSetup = function() {
 
   var us = ydn.crm.ui.UserSetting.getInstance();
-  var asn = ydn.crm.AppSetting.getAppShortName();
-  var is_tracker_app = asn == ydn.crm.base.AppShortName.EMAIL_TRACKER ||
-      asn == ydn.crm.base.AppShortName.EMAIL_TRACKER_GMAIL;
-  var pages = [];
-  if (is_tracker_app) {
-    pages = ['tracking', 'tracking-setting', 'about-tracking'];
-  } else {
-    pages = ['sugarcrm', 'about-sugarcrm'];
-    if (ydn.crm.AppSetting.hasFeature(ydn.crm.base.AppFeature.TRACKING) &&
-        us.hasFeature(ydn.crm.base.Feature.TRACKING)) {
-      goog.array.insertAt(pages, 'tracking', 1);
-    }
-  }
-
-  if (location.hostname == 'gehcogaddkopajdfhbfgokbongbfijnh') {
-    goog.array.insertAt(pages, 'sync', 1);
-  }
-  if (['kyawtun@yathit.com'].indexOf(us.getLoginEmail()) >= 0) {
-    goog.array.insertAt(pages, 'admin', pages.length - 1);
-  }
 
 
+  var asn = ydn.crm.base.getAppShortName();
+  var pages = ['log', 'admin', 'about'];
 
   for (var i = 0; i < pages.length; i++) {
     var name = pages[i];
-    if (name == 'tracking') {
-      var page = this.createTrackingPanel();
-      this.addPage(name, page.toString(), page);
-    } else if (name == 'about-sugarcrm') {
+    if (name == 'about') {
       var about = new ydn.crm.AboutPage('Yathit CRMinInbox');
       this.addPage(name, about.toString(), about);
     } else if (name == 'admin') {
       var admin = new ydn.crm.ui.AdminPage(us);
       this.addPage(name, admin.toString(), admin);
-    } else if (name == 'sync') {
-      var sync = new ydn.crm.su.SyncPage();
-      var me = this.addPage(name, sync.toString(), sync);
-      goog.style.setElementShown(me, false);
-    } else if (name == 'about-tracking') {
-      var about_tk = new ydn.crm.AboutPage('Yathit Email Tracker');
-      this.addPage(name, about_tk.toString(), about_tk);
-    } else if (name == 'sugarcrm') {
-      var sugar = new ydn.crm.su.HomePage();
-      this.addPage(name, sugar.toString(), sugar);
-    } else if (name == 'tracking-setting') {
-      var tracking_setup = new ydn.crm.tracking.SettingPage();
-      this.addPage(name, tracking_setup.toString(), tracking_setup);
+    } else if (name == 'log') {
+      var log = new ydn.crm.ui.LogPage(us);
+      this.addPage(name, log.toString(), log);
     } else {
       window.console.error('Invalid page name: ' + name);
     }
   }
 
-  if (pages.indexOf('sugarcrm') >= 0) {
-    this.processSugarCRMSetup_();
-  }
-
-};
-
-
-/**
- * Setup when a valid sugarcrm instance exists.
- * @param {ydn.crm.su.model.Sugar} sugar
- * @private
- */
-ydn.crm.AdminPageApp.prototype.processWithSugarSetup_ = function(sugar) {
-  var sugarcrm = /** @type {ydn.crm.su.HomePage} */ (this.pages_['sugarcrm']);
-  if (!sugarcrm.hasGDataCredential()) {
-    return;
-  }
-  var main_menu = document.getElementById('main-menu');
-  var sync = main_menu.querySelector('li[name=sync]');
-  goog.style.setElementShown(sync, true);
-  var page = /** @type {ydn.crm.su.SyncPage} */ (this.pages_['sync']);
-  page.setModel(sugar);
-};
-
-
-/**
- * SugarCRM pages setup.
- * @private
- */
-ydn.crm.AdminPageApp.prototype.processSugarCRMSetup_ = function() {
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR).addCallback(function(arr) {
-    var sugars = /** @type {Array<SugarCrm.About>} */ (arr);
-    for (var i = 0; i < sugars.length; i++) {
-      var about = sugars[i];
-      if (about.isLogin) {
-        ydn.crm.su.model.Sugar.load(about).addCallback(function(sugar) {
-          this.processWithSugarSetup_(sugar);
-        }, this);
-        break;
-      }
-    }
-  }, this);
 };
 
 
@@ -441,7 +343,7 @@ ydn.crm.AdminPageApp.prototype.run = function() {
  * Run option page app.
  * @return {ydn.crm.AdminPageApp}
  */
-ydn.crm.AdminPageApp.runOptionApp = function() {
+ydn.crm.AdminPageApp.runAdminApp = function() {
 
   var app = new ydn.crm.AdminPageApp();
   app.process_user_page_setup_ = true;
@@ -450,4 +352,4 @@ ydn.crm.AdminPageApp.runOptionApp = function() {
 };
 
 
-goog.exportSymbol('runOptionApp', ydn.crm.AdminPageApp.runOptionApp);
+goog.exportSymbol('runAdminApp', ydn.crm.AdminPageApp.runAdminApp);

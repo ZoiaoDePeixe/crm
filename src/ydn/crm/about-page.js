@@ -73,9 +73,7 @@ ydn.crm.AboutPage.prototype.renderLicense_ = function(lic) {
   } else {
     el.textContent = 'License: ';
   }
-  if (!lic || !lic.active) {
 
-  }
 };
 
 

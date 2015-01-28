@@ -181,7 +181,7 @@ ydn.crm.OptionPageApp.prototype.createTrackingPanel = function() {
 ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
 
   var us = ydn.crm.ui.UserSetting.getInstance();
-  var asn = ydn.crm.AppSetting.getAppShortName();
+  var asn = ydn.crm.base.getAppShortName();
   var is_tracker_app = asn == ydn.crm.base.AppShortName.EMAIL_TRACKER ||
       asn == ydn.crm.base.AppShortName.EMAIL_TRACKER_GMAIL;
   var pages = [];
@@ -189,7 +189,7 @@ ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
     pages = ['tracking', 'tracking-setting', 'about-tracking'];
   } else {
     pages = ['sugarcrm', 'about-sugarcrm'];
-    if (ydn.crm.AppSetting.hasFeature(ydn.crm.base.AppFeature.TRACKING) &&
+    if (ydn.crm.base.hasFeature(ydn.crm.base.AppFeature.TRACKING) &&
         us.hasFeature(ydn.crm.base.Feature.TRACKING)) {
       goog.array.insertAt(pages, 'tracking', 1);
     }

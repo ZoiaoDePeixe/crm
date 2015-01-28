@@ -350,3 +350,65 @@ ydn.crm.base.ErrorName = {
   NETWORK: 'NetworkError',
   NOT_AUTHORIZE: 'NotAuthorizeError'
 };
+
+
+/**
+ * @type {ydn.crm.base.AppShortName}
+ * @private
+ */
+ydn.crm.base.app_name_;
+
+
+/**
+ * App short_name as defined in manifest.
+ * @return {ydn.crm.base.AppShortName}
+ */
+ydn.crm.base.getAppShortName = function() {
+  if (!ydn.crm.base.app_name_) {
+    var mani = chrome.runtime.getManifest();
+    if (mani['short_name'] == ydn.crm.base.AppShortName.EMAIL_TRACKER) {
+      ydn.crm.base.app_name_ = ydn.crm.base.AppShortName.EMAIL_TRACKER;
+    } else if (mani['short_name'] == ydn.crm.base.AppShortName.EMAIL_TRACKER_GMAIL) {
+      ydn.crm.base.app_name_ = ydn.crm.base.AppShortName.EMAIL_TRACKER_GMAIL;
+    } else if (mani['short_name'] == ydn.crm.base.AppShortName.SUGARCRM) {
+      ydn.crm.base.app_name_ = ydn.crm.base.AppShortName.SUGARCRM;
+    } else {
+      ydn.crm.base.app_name_ = ydn.crm.base.AppShortName.OTHERS;
+      if (goog.DEBUG) {
+        throw new Error('Invalid app name');
+      }
+    }
+  }
+  return ydn.crm.base.app_name_;
+};
+
+
+/**
+ * @param {ydn.crm.base.AppFeature} feature
+ * @return {boolean}
+ */
+ydn.crm.base.hasFeature = function(feature) {
+  var features = [];
+  var app_name = ydn.crm.base.getAppShortName();
+  if (feature == ydn.crm.base.AppFeature.TRACKING) {
+    return true;
+  } else if (feature == ydn.crm.base.AppFeature.SUGARCRM) {
+    return app_name == ydn.crm.base.AppShortName.SUGARCRM;
+  } else if (feature == ydn.crm.base.AppFeature.GDATA_CONTACT) {
+    return app_name == ydn.crm.base.AppShortName.SUGARCRM;
+  }
+  return false;
+};
+
+
+/**
+ * Check for email tracker app.
+ * @return {boolean}
+ */
+ydn.crm.base.isEmailTracker = function() {
+  var app = ydn.crm.base.getAppShortName();
+  return app == ydn.crm.base.AppShortName.EMAIL_TRACKER ||
+      app == ydn.crm.base.AppShortName.EMAIL_TRACKER_GMAIL;
+};
+
+

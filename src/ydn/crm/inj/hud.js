@@ -6,7 +6,6 @@
 
 goog.provide('ydn.crm.inj.Hud');
 goog.require('goog.events');
-goog.require('ydn.crm.AppSetting');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.msg.StatusBar');
 goog.require('ydn.crm.ui');
@@ -97,12 +96,6 @@ ydn.crm.inj.Hud.prototype.render = function() {
   var a_option = this.root_el_.querySelector('a[name=option-page-url]');
   a_option.href = chrome.extension.getURL(ydn.crm.base.OPTION_PAGE);
 
-  /*
-  var has_widget = ydn.crm.AppSetting.hasFeature(ydn.crm.base.AppFeature.GDATA_CONTACT) ||
-      ydn.crm.AppSetting.hasFeature(ydn.crm.base.AppFeature.SUGARCRM);
-  goog.style.setElementShown(this.root_el_, has_widget);
-  */
-
   var popup = this.root_el_.querySelector('.hud-popup');
   var btn = this.root_el_.querySelector('.hud-button');
   goog.events.listen(btn, 'click', this.onClick_, false, this);
@@ -125,7 +118,7 @@ ydn.crm.inj.Hud.prototype.render = function() {
   var a = dom.createElement('a');
   a.textContent = 'Setup';
 
-  if (ydn.crm.AppSetting.isEmailTracker()) {
+  if (ydn.crm.base.isEmailTracker()) {
     a.href = chrome.extension.getURL(ydn.crm.base.LOGIN_PAGE);
     a.setAttribute('data-window-height', '600');
     a.setAttribute('data-window-width', '600');
