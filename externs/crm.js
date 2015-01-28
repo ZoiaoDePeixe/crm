@@ -438,20 +438,6 @@ YdnCrm.SyncRecord.prototype.deleted;
 
 
 /**
- * License.
- * @interface
- */
-YdnCrm.License = function() {};
-
-
-/**
- * @type {string}
- */
-YdnCrm.License.prototype.edition;
-
-
-
-/**
  * User license.
  * @interface
  */
@@ -483,7 +469,6 @@ YdnCrm.UserLicense.prototype.end;
 
 
 /**
- * @type {YdnCrm.License}
+ * @type {string}
  */
-YdnCrm.UserLicense.prototype.license;
-
+YdnCrm.UserLicense.prototype.edition;

@@ -580,7 +580,7 @@ ydn.crm.ui.UserSetting.features_not_in_express = [
  */
 ydn.crm.ui.UserSetting.prototype.hasFeature = function(feature) {
   if (this.user_license) {
-    var edition = this.user_license.license.edition;
+    var edition = this.user_license.edition;
     if (edition == ydn.crm.base.LicenseEdition.STANDARD) {
       return true;
     } else if (edition == ydn.crm.base.LicenseEdition.EXPRESS) {

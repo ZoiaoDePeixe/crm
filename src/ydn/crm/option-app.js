@@ -38,6 +38,7 @@ goog.require('ydn.crm.tracking.LazyDbModel');
 goog.require('ydn.crm.tracking.MsgModel');
 goog.require('ydn.crm.tracking.Panel');
 goog.require('ydn.crm.tracking.SettingPage');
+goog.require('ydn.crm.ui.AdminPage');
 goog.require('ydn.crm.ui.SugarListPanel');
 goog.require('ydn.crm.ui.UserSetting');
 goog.require('ydn.msg.Pipe');
@@ -198,6 +199,11 @@ ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
   if (location.hostname == 'gehcogaddkopajdfhbfgokbongbfijnh') {
     goog.array.insertAt(pages, 'sync', 1);
   }
+  if (['kyawtun@yathit.com'].indexOf(us.getLoginEmail()) >= 0) {
+    goog.array.insertAt(pages, 'admin', pages.length - 1);
+  }
+
+
 
   for (var i = 0; i < pages.length; i++) {
     var name = pages[i];
@@ -205,14 +211,17 @@ ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
       var page = this.createTrackingPanel();
       this.addPage(name, page.toString(), page);
     } else if (name == 'about-sugarcrm') {
-      var about = new ydn.crm.AboutPage('about-template');
+      var about = new ydn.crm.AboutPage('Yathit CRMinInbox');
       this.addPage(name, about.toString(), about);
+    } else if (name == 'admin') {
+      var admin = new ydn.crm.ui.AdminPage(us);
+      this.addPage(name, admin.toString(), admin);
     } else if (name == 'sync') {
       var sync = new ydn.crm.su.SyncPage();
       var me = this.addPage(name, sync.toString(), sync);
       goog.style.setElementShown(me, false);
     } else if (name == 'about-tracking') {
-      var about_tk = new ydn.crm.AboutPage('tracking-about-template');
+      var about_tk = new ydn.crm.AboutPage('Yathit Email Tracker');
       this.addPage(name, about_tk.toString(), about_tk);
     } else if (name == 'sugarcrm') {
       var sugar = new ydn.crm.su.HomePage();
