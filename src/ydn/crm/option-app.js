@@ -180,15 +180,23 @@ ydn.crm.OptionPageApp.prototype.createTrackingPanel = function() {
  */
 ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
 
-  var pages = ['sugarcrm', 'tracking', 'about-sugarcrm'];
-  if (location.hostname == 'gehcogaddkopajdfhbfgokbongbfijnh') {
-    goog.array.insertAt(pages, 'sync', 1);
-  }
+  var us = ydn.crm.ui.UserSetting.getInstance();
   var asn = ydn.crm.AppSetting.getAppShortName();
   var is_tracker_app = asn == ydn.crm.base.AppShortName.EMAIL_TRACKER ||
       asn == ydn.crm.base.AppShortName.EMAIL_TRACKER_GMAIL;
+  var pages = [];
   if (is_tracker_app) {
     pages = ['tracking', 'tracking-setting', 'about-tracking'];
+  } else {
+    pages = ['sugarcrm', 'about-sugarcrm'];
+    if (ydn.crm.AppSetting.hasFeature(ydn.crm.base.AppFeature.TRACKING) &&
+        us.hasFeature(ydn.crm.base.Feature.TRACKING)) {
+      goog.array.insertAt(pages, 'tracking', 1);
+    }
+  }
+
+  if (location.hostname == 'gehcogaddkopajdfhbfgokbongbfijnh') {
+    goog.array.insertAt(pages, 'sync', 1);
   }
 
   for (var i = 0; i < pages.length; i++) {

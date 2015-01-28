@@ -286,20 +286,17 @@ ydn.crm.PopupPageApp.prototype.run = function() {
   var setup_page = window.location.href.replace(/#.*/, '')
       .replace('popup.html', 'setup.html');
 
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.LOGIN_INFO).addCallbacks(function(x) {
-    var info = /** @type {YdnApiUser} */ (x);
-    if (info.is_login) {
-      ydn.crm.msg.Manager.setStatus(mid, info.email + ' logged in.');
-      var asn = ydn.crm.AppSetting.getAppShortName();
-      var is_tracker_app = asn == ydn.crm.base.AppShortName.EMAIL_TRACKER ||
-          asn == ydn.crm.base.AppShortName.EMAIL_TRACKER_GMAIL;
-      if (is_tracker_app) {
+  var us = ydn.crm.ui.UserSetting.getInstance();
+  us.onReady().addCallbacks(function(x) {
+    if (us.isLogin()) {
+
+      if (ydn.crm.AppSetting.hasFeature(ydn.crm.base.AppFeature.TRACKING) &&
+          us.hasFeature(ydn.crm.base.Feature.TRACKING)) {
         this.initEmailTracking_();
       } else {
         this.initSugarCrm_();
       }
     } else {
-      ydn.crm.msg.Manager.addStatus('Not logged in.');
       var arr = [
         {
           tagName: 'A',

@@ -36,6 +36,7 @@ goog.require('ydn.msg.Pipe');
 
 /**
  * SugarCRM app.
+ *  @param {ydn.crm.ui.UserSetting} us
  * @param {ydn.crm.gmail.MessageHeaderInjector} heading_injector
  * @param {ydn.crm.gmail.GmailObserver} gmail_observer
  * @param {ydn.crm.gmail.ComposeObserver} compose_observer
@@ -44,9 +45,14 @@ goog.require('ydn.msg.Pipe');
  * @constructor
  * @struct
  */
-ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer,
+ydn.crm.inj.SugarCrmApp = function(us, heading_injector, gmail_observer,
                                    compose_observer, renderer, hud) {
 
+  /**
+   * @private
+   * @type {ydn.crm.ui.UserSetting}
+   */
+  this.us_ = us;
   /**
    * @final
    * @type {ydn.crm.gmail.MessageHeaderInjector}
@@ -63,7 +69,7 @@ ydn.crm.inj.SugarCrmApp = function(heading_injector, gmail_observer,
    * @protected
    * @type {ydn.crm.su.ContextWidget}
    */
-  this.context_panel = new ydn.crm.su.ContextWidget(gmail_observer, compose_observer);
+  this.context_panel = new ydn.crm.su.ContextWidget(us, gmail_observer, compose_observer);
 
   this.context_panel.render(renderer.getContentElement());
 
@@ -124,9 +130,7 @@ ydn.crm.inj.SugarCrmApp.prototype.init = function() {
 
   this.hud.addPanel(this.sidebar_panel);
 
-  var us = ydn.crm.ui.UserSetting.getInstance();
-
-  goog.events.listen(us,
+  goog.events.listen(this.us_,
       [ydn.crm.ui.UserSetting.EventType.LOGIN,
         ydn.crm.ui.UserSetting.EventType.LOGOUT],
       this.onUserStatusChange, false, this);
@@ -150,8 +154,7 @@ ydn.crm.inj.SugarCrmApp.prototype.onUserStatusChange = function(e) {
   if (ydn.crm.inj.SugarCrmApp.DEBUG) {
     window.console.log('updating for ' + e.type);
   }
-  var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
-  if (us.hasValidLogin()) {
+  if (this.us_.hasValidLogin()) {
     this.sidebar_panel.setVisible(true);
     this.updateSugarPanels_();
   } else {
@@ -173,22 +176,13 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(about) {
 
   this.sidebar_panel.setSugarCrm(about);
 
-  var us = ydn.crm.ui.UserSetting.getInstance();
-
-  if (!us.hasValidLogin()) {
-    this.context_panel.setSugarCrm(null);
-    this.heading_injector_.setSugar(null);
-    this.attachment_injector_.setSugar(null);
-    return;
-  }
-
   var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, about.domain);
   ch.send(ydn.crm.Ch.SReq.DETAILS).addCallback(function(x) {
     var details = /** @type {SugarCrm.Details} */ (x);
     for (var i = 0; i < details.modulesInfo.length; i++) {
       ydn.crm.su.fixSugarCrmModuleMeta(details.modulesInfo[i]);
     }
-    var ac = us.getLoginEmail();
+    var ac = this.us_.getLoginEmail();
     var sugar = new ydn.crm.su.model.GDataSugar(details.about,
         details.modulesInfo, ac, details.serverInfo);
     this.context_panel.setSugarCrm(sugar);
