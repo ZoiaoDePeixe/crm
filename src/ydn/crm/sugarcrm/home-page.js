@@ -47,7 +47,7 @@ ydn.crm.su.HomePage = function() {
    */
   this.sugar_widget = new ydn.crm.su.Widget(new ydn.crm.su.WidgetModel());
   this.sugar_widget.show_stats = true;
-  this.model_updated_after_login_ = false; // ugly
+  this.need_refresh_ = true;
 
   /**
    * @protected
@@ -83,11 +83,8 @@ ydn.crm.su.HomePage.prototype.hasGDataCredential = function() {
 };
 
 
-/**
- * @override
- */
-ydn.crm.su.HomePage.prototype.onPageShow = function() {
-  if (this.model_updated_after_login_) {
+ydn.crm.su.HomePage.prototype.refreshIfNeeded = function() {
+  if (!this.need_refresh_) {
     return;
   }
   this.gdata_widget.refresh();
@@ -95,19 +92,27 @@ ydn.crm.su.HomePage.prototype.onPageShow = function() {
     for (var i = 0; i < models.length; i++) {
       var model = models[i];
       if (model.isLogin()) {
-        this.model_updated_after_login_ = true;
+        this.need_refresh_ = false;
         this.sugar_widget.setModel(model);
         return;
       }
     }
     if (models.length > 0) {
-      this.model_updated_after_login_ = true;
-      console.log(models[0]);
+      this.need_refresh_ = false;
+      // console.log(models[0]);
       this.sugar_widget.setModel(models[0]);
     }
   }, function(e) {
     ydn.crm.msg.Manager.addStatus('listing sugarcrm model fail ' + (e.message || e));
   }, this);
+};
+
+
+/**
+ * @override
+ */
+ydn.crm.su.HomePage.prototype.onPageShow = function() {
+
 };
 
 

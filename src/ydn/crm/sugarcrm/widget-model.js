@@ -30,13 +30,16 @@ goog.require('goog.crypt.Md5');
  * SugarCRM model for widget.
  * @param {SugarCrm.About=} opt_about SugarCRM instance about info.
  * @constructor
+ * @extends {goog.events.EventTarget}
  * @struct
+ * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.WidgetModel = function(opt_about) {
+  goog.base(this);
   /**
    * @type {SugarCrm.About}
    */
-  this.data = opt_about || null;
+  this.about = opt_about || null;
   /**
    * @type {SugarCrm.ServerInfo}
    */
@@ -49,6 +52,31 @@ ydn.crm.su.WidgetModel = function(opt_about) {
    */
   this.is_new_ = !opt_about;
 
+  /**
+   * @protected
+   * @type {goog.events.EventHandler}
+   */
+  this.handler = new goog.events.EventHandler(this);
+
+  if (this.about && this.about.domain) {
+    var pipe = ydn.msg.getMain();
+    this.handler.listen(pipe, [ydn.crm.Ch.BReq.SUGARCRM, ydn.crm.Ch.BReq.HOST_PERMISSION],
+        this.handleMessage);
+  }
+
+};
+goog.inherits(ydn.crm.su.WidgetModel, goog.events.EventTarget);
+
+
+/**
+ * @override
+ * @protected
+ */
+ydn.crm.su.WidgetModel.prototype.disposeInternal = function() {
+  goog.base(this, 'disposeInternal');
+  this.info = null;
+  this.handler.dispose();
+  this.handler = null;
 };
 
 
@@ -57,7 +85,36 @@ ydn.crm.su.WidgetModel = function(opt_about) {
  * @return {SugarCrm.About}
  */
 ydn.crm.su.WidgetModel.prototype.getDetails = function() {
-  return this.data;
+  return this.about;
+};
+
+
+/**
+ * Handle message from channel.
+ * @param {ydn.msg.Event} e
+ */
+ydn.crm.su.WidgetModel.prototype.handleMessage = function(e) {
+
+  if (e.type == ydn.crm.Ch.BReq.SUGARCRM) {
+    var data = e.getData();
+    var about = /** @type {SugarCrm.About} */ (data['about']);
+    if (data['login']) {
+      var ev;
+      if (e.type) {
+        ev = new goog.events.Event(ydn.crm.su.SugarEvent.LOGIN, this);
+      }
+      this.about = about;
+      if (ev) {
+        this.dispatchEvent(ev);
+      }
+    }
+  } else if (e.type == ydn.crm.Ch.BReq.HOST_PERMISSION && this.about) {
+    var msg = e.getData();
+    if (msg['grant'] && msg['grant'] == this.getDomain()) {
+      this.about.hostPermission = true;
+      this.dispatchEvent(new goog.events.Event(ydn.crm.su.SugarEvent.HOST_ACCESS_GRANT));
+    }
+  }
 };
 
 
@@ -66,7 +123,7 @@ ydn.crm.su.WidgetModel.prototype.getDetails = function() {
  * @return {?string}
  */
 ydn.crm.su.WidgetModel.prototype.getDomain = function() {
-  return this.data ? this.data.domain : null;
+  return this.about ? this.about.domain : null;
 };
 
 
@@ -75,7 +132,7 @@ ydn.crm.su.WidgetModel.prototype.getDomain = function() {
  * @return {boolean}
  */
 ydn.crm.su.WidgetModel.prototype.isLogin = function() {
-  return this.data ? !!this.data.isLogin : false;
+  return this.about ? !!this.about.isLogin : false;
 };
 
 
@@ -98,7 +155,7 @@ ydn.crm.su.WidgetModel.prototype.getChannel = function() {
  */
 ydn.crm.su.WidgetModel.prototype.hasHostPermission = function(opt_cb, opt_scope) {
   var permissions = {
-    origins: ['http://' + this.data.domain + '/*', 'https://' + this.data.domain + '/*']
+    origins: ['http://' + this.about.domain + '/*', 'https://' + this.about.domain + '/*']
   };
   chrome.permissions.contains(permissions, function(grant) {
     // console.log(scope, grant);
@@ -106,7 +163,7 @@ ydn.crm.su.WidgetModel.prototype.hasHostPermission = function(opt_cb, opt_scope)
       opt_cb.call(opt_scope, grant);
     }
   });
-  return !!this.data && !!this.data.hostPermission;
+  return !!this.about && !!this.about.hostPermission;
 };
 
 
@@ -155,15 +212,15 @@ ydn.crm.su.WidgetModel.prototype.setInstanceUrl = function(url) {
   }
   var domain = url.replace(/^https?:\/\//, '');
   domain = domain.replace(/\/.*/, ''); // remove after
-  if (!this.data) {
-    this.data = /** @type {SugarCrm.About} */ ({
+  if (!this.about) {
+    this.about = /** @type {SugarCrm.About} */ ({
       domain: domain,
       baseUrl: url,
       isLogin: false
     });
   }
-  this.data.domain = domain;
-  this.data.baseUrl = url;
+  this.about.domain = domain;
+  this.about.baseUrl = url;
 
 };
 
@@ -195,32 +252,32 @@ ydn.crm.su.WidgetModel.prototype.getInfo = function() {
  */
 ydn.crm.su.WidgetModel.prototype.login = function(url, username, password) {
   this.setInstanceUrl(url);
-  window.console.assert(!!this.data, 'Not initialized');
+  window.console.assert(!!this.about, 'Not initialized');
   if (username) {
-    this.data.userName = username;
+    this.about.userName = username;
   }
   if (password) {
     // keep hashed password only.
-    // this.data.password = CryptoJS.MD5(password).toString();
+    // this.about.password = CryptoJS.MD5(password).toString();
     var md5 = new goog.crypt.Md5();
     md5.update(password);
-    this.data.password = goog.crypt.byteArrayToHex(md5.digest());
-    this.data.hashed = true;
+    this.about.password = goog.crypt.byteArrayToHex(md5.digest());
+    this.about.hashed = true;
   }
 
   // whether user give permission or not, we still continue login.
   // console.log(permission, me.data);
   if (this.is_new_) {
-    return ydn.msg.getChannel().send(ydn.crm.Ch.Req.NEW_SUGAR, this.data)
+    return ydn.msg.getChannel().send(ydn.crm.Ch.Req.NEW_SUGAR, this.about)
         .addCallback(function(info) {
           // console.log(info);
-          this.data = info;
+          this.about = info;
         }, this);
   } else {
-    return this.getChannel().send(ydn.crm.Ch.SReq.LOGIN, this.data)
+    return this.getChannel().send(ydn.crm.Ch.SReq.LOGIN, this.about)
         .addCallback(function(info) {
           // console.log(info);
-          this.data = info;
+          this.about = info;
         }, this);
   }
 
@@ -232,8 +289,8 @@ ydn.crm.su.WidgetModel.prototype.login = function(url, username, password) {
  * @return {{origins: (Array.<string>|undefined), permissions: (Array.<string>|undefined)}}
  */
 ydn.crm.su.WidgetModel.prototype.getPermissionObject = function() {
-  return {'origins': ['http://' + this.data.domain + '/*',
-    'https://' + this.data.domain + '/*']};
+  return {'origins': ['http://' + this.about.domain + '/*',
+    'https://' + this.about.domain + '/*']};
 };
 
 
@@ -242,7 +299,7 @@ ydn.crm.su.WidgetModel.prototype.getPermissionObject = function() {
  * @return {!goog.async.Deferred.<Array.<ydn.crm.su.WidgetModel>>} cb
  */
 ydn.crm.su.WidgetModel.list = function() {
-  return ydn.msg.getChannel().send('list-sugarcrm').addCallback(function(abouts) {
+  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR).addCallback(function(abouts) {
     var models = [];
     for (var i = 0; i < abouts.length; i++) {
       var about = /** @type {SugarCrm.About} */ (abouts[i]);

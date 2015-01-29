@@ -371,3 +371,14 @@ ydn.crm.su.fixSugarCrmModuleMeta = function(info) {
   }
   // console.log(info);
 };
+
+
+/**
+ * Event types dispatch from sugar model.
+ * @enum {string}
+ */
+ydn.crm.su.SugarEvent = {
+  LOGIN: 'login',
+  LOGOUT: 'logout',
+  HOST_ACCESS_GRANT: 'hag'
+};
