@@ -83,7 +83,10 @@ ydn.crm.su.HomePage.prototype.hasGDataCredential = function() {
 };
 
 
-ydn.crm.su.HomePage.prototype.refreshIfNeeded = function() {
+/**
+ * @private
+ */
+ydn.crm.su.HomePage.prototype.refreshIfNeeded_ = function() {
   if (!this.need_refresh_) {
     return;
   }
@@ -112,7 +115,7 @@ ydn.crm.su.HomePage.prototype.refreshIfNeeded = function() {
  * @override
  */
 ydn.crm.su.HomePage.prototype.onPageShow = function() {
-
+  this.refreshIfNeeded_();
 };
 
 

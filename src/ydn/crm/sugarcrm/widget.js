@@ -11,7 +11,7 @@ goog.require('ydn.crm.su.WidgetModel');
 
 /**
  * GData credential widget.
- * @param {ydn.crm.su.WidgetModel} model
+ * @param {!ydn.crm.su.WidgetModel} model
  * @param {boolean=} opt_hide_title
  * @constructor
  * @struct
@@ -21,17 +21,18 @@ ydn.crm.su.Widget = function(model, opt_hide_title) {
    * @protected
    * @type {ydn.crm.su.WidgetModel}
    */
-  this.model = model;
+  this.model = null;
   /**
    * @type {Element}
    */
-  this.root = document.createElement('div');
+  this.root = null;
   this.hide_title_ = !!opt_hide_title;
   /**
    * Display number of records in cached modules.
    * @type {boolean}
    */
   this.show_stats = false;
+  this.setModel(model);
 };
 
 
@@ -50,10 +51,28 @@ ydn.crm.su.Widget.prototype.getModel = function() {
 
 
 /**
+ * @param {goog.events.Event} e
+ * @private
+ */
+ydn.crm.su.Widget.prototype.onLogin_ = function(e) {
+  this.refresh();
+};
+
+
+/**
  * @param {ydn.crm.su.WidgetModel} model
  */
 ydn.crm.su.Widget.prototype.setModel = function(model) {
+  if (this.model === model) {
+    return;
+  }
+  if (this.model) {
+    goog.events.unlisten(this.model, ydn.crm.su.SugarEvent.LOGIN, this.onLogin_, false, this);
+  }
   this.model = model;
+  if (this.model) {
+    goog.events.listen(this.model, ydn.crm.su.SugarEvent.LOGIN, this.onLogin_, false, this);
+  }
   this.refresh();
 };
 
@@ -62,6 +81,7 @@ ydn.crm.su.Widget.prototype.setModel = function(model) {
  * @param {Element} ele
  */
 ydn.crm.su.Widget.prototype.render = function(ele) {
+  this.root = document.createElement('div');
 
   var template = ydn.ui.getTemplateById('sugarcrm-template').content;
   this.root.appendChild(template.cloneNode(true));
@@ -223,16 +243,10 @@ ydn.crm.su.Widget.prototype.remove_ = function(e) {
 
 
 /**
- * Refresh the data.
+ * @param {SugarCrm.About} about
+ * @private
  */
-ydn.crm.su.Widget.prototype.refresh = function() {
-  var h3 = this.root.querySelector('h3');
-  if (!this.model.getDomain()) {
-    h3.textContent = 'Add a new SugarCRM instance';
-  } else {
-    h3.textContent = 'SugarCRM';
-  }
-  var about = this.model.getDetails();
+ydn.crm.su.Widget.prototype.renderDetail_ = function(about) {
   var login_panel = this.root.querySelector('div[name=login-panel]');
   var info_panel = this.root.querySelector('div[name=info-panel]');
   var remove_panel = this.root.querySelector('div[name=remove-panel]');
@@ -275,6 +289,31 @@ ydn.crm.su.Widget.prototype.refresh = function() {
     info_panel.style.display = 'none';
     remove_panel.style.display = 'none';
   }
+};
+
+
+/**
+ * Refresh the data.
+ */
+ydn.crm.su.Widget.prototype.refresh = function() {
+  if (!this.root) {
+    return;
+  }
+  var h3 = this.root.querySelector('h3');
+  if (!this.model.getDomain()) {
+    h3.textContent = 'Add a new SugarCRM instance';
+  } else {
+    h3.textContent = 'SugarCRM';
+  }
+
+  var about = this.model.getAbout();
+  if (about && !about.isLogin) {
+    // in process of logging in.
+    this.model.queryDetails().addCallback(function(details) {
+      this.renderDetail_(details.about);
+    }, this);
+  }
+  this.renderDetail_(about);
 };
 
 

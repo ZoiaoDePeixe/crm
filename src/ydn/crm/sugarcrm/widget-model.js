@@ -84,8 +84,16 @@ ydn.crm.su.WidgetModel.prototype.disposeInternal = function() {
  * Return detail.
  * @return {SugarCrm.About}
  */
-ydn.crm.su.WidgetModel.prototype.getDetails = function() {
+ydn.crm.su.WidgetModel.prototype.getAbout = function() {
   return this.about;
+};
+
+
+/**
+ * @return {!goog.async.Deferred<SugarCrm.Details>}
+ */
+ydn.crm.su.WidgetModel.prototype.queryDetails = function() {
+  return this.getChannel().send(ydn.crm.Ch.SReq.DETAILS);
 };
 
 
@@ -95,24 +103,19 @@ ydn.crm.su.WidgetModel.prototype.getDetails = function() {
  */
 ydn.crm.su.WidgetModel.prototype.handleMessage = function(e) {
 
+  console.log(e);
   if (e.type == ydn.crm.Ch.BReq.SUGARCRM) {
     var data = e.getData();
-    var about = /** @type {SugarCrm.About} */ (data['about']);
-    if (data['login']) {
-      var ev;
-      if (e.type) {
-        ev = new goog.events.Event(ydn.crm.su.SugarEvent.LOGIN, this);
-      }
+    if (data['type'] == 'login') {
+      var about = /** @type {SugarCrm.About} */ (data['about']);
       this.about = about;
-      if (ev) {
-        this.dispatchEvent(ev);
-      }
+      this.dispatchEvent(new goog.events.Event(ydn.crm.su.SugarEvent.LOGIN, this));
     }
   } else if (e.type == ydn.crm.Ch.BReq.HOST_PERMISSION && this.about) {
     var msg = e.getData();
     if (msg['grant'] && msg['grant'] == this.getDomain()) {
       this.about.hostPermission = true;
-      this.dispatchEvent(new goog.events.Event(ydn.crm.su.SugarEvent.HOST_ACCESS_GRANT));
+      this.dispatchEvent(new goog.events.Event(ydn.crm.su.SugarEvent.HOST_ACCESS_GRANT, this));
     }
   }
 };

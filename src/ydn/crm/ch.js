@@ -128,9 +128,9 @@ ydn.crm.Ch.BReq = {
   /**
    * SugarCRM message. Data object has, 'type', 'about' and 'domain' attribute.
    * 'type' could be 'init', 'login', or 'remove'. In case of login and init,
-   * 'about' data is available. In case of 'remove' only 'domain' is available.
+   * 'about' data is available.
    * @see ydn.crm.app.App#doSugarLogin
-   * @see ydn.crm.app.App#handleClientLogin
+   * @see ydn.crm.app.App#initSugarClient_
    * @see ydn.crm.app.App#removeSugarClient
    */
   SUGARCRM: 'sugarcrm', // changes in sugarcrm instance. login, logout

@@ -67,7 +67,7 @@ ydn.crm.AboutPage.prototype.renderLicense_ = function(lic) {
       el.textContent += ' [' + new Date(lic.begin).toLocaleDateString() +
           ' - ' + new Date(lic.end).toLocaleDateString() + ']';
     }
-    if (lic.active) {
+    if (!lic.active) {
       el.textContent += ' (inactive)';
     }
   } else {
