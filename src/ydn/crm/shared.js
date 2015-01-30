@@ -231,11 +231,14 @@ ydn.crm.shared.init = function() {
       tr = error.stack + '';
     }
     var obj = {
-      'type': 'window.onerror',
-      'message': msg,
-      'url': url,
-      'lineNumber': lineNumber,
-      'stack': tr
+      'category': 'error',
+      'action': 'window.onerror',
+      'value': lineNumber,
+      'detail': {
+        'message': msg,
+        'url': url,
+        'stack': tr
+      }
     };
     // console.log(msg, url, error);
     ydn.debug.ILogger.log(obj);
