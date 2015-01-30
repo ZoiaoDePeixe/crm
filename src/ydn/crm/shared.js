@@ -133,7 +133,7 @@ ydn.crm.shared.loadCustomLogging_ = function() {
  * Set custom logging level.
  * @param {string} scope logging scope, eg: 'ydn.crm'.
  * @param {string|number} level logging level, eg: 'finer'
- * @see ydn.crm.app.shared.log to enable or disable logging.
+ * @see ydn.crm.shared.log to enable or disable logging.
  */
 ydn.crm.shared.setLogging = function(scope, level) {
   chrome.storage.local.get(ydn.crm.base.ChromeLocalKey.CUSTOM_LOGGING, function(json) {
@@ -146,6 +146,20 @@ ydn.crm.shared.setLogging = function(scope, level) {
     ydn.debug.log(scope, level);
     chrome.storage.local.set(json);
   });
+};
+
+
+/**
+ * Log to console.
+ * @param {boolean} enabled enable or disable logging on 'ydn.crm' namespace.
+ * @see ydn.crm.shared.setLogging to log for specific namespace.
+ */
+ydn.crm.shared.log = function(enabled) {
+  ydn.crm.shared.setLogging('ydn.crm', 'fine');
+  var obj = {};
+  obj[ydn.crm.base.ChromeSyncKey.LOGGING_CAPTURE_ON_CONSOLE] = !!enabled;
+  chrome.storage.sync.set(obj);
+  ydn.debug.captureOnConsole(!!enabled);
 };
 
 
