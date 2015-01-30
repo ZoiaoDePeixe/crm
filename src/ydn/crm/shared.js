@@ -133,7 +133,7 @@ ydn.crm.shared.loadCustomLogging_ = function() {
  * Set custom logging level.
  * @param {string} scope logging scope, eg: 'ydn.crm'.
  * @param {string|number} level logging level, eg: 'finer'
- * @see ydn.crm.shared.log to enable or disable logging.
+ * @see ydn.crm.shared.setLogOnConsole to enable or disable logging.
  */
 ydn.crm.shared.setLogging = function(scope, level) {
   chrome.storage.local.get(ydn.crm.base.ChromeLocalKey.CUSTOM_LOGGING, function(json) {
@@ -154,7 +154,7 @@ ydn.crm.shared.setLogging = function(scope, level) {
  * @param {boolean} enabled enable or disable logging on 'ydn.crm' namespace.
  * @see ydn.crm.shared.setLogging to log for specific namespace.
  */
-ydn.crm.shared.log = function(enabled) {
+ydn.crm.shared.setLogOnConsole = function(enabled) {
   ydn.crm.shared.setLogging('ydn.crm', 'fine');
   var obj = {};
   obj[ydn.crm.base.ChromeSyncKey.LOGGING_CAPTURE_ON_CONSOLE] = !!enabled;
@@ -243,6 +243,28 @@ ydn.crm.shared.init = function() {
     // console.log(msg, url, error);
     ydn.debug.ILogger.log(obj);
   };
+};
+
+
+/**
+ * Analytic logging in content script.
+ *
+ * This should send to background page via postMessaging.
+ * this is setup by initializing {@link ydn.debug.ILogger.instance} just
+ * starting the app.
+ * @param {string} category 'ui'
+ * @param {string} action 'save'
+ * @param {string} label '371f00e7-739a-eb65-3c2b-547fd5a2f235'
+ * @param {(number|Object|string)=} opt_value `{'message': 'OK'}`
+ * @see ydn.crm.app.shared.logAnalyticValue for logging in background page.
+ */
+ydn.crm.shared.logAnalytic = function(category, action, label, opt_value) {
+  ydn.debug.ILogger.log({
+    'category': category,
+    'action': action,
+    'label': label,
+    'value': opt_value
+  });
 };
 
 
