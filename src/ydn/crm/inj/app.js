@@ -29,6 +29,7 @@ goog.require('goog.dom');
 goog.require('goog.style');
 goog.require('ydn.crm.base');
 goog.require('ydn.crm.gmail.GmailObserver');
+goog.require('ydn.crm.inj.BackgroundLogger');
 goog.require('ydn.crm.inj.GmailContextContainer');
 goog.require('ydn.crm.inj.SugarCrmApp');
 goog.require('ydn.crm.inj.TrackingApp');
@@ -200,6 +201,8 @@ ydn.crm.inj.App.runInjApp = function() {
   ydn.crm.shared.init();
 
   var app = new ydn.crm.inj.App();
+
+  ydn.debug.ILogger.instance = new ydn.crm.inj.BackgroundLogger();
 
   ydn.ui.setTemplateDocument(chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE));
 

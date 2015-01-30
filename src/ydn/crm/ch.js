@@ -74,7 +74,11 @@ ydn.crm.Ch.Req = {
   G_PLUS: 'google-plus',
   LIST_SUGAR: 'list-sugarcrm', // list sugarcrm about
   LIST_SUGAR_DOMAIN: 'list-sugarcrm-domain', // list sugarcrm domain
-  LOG: 'log', // log bug
+  /**
+   * @desc Log message data in background page.
+   * @see ydn.debug.ILogger.log
+   */
+  LOG: 'log',
   LOGIN_INFO: 'login-info', // google user info, email and id
   LOGGED_IN: 'logged-in', // has been logged to server.
   LOGGED_OUT: 'logged-out',
