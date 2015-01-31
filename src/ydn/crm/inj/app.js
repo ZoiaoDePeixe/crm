@@ -202,8 +202,6 @@ ydn.crm.inj.App.runInjApp = function() {
 
   var app = new ydn.crm.inj.App();
 
-  ydn.debug.ILogger.instance = new ydn.crm.inj.BackgroundLogger();
-
   ydn.ui.setTemplateDocument(chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE));
 
   var tid2 = window.setTimeout(function() {

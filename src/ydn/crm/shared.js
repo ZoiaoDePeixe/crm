@@ -9,6 +9,7 @@ goog.provide('ydn.crm.shared');
 goog.require('goog.log');
 goog.require('ydn.crm.base');
 goog.require('ydn.crm.base.ContextPanelPosition');
+goog.require('ydn.crm.inj.BackgroundLogger');
 goog.require('ydn.debug');
 goog.require('ydn.debug.ILogger');
 goog.require('ydn.http');
@@ -247,19 +248,67 @@ ydn.crm.shared.init = function() {
 
 
 /**
+ * @type {Object<Function>}
+ * @private
+ */
+ydn.crm.shared.logs_ = {};
+
+
+/**
+ * Begin analytic logging. Logging will be end by calling {@link #logAnalyticEnd}
+ * or timeout.
+ * @param {string} category 'ui'
+ * @param {string} action 'save'
+ * @param {string=} opt_label '371f00e7-739a-eb65-3c2b-547fd5a2f235'
+ * @return {number} analytic id to continue or finish logging.
+ */
+ydn.crm.shared.logAnalyticBegin = function(category, action, opt_label) {
+  var id;
+  var logEnd = function(opt_new_label, opt_value) {
+    if (goog.isDefAndNotNull(opt_new_label)) {
+      opt_label = opt_new_label;
+    }
+    ydn.crm.shared.logAnalyticValue(category, action, opt_label, opt_value);
+    delete ydn.crm.shared.logs_[id];
+  };
+  id = setTimeout(logEnd, 1000);
+  ydn.crm.shared.logs_[id] = logEnd;
+  return id;
+};
+
+
+/**
+ * End analytic logging.
+ * @param {number} id previously begin analytic id.
+ * @param {?string=} opt_label '371f00e7-739a-eb65-3c2b-547fd5a2f235'
+ * @param {(number|Object|string)=} opt_value `{'message': 'OK'}`
+ */
+ydn.crm.shared.logAnalyticEnd = function(id, opt_label, opt_value) {
+  if (ydn.crm.shared.logs_[id]) {
+    ydn.crm.shared.logs_[id](opt_label, opt_label);
+    clearTimeout(id);
+  }
+};
+
+
+/**
+ * @type {ydn.crm.inj.BackgroundLogger}
+ */
+ydn.crm.shared.bg_logger = new ydn.crm.inj.BackgroundLogger();
+
+
+/**
  * Analytic logging in content script.
  *
  * This should send to background page via postMessaging.
- * this is setup by initializing {@link ydn.debug.ILogger.instance} just
- * starting the app.
  * @param {string} category 'ui'
  * @param {string} action 'save'
  * @param {string} label '371f00e7-739a-eb65-3c2b-547fd5a2f235'
  * @param {(number|Object|string)=} opt_value `{'message': 'OK'}`
  * @see ydn.crm.app.shared.logAnalyticValue for logging in background page.
  */
-ydn.crm.shared.logAnalytic = function(category, action, label, opt_value) {
-  ydn.debug.ILogger.log({
+ydn.crm.shared.logAnalyticValue = function(category, action, label, opt_value) {
+  ydn.crm.shared.bg_logger.log({
     'category': category,
     'action': action,
     'label': label,
