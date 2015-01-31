@@ -45,63 +45,44 @@ ydn.social.MetaProfile = function(parent, network) {
    * @type {ydn.social.Network}
    */
   this.network = network;
-  this.source_idx_ = 0; // the first available source
+
   /**
    * Get list os sources.
    * @final
-   * @type {!Array<string>}
+   * @type {!Array<!ydn.social.IProfile>}
    * @private
    */
   this.sources_ = [];
-  this.profiles_index_ = [];
-  if (this.parent.data && this.parent.data.fc && this.parent.data.fc.socialProfiles) {
+  if (this.parent.data) {
+    this.compile_();
+  }
+};
+
+
+/**
+ * Compile social profile from sources.
+ * @private
+ */
+ydn.social.MetaProfile.prototype.compile_ = function() {
+  if (this.parent.data.fc && this.parent.data.fc.socialProfiles) {
     var ps = this.parent.data.fc.socialProfiles;
     for (var i = 0; i < ps.length; i++) {
       var p = ps[i];
-      if (p.typeId == network && (p.id || p.username || p.url)) {
-        this.sources_.push('fc');
-        this.profiles_index_.push(i);
+      if (p.typeId == this.network && (p.id || p.username || p.url)) {
+        this.sources_.push(new ydn.social.FcProfile(p));
         break;
       }
     }
   }
-  if (this.parent.data && this.parent.data.pp && this.parent.data.pp.socialProfiles) {
+  if (this.parent.data.pp && this.parent.data.pp.socialProfiles) {
     var ps = this.parent.data.pp.socialProfiles;
     for (var i = 0; i < ps.length; i++) {
       var p = ps[i];
-      if (p.typeId == network && (p.id || p.username || p.url)) {
-        this.sources_.push('pp');
-        this.profiles_index_.push(i);
+      if (p.typeId == this.network && (p.id || p.username || p.url)) {
+        this.sources_.push(new ydn.social.PiplProfile(p));
         break;
       }
     }
-  }
-};
-
-
-/**
- * Switch to next data source provider.
- */
-ydn.social.MetaProfile.prototype.nextSource = function() {
-  this.source_idx_++;
-  if (this.source_idx_ >= this.source_idx_) {
-    this.source_idx_ = 0;
-  }
-};
-
-
-/**
- * @return {string}
- */
-ydn.social.MetaProfile.prototype.getSourceName = function() {
-  if (this.sources_[this.source_idx_] == 'fc') {
-    return 'FullContact';
-  } else if (this.sources_[this.source_idx_] == 'pp') {
-    return 'Pipl';
-  } else if (this.sources_[this.source_idx_] == 'cb') {
-    return 'ClearBit';
-  } else {
-    return '';
   }
 };
 
@@ -115,85 +96,21 @@ ydn.social.MetaProfile.prototype.hasProfile = function() {
 
 
 /**
- * Get list of social network having profiles.
- * @return {!Array<string>} must treat as readonly.
+ * Number of available sources.
+ * @return {Number}
  */
-ydn.social.MetaProfile.prototype.getSources = function() {
-  return this.sources_;
+ydn.social.MetaProfile.prototype.count = function() {
+  return this.sources_.length;
 };
 
 
 /**
- * @return {CrmApp.FullContact2SocialProfile}
- * @private
+ * Get profile of given source.
+ * @param {number=} opt_idx source index, default to 0.
+ * @return {ydn.social.IProfile}
  */
-ydn.social.MetaProfile.prototype.getProfileAsFullContact_ = function() {
-  var i = this.profiles_index_[this.source_idx_];
-  if (this.sources_[this.source_idx_] == 'pp') {
-    return this.parent.data.pp.socialProfiles[i];
-  } else if (this.sources_[this.source_idx_] == 'fc') {
-    return this.parent.data.fc.socialProfiles[i];
-  } else {
-    throw new Error('not pp or fc');
-  }
+ydn.social.MetaProfile.prototype.getProfile = function(opt_idx) {
+  var idx = opt_idx || 0;
+  return this.sources_[idx] || null;
 };
-
-
-/**
- * Get screen name.
- * @return {string}
- */
-ydn.social.MetaProfile.prototype.getScreenName = function() {
-  var pf = this.getProfileAsFullContact_();
-  if (pf.username) {
-    if (this.network == ydn.social.Network.TWITTER) {
-      return '@' + pf.username;
-    }
-    return pf.username;
-  } else if (pf.id) {
-    return pf.id;
-  } else {
-    return this.parent.getFullName() || '';
-  }
-};
-
-
-/**
- * Get social network profile URL.
- * @return {string|undefined}
- */
-ydn.social.MetaProfile.prototype.getProfileUrl = function() {
-  var pf = this.getProfileAsFullContact_();
-  return pf.url;
-};
-
-
-/**
- * Get a short summary of the user.
- * @return {string|undefined}
- */
-ydn.social.MetaProfile.prototype.getBio = function() {
-  var pf = this.getProfileAsFullContact_();
-  return pf.bio;
-};
-
-
-/**
- * @return {number|undefined}
- */
-ydn.social.MetaProfile.prototype.getFollowers = function() {
-  var pf = this.getProfileAsFullContact_();
-  return pf.followers;
-};
-
-
-/**
- * @return {number|undefined}
- */
-ydn.social.MetaProfile.prototype.getFollowing = function() {
-  var pf = this.getProfileAsFullContact_();
-  return pf.following;
-};
-
-
 

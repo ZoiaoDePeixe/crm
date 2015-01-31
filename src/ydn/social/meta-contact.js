@@ -23,6 +23,7 @@
 
 goog.provide('ydn.social.MetaContact');
 goog.require('ydn.msg');
+goog.require('ydn.social');
 goog.require('ydn.social.MetaProfile');
 
 
@@ -103,34 +104,6 @@ ydn.social.MetaContact.fetchByEmail = function(email) {
     return new ydn.social.MetaContact(null, email);
   });
 };
-
-
-/**
- * @enum {string}
- */
-ydn.social.Network = {
-  ANGLE_LIST: 'angellist',
-  FACEBOOK: 'facebook',
-  G_PLUS: 'googleplus',
-  LINKED_IN: 'linkedin',
-  MEETUP: 'meetup',
-  PINTEREST: 'pinterest',
-  TUMBLR: 'tumblr',
-  YELP: 'yelp',
-  BLOGGER: 'blogger',
-  YATHOO: 'yahoo',
-  MYSPACE: 'myspace',
-  TWITTER: 'twitter'
-};
-
-
-/**
- * List of default networks.
- * @type {Array<ydn.social.Network>}
- */
-ydn.social.defaultNetworks = [ydn.social.Network.ANGLE_LIST,
-  ydn.social.Network.FACEBOOK, ydn.social.Network.G_PLUS,
-  ydn.social.Network.LINKED_IN, ydn.social.Network.TWITTER];
 
 
 /**
