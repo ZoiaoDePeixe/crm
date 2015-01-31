@@ -112,9 +112,15 @@ ydn.social.MetaContact.fetchByEmail = function(email) {
  * @return {?CrmApp.FullContact2SocialProfile}
  */
 ydn.social.MetaContact.prototype.getProfile = function(network) {
-  if (this.data && this.data.fc) {
-    for (var i = 0; i < this.data.fc.socialProfiles.length; i++) {
+  if (this.data) {
+    for (var i = 0; this.data.fc && i < this.data.fc.socialProfiles.length; i++) {
       var obj = this.data.fc.socialProfiles[i];
+      if (obj && obj.typeId == network) {
+        return obj;
+      }
+    }
+    for (var i = 0; this.data.pp && i < this.data.pp.socialProfiles.length; i++) {
+      var obj = this.data.pp.socialProfiles[i];
       if (obj && obj.typeId == network) {
         return obj;
       }
