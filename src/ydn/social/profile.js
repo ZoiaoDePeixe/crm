@@ -20,69 +20,70 @@
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
-goog.provide('ydn.social.IProfile');
+goog.provide('ydn.social.Profile');
 
 
 
 /**
  * Interface for social network profile.
- * @interface
+ * @param {ydn.social.Network} network
+ * @constructor
+ * @struct
  */
-ydn.social.IProfile = function() {};
+ydn.social.Profile = function(network) {
+  /**
+   * @final
+   * @type {ydn.social.Network}
+   */
+  this.network = network;
+};
 
 
 /**
  * Profile source name.
  * @return {string}
  */
-ydn.social.IProfile.prototype.getSourceName = function() {
-};
+ydn.social.Profile.prototype.getSourceName = goog.abstractMethod;
 
 
 /**
  * Get screen name.
  * @return {string}
  */
-ydn.social.IProfile.prototype.getScreenName = function() {
-};
+ydn.social.Profile.prototype.getScreenName = goog.abstractMethod;
 
 
 /**
  * Get social network profile URL.
  * @return {string|undefined}
  */
-ydn.social.IProfile.prototype.getProfileUrl = function() {
-};
+ydn.social.Profile.prototype.getProfileUrl = goog.abstractMethod;
 
 
 /**
  * Get social network profile photo URL.
  * @return {string|undefined}
  */
-ydn.social.IProfile.prototype.getPhotoUrl = function() {
-};
+ydn.social.Profile.prototype.getPhotoUrl = goog.abstractMethod;
 
 
 /**
  * Get a short summary of the user.
  * @return {string|undefined}
  */
-ydn.social.IProfile.prototype.getBio = function() {
-};
+ydn.social.Profile.prototype.getBio = goog.abstractMethod;
 
 
 /**
  * @return {number|undefined}
  */
-ydn.social.IProfile.prototype.getFollowers = function() {
-};
+ydn.social.Profile.prototype.getFollowers = goog.abstractMethod;
 
 
 /**
  * @return {number|undefined}
  */
-ydn.social.IProfile.prototype.getFollowing = function() {
-};
+ydn.social.Profile.prototype.getFollowing = goog.abstractMethod;
 
 
 

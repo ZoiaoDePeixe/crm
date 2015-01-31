@@ -42,6 +42,7 @@ goog.require('ydn.crm.ui');
  * @struct
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
+ * @deprecated use ydn.social.ui.Profile instead.
  */
 ydn.social.ui.Network = function(network, opt_dom) {
   goog.base(this, opt_dom);

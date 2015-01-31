@@ -189,7 +189,7 @@ ydn.social.ui.Profile.prototype.createDom = function() {
 
 
 /**
- * @param {ydn.social.IProfile} profile
+ * @param {ydn.social.Profile} profile
  * @protected
  */
 ydn.social.ui.Profile.prototype.refreshProfile = function(profile) {

@@ -22,7 +22,7 @@
 
 goog.provide('ydn.social.MetaProfile');
 goog.require('ydn.social.FcProfile');
-goog.require('ydn.social.IProfile');
+goog.require('ydn.social.Profile');
 goog.require('ydn.social.PiplProfile');
 
 
@@ -55,7 +55,7 @@ ydn.social.MetaProfile = function(parent, network) {
   /**
    * Get list os sources.
    * @final
-   * @type {!Array<!ydn.social.IProfile>}
+   * @type {!Array<!ydn.social.Profile>}
    * @private
    */
   this.sources_ = [];
@@ -83,7 +83,7 @@ ydn.social.MetaProfile.prototype.compile_ = function() {
     for (var i = 0; i < ps.length; i++) {
       var p = ps[i];
       if (p.typeId == this.network && (p.id || p.username || p.url)) {
-        this.sources_.push(new ydn.social.FcProfile(p));
+        this.sources_.push(new ydn.social.FcProfile(this.network, p));
         break;
       }
     }
@@ -93,7 +93,7 @@ ydn.social.MetaProfile.prototype.compile_ = function() {
     for (var i = 0; i < ps.length; i++) {
       var p = ps[i];
       if (p.typeId == this.network && (p.id || p.username || p.url)) {
-        this.sources_.push(new ydn.social.PiplProfile(p));
+        this.sources_.push(new ydn.social.PiplProfile(this.network, p));
         break;
       }
     }
@@ -121,7 +121,7 @@ ydn.social.MetaProfile.prototype.count = function() {
 /**
  * Get profile of given source.
  * @param {number=} opt_idx source index, default to 0.
- * @return {ydn.social.IProfile}
+ * @return {ydn.social.Profile}
  */
 ydn.social.MetaProfile.prototype.getProfile = function(opt_idx) {
   var idx = opt_idx || 0;

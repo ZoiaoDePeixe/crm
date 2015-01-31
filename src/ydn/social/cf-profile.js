@@ -21,18 +21,20 @@
  */
 
 goog.provide('ydn.social.FcProfile');
-goog.require('ydn.social.IProfile');
+goog.require('ydn.social.Profile');
 
 
 
 /**
  * FullContact social network profile.
+ * @param {ydn.social.Network} network
  * @param {!CrmApp.FullContact2SocialProfile} data
  * @constructor
  * @struct
- * @implements {ydn.social.IProfile}
+ * @extends {ydn.social.Profile}
  */
-ydn.social.FcProfile = function(data) {
+ydn.social.FcProfile = function(network, data) {
+  goog.base(this, network);
   /**
    * @final
    * @type {!CrmApp.FullContact2SocialProfile}
@@ -40,6 +42,7 @@ ydn.social.FcProfile = function(data) {
    */
   this.data_ = data;
 };
+goog.inherits(ydn.social.FcProfile, ydn.social.Profile);
 
 
 /**
