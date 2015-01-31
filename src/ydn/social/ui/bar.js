@@ -104,7 +104,7 @@ ydn.social.ui.Bar.prototype.createDom = function() {
   for (var i = 0; i < this.getChildCount(); i++) {
     var ch = /** @type {ydn.social.ui.Network} */ (this.getChildAt(i));
     var el = ch.getDetail();
-    el.classList.add('col-' +  (i % 9)); // for popup alignment
+    el.classList.add('col-' + (i % 9)); // for popup alignment
   }
 
 };
@@ -156,7 +156,7 @@ ydn.social.ui.Bar.prototype.setTarget = function(target) {
     }
 
   } else {
-    for (var i = 5; i < this.getChildCount(); i++) {
+    for (var i = ydn.social.defaultNetworks.length; i < this.getChildCount(); i++) {
       var ch = /** @type {ydn.social.ui.Network} */ (this.getChildAt(i));
       ch.setTarget(null);
     }

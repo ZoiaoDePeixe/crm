@@ -93,6 +93,10 @@ ydn.crm.Ch.Req = {
   REQUEST: 'request', // send request to database
   REQUEST_HOST_PERMISSION: 'request-host-permission',
   SERVER_AUDIT_LOG: 'server-audit-log',
+  /**
+   * @desc get social profile
+   * @see ydn.so.MetaData#query
+   */
   SOCIAL_PROFILE: 'social-profile',
   SUGAR_SERVER_INFO: 'sugar-server-info',
   SYNC: 'sync', // begin sync between gdata and record

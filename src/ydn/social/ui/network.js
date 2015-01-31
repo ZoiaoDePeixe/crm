@@ -15,7 +15,7 @@
 
 
 /**
- * @fileoverview Abstract social widget.
+ * @fileoverview Generic social widget.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
@@ -28,7 +28,14 @@ goog.require('ydn.crm.ui');
 
 
 /**
- * Abstract social widget.
+ * Generic social widget.
+ * <pre>
+ *   var net = new ydn.social.ui.Network(ydn.social.Network.MEETUP);
+ *   net.setTarget(mc);
+ *   // later change network type.
+ *   net.setNetwork(ydn.social.Network.YELP);
+ *   net.setTarget(mc);
+ * </pre>
  * @param {ydn.social.Network} network
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
