@@ -174,6 +174,8 @@ ydn.social.ui.Network.prototype.createDom = function() {
   btn.appendChild(twitter);
   container.appendChild(btn);
   container.appendChild(details);
+  var pn = ydn.social.defaultNetworks.indexOf(this.network) >= 0;
+  goog.style.setElementShown(container, pn);
 };
 
 
