@@ -7,6 +7,7 @@ goog.require('ydn.crm.test');
 goog.require('ydn.social.MetaContact');
 
 
+
 var metaContactData = {};
 
 
@@ -33,8 +34,8 @@ function setUpPage() {
 
 function testGetSources() {
   var meta = new ydn.social.MetaContact(metaContactData.brat);
-  var tw = new ydn.social.MetaNetwork(meta, ydn.social.Network.TWITTER);
-  var pt = new ydn.social.MetaNetwork(meta, ydn.social.Network.PINTEREST);
+  var tw = new ydn.social.MetaProfile(meta, ydn.social.Network.TWITTER);
+  var pt = new ydn.social.MetaProfile(meta, ydn.social.Network.PINTEREST);
   assertArrayEquals(['fc', 'pp'], tw.getSources());
   assertArrayEquals(['pp'], pt.getSources());
 }
@@ -42,10 +43,10 @@ function testGetSources() {
 
 function testScreenName() {
   var meta = new ydn.social.MetaContact(metaContactData.brat);
-  var tw = new ydn.social.MetaNetwork(meta, ydn.social.Network.TWITTER);
-  var gp = new ydn.social.MetaNetwork(meta, ydn.social.Network.G_PLUS);
-  var fb = new ydn.social.MetaNetwork(meta, ydn.social.Network.FACEBOOK);
-  var pt = new ydn.social.MetaNetwork(meta, ydn.social.Network.PINTEREST);
+  var tw = new ydn.social.MetaProfile(meta, ydn.social.Network.TWITTER);
+  var gp = new ydn.social.MetaProfile(meta, ydn.social.Network.G_PLUS);
+  var fb = new ydn.social.MetaProfile(meta, ydn.social.Network.FACEBOOK);
+  var pt = new ydn.social.MetaProfile(meta, ydn.social.Network.PINTEREST);
   assertEquals('@bartlorang', tw.getScreenName());
   assertEquals('114426306375480734745', gp.getScreenName());
   assertEquals('bart.lorang', fb.getScreenName());
