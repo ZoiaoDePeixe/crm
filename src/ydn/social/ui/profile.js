@@ -118,14 +118,15 @@ ydn.social.ui.Profile.prototype.redraw = function() {
   var detail = this.getDetail();
   detail.innerHTML = '';
 
-  var mp = this.target ? this.target.getMetaProfile(this.network) : null;
+  var meta = this.target.getMetaProfile(this.network);
+  var mp = this.target ? meta : null;
   var profile = mp ? mp.getProfile() : null;
   if (ydn.social.ui.Profile.DEBUG) {
     window.console.log(this.network, profile);
   }
   if (profile) {
     goog.style.setElementShown(container, true);
-    this.getButton().setAttribute('title', ydn.social.network2name[this.network]);
+    this.getButton().setAttribute('title', meta.getNetworkName());
     container.classList.add('exist');
     goog.style.setElementShown(detail, true);
     this.refreshProfile(profile);

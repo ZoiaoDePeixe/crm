@@ -33,13 +33,13 @@ goog.require('ydn.time');
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.social.ui.Network}
+ * @extends {ydn.social.ui.Profile}
  */
 ydn.social.ui.Twitter = function(opt_dom) {
   goog.base(this, ydn.social.Network.TWITTER, opt_dom);
 
 };
-goog.inherits(ydn.social.ui.Twitter, ydn.social.ui.Network);
+goog.inherits(ydn.social.ui.Twitter, ydn.social.ui.Profile);
 
 
 /**
@@ -95,7 +95,7 @@ ydn.social.ui.Twitter.renderTwitterProfile = function(el, profile) {
  * statuses/user_timeline API
  */
 ydn.social.ui.Twitter.renderTweet = function(detail, tweets) {
-  if (ydn.social.ui.Network.DEBUG) {
+  if (ydn.social.ui.Profile.DEBUG) {
     window.console.log(tweets);
   }
   detail.innerHTML = '';
@@ -132,7 +132,7 @@ ydn.social.ui.Twitter.prototype.refreshTweet_ = function() {
   }
   container.classList.add('working');
   return this.target.getFeed(this.network).addCallbacks(function(tweets) {
-    if (ydn.social.ui.Network.DEBUG) {
+    if (ydn.social.ui.Profile.DEBUG) {
       window.console.log(tweets);
     }
     container.classList.remove('working');
@@ -164,7 +164,7 @@ ydn.social.ui.Twitter.prototype.refreshTwitterProfile_ = function() {
   container.classList.add('working');
   return this.target.getProfileDetail(ydn.social.Network.TWITTER)
       .addCallbacks(function(dp) {
-        if (ydn.social.ui.Network.DEBUG) {
+        if (ydn.social.ui.Profile.DEBUG) {
           window.console.log(dp);
         }
         container.classList.remove('working');

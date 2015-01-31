@@ -66,6 +66,14 @@ ydn.social.MetaProfile = function(parent, network) {
 
 
 /**
+ * @return {string}
+ */
+ydn.social.MetaProfile.prototype.getNetworkName = function() {
+  return ydn.social.network2name[this.network] || this.network;
+};
+
+
+/**
  * Compile social profile from sources.
  * @private
  */

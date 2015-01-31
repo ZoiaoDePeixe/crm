@@ -33,13 +33,13 @@ goog.require('ydn.time');
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.social.ui.Network}
+ * @extends {ydn.social.ui.Profile}
  */
 ydn.social.ui.GPlus = function(opt_dom) {
   goog.base(this, ydn.social.Network.G_PLUS, opt_dom);
 
 };
-goog.inherits(ydn.social.ui.GPlus, ydn.social.ui.Network);
+goog.inherits(ydn.social.ui.GPlus, ydn.social.ui.Profile);
 
 
 /**
@@ -218,7 +218,7 @@ ydn.social.ui.GPlus.prototype.fetchDetailAndRefresh_ = function() {
   container.classList.remove('exist');
   this.target.getProfileDetail(this.network)
       .addCallbacks(function(dp) {
-        if (ydn.social.ui.Network.DEBUG) {
+        if (ydn.social.ui.Profile.DEBUG) {
           window.console.log(dp);
         }
         container.classList.remove('working');

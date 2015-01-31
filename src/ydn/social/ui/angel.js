@@ -23,7 +23,7 @@
 
 goog.provide('ydn.social.ui.AngelList');
 goog.require('goog.date.relative');
-goog.require('ydn.social.ui.Network');
+goog.require('ydn.social.ui.Profile');
 goog.require('ydn.time');
 
 
@@ -33,13 +33,13 @@ goog.require('ydn.time');
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.social.ui.Network}
+ * @extends {ydn.social.ui.Profile}
  */
 ydn.social.ui.AngelList = function(opt_dom) {
   goog.base(this, ydn.social.Network.ANGLE_LIST, opt_dom);
 
 };
-goog.inherits(ydn.social.ui.AngelList, ydn.social.ui.Network);
+goog.inherits(ydn.social.ui.AngelList, ydn.social.ui.Profile);
 
 
 /**
@@ -192,7 +192,7 @@ ydn.social.ui.AngelList.prototype.fetchDetailAndRefresh_ = function() {
   container.classList.remove('exist');
   this.target.getProfileDetail(this.network)
       .addCallbacks(function(dp) {
-        if (ydn.social.ui.Network.DEBUG) {
+        if (ydn.social.ui.Profile.DEBUG) {
           window.console.log(dp);
         }
         container.classList.remove('working');

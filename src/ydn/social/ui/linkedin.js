@@ -23,7 +23,7 @@
 
 goog.provide('ydn.social.ui.LinkedIn');
 goog.require('goog.date.relative');
-goog.require('ydn.social.ui.Network');
+goog.require('ydn.social.ui.Profile');
 goog.require('ydn.time');
 
 
@@ -33,13 +33,13 @@ goog.require('ydn.time');
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.social.ui.Network}
+ * @extends {ydn.social.ui.Profile}
  */
 ydn.social.ui.LinkedIn = function(opt_dom) {
   goog.base(this, ydn.social.Network.LINKED_IN, opt_dom);
 
 };
-goog.inherits(ydn.social.ui.LinkedIn, ydn.social.ui.Network);
+goog.inherits(ydn.social.ui.LinkedIn, ydn.social.ui.Profile);
 
 
 /**
