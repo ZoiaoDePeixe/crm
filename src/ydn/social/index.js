@@ -21,18 +21,36 @@ ydn.so.STORE_NAME = 'Social';
  */
 ydn.social.Network = {
   ANGLE_LIST: 'angellist',
+  BLOGGER: 'blogger',
   FACEBOOK: 'facebook',
   G_PLUS: 'googleplus',
   LINKED_IN: 'linkedin',
   MEETUP: 'meetup',
+  MYSPACE: 'myspace',
   PINTEREST: 'pinterest',
   TUMBLR: 'tumblr',
-  YELP: 'yelp',
-  BLOGGER: 'blogger',
   YATHOO: 'yahoo',
-  MYSPACE: 'myspace',
-  TWITTER: 'twitter'
+  TWITTER: 'twitter',
+  YELP: 'yelp'
 };
+
+
+/**
+ * @const
+ * @type {Object<string>}
+ */
+ydn.social.network2name = {};
+ydn.social.network2name[ydn.social.Network.ANGLE_LIST] = 'AngelList';
+ydn.social.network2name[ydn.social.Network.BLOGGER] = 'Blogger';
+ydn.social.network2name[ydn.social.Network.FACEBOOK] = 'Facebook';
+ydn.social.network2name[ydn.social.Network.G_PLUS] = 'Google+';
+ydn.social.network2name[ydn.social.Network.LINKED_IN] = 'LinkedIn';
+ydn.social.network2name[ydn.social.Network.MEETUP] = 'Meetup';
+ydn.social.network2name[ydn.social.Network.MYSPACE] = 'MySpace';
+ydn.social.network2name[ydn.social.Network.PINTEREST] = 'Pinterest';
+ydn.social.network2name[ydn.social.Network.TUMBLR] = 'Tumblr';
+ydn.social.network2name[ydn.social.Network.TWITTER] = 'Twitter';
+ydn.social.network2name[ydn.social.Network.YELP] = 'Yelp';
 
 
 /**

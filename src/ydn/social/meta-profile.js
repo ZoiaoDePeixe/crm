@@ -21,6 +21,9 @@
  */
 
 goog.provide('ydn.social.MetaProfile');
+goog.require('ydn.social.FcProfile');
+goog.require('ydn.social.IProfile');
+goog.require('ydn.social.PiplProfile');
 
 
 
@@ -28,7 +31,10 @@ goog.provide('ydn.social.MetaProfile');
  * Compilation social network profile.
  * This class will select suitable source to get personal profile for given
  * network.
- * List of available sources and source can be selected.
+ * <pre>
+ *   var twitter = mc.getMetaProfile('twitter');
+ *   var profile = twitter.getProfile();
+ * </pre>
  * @param {ydn.social.MetaContact} parent
  * @param {ydn.social.Network} network
  * @constructor
@@ -97,7 +103,7 @@ ydn.social.MetaProfile.prototype.hasProfile = function() {
 
 /**
  * Number of available sources.
- * @return {Number}
+ * @return {number}
  */
 ydn.social.MetaProfile.prototype.count = function() {
   return this.sources_.length;

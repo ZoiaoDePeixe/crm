@@ -27,7 +27,6 @@ goog.provide('ydn.social.IProfile');
 /**
  * Interface for social network profile.
  * @interface
- * @constructor
  */
 ydn.social.IProfile = function() {};
 
@@ -53,6 +52,14 @@ ydn.social.IProfile.prototype.getScreenName = function() {
  * @return {string|undefined}
  */
 ydn.social.IProfile.prototype.getProfileUrl = function() {
+};
+
+
+/**
+ * Get social network profile photo URL.
+ * @return {string|undefined}
+ */
+ydn.social.IProfile.prototype.getPhotoUrl = function() {
 };
 
 

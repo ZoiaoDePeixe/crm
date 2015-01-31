@@ -33,6 +33,7 @@ goog.require('ydn.social.ui.AngelList');
 goog.require('ydn.social.ui.Facebook');
 goog.require('ydn.social.ui.GPlus');
 goog.require('ydn.social.ui.LinkedIn');
+goog.require('ydn.social.ui.Profile');
 goog.require('ydn.social.ui.Twitter');
 
 
@@ -98,11 +99,11 @@ ydn.social.ui.Bar.prototype.createDom = function() {
   // optional networks
   for (var i = 5; i < 18; i++) {
     // here network name does not matter, since it will have to reset later.
-    this.addChild(new ydn.social.ui.Network(ydn.social.Network.MEETUP), true);
+    this.addChild(new ydn.social.ui.Profile(ydn.social.Network.MEETUP), true);
   }
 
   for (var i = 0; i < this.getChildCount(); i++) {
-    var ch = /** @type {ydn.social.ui.Network} */ (this.getChildAt(i));
+    var ch = /** @type {ydn.social.ui.Profile} */ (this.getChildAt(i));
     var el = ch.getDetail();
     el.classList.add('col-' + (i % 9)); // for popup alignment
   }

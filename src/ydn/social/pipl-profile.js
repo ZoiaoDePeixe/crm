@@ -33,13 +33,7 @@ goog.require('ydn.social.FcProfile');
  * @extends {ydn.social.FcProfile}
  */
 ydn.social.PiplProfile = function(data) {
-  goog.base(this);
-  /**
-   * @final
-   * @type {!CrmApp.FullContact2SocialProfile}
-   * @private
-   */
-  this.data_ = data;
+  goog.base(this, data);
 };
 goog.inherits(ydn.social.PiplProfile, ydn.social.FcProfile);
 

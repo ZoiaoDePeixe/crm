@@ -131,6 +131,21 @@ ydn.social.MetaContact.prototype.getProfile = function(network) {
 
 
 /**
+ * Get social profile.
+ * @param {ydn.social.Network} network
+ * @return {?ydn.social.MetaProfile}
+ */
+ydn.social.MetaContact.prototype.getMetaProfile = function(network) {
+  var p = new ydn.social.MetaProfile(this, network);
+  if (p.hasProfile()) {
+    return p;
+  } else {
+    return null;
+  }
+};
+
+
+/**
  * @return {number}
  */
 ydn.social.MetaContact.prototype.getProfileCount = function() {

@@ -62,7 +62,7 @@ ydn.social.FcProfile.prototype.getSourceName = function() {
  * @override
  */
 ydn.social.FcProfile.prototype.getBio = function() {
-  return this.bio;
+  return this.data_.bio;
 };
 
 
@@ -70,7 +70,7 @@ ydn.social.FcProfile.prototype.getBio = function() {
  * @override
  */
 ydn.social.FcProfile.prototype.getFollowers = function() {
-  return this.followers;
+  return this.data_.followers;
 };
 
 
@@ -78,7 +78,7 @@ ydn.social.FcProfile.prototype.getFollowers = function() {
  * @override
  */
 ydn.social.FcProfile.prototype.getFollowing = function() {
-  return this.following;
+  return this.data_.following;
 };
 
 
@@ -86,7 +86,15 @@ ydn.social.FcProfile.prototype.getFollowing = function() {
  * @override
  */
 ydn.social.FcProfile.prototype.getProfileUrl = function() {
-  return this.data.url;
+  return this.data_.url;
+};
+
+
+/**
+ * @override
+ */
+ydn.social.FcProfile.prototype.getPhotoUrl = function() {
+  return undefined;
 };
 
 
