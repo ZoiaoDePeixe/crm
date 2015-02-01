@@ -118,9 +118,8 @@ ydn.social.ui.Profile.prototype.redraw = function() {
   var detail = this.getDetail();
   detail.innerHTML = '';
 
-  var meta = this.target.getMetaProfile(this.network);
-  var mp = this.target ? meta : null;
-  var profile = mp ? mp.getProfile() : null;
+  var meta = this.target ? this.target.getMetaProfile(this.network) : null;
+  var profile = meta ? meta.getProfile() : null;
   if (ydn.social.ui.Profile.DEBUG) {
     window.console.log(this.network, profile);
   }

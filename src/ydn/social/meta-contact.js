@@ -204,28 +204,8 @@ ydn.social.MetaContact.prototype.getProfileDetail = function(network) {
   if (!profile.id && !profile.username) {
     return goog.async.Deferred.succeed(null);
   }
-  if (network == ydn.social.Network.TWITTER) {
-    var tw = {
-      'path': 'users/show',
-      'user_id': profile.id,
-      'screen_name': profile.username
-    };
-    return ydn.msg.getChannel().send(ydn.crm.Ch.Req.TWITTER, tw);
-  } else if (network == ydn.social.Network.ANGLE_LIST) {
-    var al = {
-      'path': 'users',
-      'id': profile.id
-    };
-    return ydn.msg.getChannel().send(ydn.crm.Ch.Req.ANGLE_LIST, al);
-  } else if (network == ydn.social.Network.G_PLUS) {
-    var gp = {
-      'path': 'people/get',
-      'userId': profile.id
-    };
-    return ydn.msg.getChannel().send(ydn.crm.Ch.Req.G_PLUS, gp);
-  } else {
-    throw new Error(network);
-  }
+  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.SOCIAL_PROFILE_DETAIL, {
+    'network': network, 'id': profile.id});
 };
 
 
@@ -242,11 +222,10 @@ ydn.social.MetaContact.prototype.getFeed = function(network) {
   }
   if (network == ydn.social.Network.TWITTER) {
     var tw = {
-      'path': 'statuses/user_timeline',
-      'user_id': profile.id,
-      'screen_name': profile.username
+      'network': network,
+      'id': profile.id
     };
-    return ydn.msg.getChannel().send(ydn.crm.Ch.Req.TWITTER, tw);
+    return ydn.msg.getChannel().send(ydn.crm.Ch.Req.SOCIAL_FEED, tw);
   } else {
     return goog.async.Deferred.succeed(null);
   }

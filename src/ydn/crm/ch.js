@@ -53,7 +53,6 @@ ydn.crm.Ch.list = function() {
 ydn.crm.Ch.Req = {
   APP_SETTING: 'app-setting',
   ACK: 'ack', // acknowledge message
-  ANGLE_LIST: 'angle-list',
   BADGE_UPDATE: 'badge-update', // update browser action logo
   CLOSE: 'close',
   DNT_ADD: 'dnt-add',
@@ -71,7 +70,6 @@ ydn.crm.Ch.Req = {
    * @see {ydn.crm.app.App#gdataQuery}
    */
   GDATA_LIST_CONTACT: 'gdata-list-contact',
-  G_PLUS: 'google-plus',
   LIST_SUGAR: 'list-sugarcrm', // list sugarcrm about
   LIST_SUGAR_DOMAIN: 'list-sugarcrm-domain', // list sugarcrm domain
   /**
@@ -94,10 +92,20 @@ ydn.crm.Ch.Req = {
   REQUEST_HOST_PERMISSION: 'request-host-permission',
   SERVER_AUDIT_LOG: 'server-audit-log',
   /**
+   * @desc get social activity feed.
+   * @see ydn.so.Loader#getFeed
+   */
+  SOCIAL_FEED: 'social-feed',
+  /**
    * @desc get social profile
    * @see ydn.so.MetaData#query
    */
   SOCIAL_PROFILE: 'social-profile',
+  /**
+   * @desc get social profile
+   * @see ydn.so.Loader#getProfileDetail
+   */
+  SOCIAL_PROFILE_DETAIL: 'social-profile-detail',
   SUGAR_SERVER_INFO: 'sugar-server-info',
   SYNC: 'sync', // begin sync between gdata and record
   /**
@@ -117,7 +125,6 @@ ydn.crm.Ch.Req = {
   TRACKING_SELF_OPEN: 'tracking-self-open', // notify self access
   TRACKING_QUERY: 'tracking-query',
   TRACKING_UPDATE: 'tracking-update',
-  TWITTER: 'twitter',
   /**
    * @desc user license.
    * @see {ydn.crm.AppSetting#getUserLicense}
