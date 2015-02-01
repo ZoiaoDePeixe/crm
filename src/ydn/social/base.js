@@ -5,15 +5,7 @@
  */
 
 
-goog.provide('ydn.so');
 goog.provide('ydn.social');
-
-
-/**
- * @const
- * @type {string} cache store name.
- */
-ydn.so.STORE_NAME = 'Social';
 
 
 /**

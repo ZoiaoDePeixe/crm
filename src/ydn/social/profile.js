@@ -40,10 +40,49 @@ ydn.social.Profile = function(network) {
 
 
 /**
+ * Fetch social activity details, like feeds.
+ * @return {!goog.async.Deferred}
+ * @protected
+ */
+ydn.social.Profile.prototype.loadDetail = function() {
+  return goog.async.Deferred.succeed(null);
+};
+
+
+/**
+ * Transform server respond data from {@link loadDetail} to profile detail.
+ * @param {Object} obj
+ * @return {!CrmApp.ProfileDetail}
+ * @protected
+ */
+ydn.social.Profile.prototype.toProfileDetail = function(obj) {
+  var detail = /** @type {!CrmApp.ProfileDetail} */({});
+  detail.raw = obj;
+  return detail;
+};
+
+
+/**
+ * Fetch social activity details, like feeds.
+ * @return {!goog.async.Deferred<!CrmApp.ProfileDetail>}
+ */
+ydn.social.Profile.prototype.fetchDetail = function() {
+  throw new Error(this.network);
+};
+
+
+/**
  * Profile source name.
  * @return {string}
  */
 ydn.social.Profile.prototype.getSourceName = goog.abstractMethod;
+
+
+/**
+ * Get screen name.
+ * @return {string}
+ */
+ydn.social.Profile.prototype.getUserId = goog.abstractMethod;
 
 
 /**

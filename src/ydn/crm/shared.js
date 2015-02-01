@@ -13,7 +13,7 @@ goog.require('ydn.crm.inj.BackgroundLogger');
 goog.require('ydn.debug');
 goog.require('ydn.debug.ILogger');
 goog.require('ydn.http');
-goog.require('ydn.so');
+
 
 
 /**
