@@ -58,6 +58,13 @@ function testUserId() {
 }
 
 
+function testUserIdPiplNoMatch() {
+  var meta = new ydn.social.MetaContact(metaContactData.joe);
+  var lkn = new ydn.social.MetaProfile(meta, ydn.social.Network.LINKED_IN).getProfile();
+  assertNull(lkn);
+}
+
+
 function testScreenName() {
   var meta = new ydn.social.MetaContact(metaContactData.brat);
   var tw = new ydn.social.MetaProfile(meta, ydn.social.Network.TWITTER).getProfile();

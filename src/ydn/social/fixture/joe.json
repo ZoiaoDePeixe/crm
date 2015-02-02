@@ -1,0 +1,398 @@
+{
+  "fc": null,
+  "pp": {
+    "@http_status_code": 200,
+    "@records_count": 5,
+    "@available_records": 5,
+    "warnings": [],
+    "query": {
+      "emails": [
+        {
+          "address": "joe@quickleft.com",
+          "address_md5": "63ac5fb4bb6ac0d3d0b6a8b79720d74f"
+        }
+      ]
+    },
+    "person": {},
+    "records": [
+      {
+        "@query_params_match": false,
+        "source": {
+          "@is_sponsored": false,
+          "url": "http://www.linkedin.com/pub/mba-joe-paul/5/9b2/8bb",
+          "domain": "linkedin.com",
+          "name": "Professional Profile & Networking - LinkedIn",
+          "category": "professional_and_business"
+        },
+        "names": [
+          {
+            "first": "Mba",
+            "last": "Joe Paul",
+            "suffix": "Fcitsm",
+            "display": "Mba Joe Paul Fcitsm"
+          },
+          {
+            "first": "Joe",
+            "last": "Mba",
+            "display": "Joe Mba"
+          },
+          {
+            "first": "Mba",
+            "last": "Joe Paul",
+            "suffix": "Cissp Cbcp Cgeit Itil",
+            "display": "Mba Joe Paul Cissp Cbcp Cgeit Itil"
+          }
+        ],
+        "images": [
+          {
+            "url": "http://m.c.lnkd.licdn.com/mpr/mpr/p/3/000/0a3/358/011bdea.jpg"
+          }
+        ],
+        "usernames": [
+          {
+            "content": "joepaul"
+          }
+        ],
+        "user_ids": [
+          {
+            "content": "17402255"
+          },
+          {
+            "content": "5/9B2/8BB"
+          }
+        ],
+        "related_urls": [
+          {
+            "@type": "work",
+            "content": "http://www.linkedin.com/in/joepaul"
+          }
+        ]
+      },
+      {
+        "@query_params_match": false,
+        "source": {
+          "@is_sponsored": false,
+          "url": "http://www.linkedin.com/pub/joe-payne/2/5b1/a87",
+          "domain": "linkedin.com",
+          "name": "Professional Profile & Networking - LinkedIn",
+          "category": "professional_and_business"
+        },
+        "names": [
+          {
+            "first": "Joe",
+            "last": "Payne",
+            "display": "Joe Payne"
+          }
+        ],
+        "images": [
+          {
+            "url": "http://m3.licdn.com/mpr/pub/image-lisKJ5PotBts2K0pG9bvRJOZN26WbjpvAisB4-HoNmJhqQK4lisBp6soNUA38SNshT9s/joe-payne.jpg"
+          }
+        ],
+        "usernames": [
+          {
+            "content": "joepayne"
+          }
+        ],
+        "user_ids": [
+          {
+            "content": "7447495"
+          },
+          {
+            "content": "2/5B1/A87"
+          }
+        ],
+        "related_urls": [
+          {
+            "@type": "work",
+            "content": "http://www.linkedin.com/in/joepayne"
+          }
+        ]
+      },
+      {
+        "@query_params_match": false,
+        "source": {
+          "@is_sponsored": false,
+          "url": "http://www.linkedin.com/pub/joe-thatvacationguy-kennedy/3/301/130",
+          "domain": "linkedin.com",
+          "name": "Professional Profile & Networking - LinkedIn",
+          "category": "professional_and_business"
+        },
+        "names": [
+          {
+            "first": "Joe",
+            "middle": "Thatvacationguy",
+            "last": "Kennedy",
+            "display": "Joe Thatvacationguy Kennedy"
+          },
+          {
+            "first": "Joe",
+            "middle": "Connector",
+            "last": "Kennedy",
+            "display": "Joe Connector Kennedy"
+          }
+        ],
+        "images": [
+          {
+            "url": "http://m.c.lnkd.licdn.com/mpr/mpr/p/3/000/22d/0dd/2d78ac3.jpg"
+          }
+        ],
+        "usernames": [
+          {
+            "content": "joekennedy1"
+          }
+        ],
+        "user_ids": [
+          {
+            "content": "9706356"
+          },
+          {
+            "content": "3/301/130"
+          }
+        ],
+        "related_urls": [
+          {
+            "@type": "work",
+            "content": "http://www.linkedin.com/in/joekennedy1"
+          }
+        ]
+      },
+      {
+        "@query_params_match": false,
+        "source": {
+          "@is_sponsored": false,
+          "url": "http://www.linkedin.com/pub/cpa-citp-joseph-bailey/6/751/a60",
+          "domain": "linkedin.com",
+          "name": "Professional Profile & Networking - LinkedIn",
+          "category": "professional_and_business"
+        },
+        "names": [
+          {
+            "first": "Cpa",
+            "middle": "Citp",
+            "last": "Joseph Bailey",
+            "suffix": "Cisa",
+            "display": "Cpa Citp Joseph Bailey Cisa"
+          }
+        ],
+        "images": [
+          {
+            "url": "http://m.c.lnkd.licdn.com/mpr/mpr/p/3/000/0a5/327/2219864.jpg"
+          }
+        ],
+        "usernames": [
+          {
+            "content": "joerbailey"
+          }
+        ],
+        "user_ids": [
+          {
+            "content": "19764648"
+          },
+          {
+            "content": "6/751/A60"
+          }
+        ],
+        "related_urls": [
+          {
+            "@type": "work",
+            "content": "http://www.linkedin.com/in/joerbailey"
+          }
+        ]
+      },
+      {
+        "@query_params_match": false,
+        "source": {
+          "@is_sponsored": false,
+          "url": "http://www.linkedin.com/pub/jeff-cole/5/987/32a",
+          "domain": "linkedin.com",
+          "name": "Professional Profile & Networking - LinkedIn",
+          "category": "professional_and_business"
+        },
+        "names": [
+          {
+            "first": "Jeff",
+            "last": "Cole",
+            "display": "Jeff Cole"
+          }
+        ],
+        "images": [
+          {
+            "url": "http://m.c.lnkd.licdn.com/mpr/mpr/p/5/000/1c9/306/3735dec.jpg"
+          }
+        ],
+        "usernames": [
+          {
+            "content": "write2jeff"
+          }
+        ],
+        "user_ids": [
+          {
+            "content": "17347858"
+          },
+          {
+            "content": "5/987/32A"
+          }
+        ],
+        "related_urls": [
+          {
+            "@type": "work",
+            "content": "http://www.linkedin.com/in/write2jeff"
+          }
+        ]
+      }
+    ],
+    "suggested_searches": []
+  },
+  "cb": {
+    "id": "71dd31cf-24ca-4fcb-9886-4b849c14083c",
+    "name": {
+      "fullName": "Joe Stump",
+      "givenName": "Joe",
+      "familyName": "Stump"
+    },
+    "email": "joe@quickleft.com",
+    "gender": null,
+    "location": null,
+    "geo": {
+      "city": null,
+      "state": null,
+      "country": null,
+      "lat": null,
+      "lng": null
+    },
+    "bio": null,
+    "site": null,
+    "avatar": null,
+    "employment": {
+      "name": "Quick Left",
+      "title": "Advisor",
+      "domain": "quickleft.com"
+    },
+    "facebook": {
+      "handle": null
+    },
+    "github": {
+      "handle": null,
+      "avatar": null,
+      "company": null,
+      "blog": null,
+      "followers": null,
+      "following": null
+    },
+    "twitter": {
+      "handle": null,
+      "id": null,
+      "bio": null,
+      "followers": null,
+      "following": null,
+      "location": null,
+      "site": null,
+      "avatar": null
+    },
+    "linkedin": {
+      "handle": "pub/joe-stump/2/b47/843"
+    },
+    "googleplus": {
+      "handle": null
+    },
+    "angellist": {
+      "handle": null,
+      "bio": null,
+      "blog": null,
+      "site": null,
+      "followers": null,
+      "avatar": null
+    },
+    "klout": {
+      "handle": null,
+      "score": null
+    },
+    "foursquare": {
+      "handle": null
+    },
+    "aboutme": {
+      "handle": null,
+      "bio": null,
+      "avatar": null
+    },
+    "gravatar": {
+      "handle": null,
+      "urls": null,
+      "avatar": null,
+      "avatars": []
+    },
+    "fuzzy": true,
+    "company": {
+      "id": "d2e31a79-e380-48f5-bf37-165f1d16f9b6",
+      "name": "Quick Left",
+      "legalName": "Quick Left",
+      "domain": "quickleft.com",
+      "url": "http://quickleft.com",
+      "site": {
+        "url": "http://quickleft.com",
+        "title": "Quick Left | Web Application Development | Mobile App Designers - Quick Left Boulder Colorado",
+        "h1": "We turn hard problemsinto great software",
+        "metaDescription": "Quick Left is a full cycle web and mobile development shop. We bring the technical expertise, the agile practices and a tightly-integrated dev team. Contact us to get starting on your custom software project today.",
+        "metaAuthor": null
+      },
+      "categories": [
+        "Training",
+        "Web Design",
+        "Web Development",
+        "Software"
+      ],
+      "description": "We craft outstanding web and mobile apps",
+      "founders": [
+        "Sam Breed",
+        "Collin Schaafsma",
+        "Ingrid Alongi"
+      ],
+      "raised": null,
+      "location": "1062 Delaware Street\n\nDenver, CO 80204\nUSA",
+      "geo": null,
+      "employees": 50,
+      "logo": "https://dqus23xyrtg1i.cloudfront.net/v1/logos/d2e31a79-e380-48f5-bf37-165f1d16f9b6",
+      "google": {
+        "rank": 6
+      },
+      "alexa": {
+        "usRank": 113603,
+        "globalRank": 138897
+      },
+      "facebook": {
+        "handle": "quickleft"
+      },
+      "linkedin": {
+        "handle": null
+      },
+      "twitter": {
+        "handle": "quickleft",
+        "id": 17565474,
+        "bio": "We turn hard problems into great software. Makers of @sprintly.",
+        "followers": 3251,
+        "following": 1132,
+        "location": "Boulder – Portland – SF",
+        "site": "http://t.co/FJR7d9TT4s",
+        "avatar": "https://pbs.twimg.com/profile_images/534490319396421632/atqi3Gbp_normal.png"
+      },
+      "angellist": {
+        "id": 137303,
+        "handle": "quick-left",
+        "description": "Quick Left is a custom application development company specializing in Ruby on Rails and advanced JavaScript frameworks including Backbone.js, Node.js, jQuery and more. We help startups and established companies get their applications into production with speed and precision.\n\nOur expert software developers employ accountable agile development practices emphasizing client collaboration, feature review and iteration for the best product outcome. We offer full-cycle custom development, helping our clients advance from idea and design to development and launch. Quick Left also offers programmer training, code reviews and technology consulting.\n\nBased in beautiful downtown Boulder, Colorado, we are at the center of the thriving Boulder startup community, hosting and sponsoring frequent events for business and technology leaders.",
+        "followers": 32,
+        "blogUrl": "http://quickleft.com/blog"
+      },
+      "crunchbase": {
+        "handle": "quick-left"
+      },
+      "emailProvider": false,
+      "personal": false
+    },
+    "_options": {
+      "api": "person",
+      "path": "/people/email/<%= email %>",
+      "queryKeys": "subscribe"
+    }
+  }
+}
