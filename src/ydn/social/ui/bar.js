@@ -121,7 +121,7 @@ ydn.social.ui.Bar.prototype.setTarget = function(target) {
   }
   this.target = target;
 
-  for (var i = 0; i < ydn.social.defaultNetworks.length - 1; i++) {
+  for (var i = 0; i < ydn.social.defaultNetworks.length; i++) {
     var ch = /** @type {ydn.social.ui.MetaProfile} */ (this.getChildAt(i));
     var network = ydn.social.defaultNetworks[i];
     var model = target ? target.getMetaProfile(network) : null;

@@ -66,7 +66,7 @@ ydn.social.ui.LinkedIn.prototype.refresh_ = function(profile) {
   var header = el.querySelector('.header');
   var name = header.querySelector('.name a');
   name.textContent = profile.getScreenName();
-  var url = profile.getPhotoUrl();
+  var url = profile.getProfileUrl();
   if (url) {
     name.href = url;
   } else {

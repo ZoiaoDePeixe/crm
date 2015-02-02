@@ -105,7 +105,7 @@ ydn.social.FcProfile.prototype.getProfileUrl = function() {
  * @override
  */
 ydn.social.FcProfile.prototype.getPhotoUrl = function() {
-  return undefined;
+
 };
 
 
