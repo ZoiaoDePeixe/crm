@@ -154,24 +154,6 @@ ydn.social.ui.MetaProfile.prototype.resetBaseClass = function() {
 
 
 /**
- * @return {string}
- * @protected
- */
-ydn.social.ui.MetaProfile.prototype.getSvgSymbolName = function() {
-  var model = this.getModel();
-  if (!model) {
-    return 'language'; // generic symbol
-  }
-  var network = model.getNetworkName();
-  if (ydn.social.network2name[network]) {
-    return network;
-  } else {
-    return 'language'; // generic symbol
-  }
-};
-
-
-/**
  * @override
  */
 ydn.social.ui.MetaProfile.prototype.createDom = function() {

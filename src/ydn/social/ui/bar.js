@@ -33,6 +33,7 @@ goog.require('ydn.social.ui.AngelList');
 goog.require('ydn.social.ui.Facebook');
 goog.require('ydn.social.ui.GPlus');
 goog.require('ydn.social.ui.LinkedIn');
+goog.require('ydn.social.ui.Menu');
 goog.require('ydn.social.ui.MetaProfile');
 goog.require('ydn.social.ui.Twitter');
 
@@ -53,6 +54,12 @@ ydn.social.ui.Bar = function(opt_dom) {
    * @type {ydn.social.MetaContact}
    */
   this.target = null;
+
+  /**
+   * @protected
+   * @type {ydn.social.ui.Menu}
+   */
+  this.menu = new ydn.social.ui.Menu();
 };
 goog.inherits(ydn.social.ui.Bar, goog.ui.Component);
 
@@ -84,6 +91,9 @@ ydn.social.ui.Bar.CSS_CLASS = 'social-bar';
 ydn.social.ui.Bar.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var root = this.getElement();
+
+  this.menu.render(root);
+
   root.classList.add(ydn.social.ui.Bar.CSS_CLASS);
   var twitter = new ydn.social.ui.Twitter();
   var al = new ydn.social.ui.AngelList();
@@ -105,7 +115,7 @@ ydn.social.ui.Bar.prototype.createDom = function() {
   for (var i = 1; i < this.getChildCount(); i++) {
     var ch = /** @type {ydn.social.ui.MetaProfile} */ (this.getChildAt(i));
     var el = ch.getDetailElement();
-    el.classList.add('col-' + (i % 9)); // for popup alignment
+    el.classList.add('col-' + ((i + 1) % 9)); // for popup alignment
   }
 
 };
@@ -146,6 +156,7 @@ ydn.social.ui.Bar.prototype.setTarget = function(target) {
     this.getChildAt(i).setModel(null);
   }
 
+  this.menu.setTarget(target);
 };
 
 
