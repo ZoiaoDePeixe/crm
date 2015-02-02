@@ -22,8 +22,8 @@
 
 goog.provide('ydn.social.MetaProfile');
 goog.require('ydn.social.FcProfile');
-goog.require('ydn.social.Profile');
 goog.require('ydn.social.PiplProfile');
+goog.require('ydn.social.Profile');
 
 
 
@@ -69,6 +69,14 @@ ydn.social.MetaProfile = function(parent, network) {
  * @return {string}
  */
 ydn.social.MetaProfile.prototype.getNetworkName = function() {
+  return this.network;
+};
+
+
+/**
+ * @return {string}
+ */
+ydn.social.MetaProfile.prototype.getNetworkLabel = function() {
   return ydn.social.network2name[this.network] || this.network;
 };
 

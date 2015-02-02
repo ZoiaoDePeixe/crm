@@ -21,115 +21,104 @@
  */
 
 
-goog.provide('ydn.social.ui.Profile');
+goog.provide('ydn.social.ui.MetaProfile');
 goog.require('goog.ui.Component');
 goog.require('ydn.crm.ui');
 
 
 
 /**
- * Generic social widget.
+ * Generic social widget. If model is not set, the component will not be
+ * displayed.
  * <pre>
- *   var net = new ydn.social.ui.Profile(ydn.social.Network.MEETUP);
- *   net.setTarget(mc);
- *   // later change network type.
- *   net.setNetwork(ydn.social.Network.YELP);
- *   net.setTarget(mc);
+ *   var net = new ydn.social.ui.MetaProfile();
+ *   net.setModel(mp);
  * </pre>
- * @param {ydn.social.Network} network
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.social.ui.Profile = function(network, opt_dom) {
+ydn.social.ui.MetaProfile = function(opt_dom) {
   goog.base(this, opt_dom);
-  /**
-   * @type {ydn.social.Network}
-   */
-  this.network = network;
-  /**
-   * @protected
-   * @type {?ydn.social.MetaContact}
-   */
-  this.target = null;
 };
-goog.inherits(ydn.social.ui.Profile, goog.ui.Component);
+goog.inherits(ydn.social.ui.MetaProfile, goog.ui.Component);
 
 
 /**
  * @define {boolean} debug flag.
  */
-ydn.social.ui.Profile.DEBUG = false;
+ydn.social.ui.MetaProfile.DEBUG = false;
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.social.ui.Profile.CSS_CLASS_CONTAINER = 'tooltip-container';
+ydn.social.ui.MetaProfile.CSS_CLASS_CONTAINER = 'tooltip-container';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.social.ui.Profile.CSS_CLASS_DETAIL = 'tooltip-detail';
+ydn.social.ui.MetaProfile.CSS_CLASS_DETAIL = 'tooltip-detail';
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.social.ui.Profile.CSS_CLASS_HOST = 'tooltip-host';
+ydn.social.ui.MetaProfile.CSS_CLASS_HOST = 'tooltip-host';
 
 
 /**
- * @param {ydn.social.MetaContact} obj
+ * @return {ydn.social.MetaProfile} obj
  * @final
  */
-ydn.social.ui.Profile.prototype.setTarget = function(obj) {
-  this.target = obj;
+ydn.social.ui.MetaProfile.prototype.getModel;
+
+
+/**
+ * @override
+ */
+ydn.social.ui.MetaProfile.prototype.setModel = function(model) {
+  var ex = this.getModel();
+  var net_changed = !ex && !!model ||
+      (!!ex && !!model && ex.getNetworkName() != model.getNetworkName());
+  goog.base(this, 'setModel', model);
+  if (net_changed) {
+    var btn = this.getButton();
+    btn.innerHTML = '';
+    var svg = ydn.crm.ui.createSvgIcon(this.getSvgSymbolName());
+    btn.setAttribute('name', model.getNetworkName());
+    btn.appendChild(svg);
+  }
   this.redraw();
 };
 
 
 /**
- * Change network type.
- * @param {ydn.social.Network} network
- */
-ydn.social.ui.Profile.prototype.setNetwork = function(network) {
-  this.network = network;
-  var btn = this.getButton();
-  btn.innerHTML = '';
-  var svg = ydn.crm.ui.createSvgIcon(this.getSvgSymbolName());
-  btn.setAttribute('name', this.network);
-  btn.appendChild(svg);
-};
-
-
-/**
+ * Redraw UI. Default implementation only refresh the first profile.
  * @protected
  */
-ydn.social.ui.Profile.prototype.redraw = function() {
+ydn.social.ui.MetaProfile.prototype.redraw = function() {
   var container = this.getContainer();
   this.resetBaseClass();
-  var detail = this.getDetail();
+  var detail = this.getDetailElement();
   detail.innerHTML = '';
+  var model = this.getModel();
 
-  var meta = this.target ? this.target.getMetaProfile(this.network) : null;
-
-  var profile = meta ? meta.getProfile() : null;
-  if (ydn.social.ui.Profile.DEBUG) {
-    window.console.log(this.network, profile);
+  if (ydn.social.ui.MetaProfile.DEBUG) {
+    window.console.log(model);
   }
-  if (profile) {
+  if (model && model.hasProfile()) {
     goog.style.setElementShown(container, true);
-    this.getButton().setAttribute('title', meta.getNetworkName());
+    this.getButton().setAttribute('title', model.getNetworkName());
     container.classList.add('exist');
     goog.style.setElementShown(detail, true);
-    this.refreshProfile(profile);
+    this.refreshProfile(/** @type {!ydn.social.Profile} */(model.getProfile()));
   } else {
     goog.style.setElementShown(container, false);
     goog.style.setElementShown(detail, false);
@@ -141,9 +130,14 @@ ydn.social.ui.Profile.prototype.redraw = function() {
 /**
  * @protected reset container element class to initial.
  */
-ydn.social.ui.Profile.prototype.resetBaseClass = function() {
+ydn.social.ui.MetaProfile.prototype.resetBaseClass = function() {
   var el = this.getElement();
-  el.className = ydn.social.ui.Profile.CSS_CLASS_CONTAINER + ' ' + this.network;
+  var name = ydn.social.ui.MetaProfile.CSS_CLASS_CONTAINER;
+  var model = this.getModel();
+  if (model) {
+    name += ' ' + model.getNetworkName();
+  }
+  el.className = name;
 };
 
 
@@ -151,14 +145,15 @@ ydn.social.ui.Profile.prototype.resetBaseClass = function() {
  * @return {string}
  * @protected
  */
-ydn.social.ui.Profile.prototype.getSvgSymbolName = function() {
-  if (ydn.social.defaultNetworks.indexOf(this.network) >= 0) {
-    return this.network;
+ydn.social.ui.MetaProfile.prototype.getSvgSymbolName = function() {
+  var network = this.getModel().getNetworkName();
+  if (ydn.social.defaultNetworks.indexOf(network) >= 0) {
+    return network;
   } else if (['meetup', 'pinterest', 'yelp', 'tumblr', 'reddit', 'instagram',
     'github', 'foursquare', 'flickr', 'youtube', 'friendfeed',
     'blogger', 'wordpress', 'quora', 'myspace', 'yahoo', 'delicious',
-    'vimeo', 'klout'].indexOf(this.network) >= 0) {
-    return this.network;
+    'vimeo', 'klout'].indexOf(network) >= 0) {
+    return network;
   } else {
     return 'language'; // generic symbol
   }
@@ -168,34 +163,30 @@ ydn.social.ui.Profile.prototype.getSvgSymbolName = function() {
 /**
  * @override
  */
-ydn.social.ui.Profile.prototype.createDom = function() {
+ydn.social.ui.MetaProfile.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var container = this.getElement();
   var btn = document.createElement('div');
   var details = document.createElement('div');
   this.resetBaseClass();
-  btn.classList.add(ydn.social.ui.Profile.CSS_CLASS_HOST);
-  details.classList.add(ydn.social.ui.Profile.CSS_CLASS_DETAIL);
+  btn.classList.add(ydn.social.ui.MetaProfile.CSS_CLASS_HOST);
+  details.classList.add(ydn.social.ui.MetaProfile.CSS_CLASS_DETAIL);
   goog.style.setElementShown(details, false);
-  var twitter = ydn.crm.ui.createSvgIcon(this.getSvgSymbolName());
   btn.classList.add(ydn.crm.ui.CSS_CLASS_SVG_BUTTON);
-  btn.setAttribute('name', this.network);
-  btn.appendChild(twitter);
   container.appendChild(btn);
   container.appendChild(details);
-  var pn = ydn.social.defaultNetworks.indexOf(this.network) >= 0;
-  goog.style.setElementShown(container, pn);
+  goog.style.setElementShown(container, false);
 };
 
 
 /**
- * @param {ydn.social.Profile} profile
+ * @param {!ydn.social.Profile} profile
  * @protected
  */
-ydn.social.ui.Profile.prototype.refreshProfile = function(profile) {
+ydn.social.ui.MetaProfile.prototype.refreshProfile = function(profile) {
   var tid = 'template-detail-generic';
   var t = ydn.ui.getTemplateById(tid).content;
-  var el = this.getDetail();
+  var el = this.getDetailElement();
   el.innerHTML = '';
   el.appendChild(t.cloneNode(true));
   goog.style.setElementShown(el, true);
@@ -236,18 +227,18 @@ ydn.social.ui.Profile.prototype.refreshProfile = function(profile) {
  * Get container element.
  * @return {Element}
  */
-ydn.social.ui.Profile.prototype.getContainer = function() {
+ydn.social.ui.MetaProfile.prototype.getContainer = function() {
   return this.getElement();
 };
 
 
 /**
- * Get detail element.
+ * Get content element, which appear on hovering over the button.
  * @return {Element}
  */
-ydn.social.ui.Profile.prototype.getDetail = function() {
+ydn.social.ui.MetaProfile.prototype.getDetailElement = function() {
   return this.getContainer().querySelector('.' +
-      ydn.social.ui.Profile.CSS_CLASS_DETAIL);
+      ydn.social.ui.MetaProfile.CSS_CLASS_DETAIL);
 };
 
 
@@ -255,7 +246,7 @@ ydn.social.ui.Profile.prototype.getDetail = function() {
  * Get button host.
  * @return {Element}
  */
-ydn.social.ui.Profile.prototype.getButton = function() {
+ydn.social.ui.MetaProfile.prototype.getButton = function() {
   return this.getContainer().querySelector('.' +
-      ydn.social.ui.Profile.CSS_CLASS_HOST);
+      ydn.social.ui.MetaProfile.CSS_CLASS_HOST);
 };

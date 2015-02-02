@@ -49,15 +49,15 @@ goog.inherits(ydn.social.FcProfile, ydn.social.Profile);
  * @override
  */
 ydn.social.FcProfile.prototype.getScreenName = function() {
-  return this.data_.id;
+  return this.data_.username;
 };
 
 
 /**
  * @override
  */
-ydn.social.FcProfile.prototype.getSourceName = function() {
-  return 'FullContact';
+ydn.social.FcProfile.prototype.getUserId = function() {
+  return this.data_.id;
 };
 
 

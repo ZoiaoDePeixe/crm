@@ -19,7 +19,7 @@
 
 
 goog.provide('ydn.crm.inj.Context');
-goog.require('ydn.async.Deferred');
+goog.require('goog.async.Deferred');
 goog.require('ydn.gdata.m8.NewContactEntry');
 
 

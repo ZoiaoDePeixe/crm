@@ -29,20 +29,34 @@ ydn.social.Network = {
 
 /**
  * @const
- * @type {Object<string>}
+ * @type {Object<string>} list of supported network names. The list is ordered
+ * by preferred network coming first.
  */
 ydn.social.network2name = {};
-ydn.social.network2name[ydn.social.Network.ANGLE_LIST] = 'AngelList';
-ydn.social.network2name[ydn.social.Network.BLOGGER] = 'Blogger';
+ydn.social.network2name[ydn.social.Network.TWITTER] = 'Twitter';
 ydn.social.network2name[ydn.social.Network.FACEBOOK] = 'Facebook';
-ydn.social.network2name[ydn.social.Network.G_PLUS] = 'Google+';
 ydn.social.network2name[ydn.social.Network.LINKED_IN] = 'LinkedIn';
-ydn.social.network2name[ydn.social.Network.MEETUP] = 'Meetup';
-ydn.social.network2name[ydn.social.Network.MYSPACE] = 'MySpace';
+ydn.social.network2name[ydn.social.Network.G_PLUS] = 'Google+';
+ydn.social.network2name[ydn.social.Network.ANGLE_LIST] = 'AngelList';
 ydn.social.network2name[ydn.social.Network.PINTEREST] = 'Pinterest';
 ydn.social.network2name[ydn.social.Network.TUMBLR] = 'Tumblr';
-ydn.social.network2name[ydn.social.Network.TWITTER] = 'Twitter';
+ydn.social.network2name[ydn.social.Network.BLOGGER] = 'Blogger';
+ydn.social.network2name[ydn.social.Network.MEETUP] = 'Meetup';
+ydn.social.network2name[ydn.social.Network.MYSPACE] = 'MySpace';
 ydn.social.network2name[ydn.social.Network.YELP] = 'Yelp';
+ydn.social.network2name['reddit'] = 'Reddit';
+ydn.social.network2name['instagram'] = 'Instagram';
+ydn.social.network2name['github'] = 'Github';
+ydn.social.network2name['foursquare'] = 'Foursquare';
+ydn.social.network2name['flickr'] = 'Flickr';
+ydn.social.network2name['youtube'] = 'Youtube';
+ydn.social.network2name['friendfeed'] = 'Friendfeed';
+ydn.social.network2name['wordpress'] = 'Wordpress';
+ydn.social.network2name['quora'] = 'Quora';
+ydn.social.network2name['yahoo'] = 'Yahoo!';
+ydn.social.network2name['delicious'] = 'Delicious';
+ydn.social.network2name['vimeo'] = 'Vimeo';
+ydn.social.network2name['klout'] = 'Klout';
 
 
 /**

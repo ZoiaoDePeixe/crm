@@ -33,7 +33,7 @@ goog.require('ydn.social.ui.AngelList');
 goog.require('ydn.social.ui.Facebook');
 goog.require('ydn.social.ui.GPlus');
 goog.require('ydn.social.ui.LinkedIn');
-goog.require('ydn.social.ui.Profile');
+goog.require('ydn.social.ui.MetaProfile');
 goog.require('ydn.social.ui.Twitter');
 
 
@@ -99,12 +99,12 @@ ydn.social.ui.Bar.prototype.createDom = function() {
   // optional networks
   for (var i = 5; i < 18; i++) {
     // here network name does not matter, since it will have to reset later.
-    this.addChild(new ydn.social.ui.Profile(ydn.social.Network.MEETUP), true);
+    this.addChild(new ydn.social.ui.MetaProfile(), true);
   }
 
-  for (var i = 0; i < this.getChildCount(); i++) {
-    var ch = /** @type {ydn.social.ui.Profile} */ (this.getChildAt(i));
-    var el = ch.getDetail();
+  for (var i = 5; i < this.getChildCount(); i++) {
+    var ch = /** @type {ydn.social.ui.MetaProfile} */ (this.getChildAt(i));
+    var el = ch.getDetailElement();
     el.classList.add('col-' + (i % 9)); // for popup alignment
   }
 
@@ -127,39 +127,29 @@ ydn.social.ui.Bar.prototype.setTarget = function(target) {
   // show whatever available network
   if (target) {
     var n_opt = this.getChildCount() - ydn.social.defaultNetworks.length;
-    var opt = [];
-    var preferred = [ydn.social.Network.MEETUP, ydn.social.Network.YELP,
-      ydn.social.Network.PINTEREST, ydn.social.Network.TUMBLR];
-    for (var i = 0; i < preferred.length; i++) {
-      var profile = target.getProfile(preferred[i]);
+    var next = ydn.social.defaultNetworks.length;
+    for (var network in ydn.social.network2name) {
+      var in_default = ydn.social.defaultNetworks.indexOf(network) >= 0;
+      if (in_default) {
+        continue;
+      }
+      var profile = target.getMetaProfile(/** @type {ydn.social.Network} */(network));
       if (profile) {
-        opt.push(preferred[i]);
+        var ch = /** @type {ydn.social.ui.MetaProfile} */ (this.getChildAt(next));
+        ch.setModel(profile);
+        next++;
+        if (next > this.getChildCount()) {
+          break;
+        }
       }
     }
-    var not_used = ['googleprofile', 'aboutme', 'gravatar'];
-    for (var i = 0; i < target.getProfileCount(); i++) {
-      var profile = target.getProfileAt(i);
-      var nid = profile.typeId;
-      var not_in_default = ydn.social.defaultNetworks.indexOf(nid) == -1;
-      if (not_in_default && opt.indexOf(nid) == -1 && not_used.indexOf(nid) == -1) {
-        opt.push(nid);
-      }
+    for (var i = next; i < this.getChildCount(); i++) {
+      // hide them.
+      this.getChildAt(i).setModel(null);
     }
-    for (var i = ydn.social.defaultNetworks.length; i < this.getChildCount(); i++) {
-      var ch = /** @type {ydn.social.ui.Network} */ (this.getChildAt(i));
-      var j = i - ydn.social.defaultNetworks.length;
-      if (opt[j]) {
-        ch.setNetwork(/** @type {ydn.social.Network} */ (opt[j]));
-        ch.setTarget(target);
-      } else {
-        ch.setTarget(null);
-      }
-    }
-
   } else {
     for (var i = ydn.social.defaultNetworks.length; i < this.getChildCount(); i++) {
-      var ch = /** @type {ydn.social.ui.Network} */ (this.getChildAt(i));
-      ch.setTarget(null);
+      this.getChildAt(i).setModel(null);
     }
   }
 

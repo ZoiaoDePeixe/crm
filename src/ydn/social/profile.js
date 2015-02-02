@@ -70,7 +70,7 @@ ydn.social.Profile.prototype.fetchDetail = function() {
   return ydn.msg.getChannel().send(ydn.crm.Ch.Req.SOCIAL_PROFILE_DETAIL, {
     'network': this.network,
     'userId': this.getUserId(),
-    'userName': this.getUserName()
+    'userName': this.getScreenName()
   });
 };
 
