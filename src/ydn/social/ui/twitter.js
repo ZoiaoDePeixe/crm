@@ -23,7 +23,7 @@
 
 goog.provide('ydn.social.ui.Twitter');
 goog.require('goog.date.relative');
-goog.require('ydn.social.ui.Network');
+goog.require('ydn.social.ui.MetaProfile');
 goog.require('ydn.time');
 
 
@@ -33,13 +33,13 @@ goog.require('ydn.time');
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.social.ui.Profile}
+ * @extends {ydn.social.ui.MetaProfile}
  */
 ydn.social.ui.Twitter = function(opt_dom) {
-  goog.base(this, ydn.social.Network.TWITTER, opt_dom);
+  goog.base(this, opt_dom);
 
 };
-goog.inherits(ydn.social.ui.Twitter, ydn.social.ui.Profile);
+goog.inherits(ydn.social.ui.Twitter, ydn.social.ui.MetaProfile);
 
 
 /**
@@ -47,6 +47,8 @@ goog.inherits(ydn.social.ui.Twitter, ydn.social.ui.Profile);
  */
 ydn.social.ui.Twitter.prototype.createDom = function() {
   goog.base(this, 'createDom');
+  this.renderButton(ydn.social.Network.TWITTER);
+  goog.style.setElementShown(this.getElement(), true);
 };
 
 
@@ -131,7 +133,9 @@ ydn.social.ui.Twitter.prototype.refreshTweet_ = function() {
     return goog.async.Deferred.succeed(null);
   }
   container.classList.add('working');
-  return this.target.getFeed(this.network).addCallbacks(function(tweets) {
+  var model = this.getModel();
+  var profile = model.getProfile();
+  return profile.fetchFeed().addCallbacks(function(tweets) {
     if (ydn.social.ui.Profile.DEBUG) {
       window.console.log(tweets);
     }
@@ -162,7 +166,8 @@ ydn.social.ui.Twitter.prototype.refreshTwitterProfile_ = function() {
   var container = this.getContainer();
 
   container.classList.add('working');
-  return this.target.getProfileDetail(ydn.social.Network.TWITTER)
+  var profile = this.getModel().getProfile();
+  return profile.fetchDetail()
       .addCallbacks(function(dp) {
         if (ydn.social.ui.Profile.DEBUG) {
           window.console.log(dp);
@@ -172,9 +177,9 @@ ydn.social.ui.Twitter.prototype.refreshTwitterProfile_ = function() {
           return;
         }
         container.classList.add('exist');
-        ydn.social.ui.Twitter.renderTwitterProfile(this.getDetail(), dp);
+        ydn.social.ui.Twitter.renderTwitterProfile(this.getDetailElement(), dp);
       }, function(e) {
-        goog.style.setElementShown(this.getDetail(), false);
+        goog.style.setElementShown(this.getDetailElement(), false);
         ydn.crm.msg.Manager.addStatus('Fetching twitter fail: ' + String(e));
         container.classList.remove('working');
         if (e && e.name == ydn.crm.base.ErrorName.HOST_PERMISSION) {
@@ -202,12 +207,11 @@ ydn.social.ui.Twitter.prototype.refresh_ = function() {
 ydn.social.ui.Twitter.prototype.redraw = function() {
   var container = this.getContainer();
   this.resetBaseClass();
-  var detail = this.getDetail();
+  var detail = this.getDetailElement();
   detail.innerHTML = '';
   this.getButton().setAttribute('title', 'Twitter');
-
-  var profile = this.target ? this.target.getProfile(
-      ydn.social.Network.TWITTER) : null;
+  var model = this.getModel();
+  var profile = model ? model.getProfile() : null;
   if (profile) {
     goog.style.setElementShown(detail, true);
     this.refresh_();

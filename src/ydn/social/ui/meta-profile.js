@@ -81,6 +81,20 @@ ydn.social.ui.MetaProfile.prototype.getModel;
 
 
 /**
+ * @param {string} name network name.
+ * @protected
+ */
+ydn.social.ui.MetaProfile.prototype.renderButton = function(name) {
+  var btn = this.getButton();
+  btn.innerHTML = '';
+  var icon = !!ydn.social.network2name[name] ? name : 'language';
+  var svg = ydn.crm.ui.createSvgIcon(icon);
+  btn.setAttribute('name', name);
+  btn.appendChild(svg);
+};
+
+
+/**
  * @override
  */
 ydn.social.ui.MetaProfile.prototype.setModel = function(model) {
@@ -89,11 +103,7 @@ ydn.social.ui.MetaProfile.prototype.setModel = function(model) {
       (!!ex && !!model && ex.getNetworkName() != model.getNetworkName());
   goog.base(this, 'setModel', model);
   if (net_changed) {
-    var btn = this.getButton();
-    btn.innerHTML = '';
-    var svg = ydn.crm.ui.createSvgIcon(this.getSvgSymbolName());
-    btn.setAttribute('name', model.getNetworkName());
-    btn.appendChild(svg);
+    this.renderButton(model.getNetworkName());
   }
   this.redraw();
 };
@@ -146,7 +156,11 @@ ydn.social.ui.MetaProfile.prototype.resetBaseClass = function() {
  * @protected
  */
 ydn.social.ui.MetaProfile.prototype.getSvgSymbolName = function() {
-  var network = this.getModel().getNetworkName();
+  var model = this.getModel();
+  if (!model) {
+    return 'language'; // generic symbol
+  }
+  var network = model.getNetworkName();
   if (ydn.social.network2name[network]) {
     return network;
   } else {

@@ -120,7 +120,8 @@ ydn.social.ui.Bar.prototype.setTarget = function(target) {
     return;
   }
   this.target = target;
-  for (var i = 0; i < ydn.social.defaultNetworks.length; i++) {
+  this.getChildAt(0).setModel(target ? target.getMetaProfile(ydn.social.Network.TWITTER) : null);
+  for (var i = 1; i < ydn.social.defaultNetworks.length; i++) {
     var ch = /** @type {ydn.social.ui.Network} */ (this.getChildAt(i));
     ch.setTarget(target);
   }
