@@ -60,6 +60,15 @@ ydn.social.network2name['klout'] = 'Klout';
 
 
 /**
+ * @param {ydn.social.Network} network
+ * @return {string} domain name of the network
+ */
+ydn.social.network2domain = function(network) {
+  return network + '.com';
+};
+
+
+/**
  * List of default networks.
  * @type {Array<ydn.social.Network>}
  */

@@ -89,15 +89,14 @@ ydn.social.MetaProfile.prototype.compile_ = function() {
   if (this.parent.data.fc) {
     var p = ydn.social.FcProfile.getSocialProfile(this.parent.data.fc, this.network);
     if (p) {
-      this.sources_.push(new ydn.social.FcProfile(this.network, p,
-          ydn.social.FcProfile.getPhotoUrl(this.parent.data.fc, this.network, true)));
+      var url = ydn.social.FcProfile.getPhotoUrl(this.parent.data.fc, this.network, true);
+      this.sources_.push(new ydn.social.FcProfile(this.network, p, url));
     }
   }
   if (this.parent.data.pp) {
-    var p = ydn.social.FcProfile.getSocialProfile(this.parent.data.pp, this.network);
-    if (p) {
-      this.sources_.push(new ydn.social.PiplProfile(this.network, p,
-          ydn.social.FcProfile.getPhotoUrl(this.parent.data.pp, this.network, true)));
+    var pp = ydn.social.PiplProfile.parse(this.parent.data.pp, this.network);
+    if (pp) {
+      this.sources_.push(pp);
     }
   }
 };

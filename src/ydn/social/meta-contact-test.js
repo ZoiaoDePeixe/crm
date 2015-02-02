@@ -39,7 +39,9 @@ function testGetSources() {
   assertEquals(2, tw.count());
   assertEquals('FullContact', tw.getProfile(0).getSourceName());
   assertEquals('Pipl', tw.getProfile(1).getSourceName());
-  assertEquals(1, pt.count());
+  assertEquals('userId', tw.getProfile(0).getUserId(), tw.getProfile(1).getUserId());
+  assertEquals(2, pt.count());
+  assertEquals('userId', pt.getProfile(0).getUserId(), pt.getProfile(1).getUserId());
 }
 
 
@@ -71,10 +73,10 @@ function testScreenName() {
 
 function testPhotoUrl() {
   var meta = new ydn.social.MetaContact(metaContactData.brat);
-  var tw = new ydn.social.MetaProfile(meta, ydn.social.Network.TWITTER).getProfile();
-  var fb = new ydn.social.MetaProfile(meta, ydn.social.Network.FACEBOOK).getProfile();
-  assertEquals('https://d2ojpxxtu63wzl.cloudfront.net/static/74d39cab61dfe1806e9e7990378798f1_fa637c886a20684d69304c410faf24b3c1c35a7b53d0c3d02b841ec6e6440c73', tw.getPhotoUrl());
-  assertTrue(!fb.getPhotoUrl());
+  var tw = new ydn.social.MetaProfile(meta, ydn.social.Network.PINTEREST).getProfile();
+  var fb = new ydn.social.MetaProfile(meta, ydn.social.Network.TWITTER).getProfile(1);
+  assertTrue(!!tw.getPhotoUrl());
+  assertTrue(!!fb.getPhotoUrl());
 }
 
 

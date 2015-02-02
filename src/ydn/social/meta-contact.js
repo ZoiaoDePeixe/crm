@@ -97,6 +97,7 @@ ydn.social.MetaContact.fetchByEmail = function(email) {
     'email': email
   }).addCallbacks(function(data) {
     if (ydn.social.MetaContact.DEBUG) {
+      // window.console.log(JSON.stringify(data, null, 2));
       window.console.log(data);
     }
     return new ydn.social.MetaContact(data, email);
@@ -115,12 +116,6 @@ ydn.social.MetaContact.prototype.getProfile = function(network) {
   if (this.data) {
     for (var i = 0; this.data.fc && i < this.data.fc.socialProfiles.length; i++) {
       var obj = this.data.fc.socialProfiles[i];
-      if (obj && obj.typeId == network) {
-        return obj;
-      }
-    }
-    for (var i = 0; this.data.pp && i < this.data.pp.socialProfiles.length; i++) {
-      var obj = this.data.pp.socialProfiles[i];
       if (obj && obj.typeId == network) {
         return obj;
       }

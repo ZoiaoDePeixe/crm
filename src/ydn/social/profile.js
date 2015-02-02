@@ -97,27 +97,34 @@ ydn.social.Profile.prototype.getProfileUrl = goog.abstractMethod;
  * Get social network profile photo URL.
  * @return {string|undefined}
  */
-ydn.social.Profile.prototype.getPhotoUrl = goog.abstractMethod;
+ydn.social.Profile.prototype.getPhotoUrl = function() {
+  return undefined;
+};
 
 
 /**
  * Get a short summary of the user.
  * @return {string|undefined}
  */
-ydn.social.Profile.prototype.getBio = goog.abstractMethod;
+ydn.social.Profile.prototype.getBio = function() {
+  return undefined;
+};
 
 
 /**
  * @return {number|undefined}
  */
-ydn.social.Profile.prototype.getFollowers = goog.abstractMethod;
+ydn.social.Profile.prototype.getFollowers = function() {
+  return undefined;
+};
 
 
 /**
  * @return {number|undefined}
  */
-ydn.social.Profile.prototype.getFollowing = goog.abstractMethod;
-
+ydn.social.Profile.prototype.getFollowing = function() {
+  return undefined;
+};
 
 
 
