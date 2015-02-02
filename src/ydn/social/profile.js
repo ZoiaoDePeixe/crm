@@ -73,14 +73,14 @@ ydn.social.Profile.prototype.getSourceName = goog.abstractMethod;
 
 
 /**
- * Get screen name.
+ * Get user id. If user id is not available, screen name should return.
  * @return {string}
  */
 ydn.social.Profile.prototype.getUserId = goog.abstractMethod;
 
 
 /**
- * Get screen name.
+ * Get screen name. If screen name is not available, user id should return;
  * @return {string}
  */
 ydn.social.Profile.prototype.getScreenName = goog.abstractMethod;

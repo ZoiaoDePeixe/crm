@@ -49,7 +49,7 @@ goog.inherits(ydn.social.FcProfile, ydn.social.Profile);
  * @override
  */
 ydn.social.FcProfile.prototype.getScreenName = function() {
-  return this.data_.username;
+  return this.data_.username || this.data_.id;
 };
 
 
@@ -57,7 +57,7 @@ ydn.social.FcProfile.prototype.getScreenName = function() {
  * @override
  */
 ydn.social.FcProfile.prototype.getUserId = function() {
-  return this.data_.id;
+  return this.data_.id || this.data_.username;
 };
 
 
