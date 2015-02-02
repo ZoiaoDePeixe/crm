@@ -67,7 +67,11 @@ ydn.social.Profile.prototype.toProfileDetail = function(obj) {
  * @return {!goog.async.Deferred<!CrmApp.ProfileDetail>}
  */
 ydn.social.Profile.prototype.fetchDetail = function() {
-  throw new Error(this.network);
+  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.SOCIAL_PROFILE_DETAIL, {
+    'network': this.network,
+    'userId': this.getUserId(),
+    'userName': this.getUserName()
+  });
 };
 
 
