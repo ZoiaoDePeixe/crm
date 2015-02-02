@@ -23,7 +23,7 @@
 
 goog.provide('ydn.social.ui.AngelList');
 goog.require('goog.date.relative');
-goog.require('ydn.social.ui.Profile');
+goog.require('ydn.social.ui.MetaProfile');
 goog.require('ydn.time');
 
 
@@ -33,13 +33,13 @@ goog.require('ydn.time');
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.social.ui.Profile}
+ * @extends {ydn.social.ui.MetaProfile}
  */
 ydn.social.ui.AngelList = function(opt_dom) {
-  goog.base(this, ydn.social.Network.ANGLE_LIST, opt_dom);
+  goog.base(this, opt_dom);
 
 };
-goog.inherits(ydn.social.ui.AngelList, ydn.social.ui.Profile);
+goog.inherits(ydn.social.ui.AngelList, ydn.social.ui.MetaProfile);
 
 
 /**
@@ -47,6 +47,8 @@ goog.inherits(ydn.social.ui.AngelList, ydn.social.ui.Profile);
  */
 ydn.social.ui.AngelList.prototype.createDom = function() {
   goog.base(this, 'createDom');
+  this.renderButton(ydn.social.Network.ANGLE_LIST);
+  goog.style.setElementShown(this.getElement(), true);
 };
 
 
@@ -62,34 +64,35 @@ ydn.social.ui.AngelList.prototype.enterDocument = function() {
 
 
 /**
- * @param {CrmApp.FullContact2SocialProfile} profile
+ * @param {ydn.social.Profile} profile
  * @private
  */
 ydn.social.ui.AngelList.prototype.refreshByFC_ = function(profile) {
   var tid = 'template-detail-' + ydn.social.Network.TWITTER;
   var t = ydn.ui.getTemplateById(tid).content;
-  var el = this.getDetail();
+  var el = this.getDetailElement();
   el.innerHTML = '';
   el.appendChild(t.cloneNode(true));
   goog.style.setElementShown(el, true);
   var header = el.querySelector('.header');
   var name = header.querySelector('.name a');
-  name.textContent = this.target.getFullName();
-  if (profile.url) {
-    name.href = profile.url;
+  name.textContent = profile.getScreenName();
+  var url = profile.getPhotoUrl();
+  if (url) {
+    name.href = url;
   } else {
     name.removeAttribute('href');
   }
-  var photo = this.target.getPhoto(this.network);
+  var photo = profile.getPhotoUrl();
   var img = header.querySelector('.logo img');
   if (photo) {
     img.src = photo;
   } else {
     img.removeAttribute('src');
   }
-  header.querySelector('.description').textContent = profile.bio || '';
-  header.querySelector('.followers').textContent = profile.followers || '';
-  header.querySelector('.following').textContent = profile.following || '';
+  header.querySelector('.description').textContent = profile.getBio() || '';
+  header.querySelector('.followers').textContent = profile.getFollowers() || '';
+  header.querySelector('.following').textContent = profile.getFollowing() || '';
 };
 
 
@@ -100,11 +103,11 @@ ydn.social.ui.AngelList.prototype.redraw = function() {
   var container = this.getContainer();
   this.resetBaseClass();
   this.getButton().setAttribute('title', 'AngelList');
-  var detail = this.getDetail();
+  var detail = this.getDetailElement();
   detail.innerHTML = '';
 
-  var profile = this.target ? this.target.getProfile(
-      ydn.social.Network.ANGLE_LIST) : null;
+  var model = this.getModel();
+  var profile = model ? model.getProfile() : null;
   if (profile) {
     goog.style.setElementShown(container, true);
     container.classList.add('exist');
@@ -183,14 +186,15 @@ ydn.social.ui.AngelList.renderAngelProfile = function(el, profile) {
  * @private
  */
 ydn.social.ui.AngelList.prototype.fetchDetailAndRefresh_ = function() {
-  if (!this.target) {
+  var model = this.getModel();
+  if (!model) {
     return;
   }
   var container = this.getContainer();
-  var detail = this.getDetail();
+  var detail = this.getDetailElement();
   container.classList.add('working');
   container.classList.remove('exist');
-  this.target.getProfileDetail(this.network)
+  model.getProfile().fetchDetail()
       .addCallbacks(function(dp) {
         if (ydn.social.ui.Profile.DEBUG) {
           window.console.log(dp);

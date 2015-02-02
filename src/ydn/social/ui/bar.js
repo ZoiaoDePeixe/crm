@@ -121,7 +121,8 @@ ydn.social.ui.Bar.prototype.setTarget = function(target) {
   }
   this.target = target;
   this.getChildAt(0).setModel(target ? target.getMetaProfile(ydn.social.Network.TWITTER) : null);
-  for (var i = 1; i < ydn.social.defaultNetworks.length; i++) {
+  this.getChildAt(4).setModel(target ? target.getMetaProfile(ydn.social.Network.ANGLE_LIST) : null);
+  for (var i = 1; i < ydn.social.defaultNetworks.length - 1; i++) {
     var ch = /** @type {ydn.social.ui.Network} */ (this.getChildAt(i));
     ch.setTarget(target);
   }
