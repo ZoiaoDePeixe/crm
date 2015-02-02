@@ -153,7 +153,9 @@ ydn.social.ui.AngelList.renderRoles_ = function(el, roles) {
  * @param {Object} profile twitter profile record as return by: people/get API
  */
 ydn.social.ui.AngelList.renderAngelProfile = function(el, profile) {
-  console.log(profile);
+  if (ydn.social.ui.MetaProfile.DEBUG) {
+    window.console.log(profile);
+  }
   var tid = 'template-detail-' + ydn.social.Network.ANGLE_LIST;
   var t = ydn.ui.getTemplateById(tid).content;
   el.innerHTML = '';

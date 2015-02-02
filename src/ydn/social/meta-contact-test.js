@@ -29,6 +29,8 @@ var loadData = function(name) {
 function setUpPage() {
   loadData('brat');
   loadData('jeremy');
+  loadData('joe');
+  loadData('yossi');
 }
 
 
@@ -58,13 +60,6 @@ function testUserId() {
 }
 
 
-function testUserIdPiplNoMatch() {
-  var meta = new ydn.social.MetaContact(metaContactData.joe);
-  var lkn = new ydn.social.MetaProfile(meta, ydn.social.Network.LINKED_IN).getProfile();
-  assertNull(lkn);
-}
-
-
 function testScreenName() {
   var meta = new ydn.social.MetaContact(metaContactData.brat);
   var tw = new ydn.social.MetaProfile(meta, ydn.social.Network.TWITTER).getProfile();
@@ -75,6 +70,22 @@ function testScreenName() {
   assertEquals('114426306375480734745', gp.getScreenName());
   assertEquals('bart.lorang', fb.getScreenName());
   assertEquals('lorangb', pt.getScreenName());
+}
+
+
+function testUserIdPiplNoMatch() {
+  var meta = new ydn.social.MetaContact(metaContactData.joe);
+  var lkn = new ydn.social.MetaProfile(meta, ydn.social.Network.LINKED_IN).getProfile();
+  assertNull(lkn);
+}
+
+
+function testUserIdPipl() {
+  var meta = new ydn.social.MetaContact(metaContactData.yossi);
+  var fb = new ydn.social.MetaProfile(meta, ydn.social.Network.FACEBOOK).getProfile();
+  var lkn = new ydn.social.MetaProfile(meta, ydn.social.Network.LINKED_IN).getProfile();
+  assertEquals('Pipl', lkn.getSourceName());
+  assertEquals('590949588', fb.getUserId());
 }
 
 

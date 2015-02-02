@@ -59,6 +59,9 @@ ydn.social.ui.Twitter.prototype.enterDocument = function() {
  * @param {Object} profile twitter profile record as return by: users/show API
  */
 ydn.social.ui.Twitter.renderTwitterProfile = function(el, profile) {
+  if (ydn.social.ui.MetaProfile.DEBUG) {
+    window.console.log(profile);
+  }
   var tid = 'template-detail-' + ydn.social.Network.TWITTER;
   var t = ydn.ui.getTemplateById(tid).content;
   el.innerHTML = '';
@@ -66,7 +69,7 @@ ydn.social.ui.Twitter.renderTwitterProfile = function(el, profile) {
   goog.style.setElementShown(el, true);
   var header = el.querySelector('.header');
   var name = header.querySelector('.name a');
-  name.textContent = profile['name'];
+  name.textContent = '@' + profile['screen_name'];
   name.href = profile['url'];
   header.querySelector('.description').textContent = profile['description'] || '';
   header.querySelector('.logo img').src = profile['profile_image_url_https'];

@@ -66,6 +66,9 @@ ydn.social.ui.GPlus.prototype.enterDocument = function() {
  * @private
  */
 ydn.social.ui.GPlus.prototype.refreshByFC_ = function(profile) {
+  if (true) {
+    window.console.log(profile);
+  }
   var tid = 'template-detail-' + ydn.social.Network.TWITTER;
   var t = ydn.ui.getTemplateById(tid).content;
   var el = this.getDetailElement();
@@ -174,7 +177,9 @@ ydn.social.ui.GPlus.renderOrganization_ = function(work, school, organizations) 
  * @param {Object} profile twitter profile record as return by: people/get API
  */
 ydn.social.ui.GPlus.renderGPlusProfile = function(el, profile) {
-  console.log(profile);
+  if (ydn.social.ui.MetaProfile.DEBUG) {
+    window.console.log(profile);
+  }
   var tid = 'template-detail-' + ydn.social.Network.G_PLUS;
   var t = ydn.ui.getTemplateById(tid).content;
   el.innerHTML = '';
