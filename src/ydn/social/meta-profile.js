@@ -66,10 +66,10 @@ ydn.social.MetaProfile = function(parent, network) {
 
 
 /**
- * @return {string}
+ * @return {ydn.social.Network}
  */
 ydn.social.MetaProfile.prototype.getNetworkName = function() {
-  return this.network;
+  return /** @type {ydn.social.Network} */(this.network);
 };
 
 

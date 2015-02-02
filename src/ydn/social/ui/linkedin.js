@@ -23,7 +23,7 @@
 
 goog.provide('ydn.social.ui.LinkedIn');
 goog.require('goog.date.relative');
-goog.require('ydn.social.ui.Profile');
+goog.require('ydn.social.ui.FixMetaProfile');
 goog.require('ydn.time');
 
 
@@ -33,21 +33,12 @@ goog.require('ydn.time');
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.social.ui.Profile}
+ * @extends {ydn.social.ui.FixMetaProfile}
  */
 ydn.social.ui.LinkedIn = function(opt_dom) {
   goog.base(this, ydn.social.Network.LINKED_IN, opt_dom);
-
 };
-goog.inherits(ydn.social.ui.LinkedIn, ydn.social.ui.Profile);
-
-
-/**
- * @inheritDoc
- */
-ydn.social.ui.LinkedIn.prototype.createDom = function() {
-  goog.base(this, 'createDom');
-};
+goog.inherits(ydn.social.ui.LinkedIn, ydn.social.ui.FixMetaProfile);
 
 
 /**
@@ -62,34 +53,35 @@ ydn.social.ui.LinkedIn.prototype.enterDocument = function() {
 
 
 /**
- * @param {CrmApp.FullContact2SocialProfile} profile
+ * @param {ydn.social.Profile} profile
  * @private
  */
 ydn.social.ui.LinkedIn.prototype.refresh_ = function(profile) {
   var tid = 'template-detail-' + ydn.social.Network.TWITTER;
   var t = ydn.ui.getTemplateById(tid).content;
-  var el = this.getDetail();
+  var el = this.getDetailElement();
   el.innerHTML = '';
   el.appendChild(t.cloneNode(true));
   goog.style.setElementShown(el, true);
   var header = el.querySelector('.header');
   var name = header.querySelector('.name a');
-  name.textContent = this.target.getFullName();
-  if (profile.url) {
-    name.href = profile.url;
+  name.textContent = profile.getScreenName();
+  var url = profile.getPhotoUrl();
+  if (url) {
+    name.href = url;
   } else {
     name.removeAttribute('href');
   }
-  var photo = this.target.getPhoto(this.network);
+  var photo = profile.getPhotoUrl();
   var img = header.querySelector('.logo img');
   if (photo) {
     img.src = photo;
   } else {
     img.removeAttribute('src');
   }
-  header.querySelector('.description').textContent = profile.bio || '';
-  header.querySelector('.followers').textContent = profile.followers || '';
-  header.querySelector('.following').textContent = profile.following || '';
+  header.querySelector('.description').textContent = profile.getBio() || '';
+  header.querySelector('.followers').textContent = profile.getFollowers() || '';
+  header.querySelector('.following').textContent = profile.getFollowing() || '';
 };
 
 
@@ -99,12 +91,9 @@ ydn.social.ui.LinkedIn.prototype.refresh_ = function(profile) {
 ydn.social.ui.LinkedIn.prototype.redraw = function() {
   var container = this.getContainer();
   this.resetBaseClass();
-  var detail = this.getDetail();
-  detail.innerHTML = '';
-  this.getButton().setAttribute('title', 'LinkedIn');
-
-  var profile = this.target ? this.target.getProfile(
-      ydn.social.Network.LINKED_IN) : null;
+  var detail = this.getDetailElement();
+  var model = this.getModel();
+  var profile = model ? model.getProfile() : null;
   if (profile) {
     container.classList.add('exist');
     goog.style.setElementShown(detail, true);

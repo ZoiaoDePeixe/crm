@@ -23,7 +23,7 @@
 
 goog.provide('ydn.social.ui.AngelList');
 goog.require('goog.date.relative');
-goog.require('ydn.social.ui.MetaProfile');
+goog.require('ydn.social.ui.FixMetaProfile');
 goog.require('ydn.time');
 
 
@@ -33,23 +33,13 @@ goog.require('ydn.time');
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.social.ui.MetaProfile}
+ * @extends {ydn.social.ui.FixMetaProfile}
  */
 ydn.social.ui.AngelList = function(opt_dom) {
-  goog.base(this, opt_dom);
+  goog.base(this, ydn.social.Network.ANGLE_LIST, opt_dom);
 
 };
-goog.inherits(ydn.social.ui.AngelList, ydn.social.ui.MetaProfile);
-
-
-/**
- * @inheritDoc
- */
-ydn.social.ui.AngelList.prototype.createDom = function() {
-  goog.base(this, 'createDom');
-  this.renderButton(ydn.social.Network.ANGLE_LIST);
-  goog.style.setElementShown(this.getElement(), true);
-};
+goog.inherits(ydn.social.ui.AngelList, ydn.social.ui.FixMetaProfile);
 
 
 /**
@@ -196,7 +186,7 @@ ydn.social.ui.AngelList.prototype.fetchDetailAndRefresh_ = function() {
   container.classList.remove('exist');
   model.getProfile().fetchDetail()
       .addCallbacks(function(dp) {
-        if (ydn.social.ui.Profile.DEBUG) {
+        if (ydn.social.ui.MetaProfile.DEBUG) {
           window.console.log(dp);
         }
         container.classList.remove('working');

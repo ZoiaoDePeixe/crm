@@ -98,9 +98,11 @@ ydn.social.ui.MetaProfile.prototype.renderButton = function(name) {
  * @override
  */
 ydn.social.ui.MetaProfile.prototype.setModel = function(model) {
+  if (model) {
+    goog.asserts.assertInstanceof(model, ydn.social.MetaProfile);
+  }
   var ex = this.getModel();
-  var net_changed = !ex && !!model ||
-      (!!ex && !!model && ex.getNetworkName() != model.getNetworkName());
+  var net_changed = !!model && (!ex || ex.getNetworkName() != model.getNetworkName());
   goog.base(this, 'setModel', model);
   if (net_changed) {
     this.renderButton(model.getNetworkName());

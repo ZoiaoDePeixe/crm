@@ -120,39 +120,30 @@ ydn.social.ui.Bar.prototype.setTarget = function(target) {
     return;
   }
   this.target = target;
-  this.getChildAt(0).setModel(target ? target.getMetaProfile(ydn.social.Network.TWITTER) : null);
-  this.getChildAt(4).setModel(target ? target.getMetaProfile(ydn.social.Network.ANGLE_LIST) : null);
-  for (var i = 1; i < ydn.social.defaultNetworks.length - 1; i++) {
-    var ch = /** @type {ydn.social.ui.Network} */ (this.getChildAt(i));
-    ch.setTarget(target);
+
+  for (var i = 0; i < ydn.social.defaultNetworks.length - 1; i++) {
+    var ch = /** @type {ydn.social.ui.MetaProfile} */ (this.getChildAt(i));
+    var network = ydn.social.defaultNetworks[i];
+    var model = target ? target.getMetaProfile(network) : null;
+    ch.setModel(model);
   }
-  // show whatever available network
+
   if (target) {
-    var n_opt = this.getChildCount() - ydn.social.defaultNetworks.length;
     var next = ydn.social.defaultNetworks.length;
-    for (var network in ydn.social.network2name) {
-      var in_default = ydn.social.defaultNetworks.indexOf(network) >= 0;
-      if (in_default) {
+    for (var nn in ydn.social.network2name) {
+      var network = /** @type {ydn.social.Network} */(nn);
+      if (ydn.social.defaultNetworks.indexOf(network) >= 0) {
         continue;
       }
-      var profile = target.getMetaProfile(/** @type {ydn.social.Network} */(network));
+      var profile = target.getMetaProfile(network);
       if (profile) {
-        var ch = /** @type {ydn.social.ui.MetaProfile} */ (this.getChildAt(next));
+        var ch = /** @type {ydn.social.ui.MetaProfile} */ (this.getChildAt(next++));
         ch.setModel(profile);
-        next++;
-        if (next > this.getChildCount()) {
-          break;
-        }
       }
     }
-    for (var i = next; i < this.getChildCount(); i++) {
-      // hide them.
-      this.getChildAt(i).setModel(null);
-    }
-  } else {
-    for (var i = ydn.social.defaultNetworks.length; i < this.getChildCount(); i++) {
-      this.getChildAt(i).setModel(null);
-    }
+  }
+  for (var i = next; i < this.getChildCount(); i++) {
+    this.getChildAt(i).setModel(null);
   }
 
 };

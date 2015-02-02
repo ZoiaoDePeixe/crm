@@ -23,7 +23,7 @@
 
 goog.provide('ydn.social.ui.Twitter');
 goog.require('goog.date.relative');
-goog.require('ydn.social.ui.MetaProfile');
+goog.require('ydn.social.ui.FixMetaProfile');
 goog.require('ydn.time');
 
 
@@ -33,23 +33,13 @@ goog.require('ydn.time');
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
- * @extends {ydn.social.ui.MetaProfile}
+ * @extends {ydn.social.ui.FixMetaProfile}
  */
 ydn.social.ui.Twitter = function(opt_dom) {
-  goog.base(this, opt_dom);
+  goog.base(this, ydn.social.Network.TWITTER, opt_dom);
 
 };
-goog.inherits(ydn.social.ui.Twitter, ydn.social.ui.MetaProfile);
-
-
-/**
- * @inheritDoc
- */
-ydn.social.ui.Twitter.prototype.createDom = function() {
-  goog.base(this, 'createDom');
-  this.renderButton(ydn.social.Network.TWITTER);
-  goog.style.setElementShown(this.getElement(), true);
-};
+goog.inherits(ydn.social.ui.Twitter, ydn.social.ui.FixMetaProfile);
 
 
 /**
@@ -97,7 +87,7 @@ ydn.social.ui.Twitter.renderTwitterProfile = function(el, profile) {
  * statuses/user_timeline API
  */
 ydn.social.ui.Twitter.renderTweet = function(detail, tweets) {
-  if (ydn.social.ui.Profile.DEBUG) {
+  if (ydn.social.ui.MetaProfile.DEBUG) {
     window.console.log(tweets);
   }
   detail.innerHTML = '';
@@ -136,7 +126,7 @@ ydn.social.ui.Twitter.prototype.refreshTweet_ = function() {
   var model = this.getModel();
   var profile = model.getProfile();
   return profile.fetchFeed().addCallbacks(function(tweets) {
-    if (ydn.social.ui.Profile.DEBUG) {
+    if (ydn.social.ui.MetaProfile.DEBUG) {
       window.console.log(tweets);
     }
     container.classList.remove('working');
@@ -164,12 +154,15 @@ ydn.social.ui.Twitter.prototype.refreshTweet_ = function() {
  */
 ydn.social.ui.Twitter.prototype.refreshTwitterProfile_ = function() {
   var container = this.getContainer();
-
+  var model = this.getModel();
+  if (!model) {
+    return goog.async.Deferred.fail(null);
+  }
   container.classList.add('working');
-  var profile = this.getModel().getProfile();
+  var profile = model.getProfile();
   return profile.fetchDetail()
       .addCallbacks(function(dp) {
-        if (ydn.social.ui.Profile.DEBUG) {
+        if (ydn.social.ui.MetaProfile.DEBUG) {
           window.console.log(dp);
         }
         container.classList.remove('working');

@@ -63,9 +63,9 @@ ydn.social.network2name['klout'] = 'Klout';
  * List of default networks.
  * @type {Array<ydn.social.Network>}
  */
-ydn.social.defaultNetworks = [ydn.social.Network.ANGLE_LIST,
+ydn.social.defaultNetworks = [ydn.social.Network.TWITTER,
   ydn.social.Network.FACEBOOK, ydn.social.Network.G_PLUS,
-  ydn.social.Network.LINKED_IN, ydn.social.Network.TWITTER];
+  ydn.social.Network.LINKED_IN, ydn.social.Network.ANGLE_LIST];
 
 
 /**
