@@ -147,12 +147,7 @@ ydn.social.ui.MetaProfile.prototype.resetBaseClass = function() {
  */
 ydn.social.ui.MetaProfile.prototype.getSvgSymbolName = function() {
   var network = this.getModel().getNetworkName();
-  if (ydn.social.defaultNetworks.indexOf(network) >= 0) {
-    return network;
-  } else if (['meetup', 'pinterest', 'yelp', 'tumblr', 'reddit', 'instagram',
-    'github', 'foursquare', 'flickr', 'youtube', 'friendfeed',
-    'blogger', 'wordpress', 'quora', 'myspace', 'yahoo', 'delicious',
-    'vimeo', 'klout'].indexOf(network) >= 0) {
+  if (ydn.social.network2name[network]) {
     return network;
   } else {
     return 'language'; // generic symbol
