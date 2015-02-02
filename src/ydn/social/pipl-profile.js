@@ -29,12 +29,13 @@ goog.require('ydn.social.FcProfile');
  * FullContact social network profile.
  * @param {ydn.social.Network} network
  * @param {!CrmApp.FullContact2SocialProfile} data
+ * @param {string=} opt_photo_url
  * @constructor
  * @struct
  * @extends {ydn.social.FcProfile}
  */
-ydn.social.PiplProfile = function(network, data) {
-  goog.base(this, network, data);
+ydn.social.PiplProfile = function(network, data, opt_photo_url) {
+  goog.base(this, network, data, opt_photo_url);
 };
 goog.inherits(ydn.social.PiplProfile, ydn.social.FcProfile);
 

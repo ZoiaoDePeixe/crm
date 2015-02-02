@@ -43,22 +43,39 @@ function testGetSources() {
 }
 
 
-function testScreenName() {
+function testUserId() {
   var meta = new ydn.social.MetaContact(metaContactData.brat);
   var tw = new ydn.social.MetaProfile(meta, ydn.social.Network.TWITTER).getProfile();
   var gp = new ydn.social.MetaProfile(meta, ydn.social.Network.G_PLUS).getProfile();
   var fb = new ydn.social.MetaProfile(meta, ydn.social.Network.FACEBOOK).getProfile();
   var pt = new ydn.social.MetaProfile(meta, ydn.social.Network.PINTEREST).getProfile();
   assertEquals('5998422', tw.getUserId());
-  assertEquals('bartlorang', tw.getScreenName());
-  assertEquals('114426306375480734745', gp.getScreenName());
   assertEquals('114426306375480734745', gp.getUserId());
-  assertEquals('bart.lorang', fb.getScreenName());
   assertEquals('651620441', fb.getUserId());
-  assertEquals('lorangb', pt.getScreenName());
   assertEquals('lorangb', pt.getUserId());
 }
 
+
+function testScreenName() {
+  var meta = new ydn.social.MetaContact(metaContactData.brat);
+  var tw = new ydn.social.MetaProfile(meta, ydn.social.Network.TWITTER).getProfile();
+  var gp = new ydn.social.MetaProfile(meta, ydn.social.Network.G_PLUS).getProfile();
+  var fb = new ydn.social.MetaProfile(meta, ydn.social.Network.FACEBOOK).getProfile();
+  var pt = new ydn.social.MetaProfile(meta, ydn.social.Network.PINTEREST).getProfile();
+  assertEquals('bartlorang', tw.getScreenName());
+  assertEquals('114426306375480734745', gp.getScreenName());
+  assertEquals('bart.lorang', fb.getScreenName());
+  assertEquals('lorangb', pt.getScreenName());
+}
+
+
+function testPhotoUrl() {
+  var meta = new ydn.social.MetaContact(metaContactData.brat);
+  var tw = new ydn.social.MetaProfile(meta, ydn.social.Network.TWITTER).getProfile();
+  var fb = new ydn.social.MetaProfile(meta, ydn.social.Network.FACEBOOK).getProfile();
+  assertEquals('https://d2ojpxxtu63wzl.cloudfront.net/static/74d39cab61dfe1806e9e7990378798f1_fa637c886a20684d69304c410faf24b3c1c35a7b53d0c3d02b841ec6e6440c73', tw.getPhotoUrl());
+  assertTrue(!fb.getPhotoUrl());
+}
 
 
 

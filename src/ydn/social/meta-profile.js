@@ -86,24 +86,18 @@ ydn.social.MetaProfile.prototype.getNetworkLabel = function() {
  * @private
  */
 ydn.social.MetaProfile.prototype.compile_ = function() {
-  if (this.parent.data.fc && this.parent.data.fc.socialProfiles) {
-    var ps = this.parent.data.fc.socialProfiles;
-    for (var i = 0; i < ps.length; i++) {
-      var p = ps[i];
-      if (p.typeId == this.network && (p.id || p.username || p.url)) {
-        this.sources_.push(new ydn.social.FcProfile(this.network, p));
-        break;
-      }
+  if (this.parent.data.fc) {
+    var p = ydn.social.FcProfile.getSocialProfile(this.parent.data.fc, this.network);
+    if (p) {
+      this.sources_.push(new ydn.social.FcProfile(this.network, p,
+          ydn.social.FcProfile.getPhotoUrl(this.parent.data.fc, this.network, true)));
     }
   }
-  if (this.parent.data.pp && this.parent.data.pp.socialProfiles) {
-    var ps = this.parent.data.pp.socialProfiles;
-    for (var i = 0; i < ps.length; i++) {
-      var p = ps[i];
-      if (p.typeId == this.network && (p.id || p.username || p.url)) {
-        this.sources_.push(new ydn.social.PiplProfile(this.network, p));
-        break;
-      }
+  if (this.parent.data.pp) {
+    var p = ydn.social.FcProfile.getSocialProfile(this.parent.data.pp, this.network);
+    if (p) {
+      this.sources_.push(new ydn.social.PiplProfile(this.network, p,
+          ydn.social.FcProfile.getPhotoUrl(this.parent.data.pp, this.network, true)));
     }
   }
 };

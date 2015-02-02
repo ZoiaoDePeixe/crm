@@ -29,11 +29,12 @@ goog.require('ydn.social.Profile');
  * FullContact social network profile.
  * @param {ydn.social.Network} network
  * @param {!CrmApp.FullContact2SocialProfile} data
+ * @param {string=} opt_photo_url
  * @constructor
  * @struct
  * @extends {ydn.social.Profile}
  */
-ydn.social.FcProfile = function(network, data) {
+ydn.social.FcProfile = function(network, data, opt_photo_url) {
   goog.base(this, network);
   /**
    * @final
@@ -41,8 +42,56 @@ ydn.social.FcProfile = function(network, data) {
    * @private
    */
   this.data_ = data;
+  /**
+   * @type {string|undefined}
+   */
+  this.photo_url = opt_photo_url;
 };
 goog.inherits(ydn.social.FcProfile, ydn.social.Profile);
+
+
+/**
+ * Extract social profile
+ * @param {CrmApp.FullContact2} data
+ * @param {ydn.social.Network} network
+ * @return {CrmApp.FullContact2SocialProfile}
+ */
+ydn.social.FcProfile.getSocialProfile = function(data, network) {
+  if (!data || !data.socialProfiles) {
+    return null;
+  }
+  var ps = data.socialProfiles;
+  for (var i = 0; i < ps.length; i++) {
+    var p = ps[i];
+    if (p.typeId == network && (p.id || p.username)) {
+      return p;
+    }
+  }
+  return null;
+};
+
+
+/**
+ * Extract social profile
+ * @param {CrmApp.FullContact2} data
+ * @param {ydn.social.Network} network
+ * @param {boolean} https_only
+ * @return {string|undefined}
+ */
+ydn.social.FcProfile.getPhotoUrl = function(data, network, https_only) {
+  if (!data || !data.photos) {
+    return undefined;
+  }
+  var ps = data.photos;
+  for (var i = 0; i < ps.length; i++) {
+    var p = ps[i];
+    if (p.typeId == network && !!p.url &&
+        (!https_only || /^https:/.test(p.url))) {
+      return p.url;
+    }
+  }
+  return undefined;
+};
 
 
 /**
@@ -105,7 +154,7 @@ ydn.social.FcProfile.prototype.getProfileUrl = function() {
  * @override
  */
 ydn.social.FcProfile.prototype.getPhotoUrl = function() {
-
+  return this.photo_url;
 };
 
 
