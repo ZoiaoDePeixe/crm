@@ -45,14 +45,6 @@ goog.inherits(ydn.social.ui.GPlus, ydn.social.ui.FixMetaProfile);
 /**
  * @inheritDoc
  */
-ydn.social.ui.GPlus.prototype.getSvgSymbolName = function() {
-  return 'google-plus';
-};
-
-
-/**
- * @inheritDoc
- */
 ydn.social.ui.GPlus.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var hd = this.getHandler();
@@ -66,7 +58,7 @@ ydn.social.ui.GPlus.prototype.enterDocument = function() {
  * @private
  */
 ydn.social.ui.GPlus.prototype.refreshByFC_ = function(profile) {
-  if (true) {
+  if (ydn.social.ui.MetaProfile.DEBUG) {
     window.console.log(profile);
   }
   var tid = 'template-detail-' + ydn.social.Network.TWITTER;

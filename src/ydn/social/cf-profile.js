@@ -95,6 +95,26 @@ ydn.social.FcProfile.getPhotoUrl = function(data, network, https_only) {
 
 
 /**
+ * Return primary photo https url.
+ * @param {CrmApp.FullContact2} data
+ * @return {?string}
+ */
+ydn.social.FcProfile.getPrimaryPhotoUrl = function(data) {
+  if (!data || !data.photos) {
+    return null;
+  }
+  var ps = data.photos;
+  for (var i = 0; i < ps.length; i++) {
+    var p = ps[i];
+    if (p.isPrimary && !!p.url && /^https:/.test(p.url)) {
+      return p.url;
+    }
+  }
+  return null;
+};
+
+
+/**
  * @override
  */
 ydn.social.FcProfile.prototype.getScreenName = function() {

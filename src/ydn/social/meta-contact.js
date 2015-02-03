@@ -54,13 +54,19 @@ ydn.social.MetaContact.DEBUG = false;
 
 
 /**
- * @return {?string}
+ * @return {string}
  */
 ydn.social.MetaContact.prototype.getFullName = function() {
-  if (this.data.fc) {
+  if (this.data.cb && this.data.cb.name) {
+    return this.data.cb.name.fullName;
+  }
+  if (this.data.fc && this.data.fc.contactInfo) {
     return this.data.fc.contactInfo.fullName;
   }
-  return null;
+  if (this.data.pp && this.data.pp.person && this.data.pp.person.names) {
+    return this.data.pp.person.names[0].display;
+  }
+  return '';
 };
 
 
@@ -110,24 +116,6 @@ ydn.social.MetaContact.fetchByEmail = function(email) {
 /**
  * Get social profile.
  * @param {ydn.social.Network} network
- * @return {?CrmApp.FullContact2SocialProfile}
- */
-ydn.social.MetaContact.prototype.getProfile = function(network) {
-  if (this.data) {
-    for (var i = 0; this.data.fc && i < this.data.fc.socialProfiles.length; i++) {
-      var obj = this.data.fc.socialProfiles[i];
-      if (obj && obj.typeId == network) {
-        return obj;
-      }
-    }
-  }
-  return null;
-};
-
-
-/**
- * Get social profile.
- * @param {ydn.social.Network} network
  * @return {?ydn.social.MetaProfile}
  */
 ydn.social.MetaContact.prototype.getMetaProfile = function(network) {
@@ -141,90 +129,24 @@ ydn.social.MetaContact.prototype.getMetaProfile = function(network) {
 
 
 /**
- * @return {number}
- */
-ydn.social.MetaContact.prototype.getProfileCount = function() {
-  if (this.data && this.data.fc) {
-    return this.data.fc.socialProfiles.length;
-  } else {
-    return 0;
-  }
-};
-
-
-/**
- * @param {number} idx
- * @return {CrmApp.FullContact2SocialProfile}
- */
-ydn.social.MetaContact.prototype.getProfileAt = function(idx) {
-  if (this.data && this.data.fc) {
-    return this.data.fc.socialProfiles[idx];
-  } else {
-    return null;
-  }
-};
-
-
-/**
  * Get social profile.
- * @param {ydn.social.Network} network
  * @return {?string} image src, only https url will be used.
  */
-ydn.social.MetaContact.prototype.getPhoto = function(network) {
-  if (this.data && this.data.fc) {
-    for (var i = 0; i < this.data.fc.photos.length; i++) {
-      var obj = this.data.fc.photos[i];
-      if (obj && obj.typeId == network) {
-        if (obj.url && goog.string.startsWith(obj.url, 'https')) {
-          return obj.url;
-        }
-        break;
-      }
-    }
+ydn.social.MetaContact.prototype.getPhotoUrl = function() {
+  if (this.data.cb && this.data.cb.avatar) {
+    return this.data.cb.avatar;
+  }
+  var fc = ydn.social.FcProfile.getPrimaryPhotoUrl(this.data.fc);
+  if (fc) {
+    return fc;
+  }
+  var pp = ydn.social.PiplProfile.getPrimaryPhotoUrl(this.data.pp);
+  if (pp) {
+    return pp;
   }
   return null;
 };
 
 
-/**
- * Get user profile detail.
- * @param {ydn.social.Network} network network type.
- * @return {!goog.async.Deferred<Object>} Resulting object depends on network.
- */
-ydn.social.MetaContact.prototype.getProfileDetail = function(network) {
-  var profile = this.getProfile(network);
-  if (!profile) {
-    return goog.async.Deferred.succeed(null);
-  }
-  if (!profile.id && !profile.username) {
-    return goog.async.Deferred.succeed(null);
-  }
-  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.SOCIAL_PROFILE_DETAIL, {
-    'network': network, 'id': profile.id});
-};
-
-
-/**
- * Fetch user activity feed.
- * @param {ydn.social.Network} network network type.
- * @return {!goog.async.Deferred<!Array<Object>>} Result format depends
- * on network type.
- */
-ydn.social.MetaContact.prototype.getFeed = function(network) {
-  var profile = this.getProfile(network);
-  if (!profile) {
-    return goog.async.Deferred.succeed(null);
-  }
-  if (network == ydn.social.Network.TWITTER) {
-    var tw = {
-      'network': network,
-      'id': profile.id
-    };
-    return ydn.msg.getChannel().send(ydn.crm.Ch.Req.SOCIAL_FEED, tw);
-  } else {
-    return goog.async.Deferred.succeed(null);
-  }
-
-};
 
 

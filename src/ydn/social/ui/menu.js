@@ -82,15 +82,10 @@ ydn.social.ui.Menu.prototype.renderDetailPanel_ = function() {
     return;
   }
   var header = el.querySelector('.header');
-  var name = header.querySelector('.name a');
+  var name = header.querySelector('.name');
   name.textContent = this.target.getFullName();
-  var url = '';
-  if (url) {
-    name.href = url;
-  } else {
-    name.removeAttribute('href');
-  }
-  var photo = '';
+
+  var photo = this.target.getPhotoUrl();
   var img = header.querySelector('.logo img');
   if (photo) {
     img.src = photo;

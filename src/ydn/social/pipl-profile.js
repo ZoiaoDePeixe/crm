@@ -69,6 +69,26 @@ ydn.social.PiplProfile.parse = function(respond, network) {
 
 
 /**
+ * Return primary photo https url.
+ * @param {CrmApp.PiplRespond} respond
+ * @return {?string}
+ */
+ydn.social.PiplProfile.getPrimaryPhotoUrl = function(respond) {
+  if (!respond || !respond.person || !respond.person.images) {
+    return null;
+  }
+  // todo: all pipl url are http
+  for (var i = 0; i < respond.person.images.length; i++) {
+    var url = respond.person.images[i].url;
+    if (!!url && /^https:/.test(url) && /[jpg$|jpeg$]/.test(url)) {
+      return url;
+    }
+  }
+  return null;
+};
+
+
+/**
  * @override
  */
 ydn.social.PiplProfile.prototype.getSourceName = function() {
