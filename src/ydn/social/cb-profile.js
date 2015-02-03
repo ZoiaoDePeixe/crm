@@ -203,3 +203,19 @@ ydn.social.ClearBitProfile.getEmployment = function(data) {
   }
   return null;
 };
+
+
+/**
+ * Extract bio.
+ * @param {CrmApp.ClearBit} data
+ * @return {!Object}
+ */
+ydn.social.ClearBitProfile.getTopic = function(data) {
+  var out = {};
+  if (data) {
+    if (data.gender) {
+      out[ydn.social.Profile.Topic.SEX] = data.gender;
+    }
+  }
+  return out;
+};

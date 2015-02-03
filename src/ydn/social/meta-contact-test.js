@@ -40,11 +40,16 @@ function testGetSources() {
   var li = new ydn.social.MetaProfile(meta, ydn.social.Network.LINKED_IN);
   var pt = new ydn.social.MetaProfile(meta, ydn.social.Network.PINTEREST);
   assertEquals(3, tw.count());
-  assertEquals('ClearBit', tw.getProfile(0).getSourceName());
-  assertEquals('FullContact', tw.getProfile(1).getSourceName());
-  assertEquals('Pipl', tw.getProfile(2).getSourceName());
+  assertEquals(ydn.social.Source.CB, tw.getProfile(0).getSourceName());
+  assertEquals(ydn.social.Source.FC, tw.getProfile(1).getSourceName());
+  assertEquals(ydn.social.Source.PP, tw.getProfile(2).getSourceName());
   assertEquals(2, pt.count());
+  assertEquals(ydn.social.Source.FC, pt.getProfile(0).getSourceName());
+  assertEquals(ydn.social.Source.PP, pt.getProfile(1).getSourceName());
   assertEquals(3, li.count());
+  assertEquals(ydn.social.Source.PP, li.getProfile(0).getSourceName());
+  assertEquals(ydn.social.Source.FC, li.getProfile(1).getSourceName());
+  assertEquals(ydn.social.Source.CB, li.getProfile(2).getSourceName());
 }
 
 
@@ -124,7 +129,6 @@ function testUserIdPipl() {
   var meta = new ydn.social.MetaContact(yossi);
   var fb = new ydn.social.MetaProfile(meta, ydn.social.Network.FACEBOOK).getProfile();
   var lkn = new ydn.social.MetaProfile(meta, ydn.social.Network.LINKED_IN).getProfile();
-  assertEquals('Pipl', lkn.getSourceName());
   assertEquals('590949588', fb.getUserId());
 }
 
@@ -144,6 +148,12 @@ function testProfilePhotoUrl() {
     assertTrue(p.getSourceName(), !!p.getPhotoUrl());
   }
 }
+
+function testGender() {
+  var meta = new ydn.social.MetaContact(metaContactData.brat);
+  var topics = meta.getTopics();
+  assertEquals('Male', topics[ydn.social.Profile.Topic.SEX]);
+};
 
 
 

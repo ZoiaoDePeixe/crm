@@ -281,3 +281,20 @@ ydn.social.FcProfile.getEmployment = function(data) {
 };
 
 
+/**
+ * Extract bio.
+ * @param {CrmApp.FullContact2} data
+ * @return {!Object}
+ */
+ydn.social.FcProfile.getTopic = function(data) {
+  var out = {};
+  if (data) {
+    if (data.demographics && data.demographics) {
+      if (data.demographics.gender) {
+        out[ydn.social.Profile.Topic.SEX] = data.demographics.gender;
+      }
+    }
+  }
+  return out;
+};
+

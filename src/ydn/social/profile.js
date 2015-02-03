@@ -148,4 +148,13 @@ ydn.social.Profile.prototype.getFollowing = function() {
 ydn.social.Profile.Employment;
 
 
+/**
+ * @enum {string} topic key
+ */
+ydn.social.Profile.Topic = {
+  SEX: 'Gender',
+  AGE: 'Age'
+};
+
+
 

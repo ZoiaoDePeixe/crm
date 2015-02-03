@@ -136,7 +136,7 @@ ydn.social.ui.Menu.prototype.renderDetailPanel_ = function() {
     return;
   }
   var header = el.querySelector('.header');
-  var content = el.querySelector('.content');
+  var content = el.querySelector('.social-start-menu > .content');
   var name = header.querySelector('.name');
   name.textContent = this.target.getFullName();
   header.querySelector('.description').textContent = this.target.getBio();
@@ -163,9 +163,16 @@ ydn.social.ui.Menu.prototype.renderDetailPanel_ = function() {
       a.setAttribute('target', '_blank');
       a.setAttribute('title', emp.companyTitle || '');
       emp_el.appendChild(a);
-    } else {
+    } else if (emp.company) {
       emp_el.textContent += emp.company;
     }
+  }
+
+  var topics = this.target.getTopics();
+  for (var key in topics) {
+    var div = document.createElement('div');
+    div.textContent = key + ': ' + topics[key];
+    content.appendChild(div);
   }
 
   var sources = el.querySelector('.sources');

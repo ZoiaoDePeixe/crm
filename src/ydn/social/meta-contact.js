@@ -196,11 +196,16 @@ ydn.social.MetaContact.prototype.getEmployment = function() {
 
 /**
  * Get miscellaneous information, like sex, age, ethinic.
- * @return {!Object<string>}
+ * @return {!Object} key are {@link ydn.social.Profile.Topic}
  */
 ydn.social.MetaContact.prototype.getTopics = function() {
-  var topics = {};
-
+  var topics = ydn.social.ClearBitProfile.getTopic(this.data.cb);
+  var fc = ydn.social.FcProfile.getTopic(this.data.fc);
+  for (var key in fc) {
+    if (!topics[key]) {
+      topics[key] = fc[key];
+    }
+  }
   return topics;
 };
 

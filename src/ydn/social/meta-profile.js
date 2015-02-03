@@ -154,7 +154,7 @@ ydn.social.MetaProfile.prototype.compile_ = function() {
   goog.array.sort(this.sources_, function(a, b) {
     var sa = ydn.social.MetaProfile.getSourceScore(a);
     var sb = ydn.social.MetaProfile.getSourceScore(b);
-    return sa > sb ? 1 : sb > sa ? -1 : 0;
+    return sa > sb ? -1 : 1;
   });
 };
 
