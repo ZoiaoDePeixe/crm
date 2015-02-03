@@ -16,13 +16,16 @@ ydn.social.Network = {
   BLOGGER: 'blogger',
   FACEBOOK: 'facebook',
   G_PLUS: 'googleplus',
+  GITHUB: 'github',
+  INSTAGRAM: 'instagram',
   LINKED_IN: 'linkedin',
   MEETUP: 'meetup',
   MYSPACE: 'myspace',
   PINTEREST: 'pinterest',
+  REDDIT: 'reddit',
   TUMBLR: 'tumblr',
-  YATHOO: 'yahoo',
   TWITTER: 'twitter',
+  YATHOO: 'yahoo',
   YELP: 'yelp'
 };
 
@@ -44,9 +47,9 @@ ydn.social.network2name[ydn.social.Network.BLOGGER] = 'Blogger';
 ydn.social.network2name[ydn.social.Network.MEETUP] = 'Meetup';
 ydn.social.network2name[ydn.social.Network.MYSPACE] = 'MySpace';
 ydn.social.network2name[ydn.social.Network.YELP] = 'Yelp';
-ydn.social.network2name['reddit'] = 'Reddit';
-ydn.social.network2name['instagram'] = 'Instagram';
-ydn.social.network2name['github'] = 'Github';
+ydn.social.network2name[ydn.social.Network.REDDIT] = 'Reddit';
+ydn.social.network2name[ydn.social.Network.YELP] = 'Instagram';
+ydn.social.network2name[ydn.social.Network.INSTAGRAM] = 'Github';
 ydn.social.network2name['foursquare'] = 'Foursquare';
 ydn.social.network2name['flickr'] = 'Flickr';
 ydn.social.network2name['youtube'] = 'Youtube';

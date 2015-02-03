@@ -21,6 +21,7 @@
  */
 
 goog.provide('ydn.social.MetaProfile');
+goog.require('ydn.social.ClearBitProfile');
 goog.require('ydn.social.FcProfile');
 goog.require('ydn.social.PiplProfile');
 goog.require('ydn.social.Profile');
@@ -86,11 +87,16 @@ ydn.social.MetaProfile.prototype.getNetworkLabel = function() {
  * @private
  */
 ydn.social.MetaProfile.prototype.compile_ = function() {
+  if (this.parent.data.cb) {
+    var cb = ydn.social.ClearBitProfile.parse(this.parent.data.cb, this.network);
+    if (cb) {
+      this.sources_.push(cb);
+    }
+  }
   if (this.parent.data.fc) {
-    var p = ydn.social.FcProfile.getSocialProfile(this.parent.data.fc, this.network);
-    if (p) {
-      var url = ydn.social.FcProfile.getPhotoUrl(this.parent.data.fc, this.network, true);
-      this.sources_.push(new ydn.social.FcProfile(this.network, p, url));
+    var fc = ydn.social.FcProfile.parse(this.parent.data.fc, this.network);
+    if (fc) {
+      this.sources_.push(fc);
     }
   }
   if (this.parent.data.pp) {

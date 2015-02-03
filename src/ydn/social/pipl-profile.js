@@ -15,7 +15,7 @@
 
 
 /**
- * @fileoverview FullContact social network profile.
+ * @fileoverview Pipl social network profile.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
@@ -26,7 +26,7 @@ goog.require('ydn.social.Profile');
 
 
 /**
- * FullContact social network profile.
+ * Pipl social network profile.
  * @param {ydn.social.Network} network
  * @param {!CrmApp.PiplRecord} data
  * @constructor

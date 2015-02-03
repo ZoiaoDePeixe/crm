@@ -133,8 +133,9 @@ ydn.social.MetaContact.prototype.getMetaProfile = function(network) {
  * @return {?string} image src, only https url will be used.
  */
 ydn.social.MetaContact.prototype.getPhotoUrl = function() {
-  if (this.data.cb && this.data.cb.avatar) {
-    return this.data.cb.avatar;
+  var cb = ydn.social.ClearBitProfile.getPrimaryPhotoUrl(this.data.cb);
+  if (cb) {
+    return cb;
   }
   var fc = ydn.social.FcProfile.getPrimaryPhotoUrl(this.data.fc);
   if (fc) {

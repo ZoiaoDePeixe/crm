@@ -38,17 +38,31 @@ function testGetSources() {
   var meta = new ydn.social.MetaContact(metaContactData.brat);
   var tw = new ydn.social.MetaProfile(meta, ydn.social.Network.TWITTER);
   var pt = new ydn.social.MetaProfile(meta, ydn.social.Network.PINTEREST);
-  assertEquals(2, tw.count());
-  assertEquals('FullContact', tw.getProfile(0).getSourceName());
-  assertEquals('Pipl', tw.getProfile(1).getSourceName());
-  assertEquals('userId', tw.getProfile(0).getUserId(), tw.getProfile(1).getUserId());
+  assertEquals(3, tw.count());
+  assertEquals('ClearBit', tw.getProfile(0).getSourceName());
+  assertEquals('FullContact', tw.getProfile(1).getSourceName());
+  assertEquals('Pipl', tw.getProfile(2).getSourceName());
   assertEquals(2, pt.count());
-  assertEquals('userId', pt.getProfile(0).getUserId(), pt.getProfile(1).getUserId());
 }
 
 
-function testUserId() {
-  var meta = new ydn.social.MetaContact(metaContactData.brat);
+function testUserIdCb() {
+  var brat = JSON.parse(JSON.stringify(metaContactData.brat));
+  brat = {cb: brat.cb};
+  var meta = new ydn.social.MetaContact(brat);
+  var tw = new ydn.social.MetaProfile(meta, ydn.social.Network.TWITTER).getProfile();
+  var gh = new ydn.social.MetaProfile(meta, ydn.social.Network.GITHUB).getProfile();
+  var al = new ydn.social.MetaProfile(meta, ydn.social.Network.ANGLE_LIST).getProfile();
+  assertEquals('966692022', tw.getUserId());
+  assertEquals('lorangb', gh.getUserId());
+  assertEquals('bartlorang', al.getUserId());
+}
+
+
+function testUserIdFc() {
+  var brat = JSON.parse(JSON.stringify(metaContactData.brat));
+  brat = {fc: brat.fc};
+  var meta = new ydn.social.MetaContact(brat);
   var tw = new ydn.social.MetaProfile(meta, ydn.social.Network.TWITTER).getProfile();
   var gp = new ydn.social.MetaProfile(meta, ydn.social.Network.G_PLUS).getProfile();
   var fb = new ydn.social.MetaProfile(meta, ydn.social.Network.FACEBOOK).getProfile();
@@ -60,8 +74,23 @@ function testUserId() {
 }
 
 
-function testScreenName() {
-  var meta = new ydn.social.MetaContact(metaContactData.brat);
+function testScreenNameCb() {
+  var brat = JSON.parse(JSON.stringify(metaContactData.brat));
+  brat = {cb: brat.cb};
+  var meta = new ydn.social.MetaContact(brat);
+  var tw = new ydn.social.MetaProfile(meta, ydn.social.Network.TWITTER).getProfile();
+  var gh = new ydn.social.MetaProfile(meta, ydn.social.Network.GITHUB).getProfile();
+  var fb = new ydn.social.MetaProfile(meta, ydn.social.Network.FACEBOOK).getProfile();
+  assertEquals('lorangb', tw.getScreenName());
+  assertEquals('lorangb', gh.getScreenName());
+  assertEquals('bart.lorang', fb.getScreenName());
+}
+
+
+function testScreenNameFc() {
+  var brat = JSON.parse(JSON.stringify(metaContactData.brat));
+  brat = {fc: brat.fc};
+  var meta = new ydn.social.MetaContact(brat);
   var tw = new ydn.social.MetaProfile(meta, ydn.social.Network.TWITTER).getProfile();
   var gp = new ydn.social.MetaProfile(meta, ydn.social.Network.G_PLUS).getProfile();
   var fb = new ydn.social.MetaProfile(meta, ydn.social.Network.FACEBOOK).getProfile();
@@ -74,14 +103,18 @@ function testScreenName() {
 
 
 function testUserIdPiplNoMatch() {
-  var meta = new ydn.social.MetaContact(metaContactData.joe);
+  var brat = JSON.parse(JSON.stringify(metaContactData.joe));
+  brat = {pp: brat.pp};
+  var meta = new ydn.social.MetaContact(brat);
   var lkn = new ydn.social.MetaProfile(meta, ydn.social.Network.LINKED_IN).getProfile();
   assertNull(lkn);
 }
 
 
 function testUserIdPipl() {
-  var meta = new ydn.social.MetaContact(metaContactData.yossi);
+  var yossi = JSON.parse(JSON.stringify(metaContactData.yossi));
+  yossi = {pp: yossi.pp};
+  var meta = new ydn.social.MetaContact(yossi);
   var fb = new ydn.social.MetaProfile(meta, ydn.social.Network.FACEBOOK).getProfile();
   var lkn = new ydn.social.MetaProfile(meta, ydn.social.Network.LINKED_IN).getProfile();
   assertEquals('Pipl', lkn.getSourceName());
@@ -90,11 +123,19 @@ function testUserIdPipl() {
 
 
 function testPhotoUrl() {
+  assertTrue(!!new ydn.social.MetaContact(metaContactData.brat).getPhotoUrl());
+  assertTrue(!!new ydn.social.MetaContact(metaContactData.jeremy).getPhotoUrl());
+  assertFalse(!!new ydn.social.MetaContact(metaContactData.joe).getPhotoUrl());
+}
+
+
+function testProfilePhotoUrl() {
   var meta = new ydn.social.MetaContact(metaContactData.brat);
-  var tw = new ydn.social.MetaProfile(meta, ydn.social.Network.PINTEREST).getProfile();
-  var fb = new ydn.social.MetaProfile(meta, ydn.social.Network.TWITTER).getProfile(1);
-  assertTrue(!!tw.getPhotoUrl());
-  assertTrue(!!fb.getPhotoUrl());
+  var profiles = new ydn.social.MetaProfile(meta, ydn.social.Network.PINTEREST);
+  for (var i = 0; i < profiles.count(); i++) {
+    var p = profiles.getProfile(i);
+    assertTrue(p.getSourceName(), !!p.getPhotoUrl());
+  }
 }
 
 

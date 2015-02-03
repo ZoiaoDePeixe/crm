@@ -54,18 +54,64 @@ goog.inherits(ydn.social.FcProfile, ydn.social.Profile);
  * Extract social profile
  * @param {CrmApp.FullContact2} data
  * @param {ydn.social.Network} network
- * @return {CrmApp.FullContact2SocialProfile}
+ * @return {Array<CrmApp.FullContact2SocialProfile>}
+ * @protected
  */
-ydn.social.FcProfile.getSocialProfile = function(data, network) {
+ydn.social.FcProfile.getSocialProfiles = function(data, network) {
+  var arr = [];
   if (!data || !data.socialProfiles) {
-    return null;
+    return arr;
   }
   var ps = data.socialProfiles;
   for (var i = 0; i < ps.length; i++) {
     var p = ps[i];
     if (p.typeId == network && (p.id || p.username)) {
-      return p;
+      arr.push(p);
     }
+  }
+  return arr;
+};
+
+
+/**
+ * @param {CrmApp.FullContact2SocialProfile} data
+ * @return {number}
+ * @private
+ */
+ydn.social.FcProfile.totalFollow_ = function(data) {
+  var total = 0;
+  if (data.followers) {
+    total += data.followers;
+  }
+  if (data.following) {
+    total += data.following;
+  }
+  return total;
+};
+
+
+/**
+ * Extract social profile
+ * @param {CrmApp.FullContact2} data
+ * @param {ydn.social.Network} network
+ * @return {ydn.social.FcProfile}
+ */
+ydn.social.FcProfile.parse = function(data, network) {
+  var arr = ydn.social.FcProfile.getSocialProfiles(data, network);
+  var idx = -1;
+  for (var i = 0; i < arr.length; i++) {
+    if (i == 0) {
+      idx = 0;
+    } else {
+      if (ydn.social.FcProfile.totalFollow_(arr[i]) >
+          ydn.social.FcProfile.totalFollow_(arr[idx])) {
+        idx = i;
+      }
+    }
+  }
+  if (idx >= 0) {
+    var url = ydn.social.FcProfile.getPhotoUrl(data, network, true);
+    return new ydn.social.FcProfile(network, arr[idx], url);
   }
   return null;
 };
