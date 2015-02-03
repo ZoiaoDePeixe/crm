@@ -194,7 +194,7 @@ ydn.social.ui.MetaProfile.prototype.refreshProfile = function(profile) {
   }
   var photo = profile.getPhotoUrl();
   var img = header.querySelector('.logo img');
-  if (photo) {
+  if (photo && /^https:/.test(photo)) {
     img.src = photo;
   } else {
     img.removeAttribute('src');

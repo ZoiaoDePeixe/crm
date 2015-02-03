@@ -154,3 +154,52 @@ ydn.social.ClearBitProfile.prototype.getFollowing = function() {
   return this.data.following;
 };
 
+
+/**
+ * Extract bio.
+ * @param {CrmApp.ClearBit} data
+ * @return {?string}
+ */
+ydn.social.ClearBitProfile.getBio = function(data) {
+  if (data && data.bio) {
+    return data.bio;
+  }
+  return null;
+};
+
+
+/**
+ * Extract bio.
+ * @param {CrmApp.ClearBit} data
+ * @return {?string}
+ */
+ydn.social.ClearBitProfile.getLocation = function(data) {
+  if (data && data.location) {
+    return data.location;
+  }
+  return null;
+};
+
+
+/**
+ * Extract bio.
+ * @param {CrmApp.ClearBit} data
+ * @return {?ydn.social.Profile.Employment}
+ */
+ydn.social.ClearBitProfile.getEmployment = function(data) {
+  if (data && data.employment) {
+    var emp = /** @type {ydn.social.Profile.Employment} */({
+      title: data.employment.title,
+      company: data.employment.name
+    });
+    if (data.company) {
+      emp.companyUrl = data.company.url;
+      if (data.company.legal_name) {
+        emp.company = data.company.legal_name;
+      }
+      emp.companyTitle = data.company.description;
+    }
+    return emp;
+  }
+  return null;
+};

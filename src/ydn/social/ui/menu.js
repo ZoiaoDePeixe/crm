@@ -148,6 +148,26 @@ ydn.social.ui.Menu.prototype.renderDetailPanel_ = function() {
     img.removeAttribute('src');
   }
 
+  el.querySelector('.location').textContent = this.target.getLocation();
+
+  var emp_el = el.querySelector('.employment');
+  var emp = this.target.getEmployment();
+  if (emp) {
+    if (emp.title) {
+      emp_el.textContent = emp.title + ', ';
+    }
+    if (emp.companyUrl) {
+      var a = document.createElement('a');
+      a.textContent = emp.company;
+      a.href = emp.companyUrl;
+      a.setAttribute('target', '_blank');
+      a.setAttribute('title', emp.companyTitle || '');
+      emp_el.appendChild(a);
+    } else {
+      emp_el.textContent += emp.company;
+    }
+  }
+
   var sources = el.querySelector('.sources');
   var createSource = function(name) {
     var se = document.createElement('a');

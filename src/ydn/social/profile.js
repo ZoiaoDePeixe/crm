@@ -137,4 +137,15 @@ ydn.social.Profile.prototype.getFollowing = function() {
 };
 
 
+/**
+ * @typedef {{
+ *   title: (string|undefined),
+ *   company: string,
+ *   companyUrl: (string|undefined),
+ *   companyTitle: (string|undefined)
+ * }}
+ */
+ydn.social.Profile.Employment;
+
+
 

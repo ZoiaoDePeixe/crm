@@ -183,6 +183,19 @@ ydn.social.FcProfile.getBio = function(data) {
 
 
 /**
+ * Extract bio.
+ * @param {CrmApp.FullContact2} data
+ * @return {?string}
+ */
+ydn.social.FcProfile.getLocation = function(data) {
+  if (data && data.demographics && data.demographics[0]) {
+    return data.demographics[0].locationGeneral;
+  }
+  return null;
+};
+
+
+/**
  * @override
  */
 ydn.social.FcProfile.prototype.getUserName = function() {
@@ -246,5 +259,25 @@ ydn.social.FcProfile.prototype.getPhotoUrl = function() {
 };
 
 
+/**
+ * Extract bio.
+ * @param {CrmApp.FullContact2} data
+ * @return {?ydn.social.Profile.Employment}
+ */
+ydn.social.FcProfile.getEmployment = function(data) {
+  if (data && data.organizations) {
+    for (var i = 0; i < data.organizations.length; i++) {
+      var org = data.organizations[i];
+      if (org.isPrimary) {
+        var emp = /** @type {ydn.social.Profile.Employment} */({
+          title: org.title,
+          company: org.name
+        });
+        return emp;
+      }
+    }
+  }
+  return null;
+};
 
 

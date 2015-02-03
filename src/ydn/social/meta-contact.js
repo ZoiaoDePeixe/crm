@@ -135,15 +135,15 @@ ydn.social.MetaContact.prototype.getFullName = function() {
  */
 ydn.social.MetaContact.prototype.getPhotoUrl = function() {
   var cb = ydn.social.ClearBitProfile.getPrimaryPhotoUrl(this.data.cb);
-  if (cb) {
+  if (cb && /^https:/.test(cb)) {
     return cb;
   }
   var fc = ydn.social.FcProfile.getPrimaryPhotoUrl(this.data.fc);
-  if (fc) {
+  if (fc && /^https:/.test(fc)) {
     return fc;
   }
   var pp = ydn.social.PiplProfile.getPrimaryPhotoUrl(this.data.pp);
-  if (pp) {
+  if (pp && /^https:/.test(pp)) {
     return pp;
   }
   return '';
@@ -154,15 +154,53 @@ ydn.social.MetaContact.prototype.getPhotoUrl = function() {
  * @return {string}
  */
 ydn.social.MetaContact.prototype.getBio = function() {
-  if (this.data.cb && this.data.cb.bio) {
-    return this.data.cb.bio;
-  }
+  var cb = ydn.social.ClearBitProfile.getBio(this.data.cb);
   var fc = ydn.social.FcProfile.getBio(this.data.fc);
-  if (fc) {
-    return fc;
+  if (cb && fc) {
+    return cb.length > fc.length ? cb : fc;
   }
-  return '';
+  return cb || fc || '';
 };
 
 
+/**
+ * @return {string}
+ */
+ydn.social.MetaContact.prototype.getLocation = function() {
+  var arr = [ydn.social.ClearBitProfile.getLocation(this.data.cb),
+             ydn.social.FcProfile.getLocation(this.data.fc),
+             ydn.social.PiplProfile.getLocation(this.data.pp)];
+  var idx = -1;
+  for (var i = 0; i < arr.length; i++) {
+    if (!arr[i] || arr[i] == 'Global') {
+      continue;
+    }
+    if (idx == -1) {
+      idx = 0;
+    } else if (arr[i].length > arr[idx].length) {
+      idx = i;
+    }
+  }
+  return arr[idx] || '';
+};
+
+
+/**
+ * @return {?ydn.social.Profile.Employment}
+ */
+ydn.social.MetaContact.prototype.getEmployment = function() {
+  var cb = ydn.social.ClearBitProfile.getEmployment(this.data.cb);
+  return cb || ydn.social.FcProfile.getEmployment(this.data.fc);
+};
+
+
+/**
+ * Get miscellaneous information, like sex, age, ethinic.
+ * @return {!Object<string>}
+ */
+ydn.social.MetaContact.prototype.getTopics = function() {
+  var topics = {};
+
+  return topics;
+};
 

@@ -137,3 +137,15 @@ ydn.social.PiplProfile.prototype.getPhotoUrl = function() {
   return this.data.images ? this.data.images[0].url : undefined;
 };
 
+
+/**
+ * Extract location.
+ * @param {CrmApp.PiplRespond} data
+ * @return {?string}
+ */
+ydn.social.PiplProfile.getLocation = function(data) {
+  if (data && data.person && data.person.address && data.person.address[0]) {
+    return data.person.address[0].display;
+  }
+  return null;
+};
