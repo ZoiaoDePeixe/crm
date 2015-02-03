@@ -37,12 +37,14 @@ function setUpPage() {
 function testGetSources() {
   var meta = new ydn.social.MetaContact(metaContactData.brat);
   var tw = new ydn.social.MetaProfile(meta, ydn.social.Network.TWITTER);
+  var li = new ydn.social.MetaProfile(meta, ydn.social.Network.LINKED_IN);
   var pt = new ydn.social.MetaProfile(meta, ydn.social.Network.PINTEREST);
   assertEquals(3, tw.count());
   assertEquals('ClearBit', tw.getProfile(0).getSourceName());
   assertEquals('FullContact', tw.getProfile(1).getSourceName());
   assertEquals('Pipl', tw.getProfile(2).getSourceName());
   assertEquals(2, pt.count());
+  assertEquals(3, li.count());
 }
 
 
@@ -51,11 +53,7 @@ function testUserIdCb() {
   brat = {cb: brat.cb};
   var meta = new ydn.social.MetaContact(brat);
   var tw = new ydn.social.MetaProfile(meta, ydn.social.Network.TWITTER).getProfile();
-  var gh = new ydn.social.MetaProfile(meta, ydn.social.Network.GITHUB).getProfile();
-  var al = new ydn.social.MetaProfile(meta, ydn.social.Network.ANGLE_LIST).getProfile();
   assertEquals('966692022', tw.getUserId());
-  assertEquals('lorangb', gh.getUserId());
-  assertEquals('bartlorang', al.getUserId());
 }
 
 
@@ -70,7 +68,7 @@ function testUserIdFc() {
   assertEquals('5998422', tw.getUserId());
   assertEquals('114426306375480734745', gp.getUserId());
   assertEquals('651620441', fb.getUserId());
-  assertEquals('lorangb', pt.getUserId());
+  assertEquals('', pt.getUserId());
 }
 
 
@@ -102,7 +100,16 @@ function testScreenNameFc() {
 }
 
 
-function testUserIdPiplNoMatch() {
+function testCbNoMatch() {
+  var brat = JSON.parse(JSON.stringify(metaContactData.joe));
+  brat = {cb: brat.cb};
+  var meta = new ydn.social.MetaContact(brat);
+  var lkn = new ydn.social.MetaProfile(meta, ydn.social.Network.TWITTER).getProfile();
+  assertNull(lkn);
+}
+
+
+function testPiplNoMatch() {
   var brat = JSON.parse(JSON.stringify(metaContactData.joe));
   brat = {pp: brat.pp};
   var meta = new ydn.social.MetaContact(brat);

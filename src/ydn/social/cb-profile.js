@@ -55,8 +55,14 @@ ydn.social.ClearBitProfile.parse = function(cb, network) {
     return null;
   }
   var profile = /** @type {CrmApp.ClearBitProfile} */(cb[network]);
-  if (profile) {
-    return new ydn.social.ClearBitProfile(network, profile);
+  if (profile && (profile.id || profile.handle)) {
+    if (ydn.social.isIdRequired(network)) {
+      if (profile.id) {
+        return new ydn.social.ClearBitProfile(network, profile);
+      }
+    } else {
+      return new ydn.social.ClearBitProfile(network, profile);
+    }
   }
   return null;
 };
@@ -82,33 +88,27 @@ ydn.social.ClearBitProfile.getPrimaryPhotoUrl = function(respond) {
  * @override
  */
 ydn.social.ClearBitProfile.prototype.getSourceName = function() {
-  return 'ClearBit';
+  return ydn.social.Source.CB;
 };
 
 
 /**
- * Get user id. If user id is not available, screen name should return.
- * @return {string}
+ * @override
  */
 ydn.social.ClearBitProfile.prototype.getUserId = function() {
   if (this.data.id) {
     return String(this.data.id);
   } else {
-    return this.data.handle;
+    return '';
   }
 };
 
 
 /**
- * Get screen name. If screen name is not available, user id should return;
- * @return {string}
+ * @override
  */
-ydn.social.ClearBitProfile.prototype.getScreenName = function() {
-  if (this.data.handle) {
-    return this.data.handle;
-  } else {
-    return this.getUserId();
-  }
+ydn.social.ClearBitProfile.prototype.getUserName = function() {
+  return this.data.handle;
 };
 
 

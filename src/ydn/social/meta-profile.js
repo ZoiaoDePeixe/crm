@@ -83,6 +83,50 @@ ydn.social.MetaProfile.prototype.getNetworkLabel = function() {
 
 
 /**
+ * @param {ydn.social.Profile} source
+ * @return {number}
+ */
+ydn.social.MetaProfile.getSourceScore = function(source) {
+
+  var s_source = 1;
+  if (source instanceof ydn.social.ClearBitProfile) {
+    s_source = 2;
+  } else if (source instanceof ydn.social.PiplProfile) {
+    s_source = 0.5;
+  }
+
+  var s_id = 0;
+  if (source.getUserId()) {
+    s_id += 2;
+  }
+  if (source.getUserName()) {
+    s_id += 1;
+  }
+
+  var s_field = 0;
+  if (source.getPhotoUrl()) {
+    s_field += 1;
+  }
+  if (source.getProfileUrl()) {
+    s_field += 0.8;
+  }
+  if (source.getBio()) {
+    s_field += 0.6;
+  }
+
+  var s_cnt = 0;
+  if (source.getFollowers()) {
+    s_cnt += 1;
+  }
+  if (source.getFollowing()) {
+    s_cnt += 1;
+  }
+
+  return 0.2 * s_source + s_id + 0.5 * s_field + 0.2 * s_cnt;
+};
+
+
+/**
  * Compile social profile from sources.
  * @private
  */
@@ -105,6 +149,13 @@ ydn.social.MetaProfile.prototype.compile_ = function() {
       this.sources_.push(pp);
     }
   }
+
+  // ranking
+  goog.array.sort(this.sources_, function(a, b) {
+    var sa = ydn.social.MetaProfile.getSourceScore(a);
+    var sb = ydn.social.MetaProfile.getSourceScore(b);
+    return sa > sb ? 1 : sb > sa ? -1 : 0;
+  });
 };
 
 

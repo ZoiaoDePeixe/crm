@@ -63,6 +63,17 @@ ydn.social.network2name['klout'] = 'Klout';
 
 
 /**
+ * List of network requires id.
+ * @param {ydn.social.Network} network
+ * @return {boolean} true if network require an id to be a valid record.
+ * @final
+ */
+ydn.social.isIdRequired = function(network) {
+  return [ydn.social.Network.ANGLE_LIST].indexOf(network) >= 0;
+};
+
+
+/**
  * @param {ydn.social.Network} network
  * @return {string} domain name of the network
  */
@@ -84,9 +95,28 @@ ydn.social.defaultNetworks = [ydn.social.Network.TWITTER,
  * @enum {string} list of source.
  */
 ydn.social.Source = {
-  FullContact: 'fc',
-  Pipl: 'pp',
-  ClearBit: 'cb',
-  TowerData: 'td'
+  FC: 'fc',
+  PP: 'pp',
+  CB: 'cb',
+  TD: 'td'
+};
+
+
+/**
+ * @param {ydn.social.Source} source
+ * @return {string}
+ */
+ydn.social.toSourceName = function(source) {
+  if (ydn.social.Source.PP == source) {
+    return 'Pipl';
+  } else if (ydn.social.Source.CB == source) {
+    return 'ClearBit';
+  } else if (ydn.social.Source.TD == source) {
+    return 'TowerData';
+  } else if (ydn.social.Source.FC == source) {
+    return 'FullContact';
+  } else {
+    return '?';
+  }
 };
 

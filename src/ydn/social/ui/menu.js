@@ -23,6 +23,7 @@
 
 goog.provide('ydn.social.ui.Menu');
 goog.require('ydn.social.ui.MetaProfile');
+goog.require('ydn.ui.MessageDialog');
 
 
 
@@ -44,7 +45,19 @@ ydn.social.ui.Menu = function() {
    * @type {ydn.social.MetaContact}
    */
   this.target = null;
+  /**
+   * @protected
+   * @type {goog.events.EventHandler}
+   */
+  this.handler = new goog.events.EventHandler(this);
 };
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ydn.social.ui.Menu.CSS_CLASS_SHOW_SOURCE = 'show-source';
 
 
 /**
@@ -64,6 +77,47 @@ ydn.social.ui.Menu.prototype.render = function(el) {
   this.root_.appendChild(details);
   el.appendChild(this.root_);
   this.renderDetailPanel_();
+
+  this.handler.listen(this.root_, 'click', this.onClicked_);
+};
+
+
+/**
+ * Root element clicked.
+ * @param {Event} e
+ * @private
+ */
+ydn.social.ui.Menu.prototype.onClicked_ = function(e) {
+  if (e.target instanceof Element) {
+    if (e.target.classList.contains(ydn.social.ui.Menu.CSS_CLASS_SHOW_SOURCE)) {
+      e.preventDefault();
+      e.stopPropagation();
+      var source = e.target.getAttribute('name');
+      this.showSourceDialog_(/** @type {ydn.social.Source} */(source));
+    }
+  }
+};
+
+
+/**
+ * Show source data.
+ * @param {ydn.social.Source} type
+ * @private
+ */
+ydn.social.ui.Menu.prototype.showSourceDialog_ = function(type) {
+  var title = 'Raw data for ' + ydn.social.toSourceName(type);
+  var content = document.createElement('div');
+  content.className = 'raw-source-content';
+  var pre = document.createElement('pre');
+  if (type == ydn.social.Source.CB) {
+    pre.textContent = JSON.stringify(this.target.data.cb, null, 2);
+  } else if (type == ydn.social.Source.PP) {
+    pre.textContent = JSON.stringify(this.target.data.pp, null, 2);
+  } else if (type == ydn.social.Source.FC) {
+    pre.textContent = JSON.stringify(this.target.data.fc, null, 2);
+  }
+  content.appendChild(pre);
+  ydn.ui.MessageDialog.showModal(title, content);
 };
 
 
@@ -82,15 +136,36 @@ ydn.social.ui.Menu.prototype.renderDetailPanel_ = function() {
     return;
   }
   var header = el.querySelector('.header');
+  var content = el.querySelector('.content');
   var name = header.querySelector('.name');
   name.textContent = this.target.getFullName();
-
+  header.querySelector('.description').textContent = this.target.getBio();
   var photo = this.target.getPhotoUrl();
   var img = header.querySelector('.logo img');
   if (photo) {
     img.src = photo;
   } else {
     img.removeAttribute('src');
+  }
+
+  var sources = el.querySelector('.sources');
+  var createSource = function(name) {
+    var se = document.createElement('a');
+    se.href = '#' + name;
+    se.textContent = name.toUpperCase();
+    se.className = ydn.social.ui.Menu.CSS_CLASS_SHOW_SOURCE;
+    se.setAttribute('name', name);
+    se.setAttribute('title', 'Show raw data for ' + ydn.social.toSourceName(name));
+    sources.appendChild(se);
+  };
+  if (this.target.data.cb) {
+    createSource(ydn.social.Source.CB);
+  }
+  if (this.target.data.fc) {
+    createSource(ydn.social.Source.FC);
+  }
+  if (this.target.data.pp) {
+    createSource(ydn.social.Source.PP);
   }
 };
 

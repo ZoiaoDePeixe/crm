@@ -54,7 +54,7 @@ goog.inherits(ydn.social.FcProfile, ydn.social.Profile);
  * Extract social profile
  * @param {CrmApp.FullContact2} data
  * @param {ydn.social.Network} network
- * @return {Array<CrmApp.FullContact2SocialProfile>}
+ * @return {Array<!CrmApp.FullContact2SocialProfile>}
  * @protected
  */
 ydn.social.FcProfile.getSocialProfiles = function(data, network) {
@@ -100,7 +100,10 @@ ydn.social.FcProfile.parse = function(data, network) {
   var arr = ydn.social.FcProfile.getSocialProfiles(data, network);
   var idx = -1;
   for (var i = 0; i < arr.length; i++) {
-    if (i == 0) {
+    if (ydn.social.isIdRequired(network) && !arr[i].id) {
+      continue;
+    }
+    if (idx == -1) {
       idx = 0;
     } else {
       if (ydn.social.FcProfile.totalFollow_(arr[i]) >
@@ -161,10 +164,29 @@ ydn.social.FcProfile.getPrimaryPhotoUrl = function(data) {
 
 
 /**
+ * Extract bio.
+ * @param {CrmApp.FullContact2} data
+ * @return {?string}
+ */
+ydn.social.FcProfile.getBio = function(data) {
+  if (!data || !data.socialProfiles) {
+    return null;
+  }
+  for (var i = 0; i < data.socialProfiles.length; i++) {
+    var p = data.socialProfiles[i];
+    if (p && p.bio) {
+      return p.bio;
+    }
+  }
+  return null;
+};
+
+
+/**
  * @override
  */
-ydn.social.FcProfile.prototype.getScreenName = function() {
-  return this.data_.username || this.data_.id;
+ydn.social.FcProfile.prototype.getUserName = function() {
+  return this.data_.username || '';
 };
 
 
@@ -172,7 +194,7 @@ ydn.social.FcProfile.prototype.getScreenName = function() {
  * @override
  */
 ydn.social.FcProfile.prototype.getUserId = function() {
-  return this.data_.id || this.data_.username;
+  return this.data_.id || '';
 };
 
 
@@ -180,7 +202,7 @@ ydn.social.FcProfile.prototype.getUserId = function() {
  * @override
  */
 ydn.social.FcProfile.prototype.getSourceName = function() {
-  return 'FullContact';
+  return ydn.social.Source.FC;
 };
 
 

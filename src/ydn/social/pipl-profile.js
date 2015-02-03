@@ -61,6 +61,14 @@ ydn.social.PiplProfile.parse = function(respond, network) {
     }
     var domain = ydn.social.network2domain(network);
     if (r.source.domain == domain) {
+      var id = !!r.user_ids && !!r.user_ids[0];
+      var username = !!r.usernames && !!r.usernames[0];
+      if (!id && !username) {
+        continue;
+      }
+      if (ydn.social.isIdRequired(network) && !id) {
+        continue;
+      }
       return new ydn.social.PiplProfile(network, r);
     }
   }
@@ -92,43 +100,23 @@ ydn.social.PiplProfile.getPrimaryPhotoUrl = function(respond) {
  * @override
  */
 ydn.social.PiplProfile.prototype.getSourceName = function() {
-  return 'Pipl';
+  return ydn.social.Source.PP;
 };
 
 
 /**
- * @return {string}
- * @private
+ * @override
  */
-ydn.social.PiplProfile.prototype.getUserId_ = function() {
+ydn.social.PiplProfile.prototype.getUserId = function() {
   return this.data.user_ids ? this.data.user_ids[0].content : '';
 };
 
 
 /**
- * @return {string}
- * @private
+ * @override
  */
-ydn.social.PiplProfile.prototype.getScreenName_ = function() {
+ydn.social.PiplProfile.prototype.getUserName = function() {
   return this.data.usernames ? this.data.usernames[0].content : '';
-};
-
-
-/**
- * Get user id. If user id is not available, screen name should return.
- * @return {string}
- */
-ydn.social.PiplProfile.prototype.getUserId = function() {
-  return this.getUserId_() || this.getScreenName_();
-};
-
-
-/**
- * Get screen name. If screen name is not available, user id should return;
- * @return {string}
- */
-ydn.social.PiplProfile.prototype.getScreenName = function() {
-  return this.getScreenName_() || this.getUserId_();
 };
 
 

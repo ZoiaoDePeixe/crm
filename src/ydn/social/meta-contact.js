@@ -37,6 +37,7 @@ goog.require('ydn.social.MetaProfile');
  */
 ydn.social.MetaContact = function(data, opt_email) {
   /**
+   * @final
    * @type {!CrmApp.MetaContact}
    */
   this.data = data || /** @type {!CrmApp.MetaContact} */ ({});
@@ -51,23 +52,6 @@ ydn.social.MetaContact = function(data, opt_email) {
  * @define {boolean} debug flag.
  */
 ydn.social.MetaContact.DEBUG = false;
-
-
-/**
- * @return {string}
- */
-ydn.social.MetaContact.prototype.getFullName = function() {
-  if (this.data.cb && this.data.cb.name) {
-    return this.data.cb.name.fullName;
-  }
-  if (this.data.fc && this.data.fc.contactInfo) {
-    return this.data.fc.contactInfo.fullName;
-  }
-  if (this.data.pp && this.data.pp.person && this.data.pp.person.names) {
-    return this.data.pp.person.names[0].display;
-  }
-  return '';
-};
 
 
 /**
@@ -129,8 +113,25 @@ ydn.social.MetaContact.prototype.getMetaProfile = function(network) {
 
 
 /**
+ * @return {string}
+ */
+ydn.social.MetaContact.prototype.getFullName = function() {
+  if (this.data.cb && this.data.cb.name) {
+    return this.data.cb.name.fullName;
+  }
+  if (this.data.fc && this.data.fc.contactInfo) {
+    return this.data.fc.contactInfo.fullName;
+  }
+  if (this.data.pp && this.data.pp.person && this.data.pp.person.names) {
+    return this.data.pp.person.names[0].display;
+  }
+  return '';
+};
+
+
+/**
  * Get social profile.
- * @return {?string} image src, only https url will be used.
+ * @return {string} image src, only https url will be used.
  */
 ydn.social.MetaContact.prototype.getPhotoUrl = function() {
   var cb = ydn.social.ClearBitProfile.getPrimaryPhotoUrl(this.data.cb);
@@ -145,9 +146,23 @@ ydn.social.MetaContact.prototype.getPhotoUrl = function() {
   if (pp) {
     return pp;
   }
-  return null;
+  return '';
 };
 
+
+/**
+ * @return {string}
+ */
+ydn.social.MetaContact.prototype.getBio = function() {
+  if (this.data.cb && this.data.cb.bio) {
+    return this.data.cb.bio;
+  }
+  var fc = ydn.social.FcProfile.getBio(this.data.fc);
+  if (fc) {
+    return fc;
+  }
+  return '';
+};
 
 
 

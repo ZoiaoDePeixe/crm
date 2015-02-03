@@ -58,7 +58,7 @@ ydn.social.ui.Twitter.prototype.enterDocument = function() {
  * @param {Element} el element to render on.
  * @param {Object} profile twitter profile record as return by: users/show API
  */
-ydn.social.ui.Twitter.renderTwitterProfile = function(el, profile) {
+ydn.social.ui.Twitter.renderProfileDetail = function(el, profile) {
   if (ydn.social.ui.MetaProfile.DEBUG) {
     window.console.log(profile);
   }
@@ -155,7 +155,7 @@ ydn.social.ui.Twitter.prototype.refreshTweet_ = function() {
  * @private
  * @return {!goog.async.Deferred<Object>}
  */
-ydn.social.ui.Twitter.prototype.refreshTwitterProfile_ = function() {
+ydn.social.ui.Twitter.prototype.refreshProfileDetail_ = function() {
   var container = this.getContainer();
   var model = this.getModel();
   if (!model) {
@@ -173,7 +173,7 @@ ydn.social.ui.Twitter.prototype.refreshTwitterProfile_ = function() {
           return;
         }
         container.classList.add('exist');
-        ydn.social.ui.Twitter.renderTwitterProfile(this.getDetailElement(), dp);
+        ydn.social.ui.Twitter.renderProfileDetail(this.getDetailElement(), dp);
       }, function(e) {
         goog.style.setElementShown(this.getDetailElement(), false);
         ydn.crm.msg.Manager.addStatus('Fetching twitter fail: ' + String(e));
@@ -191,7 +191,7 @@ ydn.social.ui.Twitter.prototype.refreshTwitterProfile_ = function() {
  * @private
  */
 ydn.social.ui.Twitter.prototype.refresh_ = function() {
-  this.refreshTwitterProfile_().addCallback(function() {
+  this.refreshProfileDetail_().addCallback(function() {
     this.refreshTweet_();
   }, this);
 };
@@ -201,19 +201,10 @@ ydn.social.ui.Twitter.prototype.refresh_ = function() {
  * @override
  */
 ydn.social.ui.Twitter.prototype.redraw = function() {
-  var container = this.getContainer();
-  this.resetBaseClass();
-  var detail = this.getDetailElement();
-  detail.innerHTML = '';
-  this.getButton().setAttribute('title', 'Twitter');
+  goog.base(this, 'redraw');
   var model = this.getModel();
-  var profile = model ? model.getProfile() : null;
-  if (profile) {
-    goog.style.setElementShown(detail, true);
+  if (model && model.hasProfile()) {
     this.refresh_();
-  } else {
-    goog.style.setElementShown(detail, false);
-    container.classList.add('empty');
   }
 };
 

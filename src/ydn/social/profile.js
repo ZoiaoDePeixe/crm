@@ -60,30 +60,40 @@ ydn.social.Profile.prototype.fetchDetail = function() {
   return ydn.msg.getChannel().send(ydn.crm.Ch.Req.SOCIAL_PROFILE_DETAIL, {
     'network': this.network,
     'userId': this.getUserId(),
-    'userName': this.getScreenName()
+    'userName': this.getUserName()
   });
 };
 
 
 /**
  * Profile source name.
- * @return {string}
+ * @return {ydn.social.Source}
  */
 ydn.social.Profile.prototype.getSourceName = goog.abstractMethod;
 
 
 /**
- * Get user id. If user id is not available, screen name should return.
- * @return {string}
+ * Get user id. .
+ * @return {string} empty string if not exists.
  */
 ydn.social.Profile.prototype.getUserId = goog.abstractMethod;
 
 
 /**
+ * Get screen name.
+ * @return {string} empty string if not exists.
+ */
+ydn.social.Profile.prototype.getUserName = goog.abstractMethod;
+
+
+/**
  * Get screen name. If screen name is not available, user id should return;
  * @return {string}
+ * @final
  */
-ydn.social.Profile.prototype.getScreenName = goog.abstractMethod;
+ydn.social.Profile.prototype.getScreenName = function() {
+  return this.getUserName() || this.getUserId();
+};
 
 
 /**
