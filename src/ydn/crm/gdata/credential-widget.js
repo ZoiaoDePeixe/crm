@@ -95,9 +95,11 @@ ydn.crm.gdata.CredentialWidget.prototype.refresh = function(opt_cb, opt_scope) {
       }
     } else {
       var btn = authorize_panel.querySelector('a');
-      btn.href = token.authorize_url;
+      if (token.authorize_url) {
+        btn.href = token.authorize_url;
+        authorize_panel.style.display = '';
+      }
       display_panel.style.display = 'none';
-      authorize_panel.style.display = '';
       if (opt_cb) {
         opt_cb.call(opt_scope, false);
       }
