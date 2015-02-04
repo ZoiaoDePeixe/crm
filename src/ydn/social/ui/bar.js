@@ -112,7 +112,7 @@ ydn.social.ui.Bar.prototype.createDom = function() {
     this.addChild(new ydn.social.ui.MetaProfile(), true);
   }
 
-  for (var i = 1; i < this.getChildCount(); i++) {
+  for (var i = 0; i < this.getChildCount(); i++) {
     var ch = /** @type {ydn.social.ui.MetaProfile} */ (this.getChildAt(i));
     var el = ch.getDetailElement();
     el.classList.add('col-' + ((i + 1) % 9)); // for popup alignment
