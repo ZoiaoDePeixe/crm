@@ -15,7 +15,9 @@
 
 
 /**
- * @fileoverview Home page for SugarCRM in CRMinInbox suite.
+ * @fileoverview Synchronization page.
+ *
+ * Show list of sync pairs and potential sync pair.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
@@ -32,7 +34,7 @@ goog.require('ydn.ui');
 
 
 /**
- * Home page for SugarCRM in CRMinInbox suite.
+ * Synchronization page.
  * @constructor
  * @implements {ydn.crm.IPage}
  * @struct
@@ -61,7 +63,11 @@ ydn.crm.su.SyncPage = function() {
    * @private
    */
   this.record_panel_ = null;
-  
+
+  /**
+   * @type {boolean}
+   * @private
+   */
   this.need_refresh_ = false;
 };
 
