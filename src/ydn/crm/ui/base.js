@@ -59,6 +59,13 @@ ydn.crm.ui.CSS_CLASS_TITLE = 'title';
 
 /**
  * @const
+ * @type {string} error class
+ */
+ydn.crm.ui.CSS_CLASS_GMAIL_OFFLINE = 'gmail-offline';
+
+
+/**
+ * @const
  * @type {string} icon with rounded border.
  */
 ydn.crm.ui.CSS_CLASS_SVG_BUTTON = 'svg-button';

@@ -90,6 +90,9 @@ ydn.crm.inj.Hud.prototype.render = function() {
   div.appendChild(temp.cloneNode(true));
 
   this.root_el_ = div.firstElementChild;
+  if (ydn.gmail.Utils.isOfflineGmailApp()) {
+    this.root_el_.classList.add(ydn.crm.ui.CSS_CLASS_GMAIL_OFFLINE);
+  }
 
   document.body.appendChild(this.root_el_);
 
