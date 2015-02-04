@@ -38,6 +38,7 @@ goog.require('ydn.ui');
  * @constructor
  * @implements {ydn.crm.IPage}
  * @struct
+ * @see ydn.crm.OptionPageApp#processUserPageSetup for usage.
  */
 ydn.crm.su.SyncPage = function() {
   /**

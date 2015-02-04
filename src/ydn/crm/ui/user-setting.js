@@ -157,6 +157,7 @@ ydn.crm.ui.UserSetting.prototype.getContextPanelPosition = function() {
 
 /**
  * @private
+ * @return {!goog.async.Deferred}
  */
 ydn.crm.ui.UserSetting.prototype.loadUserLicense_ = function() {
   return ydn.msg.getChannel().send(ydn.crm.Ch.Req.USER_LICENSE).addCallback(function(x) {

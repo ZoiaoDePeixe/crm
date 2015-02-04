@@ -118,7 +118,7 @@ ydn.crm.su.GDataContactPanel.prototype.onContentClick_ = function(ev) {
  * @private
  */
 ydn.crm.su.GDataContactPanel.prototype.link_ = function(gdata_id, mn,
-                                                              record_id) {
+                                                        record_id) {
   if (ydn.crm.su.model.GDataSugar.DEBUG) {
     window.console.info('sync ', gdata_id, mn, record_id);
   }
@@ -213,8 +213,8 @@ ydn.crm.su.GDataContactPanel.prototype.renderToolbar = function() {
 /**
  * @override
  */
-ydn.crm.su.GDataContactPanel.prototype.appendItem = function(prepend,
-                                                                   should_remove) {
+ydn.crm.su.GDataContactPanel.prototype.showMoreItemsOnScroll = function(prepend,
+    should_remove) {
   var ul = this.root.querySelector('UL.infinite-scroll');
   var id = undefined;
   var rev = this.reverse;

@@ -91,8 +91,8 @@ ydn.crm.su.RecordPanel.prototype.renderToolbar = function() {
 /**
  * @override
  */
-ydn.crm.su.RecordPanel.prototype.appendItem = function(prepend,
-                                                             should_remove) {
+ydn.crm.su.RecordPanel.prototype.showMoreItemsOnScroll = function(prepend,
+    should_remove) {
   var ul = this.root.querySelector('UL.infinite-scroll');
   /**
    * @type {ydn.db.KeyRange|undefined}
@@ -217,7 +217,7 @@ ydn.crm.su.RecordPanel.prototype.refreshContent = function() {
     if (ydn.crm.su.RecordPanel.DEBUG) {
       window.console.log(query);
     }
-    return this.renderNextEntry_(query['result'], 0);
+    return this.renderEntries_(query['result']);
   }, function(e) {
     window.console.error(String(e));
   }, this);
@@ -243,11 +243,13 @@ ydn.crm.su.RecordPanel.prototype.renderEntry_ = function(el, entry) {
 
 
 /**
- * @param {!Array<!SugarCrm.Record>} entries
- * @param {number} idx
+ * Render entries.
+ * @param {!Array<!SugarCrm.Record>} entries list of entries to render.
+ * @param {number=} opt_idx current entry to render, default to 0.
  * @private
  */
-ydn.crm.su.RecordPanel.prototype.renderNextEntry_ = function(entries, idx) {
+ydn.crm.su.RecordPanel.prototype.renderEntries_ = function(entries, opt_idx) {
+  var idx = opt_idx || 0;
   if (idx >= entries.length) {
     return;
   }
@@ -263,6 +265,6 @@ ydn.crm.su.RecordPanel.prototype.renderNextEntry_ = function(entries, idx) {
   li.setAttribute('data-key', key);
   this.renderEntry_(li, entry).addBoth(function() {
     idx++;
-    this.renderNextEntry_(entries, idx);
+    this.renderEntries_(entries, idx);
   }, this);
 };

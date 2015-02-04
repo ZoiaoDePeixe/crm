@@ -123,7 +123,7 @@ ydn.crm.su.SyncPanel.prototype.renderToolbar = function() {
 /**
  * @override
  */
-ydn.crm.su.SyncPanel.prototype.appendItem = goog.abstractMethod;
+ydn.crm.su.SyncPanel.prototype.showMoreItemsOnScroll = goog.abstractMethod;
 
 
 /**
