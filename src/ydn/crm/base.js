@@ -412,3 +412,9 @@ ydn.crm.base.isEmailTracker = function() {
 };
 
 
+/**
+ * Record key is externally defined and no index in store.
+ * @const
+ * @type {string} database object store name for storing general records.
+ */
+ydn.crm.base.STORE_GENERAL = 'general';
