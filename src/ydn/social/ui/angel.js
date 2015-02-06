@@ -199,13 +199,13 @@ ydn.social.ui.AngelList.prototype.fetchDetailAndRefresh_ = function() {
         ydn.social.ui.AngelList.renderAngelProfile(detail, dp);
       }, function(e) {
         goog.style.setElementShown(detail, false);
-        ydn.crm.msg.Manager.addStatus('Fetching AngelList fail: ' + String(e));
         container.classList.remove('working');
         if (e.name == ydn.crm.base.ErrorName.HOST_PERMISSION) {
           container.classList.add('alert');
           this.getButton().setAttribute('title', 'Click to grant access to ' +
               'AngelList API');
         } else {
+          ydn.crm.msg.Manager.addStatus('Fetching AngelList fail: ' + String(e));
           container.classList.add('error');
         }
       }, this);

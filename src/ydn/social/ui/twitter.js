@@ -139,13 +139,13 @@ ydn.social.ui.Twitter.prototype.refreshTweet_ = function() {
     container.classList.add('exist');
     ydn.social.ui.Twitter.renderTweet(tweets_ul, tweets);
   }, function(e) {
-    ydn.crm.msg.Manager.addStatus('Fetching twitter fail: ' + String(e));
     container.classList.remove('working');
     if (e && e.name == ydn.crm.base.ErrorName.HOST_PERMISSION) {
       container.classList.add('alert');
       this.getButton().setAttribute('title', 'Click to grant access to Twitter API');
     } else {
       container.classList.add('error');
+      ydn.crm.msg.Manager.addStatus('Fetching twitter fail: ' + String(e));
     }
   }, this);
 };
