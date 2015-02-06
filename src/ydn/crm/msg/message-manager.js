@@ -20,7 +20,8 @@
  * Centralize repo to dump status message and forwarding message to consumer, which
  * display the message.
  *
- * The main reason, having as manager is we have more than one consumer.
+ * The main reason, having as manager is we have more than one consumer and
+ * provide help in debugging.
  */
 
 
@@ -33,6 +34,9 @@ goog.require('ydn.crm.msg.Consumer');
 /**
  * Status message manager.
  * Do not instantiate this, but instead use static method.
+ * <pre>
+ *   ydn.crm.msg.Manager.addStatus('You have a new message');
+ * <pre>
  * @constructor
  * @struct
  */

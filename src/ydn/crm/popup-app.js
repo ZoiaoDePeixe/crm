@@ -145,7 +145,7 @@ ydn.crm.PopupPageApp.prototype.processUserPageSetup = function() {
 ydn.crm.PopupPageApp.prototype.initGDataToken_ = function() {
   var option_page = window.location.href.replace(/#.*/, '')
       .replace('popup.html', 'option-page.html');
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.TOKEN_GDATA, location.href).addCallback(function(data) {
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.TOKEN_GDATA, location.href).addCallback(function(data) {
     var token = /** @type {YdnApiToken} */ (data);
     if (!token || !token.has_token) {
       this.renderFeed([

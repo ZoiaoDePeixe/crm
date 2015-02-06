@@ -216,7 +216,7 @@ ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
       var about_tk = new ydn.crm.AboutPage('Yathit Email Tracker');
       this.addPage(name, about_tk.toString(), about_tk);
     } else if (name == 'sugarcrm') {
-      var sugar = new ydn.crm.su.HomePage();
+      var sugar = new ydn.crm.su.HomePage(us);
       this.addPage(name, sugar.toString(), sugar);
     } else if (name == 'tracking-setting') {
       var tracking_setup = new ydn.crm.tracking.SettingPage();
@@ -256,7 +256,7 @@ ydn.crm.OptionPageApp.prototype.processWithSugarSetup_ = function(sugar) {
  * @private
  */
 ydn.crm.OptionPageApp.prototype.processSugarCRMSetup_ = function() {
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR).addCallback(function(arr) {
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.LIST_SUGAR).addCallback(function(arr) {
     var sugars = /** @type {Array<SugarCrm.About>} */ (arr);
     for (var i = 0; i < sugars.length; i++) {
       var about = sugars[i];
@@ -398,7 +398,7 @@ ydn.crm.OptionPageApp.prototype.run = function() {
           sendResponse('close');
           var link = document.getElementById('user-login');
           if (link.textContent == 'logout') {
-            ydn.msg.getChannel().send(ydn.crm.Ch.Req.LOGGED_OUT).addCallback(function() {
+            ydn.msg.getChannel().send(ydn.crm.ch.Req.LOGGED_OUT).addCallback(function() {
               location.reload();
             });
           } else {

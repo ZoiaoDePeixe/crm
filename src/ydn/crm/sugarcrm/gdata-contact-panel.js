@@ -138,11 +138,11 @@ ydn.crm.su.GDataContactPanel.prototype.link_ = function(gdata_id, mn,
   var mid = ydn.crm.msg.Manager.addStatus('Linking Gmail contact ' + sid +
       ' with SugarCRM ' + mn + ' ' + record_id);
   var ch = this.model.getChannel();
-  return ch.send(ydn.crm.Ch.SReq.LINK, query).addCallbacks(function(x) {
+  return ch.send(ydn.crm.ch.SReq.LINK, query).addCallbacks(function(x) {
     ydn.crm.msg.Manager.updateStatus(mid, 'done. Merging records...');
     var sync = /** @type {YdnCrm.SyncRecord} */(x);
     var mch = ydn.msg.getChannel();
-    mch.send(ydn.crm.Ch.Req.SYNC_FOR, sync).addCallbacks(function(x) {
+    mch.send(ydn.crm.ch.Req.SYNC_FOR, sync).addCallbacks(function(x) {
       ydn.crm.msg.Manager.updateStatus(mid, 'done.');
       if (ydn.crm.su.model.GDataSugar.DEBUG) {
         window.console.log(x);
@@ -166,7 +166,7 @@ ydn.crm.su.GDataContactPanel.prototype.link_ = function(gdata_id, mn,
  * @private
  */
 ydn.crm.su.GDataContactPanel.prototype.import_ = function(id, mn) {
-  var req = ydn.crm.Ch.SReq.IMPORT_GDATA;
+  var req = ydn.crm.ch.SReq.IMPORT_GDATA;
   var data = {
     'module': mn,
     'kind': ydn.gdata.Kind.M8_CONTACT,
@@ -236,7 +236,7 @@ ydn.crm.su.GDataContactPanel.prototype.showMoreItemsOnScroll = function(prepend,
     'reverse': rev,
     'after': id
   };
-  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, query)
+  return ydn.msg.getChannel().send(ydn.crm.ch.Req.GDATA_LIST_CONTACT, query)
       .addCallback(function(arr) {
         /*
         if (ydn.crm.su.GDataContactPanel.DEBUG) {
@@ -294,7 +294,7 @@ ydn.crm.su.GDataContactPanel.prototype.onOrderChanged_ = function(e) {
 ydn.crm.su.GDataContactPanel.prototype.onSync_ = function(e) {
   var btn = e.target;
   btn.setAttribute('disabled', 'disabled');
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.SYNC).addCallbacks(function(msg) {
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.SYNC).addCallbacks(function(msg) {
     btn.removeAttribute('disabled');
     ydn.crm.msg.Manager.addStatus(String(msg));
   }, function(e) {
@@ -328,12 +328,12 @@ ydn.crm.su.GDataContactPanel.prototype.refreshFooter = function() {
   var query = {
     'kind': ydn.gdata.Kind.M8_CONTACT
   };
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.GDATA_COUNT, query)
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.GDATA_COUNT, query)
       .addCallback(function(cnt) {
         var el = this.toolbar.querySelector('span[name=gdata-contact-count]');
         el.textContent = String(cnt);
       }, this);
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.SYNC_GET_LAST)
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.SYNC_GET_LAST)
       .addCallback(function(ts) {
         if (!ts) {
           return;
@@ -453,7 +453,7 @@ ydn.crm.su.GDataContactPanel.prototype.refreshEntry_ = function(id) {
     'from': id,
     'limit': 1
   };
-  ch.send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, query).addCallbacks(function(arr) {
+  ch.send(ydn.crm.ch.Req.GDATA_LIST_CONTACT, query).addCallbacks(function(arr) {
     if (ydn.crm.su.GDataContactPanel.DEBUG) {
       window.console.log(arr[0]);
     }
@@ -577,14 +577,14 @@ ydn.crm.su.GDataContactPanel.prototype.renderEntry_ = function(el, entry) {
 
   var ch = ydn.msg.getChannel();
   var q = {'entryId': entry.getEntryId()};
-  return ch.send(ydn.crm.Ch.Req.SYNC_QUERY, q).addCallbacks(function(arr) {
+  return ch.send(ydn.crm.ch.Req.SYNC_QUERY, q).addCallbacks(function(arr) {
     var syncs = /** @type {!Array<!SugarCrm.Record>} */(arr);
     if (arr[0]) {
       this.renderRecordByLink_(el, entry, arr[0]);
     } else {
       var sch = this.model.getChannel();
       var ce = entry.getData();
-      sch.send(ydn.crm.Ch.SReq.QUERY_SIMILAR, ce).addCallbacks(function(arr) {
+      sch.send(ydn.crm.ch.SReq.QUERY_SIMILAR, ce).addCallbacks(function(arr) {
         if (ydn.crm.su.GDataContactPanel.DEBUG) {
           window.console.log(arr[0]);
         }
@@ -651,7 +651,7 @@ ydn.crm.su.GDataContactPanel.prototype.refreshContent = function() {
     'limit': 20,
     'reverse': this.reverse
   };
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.GDATA_LIST_CONTACT, query)
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.GDATA_LIST_CONTACT, query)
       .addCallback(function(arr) {
         if (ydn.crm.su.GDataContactPanel.DEBUG) {
           window.console.log(arr);

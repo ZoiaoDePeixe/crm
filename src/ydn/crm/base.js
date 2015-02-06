@@ -223,6 +223,7 @@ ydn.crm.base.AppShortName = {
  */
 ydn.crm.base.AppFeature = {
   GDATA_CONTACT: 'gc',
+  GAPPS_CALENDER: 'cal',
   TRACKING: 'tk',
   SUGARCRM: 'su'
 };
@@ -348,7 +349,8 @@ ydn.crm.base.ErrorName = {
   INVALID_LOGIN: 'InvalidLoginError',
   INVALID_SESSION: 'Invalid SessionError',
   NETWORK: 'NetworkError',
-  NOT_AUTHORIZE: 'NotAuthorizeError'
+  NOT_AUTHORIZE: 'NotAuthorizeError',
+  NOT_READY: 'NotReadyError'
 };
 
 
@@ -392,6 +394,8 @@ ydn.crm.base.hasFeature = function(feature) {
   var app_name = ydn.crm.base.getAppShortName();
   if (feature == ydn.crm.base.AppFeature.TRACKING) {
     return true;
+  } else if (feature == ydn.crm.base.AppFeature.GAPPS_CALENDER) {
+    return app_name == ydn.crm.base.AppShortName.SUGARCRM;
   } else if (feature == ydn.crm.base.AppFeature.SUGARCRM) {
     return app_name == ydn.crm.base.AppShortName.SUGARCRM;
   } else if (feature == ydn.crm.base.AppFeature.GDATA_CONTACT) {
@@ -418,3 +422,28 @@ ydn.crm.base.isEmailTracker = function() {
  * @type {string} database object store name for storing general records.
  */
 ydn.crm.base.STORE_GENERAL = 'general';
+
+
+/**
+ * Chrome local storage key for record store in server.
+ * @enum {string}
+ */
+ydn.crm.base.KeyCLRecordOnServer = {
+  /**
+   * define in {@link YdnCrm.UserSettingGoogle}
+   */
+  USER_SETTING_GOOGLE: 'ws-us-go',
+  /**
+   * define in {@link YdnCrm.UserSettingSugarCrm}
+   */
+  USER_SETTING_SUGARCRM: 'ws-us-su'
+};
+
+
+/**
+ * @const
+ * @type {!Array<ydn.crm.base.KeyCLRecordOnServer>}
+ */
+ydn.crm.base.chromeLocalKeysWithServer = [
+  ydn.crm.base.KeyCLRecordOnServer.USER_SETTING_GOOGLE,
+  ydn.crm.base.KeyCLRecordOnServer.USER_SETTING_SUGARCRM];

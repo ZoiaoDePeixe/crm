@@ -35,6 +35,10 @@ ydn.crm.ui.UserSetting = function() {
    * @type {?YdnApiUser}
    */
   this.login_info = null;
+  /**
+   * @protected
+   * @type {Object}
+   */
   this.user_setting = null;
 
   /**
@@ -68,10 +72,10 @@ ydn.crm.ui.UserSetting = function() {
    * @type {YdnCrm.UserLicense}
    * @private
    */
-  this.user_license = null;
+  this.user_license_ = null;
 
   goog.events.listen(ydn.msg.getMain(),
-      [ydn.crm.Ch.BReq.LOGGED_OUT, ydn.crm.Ch.BReq.LOGGED_IN],
+      [ydn.crm.ch.BReq.LOGGED_OUT, ydn.crm.ch.BReq.LOGGED_IN],
       this.handleLoginProcess_, false, this);
 };
 goog.inherits(ydn.crm.ui.UserSetting, goog.events.EventTarget);
@@ -92,7 +96,7 @@ ydn.crm.ui.UserSetting.EventType = {
  * @private
  */
 ydn.crm.ui.UserSetting.prototype.handleLoginProcess_ = function(e) {
-  var type = e.type == ydn.crm.Ch.BReq.LOGGED_IN ?
+  var type = e.type == ydn.crm.ch.BReq.LOGGED_IN ?
       ydn.crm.ui.UserSetting.EventType.LOGIN : ydn.crm.ui.UserSetting.EventType.LOGOUT;
   goog.log.finer(this.logger, 'receiving ' + e.type + ' event');
   this.invalidate().addBoth(function() {
@@ -160,8 +164,8 @@ ydn.crm.ui.UserSetting.prototype.getContextPanelPosition = function() {
  * @return {!goog.async.Deferred}
  */
 ydn.crm.ui.UserSetting.prototype.loadUserLicense_ = function() {
-  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.USER_LICENSE).addCallback(function(x) {
-    this.user_license = x || null;
+  return ydn.msg.getChannel().send(ydn.crm.ch.Req.USER_LICENSE).addCallback(function(x) {
+    this.user_license_ = x || null;
   }, this);
 };
 
@@ -188,7 +192,7 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
       var msg = email ? 'Loading user setting for ' + email : 'User setting not available.';
       ydn.crm.msg.Manager.addStatus(msg);
       goog.log.fine(this.logger, msg);
-      return ydn.msg.getChannel().send(ydn.crm.Ch.Req.LOGIN_INFO, {
+      return ydn.msg.getChannel().send(ydn.crm.ch.Req.LOGIN_INFO, {
         'gmail': email
       }).addCallbacks(function(x) {
         var info = /** @type {YdnApiUser} */ (x);
@@ -233,7 +237,7 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
 ydn.crm.ui.UserSetting.prototype.invalidate = function() {
   this.login_info = null;
   this.user_setting = null;
-  this.user_license = null;
+  this.user_license_ = null;
   this.df_ = null;
   // this.gmail_ = null; // does not changed, as long as same url.
   return this.onReady();
@@ -291,7 +295,7 @@ ydn.crm.ui.UserSetting.prototype.getGmail = function() {
 ydn.crm.ui.UserSetting.prototype.getModuleInfo = function(name) {
   var channel = ydn.msg.getChannel(ydn.msg.Group.SUGAR, name);
   return this.onReady().branch().addCallback(function() {
-    return channel.send(ydn.crm.Ch.SReq.INFO_MODULE).addCallback(function(x) {
+    return channel.send(ydn.crm.ch.SReq.INFO_MODULE).addCallback(function(x) {
       if (goog.isArray(x)) {
         for (var i = 0; i < x.length; i++) {
           ydn.crm.su.fixSugarCrmModuleMeta(x[i]);
@@ -364,6 +368,70 @@ ydn.crm.ui.UserSetting.prototype.setSetting = function(val, key, var_args) {
   var store = {};
   store[ydn.crm.base.SyncKey.USER_SETTING] = this.user_setting;
   chrome.storage.sync.set(store);
+};
+
+
+/**
+ * Get user setting store in server.
+ * The record itself is cached locally in
+ * chrome.storage.local.
+ * @param {ydn.crm.base.KeyCLRecordOnServer} key
+ * @return {!goog.async.Deferred<Object>}
+ */
+ydn.crm.ui.UserSetting.prototype.getSettingOnServer = function(key) {
+  var df = new goog.async.Deferred();
+  chrome.storage.local.get(key, function(obj) {
+    var json = obj[key];
+    df.callback(json);
+  });
+  return df;
+};
+
+
+/**
+ * Set user setting store in server.
+ * @param {ydn.crm.base.KeyCLRecordOnServer} key
+ * @param {Object} value
+ * @return {!goog.async.Deferred}
+ * @see #patchSettingOnServer for updating only one field.
+ * @see ydn.crm.AppSetting#setUserSettingOnServer on server side.
+ */
+ydn.crm.ui.UserSetting.prototype.setSettingOnServer = function(key, value) {
+  var data = {
+    'key': key,
+    'value': value
+  };
+  return ydn.msg.getChannel().send(
+      ydn.crm.ch.Req.CHROME_LOCAL_KEY_WITH_SERVER, data);
+};
+
+
+/**
+ * Update specific field value.
+ * @param {ydn.crm.base.KeyCLRecordOnServer} key
+ * @param {YdnCrm.UserSettingRecord} patch corresponding patch object. If field value is
+ * undefined or null the field value will be deleted.
+ * @return {!goog.async.Deferred}
+ */
+ydn.crm.ui.UserSetting.prototype.patchSettingOnServer = function(key, patch) {
+  return this.getSettingOnServer(key).addCallback(function(val) {
+    if (!goog.isObject(val) || goog.isArray(val)) {
+      // in very strange situation, val is an array
+      val = {};
+    }
+    for (var field in patch) {
+      var value = patch[field];
+      if (goog.isDefAndNotNull(value)) {
+        val[field] = value;
+      } else {
+        delete val[field];
+      }
+    }
+    if (ydn.crm.ui.UserSetting.DEBUG) {
+      window.console.log(key, val);
+    }
+    return this.setSettingOnServer(key, val);
+  }, this);
 };
 
 
@@ -580,8 +648,8 @@ ydn.crm.ui.UserSetting.features_not_in_express = [
  * @return {boolean}
  */
 ydn.crm.ui.UserSetting.prototype.hasFeature = function(feature) {
-  if (this.user_license) {
-    var edition = this.user_license.edition;
+  if (this.user_license_) {
+    var edition = this.user_license_.edition;
     if (edition == ydn.crm.base.LicenseEdition.STANDARD) {
       return true;
     } else if (edition == ydn.crm.base.LicenseEdition.EXPRESS) {

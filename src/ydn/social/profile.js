@@ -44,7 +44,7 @@ ydn.social.Profile = function(network) {
  * @return {!goog.async.Deferred}
  */
 ydn.social.Profile.prototype.fetchFeed = function() {
-  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.SOCIAL_FEED, {
+  return ydn.msg.getChannel().send(ydn.crm.ch.Req.SOCIAL_FEED, {
     'network': this.network,
     'userId': this.getUserId(),
     'userName': this.getScreenName()
@@ -57,7 +57,7 @@ ydn.social.Profile.prototype.fetchFeed = function() {
  * @return {!goog.async.Deferred}
  */
 ydn.social.Profile.prototype.fetchDetail = function() {
-  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.SOCIAL_PROFILE_DETAIL, {
+  return ydn.msg.getChannel().send(ydn.crm.ch.Req.SOCIAL_PROFILE_DETAIL, {
     'network': this.network,
     'userId': this.getUserId(),
     'userName': this.getUserName()

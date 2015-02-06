@@ -44,7 +44,7 @@ ydn.crm.inj.task.Login.prototype.init = function(ele) {
  * Refresh login status.
  */
 ydn.crm.inj.task.Login.prototype.refresh = function() {
-  var msg = new ydn.msg.Message(ydn.crm.Ch.Req.LOGIN_INFO, function(info) {
+  var msg = new ydn.msg.Message(ydn.crm.ch.Req.LOGIN_INFO, function(info) {
     var ele_domain = this.root.children[0].children[1];
     var ele_username = this.root.children[1].children[1];
     var ele_password = this.root.children[2].children[1];

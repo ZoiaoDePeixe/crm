@@ -136,7 +136,7 @@ ydn.crm.inj.SugarCrmApp.prototype.init = function() {
       this.onUserStatusChange, false, this);
 
   goog.events.listen(ydn.msg.getMain(),
-      [ydn.crm.Ch.BReq.SUGARCRM],
+      [ydn.crm.ch.BReq.SUGARCRM],
       this.handleSugarDomainChanges, false, this);
 
   if (ydn.crm.inj.SugarCrmApp.DEBUG) {
@@ -177,7 +177,7 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(about) {
   this.sidebar_panel.setSugarCrm(about);
 
   var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, about.domain);
-  ch.send(ydn.crm.Ch.SReq.DETAILS).addCallback(function(x) {
+  ch.send(ydn.crm.ch.SReq.DETAILS).addCallback(function(x) {
     var details = /** @type {SugarCrm.Details} */ (x);
     for (var i = 0; i < details.modulesInfo.length; i++) {
       ydn.crm.su.fixSugarCrmModuleMeta(details.modulesInfo[i]);
@@ -202,7 +202,7 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarPanels_ = function() {
   if (ydn.crm.inj.SugarCrmApp.DEBUG) {
     window.console.info('preparing to update sugar panels');
   }
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR).addCallback(
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.LIST_SUGAR).addCallback(
       function(arr) {
         if (ydn.crm.inj.SugarCrmApp.DEBUG) {
           window.console.log(arr);

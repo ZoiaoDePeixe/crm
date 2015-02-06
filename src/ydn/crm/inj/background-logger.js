@@ -47,6 +47,6 @@ ydn.crm.inj.BackgroundLogger = function() {
  * @override
  */
 ydn.crm.inj.BackgroundLogger.prototype.log = function(data) {
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.LOG, data);
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.LOG, data);
 };
 

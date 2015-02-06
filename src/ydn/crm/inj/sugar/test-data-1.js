@@ -29,7 +29,7 @@ var main_pre = {
 
 
 var queryGData = function(email) {
-  var msg = new ydn.msg.Message(ydn.crm.Ch.Req.GDATA_LIST_CONTACT_BY_EMAIL, function(entries) {
+  var msg = new ydn.msg.Message(ydn.crm.ch.Req.GDATA_LIST_CONTACT_BY_EMAIL, function(entries) {
 
     window.console.log(JSON.stringify(entries, null, 2));
 
@@ -41,7 +41,7 @@ var queryGData = function(email) {
 
 
 var getSugarData = function(email, domain) {
-  var msg_sc = new ydn.msg.Message(ydn.crm.Ch.SReq.QUERY, function(results) {
+  var msg_sc = new ydn.msg.Message(ydn.crm.ch.SReq.QUERY, function(results) {
     console.log(results)
   });
   msg_sc.setData([

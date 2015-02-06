@@ -472,3 +472,35 @@ YdnCrm.UserLicense.prototype.end;
  * @type {string}
  */
 YdnCrm.UserLicense.prototype.edition;
+
+
+
+/**
+ * User setting for Google services.
+ * @interface
+ */
+YdnCrm.UserSettingRecord = function() {};
+
+
+
+/**
+ * User setting for Google services.
+ * @interface
+ * @extends {YdnCrm.UserSettingRecord}
+ */
+YdnCrm.UserSettingSugarCrm = function() {};
+
+
+
+/**
+ * User setting for Google services.
+ * @interface
+ * @extends {YdnCrm.UserSettingRecord}
+ */
+YdnCrm.UserSettingGoogle = function() {};
+
+
+/**
+ * @type {string|undefined} Google calendar id for sync with CRM.
+ */
+YdnCrm.UserSettingGoogle.prototype.syncCalId;

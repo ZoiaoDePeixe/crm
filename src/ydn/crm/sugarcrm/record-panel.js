@@ -121,7 +121,7 @@ ydn.crm.su.RecordPanel.prototype.showMoreItemsOnScroll = function(prepend,
     'keyRange': key_range ? key_range.toJSON() : undefined
   };
   var ch = this.model.getChannel();
-  return ch.send(ydn.crm.Ch.SReq.QUERY, [query]).addCallbacks(function(arr) {
+  return ch.send(ydn.crm.ch.SReq.QUERY, [query]).addCallbacks(function(arr) {
     var result = /** @type {CrmApp.QueryResult} */ (arr[0]);
     var item = result.result[0];
     if (ydn.crm.su.RecordPanel.DEBUG) {
@@ -191,7 +191,7 @@ ydn.crm.su.RecordPanel.prototype.refreshFooter = function() {
     'module': this.module_
   };
   var ch = this.model.getChannel();
-  ch.send(ydn.crm.Ch.SReq.COUNT, query)
+  ch.send(ydn.crm.ch.SReq.COUNT, query)
       .addCallback(function(cnt) {
         var el = this.toolbar.querySelector('span[name=record-count]');
         el.textContent = String(cnt);
@@ -212,7 +212,7 @@ ydn.crm.su.RecordPanel.prototype.refreshContent = function() {
     'reverse': this.reverse,
     'limit': 20
   };
-  return ch.send(ydn.crm.Ch.SReq.QUERY, [query]).addCallbacks(function(arr) {
+  return ch.send(ydn.crm.ch.SReq.QUERY, [query]).addCallbacks(function(arr) {
     var query = arr[0];
     if (ydn.crm.su.RecordPanel.DEBUG) {
       window.console.log(query);

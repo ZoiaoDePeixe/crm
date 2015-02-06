@@ -133,7 +133,7 @@ ydn.crm.su.Widget.prototype.render = function(ele) {
 ydn.crm.su.Widget.prototype.onClearCache_ = function(ev) {
   var btn = ev.currentTarget;
   btn.setAttribute('disabled', 'disabled');
-  this.getModel().getChannel().send(ydn.crm.Ch.SReq.CLEAR_CACHE)
+  this.getModel().getChannel().send(ydn.crm.ch.SReq.CLEAR_CACHE)
       .addBoth(function(e) {
         this.showStats(true).addBoth(function() {
           btn.removeAttribute('disabled');
@@ -152,7 +152,7 @@ ydn.crm.su.Widget.prototype.onClearCache_ = function(ev) {
 ydn.crm.su.Widget.prototype.onUpdateNow_ = function(ev) {
   var btn = ev.currentTarget;
   btn.setAttribute('disabled', 'disabled');
-  this.getModel().getChannel().send(ydn.crm.Ch.SReq.UPDATE_NOW)
+  this.getModel().getChannel().send(ydn.crm.ch.SReq.UPDATE_NOW)
       .addBoth(function(e) {
         this.showStats(true).addBoth(function() {
           btn.removeAttribute('disabled');
@@ -330,7 +330,7 @@ ydn.crm.su.Widget.prototype.showStats = function(opt_val) {
   if (this.show_stats && this.model.isLogin()) {
     goog.style.setElementShown(stats, true);
     var ch = this.model.getChannel();
-    return ch.send(ydn.crm.Ch.SReq.STATS).addCallback(function(arr) {
+    return ch.send(ydn.crm.ch.SReq.STATS).addCallback(function(arr) {
       var ul = stats.querySelector('ul');
       ul.innerHTML = '';
       // console.log(arr);

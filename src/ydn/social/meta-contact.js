@@ -83,7 +83,7 @@ ydn.social.MetaContact.fetchByEmail = function(email) {
   if (email.indexOf('@') == -1 || email.indexOf('.') == -1) {
     return goog.async.Deferred.fail(new Error('Invalid email ' + email));
   }
-  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.SOCIAL_PROFILE, {
+  return ydn.msg.getChannel().send(ydn.crm.ch.Req.SOCIAL_PROFILE, {
     'email': email
   }).addCallbacks(function(data) {
     if (ydn.social.MetaContact.DEBUG) {

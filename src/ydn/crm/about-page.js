@@ -86,7 +86,7 @@ ydn.crm.AboutPage.prototype.onPageShow = function() {
   if (!us.isLogin()) {
     return;
   }
-  ydn.msg.getChannel().send(ydn.crm.Ch.Req.USER_LICENSE).addCallback(function(lic) {
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.USER_LICENSE).addCallback(function(lic) {
     this.renderLicense_(lic);
   }, this);
 

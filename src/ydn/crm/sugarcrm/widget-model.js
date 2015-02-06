@@ -60,7 +60,7 @@ ydn.crm.su.WidgetModel = function(opt_about) {
 
   if (this.about && this.about.domain) {
     var pipe = ydn.msg.getMain();
-    this.handler.listen(pipe, [ydn.crm.Ch.BReq.SUGARCRM, ydn.crm.Ch.BReq.HOST_PERMISSION],
+    this.handler.listen(pipe, [ydn.crm.ch.BReq.SUGARCRM, ydn.crm.ch.BReq.HOST_PERMISSION],
         this.handleMessage);
   }
 
@@ -93,7 +93,7 @@ ydn.crm.su.WidgetModel.prototype.getAbout = function() {
  * @return {!goog.async.Deferred<SugarCrm.Details>}
  */
 ydn.crm.su.WidgetModel.prototype.queryDetails = function() {
-  return this.getChannel().send(ydn.crm.Ch.SReq.DETAILS);
+  return this.getChannel().send(ydn.crm.ch.SReq.DETAILS);
 };
 
 
@@ -103,15 +103,14 @@ ydn.crm.su.WidgetModel.prototype.queryDetails = function() {
  */
 ydn.crm.su.WidgetModel.prototype.handleMessage = function(e) {
 
-  console.log(e);
-  if (e.type == ydn.crm.Ch.BReq.SUGARCRM) {
+  if (e.type == ydn.crm.ch.BReq.SUGARCRM) {
     var data = e.getData();
     if (data['type'] == 'login') {
       var about = /** @type {SugarCrm.About} */ (data['about']);
       this.about = about;
       this.dispatchEvent(new goog.events.Event(ydn.crm.su.SugarEvent.LOGIN, this));
     }
-  } else if (e.type == ydn.crm.Ch.BReq.HOST_PERMISSION && this.about) {
+  } else if (e.type == ydn.crm.ch.BReq.HOST_PERMISSION && this.about) {
     var msg = e.getData();
     if (msg['grant'] && msg['grant'] == this.getDomain()) {
       this.about.hostPermission = true;
@@ -239,7 +238,7 @@ ydn.crm.su.WidgetModel.prototype.getInfo = function() {
   if (this.info) {
     return goog.async.Deferred.succeed(this.info);
   }
-  return this.getChannel().send(ydn.crm.Ch.SReq.SERVER_INFO)
+  return this.getChannel().send(ydn.crm.ch.SReq.SERVER_INFO)
       .addCallback(function(x) {
         this.info = x;
       }, this);
@@ -271,13 +270,13 @@ ydn.crm.su.WidgetModel.prototype.login = function(url, username, password) {
   // whether user give permission or not, we still continue login.
   // console.log(permission, me.data);
   if (this.is_new_) {
-    return ydn.msg.getChannel().send(ydn.crm.Ch.Req.NEW_SUGAR, this.about)
+    return ydn.msg.getChannel().send(ydn.crm.ch.Req.NEW_SUGAR, this.about)
         .addCallback(function(info) {
           // console.log(info);
           this.about = info;
         }, this);
   } else {
-    return this.getChannel().send(ydn.crm.Ch.SReq.LOGIN, this.about)
+    return this.getChannel().send(ydn.crm.ch.SReq.LOGIN, this.about)
         .addCallback(function(info) {
           // console.log(info);
           this.about = info;
@@ -302,7 +301,7 @@ ydn.crm.su.WidgetModel.prototype.getPermissionObject = function() {
  * @return {!goog.async.Deferred.<Array.<ydn.crm.su.WidgetModel>>} cb
  */
 ydn.crm.su.WidgetModel.list = function() {
-  return ydn.msg.getChannel().send(ydn.crm.Ch.Req.LIST_SUGAR).addCallback(function(abouts) {
+  return ydn.msg.getChannel().send(ydn.crm.ch.Req.LIST_SUGAR).addCallback(function(abouts) {
     var models = [];
     for (var i = 0; i < abouts.length; i++) {
       var about = /** @type {SugarCrm.About} */ (abouts[i]);

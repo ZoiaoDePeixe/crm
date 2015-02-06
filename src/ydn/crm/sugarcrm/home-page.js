@@ -22,6 +22,7 @@
 
 
 goog.provide('ydn.crm.su.HomePage');
+goog.require('ydn.crm.gdata.CalendarSettingPanel');
 goog.require('ydn.crm.gdata.CredentialWidget');
 goog.require('ydn.crm.su.Widget');
 goog.require('ydn.crm.su.WidgetModel');
@@ -31,11 +32,12 @@ goog.require('ydn.crm.tracking.setting.Main');
 
 /**
  * Home page for SugarCRM in CRMinInbox suite.
+ * @param {ydn.crm.ui.UserSetting} us
  * @constructor
  * @implements {ydn.crm.IPage}
  * @struct
  */
-ydn.crm.su.HomePage = function() {
+ydn.crm.su.HomePage = function(us) {
   /**
    * @type {Element}
    * @private
@@ -54,6 +56,13 @@ ydn.crm.su.HomePage = function() {
    * @type {ydn.crm.gdata.CredentialWidget}
    */
   this.gdata_widget = new ydn.crm.gdata.CredentialWidget();
+
+  /**
+   * @protected
+   * @type {ydn.crm.gdata.CalendarSettingPanel}
+   */
+  this.calendar_setting = new ydn.crm.gdata.CalendarSettingPanel(us);
+
 };
 
 
@@ -69,6 +78,9 @@ ydn.crm.su.HomePage.prototype.render = function(el) {
   if (ydn.crm.base.hasFeature(ydn.crm.base.AppFeature.TRACKING)) {
     var tracking = new ydn.crm.tracking.setting.Main(us);
     tracking.render(gdata_ele.parentElement);
+  }
+  if (ydn.crm.base.hasFeature(ydn.crm.base.AppFeature.GAPPS_CALENDER)) {
+    this.calendar_setting.render(this.root_.querySelector('section[name=calendar]'));
   }
   this.sugar_widget.render(this.root_.querySelector('#sugarcrm-widget'));
   el.appendChild(this.root_);
