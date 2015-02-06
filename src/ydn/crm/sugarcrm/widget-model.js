@@ -250,21 +250,24 @@ ydn.crm.su.WidgetModel.prototype.getInfo = function() {
  * @param {string} url
  * @param {string} username
  * @param {string} password
+ * @param {string} provider
  * @return {!goog.async.Deferred.<SugarCrm.About>} cb
  */
-ydn.crm.su.WidgetModel.prototype.login = function(url, username, password) {
+ydn.crm.su.WidgetModel.prototype.login = function(url, username, password, provider) {
   this.setInstanceUrl(url);
   window.console.assert(!!this.about, 'Not initialized');
   if (username) {
     this.about.userName = username;
   }
+
+  this.about.provider = provider || '';
+
   if (password) {
-    // keep hashed password only.
-    // this.about.password = CryptoJS.MD5(password).toString();
-    var md5 = new goog.crypt.Md5();
-    md5.update(password);
-    this.about.password = goog.crypt.byteArrayToHex(md5.digest());
-    this.about.hashed = true;
+    //var md5 = new goog.crypt.Md5();
+    //md5.update(password);
+    //this.about.password = goog.crypt.byteArrayToHex(md5.digest());
+    //this.about.hashed = true;
+    this.about.password = password;
   }
 
   // whether user give permission or not, we still continue login.

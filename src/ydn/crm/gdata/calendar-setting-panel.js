@@ -195,7 +195,7 @@ ydn.crm.gdata.CalendarSettingPanel.prototype.refresh_ = function() {
       ydn.crm.msg.Manager.addStatus(msg);
     }
   }
-  goog.style.setElementShown(this.root, true);
+  // goog.style.setElementShown(this.root, true);
 };
 
 

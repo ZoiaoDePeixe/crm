@@ -387,9 +387,10 @@ ydn.crm.su.Widget.prototype.handleLogin = function(e) {
   btn_new_sugar.setAttribute('disabled', 'disabled');
 
   var model = this.model;
+  var provider = root.querySelector('select[name="sugarcrm-auth"]').value;
   chrome.permissions.request(this.model.getPermissionObject(), function(grant) {
     // console.log('grant ' + grant);
-    model.login(url, username, password).addCallbacks(function(info) {
+    model.login(url, username, password, provider).addCallbacks(function(info) {
       window.location.reload();
     }, function(e) {
       btn_new_sugar.removeAttribute('disabled');
