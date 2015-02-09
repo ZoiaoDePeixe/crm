@@ -39,12 +39,13 @@ goog.require('ydn.ui.FlyoutMenu');
  */
 ydn.crm.ui.HoverContextPanel = function(opt_dom) {
   goog.base(this, opt_dom);
+  var opt = {iconName: 'menu'};
   /**
    * Menu.
    * @type {ydn.ui.FlyoutMenu}
    * @private
    */
-  this.menu_ = new ydn.ui.FlyoutMenu();
+  this.menu_ = new ydn.ui.FlyoutMenu(opt, ydn.crm.ui.HoverContextPanel.MENU_ITEMS);
 };
 goog.inherits(ydn.crm.ui.HoverContextPanel, goog.ui.Component);
 
@@ -54,6 +55,35 @@ goog.inherits(ydn.crm.ui.HoverContextPanel, goog.ui.Component);
  * @override
  */
 ydn.crm.ui.HoverContextPanel.prototype.getModel;
+
+
+/**
+ * @const
+ * @type {Array<ydn.ui.FlyoutMenu.ItemOption>}
+ */
+ydn.crm.ui.HoverContextPanel.MENU_ITEMS = [{
+  name: 'add.Contacts',
+  label: 'Add to Contacts'
+},{
+  name: 'add.Leads',
+  label: 'Add to Leads'
+},{
+  name: 'add.Accounts',
+  label: 'Add to Accounts'
+},{
+  name: 'new',
+  label: 'New...',
+  children: [{
+    name: 'Contacts',
+    label: 'Contacts'
+  }, {
+    name: 'Leads',
+    label: 'Leads'
+  }, {
+    name: 'Accounts',
+    label: 'Accounts'
+  }]
+}];
 
 
 /**
@@ -81,8 +111,9 @@ ydn.crm.ui.HoverContextPanel.prototype.createDom = function() {
   var root = this.getElement();
   var t = ydn.ui.getTemplateById('hover-context-panel-template').content;
   root.appendChild(t.cloneNode(true));
-  var menu_el = root.querySelector('.header > span(:last-child)');
+  var menu_el = root.querySelector('.header .menu-holder');
   this.menu_.render(menu_el);
+  goog.style.setElementShown(root, false);
 };
 
 
@@ -92,9 +123,9 @@ ydn.crm.ui.HoverContextPanel.prototype.createDom = function() {
 ydn.crm.ui.HoverContextPanel.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var root = this.getElement();
-  var a = root.querySelector('.flex-bar a');
+  var a = root.querySelector('.header a');
   this.getHandler().listen(a, 'click', this.onTitleClick_);
-  var btn = root.querySelector('.flex-bar > span(:last-child)');
+  var btn = root.querySelector('.header .menu-holder');
   this.getHandler().listen(btn, 'click', this.onMenuClick_);
 };
 
