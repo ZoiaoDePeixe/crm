@@ -39,7 +39,7 @@ goog.require('ydn.cs.ReplyPanelManager');
 goog.require('ydn.debug');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
-goog.require('ydn.social.ui.ContextWidget');
+goog.require('ydn.social.ui.SocialWidget');
 
 
 
@@ -59,7 +59,7 @@ ydn.crm.inj.App = function() {
    * @final
    * @type {ydn.crm.gmail.GmailObserver}
    */
-  this.gmail_observer = new ydn.crm.gmail.GmailObserver(us);
+  this.gmail_observer = new ydn.crm.gmail.GmailObserver();
 
   /**
    * @final
@@ -105,7 +105,7 @@ ydn.crm.inj.App = function() {
 
   /**
    * @protected
-   * @type {ydn.social.ui.ContextWidget}
+   * @type {ydn.social.ui.SocialWidget}
    */
   this.social_app = null;
 };
@@ -177,7 +177,7 @@ ydn.crm.inj.App.prototype.init = function() {
     this.sugar_app.init();
   }
 
-  this.social_app = new ydn.social.ui.ContextWidget(this.gmail_observer);
+  this.social_app = new ydn.social.ui.SocialWidget(this.gmail_observer);
   this.social_app.render(this.context_container.getContentElement());
 
   return us.onReady();

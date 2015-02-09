@@ -189,7 +189,7 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
 
     this.loadSugarCrmSetting();
 
-    var df = ydn.gmail.Utils.getUserEmail().addBoth(function(email) {
+    var df = ydn.gmail.Utils.sniffUserEmail().addBoth(function(email) {
       this.gmail_ = email;
       var msg = email ? 'Loading user setting for ' + email : 'User setting not available.';
       ydn.crm.msg.Manager.addStatus(msg);

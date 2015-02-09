@@ -21,7 +21,7 @@
  */
 
 
-goog.provide('ydn.social.ui.ContextWidget');
+goog.provide('ydn.social.ui.SocialWidget');
 goog.require('goog.events.EventHandler');
 goog.require('ydn.crm.gmail.GmailObserver');
 goog.require('ydn.social.ui.Bar');
@@ -34,7 +34,7 @@ goog.require('ydn.social.ui.Bar');
  * @constructor
  * @struct
  */
-ydn.social.ui.ContextWidget = function(gob) {
+ydn.social.ui.SocialWidget = function(gob) {
   /**
    * @type {Element}
    * @private
@@ -58,22 +58,22 @@ ydn.social.ui.ContextWidget = function(gob) {
 /**
  * @define {boolean} debug flag.
  */
-ydn.social.ui.ContextWidget.DEBUG = false;
+ydn.social.ui.SocialWidget.DEBUG = false;
 
 
 /**
  * @const
  * @type {string}
  */
-ydn.social.ui.ContextWidget.CSS_CLASS = 'social-widget';
+ydn.social.ui.SocialWidget.CSS_CLASS = 'social-widget';
 
 
 /**
  * Render UI.
  * @param {Element} el
  */
-ydn.social.ui.ContextWidget.prototype.render = function(el) {
-  this.root_.classList.add(ydn.social.ui.ContextWidget.CSS_CLASS);
+ydn.social.ui.SocialWidget.prototype.render = function(el) {
+  this.root_.classList.add(ydn.social.ui.SocialWidget.CSS_CLASS);
   el.appendChild(this.root_);
   this.bar.render(this.root_);
 };
@@ -84,8 +84,14 @@ ydn.social.ui.ContextWidget.prototype.render = function(el) {
  * @param {ydn.crm.gmail.GmailObserver.ContextRightBarEvent} e
  * @private
  */
-ydn.social.ui.ContextWidget.prototype.onGmailContextEvent_ = function(e) {
+ydn.social.ui.SocialWidget.prototype.onGmailContextEvent_ = function(e) {
 
-  this.bar.showByEmail(e.context ? e.context.getEmail() : null);
+  if (e.context) {
+    if (e.context.kind == ydn.crm.inj.Context.Kind.DEFAULT) {
+      this.bar.showByEmail(e.context.getEmail());
+    }
+  } else {
+    this.bar.showByEmail(null);
+  }
 
 };

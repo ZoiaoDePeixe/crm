@@ -65,6 +65,7 @@ ydn.crm.inj.Context = function(gdata_account, email, full_name) {
  */
 ydn.crm.inj.Context.Kind = {
   SEARCH: 's',
+  HOVER: 'h',
   DEFAULT: 'd'
 };
 

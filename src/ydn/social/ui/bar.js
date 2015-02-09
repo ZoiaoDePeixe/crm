@@ -169,6 +169,7 @@ ydn.social.ui.Bar.prototype.showByEmail = function(email) {
     window.console.log(email);
   }
 
+  goog.style.setElementShown(this.getElement(), !!email);
   if (!email) {
     this.setTarget(null);
     return;
