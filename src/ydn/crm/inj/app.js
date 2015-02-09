@@ -54,12 +54,12 @@ ydn.crm.inj.App = function() {
   ydn.msg.initPipe(ydn.msg.ChannelName.CONTENT_SCRIPT);
 
   ydn.crm.msg.Manager.addStatus('Starting ' + ydn.crm.version + '...');
-
+  var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   /**
    * @final
    * @type {ydn.crm.gmail.GmailObserver}
    */
-  this.gmail_observer = new ydn.crm.gmail.GmailObserver();
+  this.gmail_observer = new ydn.crm.gmail.GmailObserver(us);
 
   /**
    * @final
