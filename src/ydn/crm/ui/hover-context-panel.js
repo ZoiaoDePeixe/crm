@@ -25,20 +25,23 @@
 
 goog.provide('ydn.crm.ui.HoverContextPanel');
 goog.require('goog.ui.Component');
+goog.require('ydn.crm.su.ui.NewRecord');
 goog.require('ydn.ui.FlyoutMenu');
 
 
 
 /**
  * Hover Context Panel
+ * @param {ydn.crm.su.model.Record} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
-ydn.crm.ui.HoverContextPanel = function(opt_dom) {
+ydn.crm.ui.HoverContextPanel = function(model, opt_dom) {
   goog.base(this, opt_dom);
+
   var opt = {iconName: 'menu'};
   /**
    * Menu.
@@ -46,15 +49,21 @@ ydn.crm.ui.HoverContextPanel = function(opt_dom) {
    * @private
    */
   this.menu_ = new ydn.ui.FlyoutMenu(opt, ydn.crm.ui.HoverContextPanel.MENU_ITEMS);
+
+  /**
+   * @type {ydn.crm.su.ui.NewRecord}
+   * @private
+   */
+  this.new_record_ = new ydn.crm.su.ui.NewRecord(model, opt_dom);
+  this.addChild(this.new_record_, true);
+
+  /**
+   * @type {ydn.crm.inj.Context}
+   * @private
+   */
+  this.context_ = null;
 };
 goog.inherits(ydn.crm.ui.HoverContextPanel, goog.ui.Component);
-
-
-/**
- * @return {ydn.crm.inj.Context}
- * @override
- */
-ydn.crm.ui.HoverContextPanel.prototype.getModel;
 
 
 /**
@@ -87,11 +96,19 @@ ydn.crm.ui.HoverContextPanel.MENU_ITEMS = [{
 
 
 /**
- * @override
+ * @param {ydn.crm.inj.Context} context
  */
-ydn.crm.ui.HoverContextPanel.prototype.setModel = function(model) {
-  goog.base(this, 'setModel', model);
+ydn.crm.ui.HoverContextPanel.prototype.setContext = function(context) {
+  this.context_ = context;
   this.refresh_();
+};
+
+
+/**
+ * @return {ydn.crm.inj.Context} context
+ */
+ydn.crm.ui.HoverContextPanel.prototype.getContext = function() {
+  return this.context_;
 };
 
 
@@ -114,6 +131,7 @@ ydn.crm.ui.HoverContextPanel.prototype.createDom = function() {
   var menu_el = root.querySelector('.header .menu-holder');
   this.menu_.render(menu_el);
   goog.style.setElementShown(root, false);
+  goog.style.setElementShown(this.getContentElement(), false);
 };
 
 
@@ -127,6 +145,14 @@ ydn.crm.ui.HoverContextPanel.prototype.enterDocument = function() {
   this.getHandler().listen(a, 'click', this.onTitleClick_);
   var btn = root.querySelector('.header .menu-holder');
   this.getHandler().listen(btn, 'click', this.onMenuClick_);
+};
+
+
+/**
+ * @inheritDoc
+ */
+ydn.crm.ui.HoverContextPanel.prototype.getContentElement = function() {
+  return this.getElement().querySelector('.content');
 };
 
 
@@ -153,16 +179,13 @@ ydn.crm.ui.HoverContextPanel.prototype.onTitleClick_ = function(e) {
  * @private
  */
 ydn.crm.ui.HoverContextPanel.prototype.refresh_ = function() {
-  /**
-   * @type {ydn.crm.inj.Context}
-   */
-  var model = this.getModel();
+
   var el = this.getElement();
-  if (model) {
+  if (this.context_) {
     // do basic rendering.
     var root = this.getElement();
-    var name = model.getFullName();
-    var email = model.getEmail();
+    var name = this.context_.getFullName();
+    var email = this.context_.getEmail();
     var icon = root.querySelector('.header .icon');
     var a = root.querySelector('.header a');
     var content = root.querySelector('.content');

@@ -59,7 +59,7 @@ ydn.crm.inj.App = function() {
    * @final
    * @type {ydn.crm.gmail.GmailObserver}
    */
-  this.gmail_observer = new ydn.crm.gmail.GmailObserver();
+  this.gmail_observer = new ydn.crm.gmail.GmailObserver(us.getLoginEmail());
 
   /**
    * @final
@@ -139,6 +139,7 @@ ydn.crm.inj.App.prototype.handleUserLogin_ = function(e) {
       this.gmail_observer.setEnabled(false);
       this.context_container.setEnabled(false);
     }
+    this.gmail_observer.setLoginEmail(us.getLoginEmail());
   } else {
     this.gmail_observer.setEnabled(false);
     this.context_container.setEnabled(false);
