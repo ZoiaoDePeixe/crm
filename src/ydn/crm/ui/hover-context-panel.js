@@ -67,29 +67,40 @@ goog.inherits(ydn.crm.ui.HoverContextPanel, goog.ui.Component);
 
 
 /**
+ * @enum {string}
+ */
+ydn.crm.ui.HoverContextPanel.Cmd = {
+  ADD_CONTACTS: 'add.' + ydn.crm.su.ModuleName.CONTACTS,
+  ADD_LEADS: 'add.' + ydn.crm.su.ModuleName.LEADS,
+  ADD_ACCOUNTS: 'add.' + ydn.crm.su.ModuleName.ACCOUNTS,
+  NEW: 'new'
+};
+
+
+/**
  * @const
  * @type {Array<ydn.ui.FlyoutMenu.ItemOption>}
  */
 ydn.crm.ui.HoverContextPanel.MENU_ITEMS = [{
-  name: 'add.Contacts',
+  name: ydn.crm.ui.HoverContextPanel.Cmd.ADD_CONTACTS,
   label: 'Add to Contacts'
 },{
-  name: 'add.Leads',
+  name: ydn.crm.ui.HoverContextPanel.Cmd.ADD_LEADS,
   label: 'Add to Leads'
 },{
-  name: 'add.Accounts',
+  name: ydn.crm.ui.HoverContextPanel.Cmd.ADD_ACCOUNTS,
   label: 'Add to Accounts'
 },{
-  name: 'new',
+  name: ydn.crm.ui.HoverContextPanel.Cmd.NEW,
   label: 'New...',
   children: [{
-    name: 'Contacts',
+    name: ydn.crm.su.ModuleName.CONTACTS,
     label: 'Contacts'
   }, {
-    name: 'Leads',
+    name: ydn.crm.su.ModuleName.LEADS,
     label: 'Leads'
   }, {
-    name: 'Accounts',
+    name: ydn.crm.su.ModuleName.ACCOUNTS,
     label: 'Accounts'
   }]
 }];
@@ -161,7 +172,37 @@ ydn.crm.ui.HoverContextPanel.prototype.getContentElement = function() {
  * @private
  */
 ydn.crm.ui.HoverContextPanel.prototype.onMenuClick_ = function(e) {
+  var cmd = this.menu_.handleClick(e);
+  if (cmd) {
+    var cms = cmd.split(',');
+    if (cms[0] == ydn.crm.ui.HoverContextPanel.Cmd.NEW) {
+      var mn = /** @type {ydn.crm.su.ModuleName} */(cms[1]);
+      if (ydn.crm.su.PEOPLE_MODULES.indexOf(mn) == -1) {
+        throw new Error(mn);
+      }
+      var domain = this.new_record_.getModel().getDomain();
 
+      var record = new ydn.crm.su.Record(domain, mn, {});
+      this.new_record_.createRecord(record);
+      this.new_record_.setEditMode(true);
+      var patch = {
+        'email1': this.context_.getEmail()
+      };
+      var name = this.context_.getFullName();
+      if (name) {
+        if (mn == ydn.crm.su.ModuleName.ACCOUNTS) {
+          patch['name'] = name;
+        } else {
+          patch['full_name'] = name;
+        }
+      }
+      this.new_record_.simulateEdit(patch);
+
+      var header = this.getElement().querySelector('.header');
+      goog.style.setElementShown(header, false);
+      goog.style.setElementShown(this.getContentElement(), true);
+    }
+  }
 };
 
 
@@ -188,7 +229,7 @@ ydn.crm.ui.HoverContextPanel.prototype.refresh_ = function() {
     var email = this.context_.getEmail();
     var icon = root.querySelector('.header .icon');
     var a = root.querySelector('.header a');
-    var content = root.querySelector('.content');
+    var content = root.querySelector('.header .header-content');
     goog.style.setElementShown(icon, false);
     a.removeAttribute('href');
     a.removeAttribute('title');
@@ -198,6 +239,7 @@ ydn.crm.ui.HoverContextPanel.prototype.refresh_ = function() {
     } else {
       content.textContent = '';
     }
+    goog.style.setElementShown(content, !!name);
     goog.style.setElementShown(el, true);
   } else {
     goog.style.setElementShown(el, false);
