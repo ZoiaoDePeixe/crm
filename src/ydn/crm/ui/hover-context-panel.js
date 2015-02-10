@@ -182,7 +182,7 @@ ydn.crm.ui.HoverContextPanel.prototype.onMenuClick_ = function(e) {
       }
       var domain = this.new_record_.getModel().getDomain();
 
-      var record = new ydn.crm.su.Record(domain, mn, {});
+      var record = new ydn.crm.su.Record(domain, mn);
       this.new_record_.createRecord(record);
       this.new_record_.setEditMode(true);
       var patch = {
