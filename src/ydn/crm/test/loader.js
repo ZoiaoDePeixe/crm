@@ -65,6 +65,13 @@ ydn.crm.test.main['server-info-ce'] = {
 };
 
 
+ydn.crm.test.main['server-info-ent'] = {
+  flavor: "ENT",
+  gmt_time: "2014-12-09 08:30:56",
+  version: "7.2.2.1"
+};
+
+
 /**
  * sugar.send('login-user').addBoth(function(x) {console.log(JSON.stringify(x, null, 2))})
  */
@@ -261,21 +268,24 @@ ydn.crm.test.getModuleInfoArr = function() {
 
 
 /**
+ * @param {boolean=} opt_ce
  * @return {ydn.crm.su.model.Sugar}
  */
-ydn.crm.test.createSugar = function() {
+ydn.crm.test.createSugar = function(opt_ce) {
 
   var about = ydn.crm.test.sugar.about;
+  var info = opt_ce ? ydn.crm.test.main['server-info-ce'] : ydn.crm.test.main['server-info-ent'];
   return new ydn.crm.su.model.Sugar(about, ydn.crm.test.getModuleInfoArr(),
-      ydn.crm.test.sugar['server-info-ce'], ydn.crm.test.sugar['login-user']);
+      info, ydn.crm.test.sugar['login-user']);
 };
 
 
 /**
+ * @param {boolean=} opt_ce
  * @return {SugarCrm.Record}
  */
-ydn.crm.test.createContactSugarCrmRecord = function() {
-  var obj = ydn.crm.test.getData('contact');
+ydn.crm.test.createContactSugarCrmRecord = function(opt_ce) {
+  var obj = ydn.crm.test.getData('contact' + (opt_ce ? '' : '_v7'));
   return JSON.parse(JSON.stringify(obj));
 };
 
@@ -291,7 +301,7 @@ ydn.crm.test.createContactRecord = function(opt_sugar, opt_obj) {
    * @type {ydn.crm.sugar.ModuleName}
    */
   var m_name = 'Contacts';
-  var obj = opt_obj || ydn.crm.test.createContactSugarCrmRecord();
+  var obj = opt_obj || ydn.crm.test.createContactSugarCrmRecord(!sugar.isVersion7());
   var r = new ydn.crm.su.Record(sugar.getDomain(), m_name, obj);
   return new ydn.crm.su.model.Record(sugar, r);
 };
