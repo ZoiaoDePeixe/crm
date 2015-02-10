@@ -18,7 +18,10 @@
  * @fileoverview Hover Context Panel, that how contact information on hovering
  * email on Email thread.
  *
- *  * @author kyawtun@yathit.com (Kyaw Tun)
+ * Context contact info are display and provides creation of record using the
+ * context.
+ *
+ * @author kyawtun@yathit.com (Kyaw Tun)
  */
 
 
@@ -180,29 +183,86 @@ ydn.crm.ui.HoverContextPanel.prototype.onMenuClick_ = function(e) {
       if (ydn.crm.su.PEOPLE_MODULES.indexOf(mn) == -1) {
         throw new Error(mn);
       }
-      var domain = this.new_record_.getModel().getDomain();
+      this.newRecord_(mn);
+    } else if (cmd == ydn.crm.ui.HoverContextPanel.Cmd.ADD_CONTACTS) {
+      this.addRecord_(ydn.crm.su.ModuleName.CONTACTS);
+    } else if (cmd == ydn.crm.ui.HoverContextPanel.Cmd.ADD_LEADS) {
+      this.addRecord_(ydn.crm.su.ModuleName.LEADS);
+    } else if (cmd == ydn.crm.ui.HoverContextPanel.Cmd.ADD_ACCOUNTS) {
+      this.addRecord_(ydn.crm.su.ModuleName.ACCOUNTS);
+    }
 
-      var record = new ydn.crm.su.Record(domain, mn);
-      this.new_record_.createRecord(record);
-      this.new_record_.setEditMode(true);
-      var patch = {
-        'email1': this.context_.getEmail()
-      };
-      var name = this.context_.getFullName();
-      if (name) {
-        if (mn == ydn.crm.su.ModuleName.ACCOUNTS) {
-          patch['name'] = name;
-        } else {
-          patch['full_name'] = name;
+    ydn.crm.shared.logAnalyticValue('ui.hover-context', 'menu.click', cmd);
+  }
+};
+
+
+/**
+ * Apply context data to a new record.
+ * @param {ydn.crm.su.ModuleName} mn module name.
+ * @private
+ */
+ydn.crm.ui.HoverContextPanel.prototype.applyContextToNewRecord_ = function(mn) {
+
+  var domain = this.new_record_.getModel().getDomain();
+
+  var record = new ydn.crm.su.Record(domain, mn);
+  this.new_record_.createRecord(record);
+
+  var patch = {
+    'email1': this.context_.getEmail()
+  };
+  var name = this.context_.getFullName();
+  var nm = this.new_record_.getModel();
+  if (name) {
+    patch['name'] = name;
+    if (mn == ydn.crm.su.ModuleName.LEADS ||
+        mn == ydn.crm.su.ModuleName.CONTACTS) {
+      // expand to first_name, last_name, etc in name group.
+      var name_group = /** @type {ydn.crm.su.model.NameGroup} */(
+          this.new_record_.getModel().getGroupModel('name'));
+      var name_patch = name_group.parseFullNameLabel(name);
+      if (name_patch) {
+        for (var nk in name_patch) {
+          patch[nk] = name_patch[nk];
         }
       }
-      this.new_record_.simulateEdit(patch);
-
-      var header = this.getElement().querySelector('.header');
-      goog.style.setElementShown(header, false);
-      goog.style.setElementShown(this.getContentElement(), true);
     }
   }
+  this.new_record_.simulateEdit(patch);
+
+};
+
+
+/**
+ * Create a new record from context data and save to server.
+ * @param {ydn.crm.su.ModuleName} mn module name.
+ * @return {!goog.async.Deferred}
+ * @private
+ */
+ydn.crm.ui.HoverContextPanel.prototype.addRecord_ = function(mn) {
+  this.applyContextToNewRecord_(mn);
+  return this.new_record_.doSave().addCallback(function(r) {
+    var header = this.getElement().querySelector('.header');
+    goog.style.setElementShown(header, false);
+    goog.style.setElementShown(this.getContentElement(), true);
+  }, this);
+};
+
+
+/**
+ * Create a new record from context data.
+ * @param {ydn.crm.su.ModuleName} mn module name.
+ * @private
+ */
+ydn.crm.ui.HoverContextPanel.prototype.newRecord_ = function(mn) {
+
+  this.applyContextToNewRecord_(mn);
+  this.new_record_.setEditMode(true);
+
+  var header = this.getElement().querySelector('.header');
+  goog.style.setElementShown(header, false);
+  goog.style.setElementShown(this.getContentElement(), true);
 };
 
 
