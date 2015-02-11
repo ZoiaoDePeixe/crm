@@ -56,13 +56,11 @@ ydn.crm.ch.Req = {
   /**
    * @desc Set logging preference for analytic.
    * For getting preference, read directly from `chrome.storage.sync`.
-   * @see ydn.crm.app.shared.setUserPrefLoggingAnalytic
    * @see ydn.crm.ui.UserSetting#handleRequest
    */
   LOGGING_PREF_ANALYTIC: 'lg-pref-qa',
   /**
    * @desc Set logging preference for debug.
-   * @see ydn.crm.app.shared.setUserPrefLoggingDebug
    * @see ydn.crm.ui.UserSetting#handleRequest
    */
   LOGGING_PREF_DEBUG: 'lg-pref-bg',

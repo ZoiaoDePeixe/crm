@@ -133,6 +133,7 @@ ydn.crm.ui.LoggingPrefPanel.prototype.renderPref_ = function(qa, db) {
 /**
  * Render license.
  * @param {YdnCrm.UserLicense} lic
+ * @return {boolean} `true` if setting can be changed.
  * @private
  */
 ydn.crm.ui.LoggingPrefPanel.prototype.renderLicense_ = function(lic) {
@@ -141,14 +142,15 @@ ydn.crm.ui.LoggingPrefPanel.prototype.renderLicense_ = function(lic) {
   var db_el = this.getInputElement_(ydn.crm.ui.LoggingPrefPanel.LName.DEBUG);
   var msg_el = this.root_.querySelector('.license.message');
   if (can) {
-    qa_el.setAttribute('disabled', 'disabled');
-    db_el.setAttribute('disabled', 'disabled');
-    goog.style.setElementShown(msg_el, false);
-  } else {
     qa_el.removeAttribute('disabled');
     db_el.removeAttribute('disabled');
+    goog.style.setElementShown(msg_el, false);
+  } else {
+    qa_el.setAttribute('disabled', 'disabled');
+    db_el.setAttribute('disabled', 'disabled');
     goog.style.setElementShown(msg_el, true);
   }
+  return can;
 };
 
 
@@ -157,12 +159,21 @@ ydn.crm.ui.LoggingPrefPanel.prototype.renderLicense_ = function(lic) {
  */
 ydn.crm.ui.LoggingPrefPanel.prototype.refresh = function() {
   ydn.msg.getChannel().send(ydn.crm.ch.Req.USER_LICENSE).addCallback(function(lic) {
-    this.renderLicense_(lic);
+    var can = this.renderLicense_(lic);
+    if (can) {
+      chrome.storage.sync.get([ydn.crm.base.ChromeSyncKey.LOGGING_ANALYTICS,
+        ydn.crm.base.ChromeSyncKey.LOGGING_DEBUG], function(obj) {
+        var qa = obj[ydn.crm.base.ChromeSyncKey.LOGGING_ANALYTICS];
+        var db = obj[ydn.crm.base.ChromeSyncKey.LOGGING_DEBUG];
+        // normally true.
+        qa = goog.isBoolean(qa) ? qa : true;
+        db = goog.isBoolean(db) ? db : true;
+        me.renderPref_(qa, db);
+      });
+    } else {
+      this.renderPref_(true, true);
+    }
   }, this);
   var me = this;
-  chrome.storage.sync.get([ydn.crm.base.ChromeSyncKey.LOGGING_ANALYTICS,
-    ydn.crm.base.ChromeSyncKey.LOGGING_DEBUG], function(obj) {
-    me.renderPref_(!!obj[ydn.crm.base.ChromeSyncKey.LOGGING_ANALYTICS],
-        !!obj[ydn.crm.base.ChromeSyncKey.LOGGING_DEBUG]);
-  });
+
 };
