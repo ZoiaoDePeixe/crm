@@ -176,12 +176,12 @@ ydn.social.ui.Twitter.prototype.refreshProfileDetail_ = function() {
         ydn.social.ui.Twitter.renderProfileDetail(this.getDetailElement(), dp);
       }, function(e) {
         goog.style.setElementShown(this.getDetailElement(), false);
-        ydn.crm.msg.Manager.addStatus('Fetching twitter fail: ' + String(e));
         container.classList.remove('working');
         if (e && e.name == ydn.crm.base.ErrorName.HOST_PERMISSION) {
           container.classList.add('alert');
         } else {
           container.classList.add('error');
+          ydn.crm.msg.Manager.addStatus('Fetching twitter fail: ' + String(e));
         }
       }, this);
 };

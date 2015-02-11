@@ -156,24 +156,18 @@ ydn.crm.base.INJ_TEMPLATE = 'inj-template.html';
 
 
 /**
- * All keys use in chrome.sync
- * @enum {string}
- */
-ydn.crm.base.SyncKey = {
-  USER_SETTING: 'user-setting',
-  SUGAR_SETTING: 'sugarcrm-setting'
-};
-
-
-/**
- * All keys used in chrome.local.
+ * All keys used in chrome.storage.sync
  * @enum {string}
  */
 ydn.crm.base.ChromeSyncKey = {
   CONTEXT_PANEL_POSITION: 'cp-po',
   CONTEXT_PANEL_STICKY_BTN_STATE: 'cp-bs',
   LOGGING_CAPTURE_ON_CONSOLE: 'lg-cc',
-  LOGGING_BUG_REPORT: 'lg-br'
+  LOGGING_BUG_REPORT: 'lg-br',
+  LOGGING_ANALYTICS: 'lg-an',
+  LOGGING_DEBUG: 'lg-db',
+  USER_SETTING: 'user-setting',
+  SUGAR_SETTING: 'sugarcrm-setting'
 };
 
 
@@ -181,7 +175,9 @@ ydn.crm.base.ChromeSyncKey = {
  * List of keys available synchronously by caching.
  * @type {Array.<string>}
  */
-ydn.crm.base.ChromeSyncKeysNow = [ydn.crm.base.ChromeSyncKey.CONTEXT_PANEL_POSITION];
+ydn.crm.base.ChromeSyncKeysNow = [
+  ydn.crm.base.ChromeSyncKey.CONTEXT_PANEL_POSITION
+];
 
 
 /**
@@ -203,6 +199,17 @@ ydn.crm.base.ChromeLocalKey = {
  */
 ydn.crm.base.LocalStorageKey = {
   TEST: 'test'
+};
+
+
+/**
+ * @enum {string} type of license edition as define in {@link YdnCrm.UserLicense}
+ */
+ydn.crm.base.LicenseEdition = {
+  BASIC: 'BASIC',
+  EXPRESS: 'EXPRESS',
+  STANDARD: 'STANDARD',
+  TRIAL: 'TRIAL'
 };
 
 
@@ -239,16 +246,6 @@ ydn.crm.base.Feature = {
   ATTACHMENT: 'at',
   SOCIAL: 'so',
   TRACKING: 'tr'
-};
-
-
-/**
- * @enum {string}
- */
-ydn.crm.base.LicenseEdition = {
-  BASIC: 'BASIC',
-  EXPRESS: 'EXPRESS',
-  STANDARD: 'STANDARD'
 };
 
 
@@ -425,6 +422,15 @@ ydn.crm.base.STORE_GENERAL = 'general';
 
 
 /**
+ * Keys use in general store.
+ * @enum {string}
+ */
+ydn.crm.base.GeneralStoreKey = {
+  USER_LICENSE: 'user-license'
+};
+
+
+/**
  * Chrome local storage key for record store in server.
  * @enum {string}
  */
@@ -447,3 +453,4 @@ ydn.crm.base.KeyCLRecordOnServer = {
 ydn.crm.base.chromeLocalKeysWithServer = [
   ydn.crm.base.KeyCLRecordOnServer.USER_SETTING_GOOGLE,
   ydn.crm.base.KeyCLRecordOnServer.USER_SETTING_SUGARCRM];
+

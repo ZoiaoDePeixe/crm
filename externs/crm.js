@@ -469,6 +469,7 @@ YdnCrm.UserLicense.prototype.end;
 
 
 /**
+ * @see ydn.crm.base.LicenseEdition
  * @type {string}
  */
 YdnCrm.UserLicense.prototype.edition;

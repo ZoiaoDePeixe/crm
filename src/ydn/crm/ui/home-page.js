@@ -21,12 +21,13 @@
  */
 
 
-goog.provide('ydn.crm.su.HomePage');
+goog.provide('ydn.crm.ui.HomePage');
 goog.require('ydn.crm.gdata.CalendarSettingPanel');
 goog.require('ydn.crm.gdata.CredentialWidget');
 goog.require('ydn.crm.su.Widget');
 goog.require('ydn.crm.su.WidgetModel');
 goog.require('ydn.crm.tracking.setting.Main');
+goog.require('ydn.crm.ui.LoggingPrefPanel');
 
 
 
@@ -37,7 +38,7 @@ goog.require('ydn.crm.tracking.setting.Main');
  * @implements {ydn.crm.IPage}
  * @struct
  */
-ydn.crm.su.HomePage = function(us) {
+ydn.crm.ui.HomePage = function(us) {
   /**
    * @type {Element}
    * @private
@@ -63,13 +64,19 @@ ydn.crm.su.HomePage = function(us) {
    */
   this.calendar_setting = new ydn.crm.gdata.CalendarSettingPanel(us);
 
+  /**
+   * @protected
+   * @type {ydn.crm.ui.LoggingPrefPanel}
+   */
+  this.logging_pref = null;
+
 };
 
 
 /**
  * @override
  */
-ydn.crm.su.HomePage.prototype.render = function(el) {
+ydn.crm.ui.HomePage.prototype.render = function(el) {
   var temp = ydn.ui.getTemplateById('sugarcrm-home-template').content;
   this.root_.appendChild(temp.cloneNode(true));
   var gdata_ele = this.root_.querySelector('#gdata');
@@ -83,6 +90,8 @@ ydn.crm.su.HomePage.prototype.render = function(el) {
     this.calendar_setting.render(this.root_.querySelector('section[name=calendar]'));
   }
   this.sugar_widget.render(this.root_.querySelector('#sugarcrm-widget'));
+  this.logging_pref = new ydn.crm.ui.LoggingPrefPanel();
+  this.logging_pref.render(this.root_.querySelector('#logging-section'));
   el.appendChild(this.root_);
 };
 
@@ -90,7 +99,7 @@ ydn.crm.su.HomePage.prototype.render = function(el) {
 /**
  * @return {boolean}
  */
-ydn.crm.su.HomePage.prototype.hasGDataCredential = function() {
+ydn.crm.ui.HomePage.prototype.hasGDataCredential = function() {
   return this.gdata_widget.hasCredential();
 };
 
@@ -98,7 +107,7 @@ ydn.crm.su.HomePage.prototype.hasGDataCredential = function() {
 /**
  * @private
  */
-ydn.crm.su.HomePage.prototype.refreshIfNeeded_ = function() {
+ydn.crm.ui.HomePage.prototype.refreshIfNeeded_ = function() {
   if (!this.need_refresh_) {
     return;
   }
@@ -126,7 +135,7 @@ ydn.crm.su.HomePage.prototype.refreshIfNeeded_ = function() {
 /**
  * @override
  */
-ydn.crm.su.HomePage.prototype.onPageShow = function() {
+ydn.crm.ui.HomePage.prototype.onPageShow = function() {
   this.refreshIfNeeded_();
 };
 
@@ -134,6 +143,6 @@ ydn.crm.su.HomePage.prototype.onPageShow = function() {
 /**
  * @override
  */
-ydn.crm.su.HomePage.prototype.toString = function() {
+ydn.crm.ui.HomePage.prototype.toString = function() {
   return 'Home';
 };

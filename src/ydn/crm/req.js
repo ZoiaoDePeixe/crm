@@ -53,6 +53,19 @@ ydn.crm.ch.Req = {
    * @see ydn.debug.ILogger.log
    */
   LOG: 'log',
+  /**
+   * @desc Set logging preference for analytic.
+   * For getting preference, read directly from `chrome.storage.sync`.
+   * @see ydn.crm.app.shared.setUserPrefLoggingAnalytic
+   * @see ydn.crm.ui.UserSetting#handleRequest
+   */
+  LOGGING_PREF_ANALYTIC: 'lg-pref-qa',
+  /**
+   * @desc Set logging preference for debug.
+   * @see ydn.crm.app.shared.setUserPrefLoggingDebug
+   * @see ydn.crm.ui.UserSetting#handleRequest
+   */
+  LOGGING_PREF_DEBUG: 'lg-pref-bg',
   LOGIN_INFO: 'login-info', // google user info, email and id
   LOGGED_IN: 'logged-in', // has been logged to server.
   LOGGED_OUT: 'logged-out',

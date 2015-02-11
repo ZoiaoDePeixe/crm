@@ -182,16 +182,25 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
 
     var me = this;
 
-    chrome.storage.sync.get(ydn.crm.base.SyncKey.USER_SETTING, function(val) {
-      var x = val[ydn.crm.base.SyncKey.USER_SETTING];
+    chrome.storage.sync.get(ydn.crm.base.ChromeSyncKey.USER_SETTING, function(val) {
+      var x = val[ydn.crm.base.ChromeSyncKey.USER_SETTING];
       me.user_setting = x || ydn.crm.ui.UserSetting.USER_SETTING_DEFAULT;
     });
 
     this.loadSugarCrmSetting();
 
     var df = ydn.gmail.Utils.sniffUserEmail().addBoth(function(email) {
+      var msg = '';
+      if (goog.isString(email)) {
+        msg = 'Loading user setting for ' + email;
+      } else {
+        msg = 'Error on figuring out Gmail username: ' + String(email);
+        email = '';
+        ydn.crm.shared.logAnalyticValue('app', 'load-gmail-username', 'fail-sniffing', {
+          'error': String(email)
+        });
+      }
       this.gmail_ = email;
-      var msg = email ? 'Loading user setting for ' + email : 'User setting not available.';
       ydn.crm.msg.Manager.addStatus(msg);
       goog.log.fine(this.logger, msg);
       return ydn.msg.getChannel().send(ydn.crm.ch.Req.LOGIN_INFO, {
@@ -269,6 +278,7 @@ ydn.crm.ui.UserSetting.prototype.getLoginId = function() {
 /**
  * Get MD5 hash of login id.
  * @return {string} MD5 hash of login id.
+ * @deprecated no longer using.
  */
 ydn.crm.ui.UserSetting.prototype.getLoginIdMd5 = function() {
   if (!this.login_id_md5_) {
@@ -368,7 +378,7 @@ ydn.crm.ui.UserSetting.prototype.setSetting = function(val, key, var_args) {
   ydn.db.utils.setValueByKeys(this.user_setting, key_path, val);
 
   var store = {};
-  store[ydn.crm.base.SyncKey.USER_SETTING] = this.user_setting;
+  store[ydn.crm.base.ChromeSyncKey.USER_SETTING] = this.user_setting;
   chrome.storage.sync.set(store);
 };
 
@@ -461,7 +471,7 @@ ydn.crm.ui.UserSetting.prototype.loadSugarCrmSetting = function() {
   if (!this.sugar_settings_) {
     var me = this;
     var df = new goog.async.Deferred();
-    var key = ydn.crm.base.SyncKey.SUGAR_SETTING;
+    var key = ydn.crm.base.ChromeSyncKey.SUGAR_SETTING;
     chrome.storage.sync.get(key, function(val) {
       me.sugar_settings_ = val[key] || ydn.crm.ui.UserSetting.getDefaultSugarCrmSetting_();
       df.callback(me.sugar_settings_);
@@ -478,7 +488,7 @@ ydn.crm.ui.UserSetting.prototype.loadSugarCrmSetting = function() {
  * @return {!goog.async.Deferred}
  */
 ydn.crm.ui.UserSetting.prototype.saveSugarCrmSetting = function() {
-  var key = ydn.crm.base.SyncKey.SUGAR_SETTING;
+  var key = ydn.crm.base.ChromeSyncKey.SUGAR_SETTING;
   var obj = {};
   obj[key] = this.sugar_settings_;
   var df = new goog.async.Deferred();
@@ -665,4 +675,5 @@ ydn.crm.ui.UserSetting.prototype.hasFeature = function(feature) {
   }
   return true;
 };
+
 

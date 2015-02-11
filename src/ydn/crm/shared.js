@@ -322,3 +322,13 @@ ydn.crm.shared.logAnalyticValue = function(category, action, label, opt_value) {
  */
 ydn.crm.shared.application_name = 'Yathit CRM';
 
+
+/**
+ * @param {YdnCrm.UserLicense} lic
+ * @return {boolean}
+ */
+ydn.crm.shared.isPaidLicense = function(lic) {
+  return !!lic && (lic.edition == ydn.crm.base.LicenseEdition.EXPRESS ||
+      lic.edition == ydn.crm.base.LicenseEdition.STANDARD);
+};
+

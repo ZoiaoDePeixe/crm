@@ -80,12 +80,26 @@ ydn.crm.gdata.CalendarSettingPanel.prototype.render = function(ele) {
   this.root.appendChild(temp.cloneNode(true));
   ele.appendChild(this.root);
   goog.style.setElementShown(this.root, false);
-  this.refresh();
+
+  var detail = this.root.querySelector('details');
+  this.handler.listen(detail, 'click', this.onDetailsClick_);
 
   var sync_el = this.root.querySelector('#enable-calendar-sync');
   var a_change = this.root.querySelector('a[name=sync-calender-name]');
   this.handler.listen(sync_el, 'click', this.onSyncClick_);
   this.handler.listen(a_change, 'click', this.onSelectBtnClick_);
+};
+
+
+/**
+ * @param {Event} ev
+ * @private
+ */
+ydn.crm.gdata.CalendarSettingPanel.prototype.onDetailsClick_ = function(ev) {
+  var is_open = !ev.currentTarget.hasAttribute('open');
+  if (is_open) {
+    this.refresh();
+  }
 };
 
 

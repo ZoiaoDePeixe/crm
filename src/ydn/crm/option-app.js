@@ -31,7 +31,7 @@ goog.require('ydn.crm.AboutPage');
 goog.require('ydn.crm.Ch');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.msg.StatusBar');
-goog.require('ydn.crm.su.HomePage');
+goog.require('ydn.crm.ui.HomePage');
 goog.require('ydn.crm.su.SyncPage');
 goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.crm.tracking.LazyDbModel');
@@ -216,7 +216,7 @@ ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
       var about_tk = new ydn.crm.AboutPage('Yathit Email Tracker');
       this.addPage(name, about_tk.toString(), about_tk);
     } else if (name == 'sugarcrm') {
-      var sugar = new ydn.crm.su.HomePage(us);
+      var sugar = new ydn.crm.ui.HomePage(us);
       this.addPage(name, sugar.toString(), sugar);
     } else if (name == 'tracking-setting') {
       var tracking_setup = new ydn.crm.tracking.SettingPage();
@@ -239,7 +239,7 @@ ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
  * @private
  */
 ydn.crm.OptionPageApp.prototype.processWithSugarSetup_ = function(sugar) {
-  var sugarcrm = /** @type {ydn.crm.su.HomePage} */ (this.pages_['sugarcrm']);
+  var sugarcrm = /** @type {ydn.crm.ui.HomePage} */ (this.pages_['sugarcrm']);
   if (!sugarcrm.hasGDataCredential()) {
     return;
   }
