@@ -62,7 +62,7 @@ ydn.crm.AboutPage.prototype.render = function(el) {
 ydn.crm.AboutPage.prototype.renderLicense_ = function(lic) {
   var el = this.root_.querySelector('.license-section .license');
   if (lic) {
-    el.textContent = 'License: ' + lic.edition;
+    el.textContent = lic.edition;
     if (lic.begin) {
       el.textContent += ' [' + new Date(lic.begin).toLocaleDateString() +
           ' - ' + new Date(lic.end).toLocaleDateString() + ']';
@@ -71,7 +71,7 @@ ydn.crm.AboutPage.prototype.renderLicense_ = function(lic) {
       el.textContent += ' (inactive)';
     }
   } else {
-    el.textContent = 'License: ';
+    el.textContent = '';
   }
 
 };

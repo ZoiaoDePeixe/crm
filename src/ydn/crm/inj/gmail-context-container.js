@@ -81,10 +81,11 @@ ydn.crm.inj.GmailContextContainer.prototype.attachToGmailRightBar = function(con
       if (ele_stack.nextElementSibling && ele_stack.nextElementSibling.tagName == 'DIV') {
         var parent = ele_stack.parentElement;
         var last = parent.lastElementChild;
-        var is_ad = !!last.querySelector('a[href]'); // ad links
+        var is_ad = !!last && !!last.querySelector('a[href]'); // ad links
         root_container = document.createElement('div');
         if (is_ad && parent.parentElement.contains(last)) {
-          parent.parentElement.insertBefore(root_container, last);
+          // we want to insert above ad panel.
+          parent.insertBefore(root_container, last);
         } else {
           parent.appendChild(root_container);
         }

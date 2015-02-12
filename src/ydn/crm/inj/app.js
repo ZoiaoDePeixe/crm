@@ -203,11 +203,14 @@ ydn.crm.inj.App.runInjApp = function() {
 
   var app = new ydn.crm.inj.App();
 
-  ydn.ui.setTemplateDocument(chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE));
+  ydn.crm.ui.loadSvgDoc();
 
-  var tid2 = window.setTimeout(function() {
-    app.init();
-  }, 500);
+  var tmp_url = chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE);
+  ydn.ui.setTemplateDocument(tmp_url, function() {
+    var tid2 = window.setTimeout(function() {
+      app.init();
+    }, 500);
+  });
 
   return app;
 };

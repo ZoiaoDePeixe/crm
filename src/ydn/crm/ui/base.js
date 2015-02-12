@@ -189,21 +189,35 @@ ydn.crm.ui.svg_doc_ = null;
 
 /**
  * Get svg
- * @return {Document}
+ * @param {boolean=} opt_async load asynchronously.
+ * @param {Function=} opt_cb callback after load.
+ * @return {Document} available only for synchronously.
  * @private
  */
-ydn.crm.ui.getSvgDoc_ = function() {
+ydn.crm.ui.getSvgDoc_ = function(opt_async, opt_cb) {
   if (!ydn.crm.ui.svg_doc_) {
     var url = chrome.extension.getURL(ydn.crm.base.SVG_PAGE);
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, false);
+    xhr.open('GET', url, !!opt_async);
     xhr.onload = function() {
       ydn.crm.ui.svg_doc_ = xhr.responseXML;
       xhr = null;
+      if (opt_cb) {
+        opt_cb();
+      }
     };
     xhr.send();
   }
   return ydn.crm.ui.svg_doc_;
+};
+
+
+/**
+ * Load SVG doc.
+ * @param {Function=} opt_cb
+ */
+ydn.crm.ui.loadSvgDoc = function(opt_cb) {
+  ydn.crm.ui.getSvgDoc_(true, opt_cb);
 };
 
 
