@@ -15,7 +15,6 @@ goog.require('ydn.debug.ILogger');
 goog.require('ydn.http');
 
 
-
 /**
  * @type {goog.log.Logger}
  */

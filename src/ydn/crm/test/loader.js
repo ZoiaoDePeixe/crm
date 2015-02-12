@@ -8,6 +8,7 @@
 goog.provide('ydn.crm.test');
 goog.setTestOnly('ydn.crm.test');
 goog.require('ydn.crm.base');
+goog.require('ydn.crm.ui');
 goog.require('ydn.msg.MockPipe');
 goog.require('ydn.testing.mockExtension');
 
@@ -24,18 +25,16 @@ ydn.crm.test.main = {};
  *
  */
 ydn.crm.test.sugar = {
-  'login-info': {
-    "user_id": "seed_jim_id"
+  'login-record': {
+    'user_id': 'seed_jim_id'
+  },
+  'about': {
+    'baseUrl': 'https://cjokmo3316.trial.sugarcrm.com',
+    'domain': 'cjokmo3316.trial.sugarcrm.com',
+    'userName': 'jane',
+    'isLogin': true,
+    'hostPermission': true
   }
-};
-
-
-ydn.crm.test.sugar['about'] = {
-  'baseUrl': 'https://cjokmo3316.trial.sugarcrm.com',
-  'domain': 'cjokmo3316.trial.sugarcrm.com',
-  'userName': 'jane',
-  'isLogin': true,
-  'hostPermission': true
 };
 
 
@@ -59,16 +58,16 @@ ydn.crm.test.main['list-sugarcrm'] = [
 ];
 
 ydn.crm.test.main['server-info-ce'] = {
-  "flavor": "CE",
-  "version": "6.5.17",
-  "gmt_time": "2015-01-03 15:06:26"
+  'flavor': 'CE',
+  'version': '6.5.17',
+  'gmt_time': '2015-01-03 15:06:26'
 };
 
 
 ydn.crm.test.main['server-info-ent'] = {
-  flavor: "ENT",
-  gmt_time: "2014-12-09 08:30:56",
-  version: "7.2.2.1"
+  flavor: 'ENT',
+  gmt_time: '2014-12-09 08:30:56',
+  version: '7.2.2.1'
 };
 
 
@@ -193,12 +192,14 @@ ydn.crm.test.init = function() {
 /**
  * Load data.
  * @param {string} name JSON file name.
+ * @param {string=} opt_base_path base path, defaul to `/cwork'.
  * @return {!Object}
  */
-ydn.crm.test.getData = function(name) {
+ydn.crm.test.getData = function(name, opt_base_path) {
   var data;
+  var base_path = opt_base_path || '/cwork';
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', '/cwork/crm/src/ydn/crm/test/' + name + '.json', false);
+  xhr.open('GET', base_path + '/crm/src/ydn/crm/test/' + name + '.json', false);
   xhr.onload = function() {
     data = JSON.parse(xhr.responseText);
   };
