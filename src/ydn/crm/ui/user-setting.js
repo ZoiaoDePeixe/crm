@@ -514,9 +514,9 @@ ydn.crm.ui.UserSetting.SugarCrmSettingUnitKey = {
  */
 ydn.crm.ui.UserSetting.prototype.getSugarCrmSetting = function() {
   if (!this.sugar_settings_) {
-    this.loadSugarCrmSetting();
+    this.sugar_settings_ = ydn.crm.ui.UserSetting.getDefaultSugarCrmSetting_();
   }
-  return this.sugar_settings_ || ydn.crm.ui.UserSetting.getDefaultSugarCrmSetting_();
+  return /** @type {!CrmApp.SugarCrmSetting} */(this.sugar_settings_);
 };
 
 
