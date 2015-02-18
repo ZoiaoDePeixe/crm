@@ -260,7 +260,7 @@ ydn.crm.inj.ContextContainer.prototype.detach = function() {
 
 /**
  * Attach to Gmail right side bar.
- * @param {HTMLTableElement} contact_table right bar table
+ * @param {Element} contact_table right bar table
  */
 ydn.crm.inj.ContextContainer.prototype.attachToGmailRightBar = function(contact_table) {
 
@@ -278,12 +278,12 @@ ydn.crm.inj.ContextContainer.prototype.onGmailPageChanged = function(e) {
 
 /**
  * Sniff contact and set to model.
- * @param {ydn.crm.gmail.GmailObserver.ContextRightBarEvent} e
+ * @param {ydn.crm.gmail.GmailObserver.ContextColumnEvent} e
  * @private
  */
 ydn.crm.inj.ContextContainer.prototype.onGmailContextEvent_ = function(e) {
 
-  this.attachToGmailRightBar(e.table);
+  this.attachToGmailRightBar(e.col);
 
 };
 

@@ -57,21 +57,10 @@ ydn.crm.inj.GmailContextContainer.prototype.attach = function() {
 
 /**
  * Attach to Gmail right side bar.
- * @param {HTMLTableElement} contact_table right bar table
+ * @param {!HTMLTableElement} contact_table right bar table
+ * @private
  */
-ydn.crm.inj.GmailContextContainer.prototype.attachToGmailRightBar = function(contact_table) {
-  if (ydn.crm.inj.ContextContainer.DEBUG) {
-    window.console.log('attachToGmailRightBar panel',
-        this.sidebar_has_attached_, contact_table);
-  }
-  if (!contact_table) {
-    this.sidebar_has_attached_ = false;
-    goog.style.setElementShown(this.ele_root, false);
-    return;
-  }
-  if (this.sidebar_has_attached_) {
-    return;
-  }
+ydn.crm.inj.GmailContextContainer.prototype.attachByTable_ = function(contact_table) {
   // locate root element
   var root_container;
   var ele_stack = contact_table;
@@ -109,6 +98,48 @@ ydn.crm.inj.GmailContextContainer.prototype.attachToGmailRightBar = function(con
     root_container = td;
   }
 
+  var root = this.ele_root;
+  if (root.parentElement) {
+    root.parentElement.removeChild(root);
+    root_container.appendChild(root);
+  } else {
+    root_container.appendChild(root);
+  }
+  this.sidebar_has_attached_ = true;
+  goog.style.setElementShown(root, true);
+};
+
+
+/**
+ * @override
+ */
+ydn.crm.inj.GmailContextContainer.prototype.attachToGmailRightBar = function(col) {
+  if (ydn.crm.inj.ContextContainer.DEBUG) {
+    window.console.log('attachToGmailRightBar panel',
+        this.sidebar_has_attached_, col);
+  }
+
+  if (!col) {
+    this.sidebar_has_attached_ = false;
+    goog.style.setElementShown(this.ele_root, false);
+    return;
+  }
+  if (this.sidebar_has_attached_) {
+    return;
+  }
+  var contact_table = col.querySelector('table');
+  if (contact_table) {
+    this.attachByTable_(/** @type {!HTMLTableElement} */(contact_table));
+    return;
+  }
+  // find a good attach point, heuristically
+  var root_container = col;
+  if (col.firstElementChild) {
+    root_container = col.firstElementChild;
+    if (root_container.childElementCount > 2) {
+      root_container = root_container.lastElementChild.previousElementSibling;
+    }
+  }
   var root = this.ele_root;
   if (root.parentElement) {
     root.parentElement.removeChild(root);

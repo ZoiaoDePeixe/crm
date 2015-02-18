@@ -91,7 +91,7 @@ ydn.crm.shared.getFrontEndScriptName = function() {
   var key = ydn.crm.base.LocalKey.TRACK;
   var base_path = 'jsc/';
   var fn_prefix = 'crmininbox-';
-  var Version = goog.global['CRMinInbox']['sugarcrm']['Version'];
+  var Version = goog.global['YathitCrm']['sugarcrm']['Version'];
   chrome.storage.local.get(key, function(data) {
     var track = data[key];
     var fn = base_path + fn_prefix + Version['release'] + '.js';

@@ -81,7 +81,7 @@ ydn.social.ui.SocialWidget.prototype.render = function(el) {
 
 /**
  * Update target contact.
- * @param {ydn.crm.gmail.GmailObserver.ContextRightBarEvent} e
+ * @param {ydn.crm.gmail.GmailObserver.ContextColumnEvent} e
  * @private
  */
 ydn.social.ui.SocialWidget.prototype.onGmailContextEvent_ = function(e) {
