@@ -12,6 +12,8 @@ ydn.debug.log('ydn.crm', 'finer');
 // ydn.debug.log('ydn.crm.inj.App', 'finest');
 ydn.debug.captureOnConsole(true);
 
+ydn.gmail.Utils.gmail_df_ = goog.async.Deferred.succeed('kyawtun@yathit.com');
+
 // ydn.msg.Pipe.DEBUG =  true;
 // ydn.crm.gmail.GmailObserver.DEBUG =  true;
 // ydn.crm.tracking.Tracker.DEBUG =  true;

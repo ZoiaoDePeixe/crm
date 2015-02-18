@@ -34,6 +34,22 @@ ydn.crm.test.sugar = {
     'userName': 'jane',
     'isLogin': true,
     'hostPermission': true
+  },
+  'login-info':  {
+    "user_id": "seed_jim_id",
+    "user_name": "jim",
+    "user_language": "en_us",
+    "user_currency_id": "-99",
+    "user_is_admin": false,
+    "user_default_team_id": null,
+    "user_default_dateformat": "m/d/Y",
+    "user_default_timeformat": "h:ia",
+    "user_number_seperator": ",",
+    "user_decimal_seperator": ".",
+    "mobile_max_list_entries": null,
+    "mobile_max_subpanel_entries": null,
+    "user_currency_name": "US Dollars",
+    "id": "pp3gap9nqvb54oapu4jbg8b7u5"
   }
 };
 
