@@ -159,7 +159,11 @@ ydn.crm.ch.SReq = {
    */
   DETAILS: 'details',
   FETCH_MODULE: 'fetch-module', // fetch module entries
-  GET: 'get', // get module entry
+  /**
+   * @desc get module entry by id or index key.
+   * @see ydn.crm.su.Client#getEntry
+   */
+  GET: 'get',
   IMPORT_GDATA: 'import-gdata',
   INFO_MODULE: 'info-module', // list module field
   KEYS: 'keys', // list keys
@@ -222,7 +226,11 @@ ydn.crm.ch.SReq = {
    * @see #LINK
    */
   UNLINK: 'unlink',
-  UPLOAD_DOC: 'upload-doc', // upload document.
+  /**
+   * @desc upload document.
+   * @see ydn.crm.su.Client#uploadDocument
+   */
+  UPLOAD_DOC: 'upload-doc',
   UPDATE_NOW: 'update-now', // begin database update process
   VALUES: 'values' // record values query
 };
