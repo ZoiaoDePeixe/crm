@@ -40,6 +40,7 @@ goog.require('ydn.debug');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
 goog.require('ydn.social.ui.SocialWidget');
+goog.require('ydn.crm.inj.BugReporter');
 
 
 
@@ -180,6 +181,10 @@ ydn.crm.inj.App.prototype.init = function() {
 
   this.social_app = new ydn.social.ui.SocialWidget(this.gmail_observer);
   this.social_app.render(this.context_container.getContentElement());
+
+  // bug report link in hub footer.
+  var bug = new ydn.crm.inj.BugReporter();
+  bug.decorate(this.hud.getFooterElement());
 
   return us.onReady();
 

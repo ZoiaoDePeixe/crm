@@ -192,6 +192,14 @@ ydn.crm.inj.Hud.prototype.handleUserLogin_ = function(e) {
 
 
 /**
+ * @return {Element}
+ */
+ydn.crm.inj.Hud.prototype.getFooterElement = function() {
+  return this.root_el_.querySelector('.popup-footer');
+};
+
+
+/**
  * Add UI component.
  * @param {goog.ui.Component} panel
  */

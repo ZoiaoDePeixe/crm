@@ -29,6 +29,11 @@ ydn.crm.ch.Req = {
   FEED_LOG: 'feed-log', // list of log
   FEED_LOG_INFO: 'feed-log-info', // list of info log
   /**
+   * @desc send feedback.
+   * @see ydn.crm.app.App#sendFeedback
+   */
+  FEEDBACK: 'feedback',
+  /**
    * @desc Get list of calenders.
    * @see ydn.ds.gapps.cal.list
    */
