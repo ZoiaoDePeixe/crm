@@ -207,10 +207,12 @@ ydn.crm.inj.BugReporter.prototype.onSubmitClick_ = function(e) {
   }
   btn_submit.setAttribute('disabled', 'disabled');
 
-  ydn.msg.getChannel().send(ydn.crm.ch.Req.FEEDBACK, data).addCallbacks(function() {
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.FEEDBACK, data).addCallbacks(function(x) {
     msg_el.value = '';
     this.closePanel_();
+    ydn.crm.msg.Manager.addStatus('Feedback submitted: ' + x);
   }, function(e) {
-    window.console.error(e);
+    ydn.crm.msg.Manager.addStatus(e.message || String(e));
+    btn_submit.removeAttribute('disabled');
   }, this);
 };
