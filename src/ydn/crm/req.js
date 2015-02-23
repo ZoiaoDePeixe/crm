@@ -224,6 +224,11 @@ ydn.crm.ch.SReq = {
    */
   SEARCH: 'search',
   SERVER_INFO: 'server-info',
+  /**
+   * @desc set relationship
+   * @see ydn.crm.su.Client#setRelationships
+   */
+  SET_REL: 'set-rel',
   STATS: 'stats', // statistic of cached data
   /**
    * @desc remove sync record that link contact gdata with sugar record.
@@ -233,7 +238,7 @@ ydn.crm.ch.SReq = {
   UNLINK: 'unlink',
   /**
    * @desc upload document.
-   * @see ydn.crm.su.Client#uploadDocument
+   * @see ydn.crm.su.Client#handleUpload_
    */
   UPLOAD_DOC: 'upload-doc',
   UPDATE_NOW: 'update-now', // begin database update process
