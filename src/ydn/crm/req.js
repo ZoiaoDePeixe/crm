@@ -195,7 +195,11 @@ ydn.crm.ch.SReq = {
    * @see {ydn.crm.su.Client#login_info_}
    */
   LOGIN_INFO: 'login-info',
-  NEW_RECORD: 'new-record', // create a new record
+  /**
+   * @desc create a new record
+   * @see ydn.crm.su.Client#putRecord
+   */
+  NEW_RECORD: 'new-record',
   PUT_RECORD: 'put-record', //
   /**
    * @desc Generic query

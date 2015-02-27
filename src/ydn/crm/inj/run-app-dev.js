@@ -15,10 +15,11 @@ ydn.debug.captureOnConsole(true);
 ydn.gmail.Utils.gmail_df_ = goog.async.Deferred.succeed('kyawtun@yathit.com');
 
 // ydn.msg.Pipe.DEBUG =  true;
-// ydn.crm.gmail.GmailObserver.DEBUG =  true;
+ydn.crm.gmail.GmailObserver.DEBUG =  true;
 // ydn.crm.tracking.Tracker.DEBUG =  true;
 // ydn.cs.ReplyPanelManager.DEBUG =  true;
 // ydn.crm.su.ui.record.Record.DEBUG =  true;
+
 
 
 var perturb_data_tooltip = function() {
@@ -44,6 +45,10 @@ var loadContent = function(url) {
   xhr.open('GET', url, true);
   xhr.onload = function() {
     mock_content.innerHTML = xhr.responseText;
+    var ydn_el = mock_content.querySelector('#sticky-hud-base');
+    if (ydn_el) {
+      ydn_el.parentElement.removeChild(ydn_el);
+    }
     if (sel_goto.value == 'gmail-inbox') {
       location.hash = '';
     } else {

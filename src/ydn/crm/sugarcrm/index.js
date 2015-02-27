@@ -395,3 +395,33 @@ ydn.crm.su.SugarEvent = {
   LOGOUT: 'logout',
   HOST_ACCESS_GRANT: 'hag'
 };
+
+
+/**
+ * Get list of relationship modules.
+ * @param {SugarCrm.ModuleInfo} info
+ * @param {Array<ydn.crm.su.ModuleName>=} opt_required require module.
+ * @return {Array<ydn.crm.su.ModuleName>}
+ */
+ydn.crm.su.getRelationshipCacheModule = function(info, opt_required) {
+  var link_fields = info.link_fields || {};
+  var arr = [];
+  for (var name in link_fields) {
+    var link_field = link_fields[name];
+    var idx = ydn.crm.su.CacheModules.indexOf(link_field.module);
+    if (idx >= 0) {
+      if (arr.indexOf(ydn.crm.su.CacheModules[idx]) == -1) {
+        arr.push(ydn.crm.su.CacheModules[idx]);
+      }
+    }
+  }
+  if (opt_required) {
+    for (var i = 0; i < opt_required.length; i++) {
+      if (arr.indexOf(opt_required[i]) == -1) {
+        arr.push(opt_required[i]);
+      }
+    }
+  }
+  arr.sort();
+  return arr;
+};

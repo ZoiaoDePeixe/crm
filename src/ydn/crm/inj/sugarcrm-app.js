@@ -27,7 +27,7 @@ goog.require('ydn.crm.base');
 goog.require('ydn.crm.gmail.AttachmentInjector');
 goog.require('ydn.crm.shared');
 goog.require('ydn.crm.su.ContextWidget');
-goog.require('ydn.crm.su.model.Archiver');
+goog.require('ydn.crm.su.Archiver');
 goog.require('ydn.crm.ui.SidebarPanel');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
@@ -186,7 +186,7 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(about) {
     var sugar = new ydn.crm.su.model.GDataSugar(details.about,
         details.modulesInfo, ac, details.serverInfo);
     this.context_panel.setSugarCrm(sugar);
-    var archiver = new ydn.crm.su.model.Archiver(sugar);
+    var archiver = new ydn.crm.su.Archiver(sugar);
     this.heading_injector_.setSugar(archiver);
     this.attachment_injector_.setSugar(sugar);
   }, this);
