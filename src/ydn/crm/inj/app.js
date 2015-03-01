@@ -208,14 +208,16 @@ ydn.crm.inj.App.runInjApp = function() {
 
   var app = new ydn.crm.inj.App();
 
-  ydn.crm.ui.loadSvgDoc();
-
-  var tmp_url = chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE);
-  ydn.ui.setTemplateDocument(tmp_url, function() {
-    var tid2 = window.setTimeout(function() {
-      app.init();
-    }, 500);
+  var svg_url = chrome.extension.getURL(ydn.crm.base.SVG_PAGE);
+  ydn.crm.ui.setSvgDoc(svg_url, function() {
+    var tmp_url = chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE);
+    ydn.ui.setTemplateDocument(tmp_url, function() {
+      var tid2 = window.setTimeout(function() {
+        app.init();
+      }, 500);
+    });
   });
+
 
   return app;
 };
