@@ -21,6 +21,7 @@
  */
 
 
+goog.provide('ydn.crm.su.IAttachButton');
 goog.provide('ydn.crm.su.IAttachButtonProvider');
 
 
@@ -37,6 +38,29 @@ ydn.crm.su.IAttachButtonProvider = function() {
  * Render attach button on the download preview panel.
  * @param {Element} anchor attachment anchor element which has download_url
  * attribute.
- * @return {Object} the button component.
+ * @return {ydn.crm.su.IAttachButton} the button component.
  */
 ydn.crm.su.IAttachButtonProvider.prototype.renderButton = function(anchor) {};
+
+
+
+/**
+ * @interface
+ */
+ydn.crm.su.IAttachButton = function() {
+
+};
+
+
+/**
+ * Get message id representing this button.
+ * @return {string} gmail message id, such as: "m1490e04d5446681e"
+ */
+ydn.crm.su.IAttachButton.prototype.getMessageId = function() {};
+
+
+/**
+ * Get download information.
+ * @return {ydn.gmail.Utils.AttachmentParts}
+ */
+ydn.crm.su.IAttachButton.prototype.getDownloadInfo = function() {};

@@ -24,7 +24,6 @@ goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.style');
 goog.require('ydn.crm.base');
-goog.require('ydn.crm.gmail.AttachmentInjector');
 goog.require('ydn.crm.shared');
 goog.require('ydn.crm.su.Archiver');
 goog.require('ydn.crm.su.AttachButtonProvider');
@@ -55,6 +54,11 @@ ydn.crm.inj.SugarCrmApp = function(us, heading_injector, gmail_observer,
    */
   this.us_ = us;
   /**
+   * @type {ydn.crm.gmail.GmailObserver}
+   * @private
+   */
+  this.gmail_observer_ = gmail_observer;
+  /**
    * @type {?ydn.crm.su.AttachButtonProvider}
    * @private
    */
@@ -65,12 +69,7 @@ ydn.crm.inj.SugarCrmApp = function(us, heading_injector, gmail_observer,
    * @private
    */
   this.heading_injector_ = heading_injector;
-  /**
-   * @final
-   * @type {ydn.crm.gmail.AttachmentInjector}
-   * @private
-   */
-  this.attachment_injector_ = new ydn.crm.gmail.AttachmentInjector(gmail_observer);
+
   /**
    * @protected
    * @type {ydn.crm.su.ContextWidget}
@@ -92,10 +91,6 @@ ydn.crm.inj.SugarCrmApp = function(us, heading_injector, gmail_observer,
   this.hud = hud;
 
   this.handler = new goog.events.EventHandler(this);
-
-  this.handler.listen(this.attachment_injector_,
-      ydn.crm.su.events.EventType.VIEW_RECORD,
-      this.onViewRecord_);
 
 };
 
@@ -192,13 +187,21 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(about) {
     var sugar = new ydn.crm.su.model.GDataSugar(details.about,
         details.modulesInfo, ac, details.serverInfo);
     if (this.attacher_) {
+
+      this.handler.unlisten(this.attacher_,
+          ydn.crm.su.events.EventType.VIEW_RECORD,
+          this.onViewRecord_);
       this.attacher_.dispose();
     }
-    this.attacher_ = new ydn.crm.su.AttachButtonProvider(sugar);
+    this.attacher_ = new ydn.crm.su.AttachButtonProvider(sugar, this.gmail_observer_);
+    this.handler.listen(this.attacher_,
+        ydn.crm.su.events.EventType.VIEW_RECORD,
+        this.onViewRecord_);
+
     this.context_panel.setSugarCrm(sugar);
     var archiver = new ydn.crm.su.Archiver(sugar);
     this.heading_injector_.setSugar(archiver);
-    this.attachment_injector_.setProvider(this.attacher_);
+
   }, this);
 
 };
@@ -232,9 +235,7 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarPanels_ = function() {
         if (ydn.crm.inj.SugarCrmApp.DEBUG) {
           window.console.info('no sugarcrm instance');
         }
-        this.attachment_injector_.setProvider(null);
-        this.sidebar_panel.setSugarCrm(null);
-        this.context_panel.setSugarCrm(null);
+
       }, this);
 };
 
