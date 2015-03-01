@@ -241,10 +241,11 @@ ydn.crm.ch.SReq = {
    */
   UNLINK: 'unlink',
   /**
-   * @desc upload document.
+   * @desc upload document or note attachment.
    * @see ydn.crm.su.Client#handleUpload_
+   * @see ydn.crm.su.Client#upload
    */
-  UPLOAD_DOC: 'upload-doc',
+  UPLOAD: 'upload',
   UPDATE_NOW: 'update-now', // begin database update process
   VALUES: 'values' // record values query
 };

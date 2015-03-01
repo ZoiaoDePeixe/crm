@@ -199,7 +199,7 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(about) {
         this.onViewRecord_);
 
     this.context_panel.setSugarCrm(sugar);
-    var archiver = new ydn.crm.su.Archiver(sugar);
+    var archiver = new ydn.crm.su.Archiver(sugar, this.attacher_);
     this.heading_injector_.setSugar(archiver);
 
   }, this);
