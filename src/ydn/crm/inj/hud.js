@@ -117,7 +117,6 @@ ydn.crm.inj.Hud.prototype.render = function() {
   status.render(header);
   ydn.crm.msg.Manager.addConsumer(status);
 
-  var link_panel = dom.createDom('div', ydn.crm.inj.Hud.CSS_CLASS_SETUP);
   var a = dom.createElement('a');
   a.textContent = 'Setup';
 
@@ -131,7 +130,10 @@ ydn.crm.inj.Hud.prototype.render = function() {
     a.setAttribute('data-window-width', '800');
   }
   a.className = 'maia-button blue';
-  link_panel.appendChild(a);
+
+  var link_panel = dom.createDom('div', ydn.crm.inj.Hud.CSS_CLASS_SETUP, [
+    dom.createDom('div', null, a)
+  ]);
   goog.style.setElementShown(link_panel, false);
 
   var invalid_login = dom.createDom('div', ydn.crm.inj.Hud.CSS_CLASS_INVALID_LOGIN_PANEL);

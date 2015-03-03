@@ -138,6 +138,13 @@ ydn.crm.base.LOGIN_PAGE = 'login.html';
  * @const
  * @type {string}
  */
+ydn.crm.base.URL_USER_PORTAL = 'https://www.yathit.com/portal/index.html';
+
+
+/**
+ * @const
+ * @type {string}
+ */
 ydn.crm.base.HOST_PERMISSION_PAGE = 'host-permission.html';
 
 
