@@ -165,6 +165,17 @@ ydn.crm.ch.SReq = {
   DETAILS: 'details',
   FETCH_MODULE: 'fetch-module', // fetch module entries
   /**
+   * Query format by record id:
+   * <pre>{
+   *   'module': 'Contacts',
+   *   'id': '371f00e7-739a-eb65-3c2b-547fd5a2f235'
+   * }</pre>
+   * Query format by field:
+   * <pre>{
+   *   'module': 'Contact',
+   *   'index': 'ydn$emails',
+   *   'id': 'kyawtun@yathit.com'
+   * }</pre>
    * @desc get module entry by id or index key.
    * @see ydn.crm.su.Client#getEntry
    */

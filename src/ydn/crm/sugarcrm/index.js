@@ -224,7 +224,6 @@ ydn.crm.su.ACTIVITY_MODULES = [ydn.crm.su.ModuleName.MEETINGS,
 ydn.crm.su.relatedModules = [ydn.crm.su.ModuleName.MEETINGS,
   ydn.crm.su.ModuleName.CALLS,
   ydn.crm.su.ModuleName.TASKS,
-  ydn.crm.su.ModuleName.CASES,
   ydn.crm.su.ModuleName.OPPORTUNITIES
 ];
 
