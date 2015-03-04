@@ -163,6 +163,13 @@ ydn.crm.ch.SReq = {
    * @see {ydn.crm.su.Client#getDetails}
    */
   DETAILS: 'details',
+  /**
+   * @desc fetch entry from server.
+   * @see ydn.crm.su.Client#fetchEntry
+   * @see QUERY_ENTRY
+   * @see GET
+   */
+  FETCH: 'fetch',
   FETCH_MODULE: 'fetch-module', // fetch module entries
   /**
    * Get module entry in database and finally from server.
@@ -172,6 +179,8 @@ ydn.crm.ch.SReq = {
    * }</pre>
    * @desc get module entry by id or index key.
    * @see ydn.crm.su.Client#getEntry
+   * @see #FETCH
+   * @see #QUERY_ENTRY
    */
   GET: 'get',
   IMPORT_GDATA: 'import-gdata',
@@ -216,6 +225,13 @@ ydn.crm.ch.SReq = {
    * @see {ydn.crm.su.Client#queryEmbedded}
    */
   QUERY_EMBEDDED: 'query-embedded',
+  /**
+   * @desc Get entry from database and then from server.
+   * @see {ydn.crm.su.Client#queryEntry}
+   * @see #GET
+   * @see #FETCH
+   */
+  QUERY_ENTRY: 'query',
   /**
    * @desc List related records.
    * @see {ydn.crm.su.Client#queryRelated}
