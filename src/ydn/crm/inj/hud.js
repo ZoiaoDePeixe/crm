@@ -152,6 +152,11 @@ ydn.crm.inj.Hud.prototype.render = function() {
       [ydn.crm.ui.UserSetting.EventType.LOGOUT,
         ydn.crm.ui.UserSetting.EventType.LOGIN],
       this.handleUserLogin_);
+
+  this.root_el_.querySelector('a[name=option-page-url]').textContent =
+      chrome.i18n.getMessage('Options');
+  this.root_el_.querySelector('a[name=help]').textContent =
+      chrome.i18n.getMessage('Help');
 };
 
 
