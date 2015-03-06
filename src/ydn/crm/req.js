@@ -164,6 +164,11 @@ ydn.crm.ch.SReq = {
    */
   DETAILS: 'details',
   /**
+   * <pre> {
+   *   'module': 'Contacts',
+   *   'id': '371f00e7-739a-eb65-3c2b-547fd5a2f235'
+   * }
+   * </pre>
    * @desc fetch entry from server.
    * @see ydn.crm.su.Client#fetchEntry
    * @see QUERY_ENTRY

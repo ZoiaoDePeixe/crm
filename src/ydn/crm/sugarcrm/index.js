@@ -277,6 +277,19 @@ ydn.crm.su.getViewLinkV6 = function(base_url, m_name, id) {
 
 
 /**
+ * @param {string} url
+ * @return {ydn.crm.su.ViewLinkParts}
+ */
+ydn.crm.su.parseViewLinkV6 = function(url) {
+  var parts = url.match(/.+?module=(\w+)&.+?record=(.+)/);
+  return {
+    moduleName: /** @type {ydn.crm.su.ModuleName} */(parts[1]),
+    id: parts[2]
+  };
+};
+
+
+/**
  * Get url for contact entry of given id for sugarcrm version 7
  * @param {string} base_url
  * @param {string} m_name
@@ -285,6 +298,28 @@ ydn.crm.su.getViewLinkV6 = function(base_url, m_name, id) {
  */
 ydn.crm.su.getViewLinkV7 = function(base_url, m_name, id) {
   return base_url + '#' + m_name + '/' + id;
+};
+
+
+/**
+ * @typedef {{
+ *   moduleName: ydn.crm.su.ModuleName,
+ *   id: string
+ * }}
+ */
+ydn.crm.su.ViewLinkParts;
+
+
+/**
+ * @param {string} url
+ * @return {ydn.crm.su.ViewLinkParts}
+ */
+ydn.crm.su.parseViewLinkV7 = function(url) {
+  var parts = url.match(/.+?#(\w+)\/(.+)/);
+  return {
+    moduleName: /** @type {ydn.crm.su.ModuleName} */(parts[1]),
+    id: parts[2]
+  };
 };
 
 
