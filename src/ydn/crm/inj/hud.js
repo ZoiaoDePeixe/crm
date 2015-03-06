@@ -157,6 +157,92 @@ ydn.crm.inj.Hud.prototype.render = function() {
       chrome.i18n.getMessage('Options');
   this.root_el_.querySelector('a[name=help]').textContent =
       chrome.i18n.getMessage('Help');
+
+  var hud_base = document.getElementById('sticky-hud-base');
+  this.handler.listen(hud_base, goog.events.EventType.DRAGSTART, this.onRowDragStart_);
+
+  this.handler.listen(hud_base, goog.events.EventType.DRAGEND, this.onRowDragEnd_);
+
+  this.loadPosition_();
+};
+
+
+/**
+ * @private
+ */
+ydn.crm.inj.Hud.prototype.savePosition_ = function() {
+  var hud_base = document.getElementById('sticky-hud-base');
+  var top = hud_base.style.top;
+  var top_px = top.substr(0, top.length - 2);
+
+  var size = {
+    'top': top_px
+  };
+  var key = ydn.crm.base.ChromeLocalKey.POSITION_HUD_BASE;
+  var obj = {};
+  obj[key] = size;
+  chrome.storage.local.set(obj);
+};
+
+
+/**
+ * @private
+ */
+ydn.crm.inj.Hud.prototype.loadPosition_ = function() {
+  var key = ydn.crm.base.ChromeLocalKey.POSITION_HUD_BASE;
+  chrome.storage.local.get(key, function(obj) {
+    var size = obj[key];
+    if (size) {
+      var top_px = size['top'];
+      if (top_px > 50 && top_px < 400) {
+        var hud_base = document.getElementById('sticky-hud-base');
+        hud_base.style.top = top_px + 'px';
+      }
+    }
+  });
+};
+
+
+/**
+ * @param {goog.events.BrowserEvent} e
+ * @private
+ */
+ydn.crm.inj.Hud.prototype.onRowDragStart_ = function(e) {
+  // console.log('start')
+  // FIXME: how to change drag cursor shape?
+  var hud_base = document.getElementById('sticky-hud-base');
+  this.handler.listen(hud_base, goog.events.EventType.MOUSEMOVE, this.onRowResize_);
+  this.handler.listen(hud_base, goog.events.EventType.DRAG, this.onRowResize_);
+};
+
+
+/**
+ * @param {goog.events.BrowserEvent} e
+ * @private
+ */
+ydn.crm.inj.Hud.prototype.onRowDragEnd_ = function(e) {
+  // console.log('end')
+  var hud_base = document.getElementById('sticky-hud-base');
+  this.handler.unlisten(hud_base, goog.events.EventType.MOUSEMOVE, this.onRowResize_);
+  this.handler.unlisten(hud_base, goog.events.EventType.DRAG, this.onRowResize_);
+  this.savePosition_();
+};
+
+
+/**
+ * @param {goog.events.BrowserEvent} e
+ * @private
+ */
+ydn.crm.inj.Hud.prototype.onRowResize_ = function(e) {
+  var hud_base = document.getElementById('sticky-hud-base');
+  // console.log(e.clientY);
+
+  if (e.clientY > 50 && e.clientY < 400) {
+    var top = e.clientY - 2;
+    // console.log('setting ' + top);
+    hud_base.style.top = top + 'px';
+  }
+
 };
 
 

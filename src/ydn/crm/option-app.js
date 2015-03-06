@@ -245,7 +245,9 @@ ydn.crm.OptionPageApp.prototype.processWithSugarSetup_ = function(sugar) {
   }
   var main_menu = document.getElementById('main-menu');
   var sync = main_menu.querySelector('li[name=sync]');
-  goog.style.setElementShown(sync, true);
+  if (sync) {
+    goog.style.setElementShown(sync, true);
+  }
   var page = /** @type {ydn.crm.su.SyncPage} */ (this.pages_['sync']);
   page.setModel(sugar);
 };

@@ -88,7 +88,7 @@ ydn.crm.shared.getValueBySyncKey = function(key) {
  */
 ydn.crm.shared.getFrontEndScriptName = function() {
   var df = new goog.async.Deferred();
-  var key = ydn.crm.base.LocalKey.TRACK;
+  var key = ydn.crm.base.ChromeLocalKey.TRACK;
   var base_path = 'jsc/';
   var fn_prefix = 'crmininbox-';
   var Version = goog.global['YathitCrm']['sugarcrm']['Version'];
@@ -104,7 +104,7 @@ ydn.crm.shared.getFrontEndScriptName = function() {
     }
     df.callback(fn);
     var obj = {};
-    obj[ydn.crm.base.LocalKey.FRONT_END_SRC] = fn; // set for option page
+    obj[ydn.crm.base.ChromeLocalKey.FRONT_END_SRC] = fn; // set for option page
     chrome.storage.local.set(obj);
   });
   return df;

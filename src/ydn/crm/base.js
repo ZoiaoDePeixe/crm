@@ -23,15 +23,43 @@ ydn.crm.base.SessionKey = {
 
 
 /**
- * Key used in chrome.storage.local
+ * Key used in window.localStorage
  * @enum {string}
  */
 ydn.crm.base.LocalKey = {
-  WHAT: 'sd',
-  USER_SETTING: 'st',
-  TRACK: 'ydn-crm-track',
+
+};
+
+
+/**
+ * All keys used in chrome.local.
+ * @enum {string}
+ */
+ydn.crm.base.ChromeLocalKey = {
+  GCM_REG_ID: 'gcm-reg-id',
+  CUSTOM_LOGGING: 'custom-logging',
   FRONT_END_SRC: 'front-end-src',
-  LAST_LOGIN_ID: 'last-login'
+  /* Use in simple popup page */
+  POPUP_CONTENT: 'popup-content',
+  POSITION_HUD_BASE: 'po-hud-b',
+  TRACK: 'ydn-crm-track',
+  TEST: 'test'
+};
+
+
+/**
+ * All keys used in chrome.storage.sync
+ * @enum {string}
+ */
+ydn.crm.base.ChromeSyncKey = {
+  CONTEXT_PANEL_POSITION: 'cp-po',
+  CONTEXT_PANEL_STICKY_BTN_STATE: 'cp-bs',
+  LOGGING_CAPTURE_ON_CONSOLE: 'lg-cc',
+  LOGGING_BUG_REPORT: 'lg-br',
+  LOGGING_ANALYTICS: 'lg-an',
+  LOGGING_DEBUG: 'lg-db',
+  USER_SETTING: 'user-setting',
+  SUGAR_SETTING: 'sugarcrm-setting'
 };
 
 
@@ -163,41 +191,12 @@ ydn.crm.base.INJ_TEMPLATE = 'inj-template.html';
 
 
 /**
- * All keys used in chrome.storage.sync
- * @enum {string}
- */
-ydn.crm.base.ChromeSyncKey = {
-  CONTEXT_PANEL_POSITION: 'cp-po',
-  CONTEXT_PANEL_STICKY_BTN_STATE: 'cp-bs',
-  LOGGING_CAPTURE_ON_CONSOLE: 'lg-cc',
-  LOGGING_BUG_REPORT: 'lg-br',
-  LOGGING_ANALYTICS: 'lg-an',
-  LOGGING_DEBUG: 'lg-db',
-  USER_SETTING: 'user-setting',
-  SUGAR_SETTING: 'sugarcrm-setting'
-};
-
-
-/**
  * List of keys available synchronously by caching.
  * @type {Array.<string>}
  */
 ydn.crm.base.ChromeSyncKeysNow = [
   ydn.crm.base.ChromeSyncKey.CONTEXT_PANEL_POSITION
 ];
-
-
-/**
- * All keys used in chrome.local.
- * @enum {string}
- */
-ydn.crm.base.ChromeLocalKey = {
-  TEST: 'test',
-  /* Use in simple popup page */
-  POPUP_CONTENT: 'popup-content',
-  CUSTOM_LOGGING: 'custom-logging',
-  GCM_REG_ID: 'gcm-reg-id'
-};
 
 
 /**
