@@ -159,9 +159,7 @@ ydn.crm.inj.Hud.prototype.render = function() {
       chrome.i18n.getMessage('Help');
 
   var hud_base = document.getElementById('sticky-hud-base');
-  this.handler.listen(hud_base, goog.events.EventType.DRAGSTART, this.onRowDragStart_);
-
-  this.handler.listen(hud_base, goog.events.EventType.DRAGEND, this.onRowDragEnd_);
+  this.handler.listen(hud_base, goog.events.EventType.MOUSEDOWN, this.onRowDragStart_);
 
   this.loadPosition_();
 };
@@ -212,7 +210,7 @@ ydn.crm.inj.Hud.prototype.onRowDragStart_ = function(e) {
   // FIXME: how to change drag cursor shape?
   var hud_base = document.getElementById('sticky-hud-base');
   this.handler.listen(hud_base, goog.events.EventType.MOUSEMOVE, this.onRowResize_);
-  this.handler.listen(hud_base, goog.events.EventType.DRAG, this.onRowResize_);
+  this.handler.listen(document.body, goog.events.EventType.MOUSEUP, this.onRowDragEnd_);
 };
 
 
@@ -224,7 +222,7 @@ ydn.crm.inj.Hud.prototype.onRowDragEnd_ = function(e) {
   // console.log('end')
   var hud_base = document.getElementById('sticky-hud-base');
   this.handler.unlisten(hud_base, goog.events.EventType.MOUSEMOVE, this.onRowResize_);
-  this.handler.unlisten(hud_base, goog.events.EventType.DRAG, this.onRowResize_);
+  this.handler.unlisten(document.body, goog.events.EventType.MOUSEUP, this.onRowDragEnd_);
   this.savePosition_();
 };
 
@@ -236,11 +234,12 @@ ydn.crm.inj.Hud.prototype.onRowDragEnd_ = function(e) {
 ydn.crm.inj.Hud.prototype.onRowResize_ = function(e) {
   var hud_base = document.getElementById('sticky-hud-base');
   // console.log(e.clientY);
-
   if (e.clientY > 50 && e.clientY < 400) {
     var top = e.clientY - 2;
     // console.log('setting ' + top);
     hud_base.style.top = top + 'px';
+  } else {
+    this.onRowDragEnd_(e);
   }
 
 };
