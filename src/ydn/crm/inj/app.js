@@ -55,12 +55,16 @@ ydn.crm.inj.App = function() {
   ydn.msg.initPipe(ydn.msg.ChannelName.CONTENT_SCRIPT);
 
   ydn.crm.msg.Manager.addStatus('Starting ' + ydn.crm.version + '...');
-  var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
+  /**
+   * @type {ydn.crm.ui.UserSetting}
+   * @final
+   */
+  this.us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   /**
    * @final
    * @type {ydn.crm.gmail.GmailObserver}
    */
-  this.gmail_observer = new ydn.crm.gmail.GmailObserver(us.getLoginEmail());
+  this.gmail_observer = new ydn.crm.gmail.GmailObserver(this.us.getLoginEmail());
 
   /**
    * @final
@@ -109,6 +113,12 @@ ydn.crm.inj.App = function() {
    * @type {ydn.social.ui.SocialWidget}
    */
   this.social_app = null;
+
+  /**
+   * @type {boolean}
+   * @private
+   */
+  this.features_loaded_ = false;
 };
 
 
@@ -141,6 +151,7 @@ ydn.crm.inj.App.prototype.handleUserLogin_ = function(e) {
       this.context_container.setEnabled(false);
     }
     this.gmail_observer.setLoginEmail(us.getLoginEmail());
+
   } else {
     this.gmail_observer.setEnabled(false);
     this.context_container.setEnabled(false);
@@ -163,8 +174,29 @@ ydn.crm.inj.App.prototype.init = function() {
         ydn.crm.ui.UserSetting.EventType.LOGIN],
       this.handleUserLogin_, false, this);
 
-  if (ydn.crm.base.hasFeature(ydn.crm.base.AppFeature.TRACKING) &&
-      us.hasFeature(ydn.crm.base.Feature.TRACKING)) {
+  // bug report link in hub footer.
+  var bug = new ydn.crm.inj.BugReporter();
+  bug.decorate(this.hud.getFooterElement());
+
+  return us.onReady().addCallback(function() {
+    this.loadFeatures_();
+  }, this);
+
+};
+
+
+/**
+ * Load feature after login.
+ * @private
+ */
+ydn.crm.inj.App.prototype.loadFeatures_ = function() {
+
+  if (this.features_loaded_) {
+    return;
+  }
+
+  if (YathitCrm.Product.Tracking &&
+      this.us.hasFeature(ydn.crm.base.Feature.TRACKING)) {
     this.tracking_app = new ydn.crm.inj.TrackingApp(this.header_injector_,
         this.gmail_observer, this.compose_observer, this.context_container,
         this.reply_panel_manager, this.hud);
@@ -172,22 +204,20 @@ ydn.crm.inj.App.prototype.init = function() {
     this.tracking_app.init();
   }
 
-  if (ydn.crm.base.hasFeature(ydn.crm.base.AppFeature.SUGARCRM)) {
-    this.sugar_app = new ydn.crm.inj.SugarCrmApp(us, this.header_injector_,
+  if (YathitCrm.Product.SugarCRM) {
+    this.sugar_app = new ydn.crm.inj.SugarCrmApp(this.us, this.header_injector_,
         this.gmail_observer, this.compose_observer, this.context_container, this.hud);
     goog.log.fine(this.logger, 'initializing sugarcrm app');
     this.sugar_app.init();
   }
 
-  this.social_app = new ydn.social.ui.SocialWidget(this.gmail_observer);
-  this.social_app.render(this.context_container.getContentElement());
+  if (YathitCrm.Product.Social &&
+      this.us.hasFeature(ydn.crm.base.Feature.SOCIAL)) {
+    this.social_app = new ydn.social.ui.SocialWidget(this.gmail_observer);
+    this.social_app.render(this.context_container.getContentElement());
+  }
 
-  // bug report link in hub footer.
-  var bug = new ydn.crm.inj.BugReporter();
-  bug.decorate(this.hud.getFooterElement());
-
-  return us.onReady();
-
+  this.features_loaded_ = true;
 };
 
 

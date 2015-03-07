@@ -290,7 +290,7 @@ ydn.crm.PopupPageApp.prototype.run = function() {
   us.onReady().addCallbacks(function(x) {
     if (us.isLogin()) {
 
-      if (ydn.crm.base.hasFeature(ydn.crm.base.AppFeature.TRACKING) &&
+      if (YathitCrm.Product.Tracking &&
           us.hasFeature(ydn.crm.base.Feature.TRACKING)) {
         this.initEmailTracking_();
       } else {

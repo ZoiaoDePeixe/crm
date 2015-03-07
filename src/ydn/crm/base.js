@@ -232,17 +232,6 @@ ydn.crm.base.AppShortName = {
 
 
 /**
- * @enum {string} Application feature.
- */
-ydn.crm.base.AppFeature = {
-  GDATA_CONTACT: 'gc',
-  GAPPS_CALENDER: 'cal',
-  TRACKING: 'tk',
-  SUGARCRM: 'su'
-};
-
-
-/**
  * @enum {string} Feature limited by user license.
  */
 ydn.crm.base.Feature = {
@@ -385,26 +374,6 @@ ydn.crm.base.getAppShortName = function() {
     }
   }
   return ydn.crm.base.app_name_;
-};
-
-
-/**
- * @param {ydn.crm.base.AppFeature} feature
- * @return {boolean}
- */
-ydn.crm.base.hasFeature = function(feature) {
-  var features = [];
-  var app_name = ydn.crm.base.getAppShortName();
-  if (feature == ydn.crm.base.AppFeature.TRACKING) {
-    return true;
-  } else if (feature == ydn.crm.base.AppFeature.GAPPS_CALENDER) {
-    return app_name == ydn.crm.base.AppShortName.SUGARCRM;
-  } else if (feature == ydn.crm.base.AppFeature.SUGARCRM) {
-    return app_name == ydn.crm.base.AppShortName.SUGARCRM;
-  } else if (feature == ydn.crm.base.AppFeature.GDATA_CONTACT) {
-    return app_name == ydn.crm.base.AppShortName.SUGARCRM;
-  }
-  return false;
 };
 
 

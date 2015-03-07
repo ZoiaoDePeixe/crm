@@ -189,7 +189,7 @@ ydn.crm.OptionPageApp.prototype.processUserPageSetup = function() {
     pages = ['tracking', 'tracking-setting', 'about-tracking'];
   } else {
     pages = ['sugarcrm', 'about-sugarcrm'];
-    if (ydn.crm.base.hasFeature(ydn.crm.base.AppFeature.TRACKING) &&
+    if (YathitCrm.Product.Tracking &&
         us.hasFeature(ydn.crm.base.Feature.TRACKING)) {
       goog.array.insertAt(pages, 'tracking', 1);
     }

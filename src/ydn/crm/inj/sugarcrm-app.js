@@ -143,6 +143,10 @@ ydn.crm.inj.SugarCrmApp.prototype.init = function() {
   if (ydn.crm.inj.SugarCrmApp.DEBUG) {
     window.console.info('SugarCrmApp initialized.');
   }
+
+  if (this.us_.isReady()) {
+    this.refresh_();
+  }
 };
 
 
@@ -155,6 +159,14 @@ ydn.crm.inj.SugarCrmApp.prototype.onUserStatusChange = function(e) {
   if (ydn.crm.inj.SugarCrmApp.DEBUG) {
     window.console.log('updating for ' + e.type);
   }
+  this.refresh_();
+};
+
+
+/**
+ * @private
+ */
+ydn.crm.inj.SugarCrmApp.prototype.refresh_ = function() {
   if (this.us_.hasValidLogin()) {
     this.sidebar_panel.setVisible(true);
     this.updateSugarPanels_();

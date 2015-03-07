@@ -173,6 +173,14 @@ ydn.crm.ui.UserSetting.prototype.loadUserLicense_ = function() {
 
 
 /**
+ * @return {boolean}
+ */
+ydn.crm.ui.UserSetting.prototype.isReady = function() {
+  return !!this.df_ && this.df_.hasFired();
+};
+
+
+/**
  * @return {!goog.async.Deferred}
  */
 ydn.crm.ui.UserSetting.prototype.onReady = function() {
@@ -187,7 +195,7 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
       me.user_setting = x || ydn.crm.ui.UserSetting.USER_SETTING_DEFAULT;
     });
 
-    this.loadSugarCrmSetting();
+    var df_su = this.loadSugarCrmSetting();
 
     var df = ydn.gmail.Utils.sniffUserEmail().addBoth(function(email) {
       var msg = '';
@@ -225,7 +233,6 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
           ydn.crm.msg.Manager.addStatus(msg);
           this.dispatchEvent(new goog.events.Event(ydn.crm.ui.UserSetting.EventType.LOGOUT, this));
         }
-
       }, function(e) {
         this.login_info = null;
         ydn.crm.msg.Manager.addStatus('login error ' + e);
@@ -235,7 +242,7 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
 
     }, this);
 
-    this.df_ = goog.async.DeferredList.gatherResults([df, df_ul]);
+    this.df_ = goog.async.DeferredList.gatherResults([df, df_ul, df_su]);
   }
   return this.df_.branch();
 };
@@ -665,14 +672,16 @@ ydn.crm.ui.UserSetting.prototype.hasFeature = function(feature) {
     if (edition == ydn.crm.base.LicenseEdition.STANDARD) {
       return true;
     } else if (edition == ydn.crm.base.LicenseEdition.EXPRESS) {
-      return ydn.crm.ui.UserSetting.features_not_in_express.indexOf(feature) == -1;
-    } else if (edition == ydn.crm.base.LicenseEdition.BASIC) {
-      return false;
-    } else {
-      // trial
+      var not = goog.array.contains(ydn.crm.ui.UserSetting.features_not_in_express, feature);
+      return !not;
+    } else if (edition == ydn.crm.base.LicenseEdition.TRIAL) {
       return true;
+    } else {
+      // basic
+      return false;
     }
   }
+  goog.log.warning(this.logger, 'user license not found');
   return true;
 };
 

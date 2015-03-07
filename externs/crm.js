@@ -505,3 +505,61 @@ YdnCrm.UserSettingGoogle = function() {};
  * @type {string|undefined} Google calendar id for sync with CRM.
  */
 YdnCrm.UserSettingGoogle.prototype.syncCalId;
+
+
+/**
+ * @type {Object}
+ * @const
+ */
+var YathitCrm = {};
+
+
+/**
+ * @type {Object}
+ * @const
+ */
+YathitCrm.Product = {};
+
+
+/**
+ * @type {?Object}
+ * @const
+ */
+YathitCrm.Product.GData = {};
+
+
+/**
+ * @type {?Object}
+ * @const
+ */
+YathitCrm.Product.GData.Calendar = {};
+
+
+/**
+ * @type {?Object}
+ * @const
+ */
+YathitCrm.Product.GData.Contacts = {};
+
+
+/**
+ * @type {?Object}
+ * @const
+ */
+YathitCrm.Product.SugarCRM = {};
+
+
+/**
+ * @type {?Object}
+ * @const
+ */
+YathitCrm.Product.Tracking = {};
+
+
+/**
+ * @type {?Object}
+ * @const
+ */
+YathitCrm.Product.Social = {};
+
+

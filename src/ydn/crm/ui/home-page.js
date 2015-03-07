@@ -40,6 +40,11 @@ goog.require('ydn.crm.ui.LoggingPrefPanel');
  */
 ydn.crm.ui.HomePage = function(us) {
   /**
+   * @final
+   * @type {ydn.crm.ui.UserSetting}
+   */
+  this.us = us;
+  /**
    * @type {Element}
    * @private
    */
@@ -82,11 +87,12 @@ ydn.crm.ui.HomePage.prototype.render = function(el) {
   var gdata_ele = this.root_.querySelector('#gdata');
   this.gdata_widget.render(gdata_ele);
   var us = ydn.crm.ui.UserSetting.getInstance();
-  if (ydn.crm.base.hasFeature(ydn.crm.base.AppFeature.TRACKING)) {
+  if (YathitCrm.Product.Tracking &&
+      this.us.hasFeature(ydn.crm.base.Feature.TRACKING)) {
     var tracking = new ydn.crm.tracking.setting.Main(us);
     tracking.render(gdata_ele.parentElement);
   }
-  if (ydn.crm.base.hasFeature(ydn.crm.base.AppFeature.GAPPS_CALENDER)) {
+  if (YathitCrm.Product.GData.Calendar) {
     this.calendar_setting.render(this.root_.querySelector('section[name=calendar]'));
   }
   this.sugar_widget.render(this.root_.querySelector('#sugarcrm-widget'));
