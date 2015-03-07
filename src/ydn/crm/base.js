@@ -232,15 +232,17 @@ ydn.crm.base.AppShortName = {
 
 
 /**
+ * Feature name.
+ * Note: Also use for displaying feature name to user.
  * @enum {string} Feature limited by user license.
  */
 ydn.crm.base.Feature = {
-  EDIT_RECORD: 'er',
-  SYNC: 'sy',
-  TEMPLATE: 'tm',
-  ATTACHMENT: 'at',
-  SOCIAL: 'so',
-  TRACKING: 'tr'
+  EDIT_RECORD: 'editing record',
+  SYNC: 'sync',
+  TEMPLATE: 'template',
+  ATTACHMENT: 'attachment',
+  SOCIAL: 'social',
+  TRACKING: 'tracking'
 };
 
 

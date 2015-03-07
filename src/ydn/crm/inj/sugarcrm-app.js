@@ -205,13 +205,14 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(about) {
           this.onViewRecord_);
       this.attacher_.dispose();
     }
-    this.attacher_ = new ydn.crm.su.AttachButtonProvider(sugar, this.gmail_observer_);
+    this.attacher_ = new ydn.crm.su.AttachButtonProvider(this.us_, sugar,
+        this.gmail_observer_);
     this.handler.listen(this.attacher_,
         ydn.crm.su.events.EventType.VIEW_RECORD,
         this.onViewRecord_);
 
     this.context_panel.setSugarCrm(sugar);
-    var archiver = new ydn.crm.su.Archiver(sugar, this.attacher_);
+    var archiver = new ydn.crm.su.Archiver(this.us_, sugar, this.attacher_);
     this.heading_injector_.setSugar(archiver);
 
   }, this);

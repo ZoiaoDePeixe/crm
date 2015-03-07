@@ -1,3 +1,19 @@
+// Copyright 2014 YDN Authors. All Rights Reserved.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
 /**
  * @fileoverview Use setting used in front end.
  *
@@ -14,6 +30,7 @@ goog.require('goog.dom.forms');
 goog.require('goog.log');
 goog.require('templ.ydn.crm.inj');
 goog.require('ydn.crm.Ch');
+goog.require('ydn.crm.IUser');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
 goog.require('ydn.crm.su');
@@ -30,6 +47,7 @@ goog.require('ydn.ui.MessageBox');
  * @extends {goog.events.EventTarget}
  * @suppress {checkStructDictInheritance} suppress closure-library code.
  * @struct
+ * @implements {ydn.crm.IUser}
  */
 ydn.crm.ui.UserSetting = function() {
   goog.base(this);
@@ -186,7 +204,6 @@ ydn.crm.ui.UserSetting.prototype.isReady = function() {
 ydn.crm.ui.UserSetting.prototype.onReady = function() {
   if (!this.df_) {
     // init data.
-    var df_ul = this.loadUserLicense_();
 
     var me = this;
 
@@ -222,7 +239,9 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
             msg = info.email + ' login.';
             goog.log.fine(this.logger, msg);
             ydn.crm.msg.Manager.addStatus(msg);
-            this.dispatchEvent(new goog.events.Event(ydn.crm.ui.UserSetting.EventType.LOGIN, this));
+            this.dispatchEvent(new goog.events.Event(ydn.crm.ui.UserSetting.EventType.LOGIN,
+                this));
+            return this.loadUserLicense_();
           } else {
             goog.log.fine(this.logger, 'Login required.');
             var mid = ydn.crm.msg.Manager.addStatus('Login required.');
@@ -242,7 +261,7 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
 
     }, this);
 
-    this.df_ = goog.async.DeferredList.gatherResults([df, df_ul, df_su]);
+    this.df_ = goog.async.DeferredList.gatherResults([df, df_su]);
   }
   return this.df_.branch();
 };
@@ -663,26 +682,41 @@ ydn.crm.ui.UserSetting.features_not_in_express = [
 
 
 /**
+ * Check user has granted to use the feature.
  * @param {ydn.crm.base.Feature} feature
+ * @param {boolean=} opt_show_msg show not support function to user.
  * @return {boolean}
  */
-ydn.crm.ui.UserSetting.prototype.hasFeature = function(feature) {
+ydn.crm.ui.UserSetting.prototype.hasFeature = function(feature, opt_show_msg) {
   if (this.user_license_) {
+    var ok = false;
     var edition = this.user_license_.edition;
     if (edition == ydn.crm.base.LicenseEdition.STANDARD) {
-      return true;
+      ok = true;
     } else if (edition == ydn.crm.base.LicenseEdition.EXPRESS) {
       var not = goog.array.contains(ydn.crm.ui.UserSetting.features_not_in_express, feature);
-      return !not;
+      ok = !not;
     } else if (edition == ydn.crm.base.LicenseEdition.TRIAL) {
-      return true;
+      ok = true;
     } else {
       // basic
-      return false;
+      ok = false;
     }
+    if (!ok && opt_show_msg) {
+      var lbl = chrome.i18n.getMessage('your_license_not_have_feature',
+          [this.getLicense(), feature]);
+      ydn.ui.MessageDialog.showModal(YathitCrm.name, lbl);
+    }
+    return ok;
   }
   goog.log.warning(this.logger, 'user license not found');
   return true;
 };
 
 
+/**
+ * @return {string} user license edition.
+ */
+ydn.crm.ui.UserSetting.prototype.getLicense = function() {
+  return this.user_license_ ? this.user_license_.edition : '';
+};

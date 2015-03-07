@@ -113,6 +113,7 @@ ydn.crm.inj.TrackingApp.prototype.init = function() {
       [ydn.crm.ui.UserSetting.EventType.LOGIN,
         ydn.crm.ui.UserSetting.EventType.LOGOUT],
       this.onUserStatusChange, false, this);
+  this.attachResultPanel_();
 };
 
 
@@ -122,6 +123,15 @@ ydn.crm.inj.TrackingApp.prototype.init = function() {
  * @protected
  */
 ydn.crm.inj.TrackingApp.prototype.onUserStatusChange = function(e) {
+  this.attachResultPanel_();
+};
+
+
+/**
+ * Attach track result if necessary.
+ * @private
+ */
+ydn.crm.inj.TrackingApp.prototype.attachResultPanel_ = function() {
   var us = /** @type {ydn.crm.ui.UserSetting} */ (ydn.crm.ui.UserSetting.getInstance());
   if (us.hasValidLogin()) {
     if (!this.track_result_) {
@@ -131,5 +141,6 @@ ydn.crm.inj.TrackingApp.prototype.onUserStatusChange = function(e) {
     }
   }
 };
+
 
 

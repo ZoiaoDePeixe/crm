@@ -515,6 +515,12 @@ var YathitCrm = {};
 
 
 /**
+ * @type {string}
+ */
+YathitCrm.name;
+
+
+/**
  * @type {Object}
  * @const
  */
