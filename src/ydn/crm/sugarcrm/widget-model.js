@@ -195,7 +195,8 @@ ydn.crm.su.WidgetModel.prototype.requestHostPermission = function(cb, scope) {
  */
 ydn.crm.su.WidgetModel.prototype.getServerInfo = function(url) {
   this.setInstanceUrl(url);
-  return ydn.msg.getChannel().send('sugar-server-info', url).addCallback(function(info) {
+  return ydn.msg.getChannel().send(ydn.crm.ch.Req.SUGAR_SERVER_INFO,
+      url).addCallback(function(info) {
     // console.log(info);
     this.info = info;
     return info;
@@ -210,7 +211,7 @@ ydn.crm.su.WidgetModel.prototype.getServerInfo = function(url) {
 ydn.crm.su.WidgetModel.prototype.setInstanceUrl = function(url) {
   url = url.trim();
   if (url.length < 3 || !/\./.test(url)) {
-    return goog.async.Deferred.fail(new Error('Invalid instance ' + url));
+    return;
   }
   var domain = url.replace(/^https?:\/\//, '');
   domain = domain.replace(/\/.*/, ''); // remove after
@@ -260,26 +261,26 @@ ydn.crm.su.WidgetModel.prototype.login = function(url, username, password, provi
     this.about.userName = username;
   }
 
-  this.about.provider = provider || '';
+  var details = /** @type {SugarCrm.Details} */({
+    about: this.about,
+    serverInfo: this.info,
+    credential: {}
+  });
 
-  if (password) {
-    //var md5 = new goog.crypt.Md5();
-    //md5.update(password);
-    //this.about.password = goog.crypt.byteArrayToHex(md5.digest());
-    //this.about.hashed = true;
-    this.about.password = password;
-  }
+  details.credential.userName = username;
+  details.credential.password = password;
+  details.credential.provider = provider;
 
   // whether user give permission or not, we still continue login.
   // console.log(permission, me.data);
   if (this.is_new_) {
-    return ydn.msg.getChannel().send(ydn.crm.ch.Req.NEW_SUGAR, this.about)
+    return ydn.msg.getChannel().send(ydn.crm.ch.Req.NEW_SUGAR, details)
         .addCallback(function(info) {
           // console.log(info);
           this.about = info;
         }, this);
   } else {
-    return this.getChannel().send(ydn.crm.ch.SReq.LOGIN, this.about)
+    return this.getChannel().send(ydn.crm.ch.SReq.LOGIN, details)
         .addCallback(function(info) {
           // console.log(info);
           this.about = info;

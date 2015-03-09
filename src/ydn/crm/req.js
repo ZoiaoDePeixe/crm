@@ -75,7 +75,7 @@ ydn.crm.ch.Req = {
   NEW_ENTRY: 'new-entry',
   /**
    * @desc create a new sugar channel, if not already exist.
-   * @see {ydn.crm.app.App#initSugarClient}
+   * @see {ydn.crm.app.App#newSugar}
    */
   NEW_SUGAR: 'new-sugarcrm',
   NUKE: 'nk', // clear db
@@ -98,6 +98,9 @@ ydn.crm.ch.Req = {
    * @see ydn.so.Loader#getProfileDetail
    */
   SOCIAL_PROFILE_DETAIL: 'social-profile-detail',
+  /**
+   * @see ydn.crm.su.HttpClient#sniffServerInfo
+   */
   SUGAR_SERVER_INFO: 'sugar-server-info',
   SYNC: 'sync', // begin sync between gdata and record
   /**
@@ -207,6 +210,10 @@ ydn.crm.ch.SReq = {
    * @see {ydn.crm.su.Client#listName}
    */
   LIST_NAME: 'list-name',
+  /**
+   * @desc login to sugarcrm instance.
+   * @see ydn.crm.app.EventPage#initSugarClient
+   */
   LOGIN: 'login',
   LOGIN_USER: 'login-user', // current login user record (Users module)
   /**
