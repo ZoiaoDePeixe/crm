@@ -209,8 +209,9 @@ ydn.crm.inj.Hud.prototype.onRowDragStart_ = function(e) {
   // console.log('start')
   // FIXME: how to change drag cursor shape?
   var hud_base = document.getElementById('sticky-hud-base');
-  this.handler.listen(hud_base, goog.events.EventType.MOUSEMOVE, this.onRowResize_);
+  this.handler.listen(document.body, goog.events.EventType.MOUSEMOVE, this.onRowResize_);
   this.handler.listen(document.body, goog.events.EventType.MOUSEUP, this.onRowDragEnd_);
+  document.body.style.cursor = 'row-resize';
 };
 
 
@@ -220,8 +221,9 @@ ydn.crm.inj.Hud.prototype.onRowDragStart_ = function(e) {
  */
 ydn.crm.inj.Hud.prototype.onRowDragEnd_ = function(e) {
   // console.log('end')
+  document.body.style.cursor = '';
   var hud_base = document.getElementById('sticky-hud-base');
-  this.handler.unlisten(hud_base, goog.events.EventType.MOUSEMOVE, this.onRowResize_);
+  this.handler.unlisten(document.body, goog.events.EventType.MOUSEMOVE, this.onRowResize_);
   this.handler.unlisten(document.body, goog.events.EventType.MOUSEUP, this.onRowDragEnd_);
   this.savePosition_();
 };
@@ -238,8 +240,6 @@ ydn.crm.inj.Hud.prototype.onRowResize_ = function(e) {
     var top = e.clientY - 2;
     // console.log('setting ' + top);
     hud_base.style.top = top + 'px';
-  } else {
-    this.onRowDragEnd_(e);
   }
 
 };
