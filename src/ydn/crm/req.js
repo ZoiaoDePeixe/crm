@@ -215,7 +215,11 @@ ydn.crm.ch.SReq = {
    * @see ydn.crm.app.EventPage#initSugarClient
    */
   LOGIN: 'login',
-  LOGIN_USER: 'login-user', // current login user record (Users module)
+  /**
+   * @desc current login user record (Users module)
+   * @see ydn.crm.su.Client#getLoginUser
+   */
+  LOGIN_USER: 'login-user',
   /**
    * @desc login information or user setting in sugarcrm
    * @see {ydn.crm.su.Client#login_info_}
