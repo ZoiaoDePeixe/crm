@@ -158,8 +158,8 @@ ydn.crm.inj.Hud.prototype.render = function() {
   this.root_el_.querySelector('a[name=help]').textContent =
       chrome.i18n.getMessage('Help');
 
-  var hud_base = document.getElementById('sticky-hud-base');
-  this.handler.listen(hud_base, goog.events.EventType.MOUSEDOWN, this.onRowDragStart_);
+  var resizer = this.root_el_.querySelector('.top-resizer');
+  this.handler.listen(resizer, goog.events.EventType.MOUSEDOWN, this.onRowDragStart_);
 
   this.loadPosition_();
 };
@@ -206,9 +206,10 @@ ydn.crm.inj.Hud.prototype.loadPosition_ = function() {
  * @private
  */
 ydn.crm.inj.Hud.prototype.onRowDragStart_ = function(e) {
+
   // console.log('start')
   // FIXME: how to change drag cursor shape?
-  var hud_base = document.getElementById('sticky-hud-base');
+
   this.handler.listen(document.body, goog.events.EventType.MOUSEMOVE, this.onRowResize_);
   this.handler.listen(document.body, goog.events.EventType.MOUSEUP, this.onRowDragEnd_);
   document.body.style.cursor = 'row-resize';

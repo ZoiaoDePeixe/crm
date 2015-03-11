@@ -186,8 +186,14 @@ ydn.crm.inj.SugarCrmApp.prototype.refresh_ = function() {
  */
 ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(about) {
 
-
+  if (ydn.crm.inj.SugarCrmApp.DEBUG) {
+    window.console.info('Updating Sugar ' + (about ? about.domain : ''));
+  }
   this.sidebar_panel.setSugarCrm(about);
+
+  if (!about) {
+    return;
+  }
 
   var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, about.domain);
   ch.send(ydn.crm.ch.SReq.DETAILS).addCallback(function(x) {
@@ -248,7 +254,7 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarPanels_ = function() {
         if (ydn.crm.inj.SugarCrmApp.DEBUG) {
           window.console.info('no sugarcrm instance');
         }
-
+        this.updateSugarCrm_(null);
       }, this);
 };
 
