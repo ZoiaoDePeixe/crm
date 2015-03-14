@@ -62,6 +62,8 @@ ydn.crm.su.WidgetModel = function(opt_about) {
     var pipe = ydn.msg.getMain();
     this.handler.listen(pipe, [ydn.crm.ch.BReq.SUGARCRM, ydn.crm.ch.BReq.HOST_PERMISSION],
         this.handleMessage);
+
+    this.getServerInfo(this.about.baseUrl);
   }
 
 };
