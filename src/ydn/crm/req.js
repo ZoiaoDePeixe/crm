@@ -247,7 +247,7 @@ ydn.crm.ch.SReq = {
    * @see #GET
    * @see #FETCH
    */
-  QUERY_ENTRY: 'query',
+  QUERY_ENTRY: 'query-entry',
   /**
    * @desc List related records.
    * @see {ydn.crm.su.Client#queryRelated}
