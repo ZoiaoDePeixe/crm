@@ -217,11 +217,12 @@ ydn.crm.su.ACTIVITY_MODULES = [ydn.crm.su.ModuleName.MEETINGS,
 
 
 /**
- * Related module from Contacts and Leads.
+ * Default related modules.
  * @const
  * @type {Array.<ydn.crm.su.ModuleName>}
  */
-ydn.crm.su.relatedModules = [ydn.crm.su.ModuleName.MEETINGS,
+ydn.crm.su.relatedModules = [
+  ydn.crm.su.ModuleName.MEETINGS,
   ydn.crm.su.ModuleName.CALLS,
   ydn.crm.su.ModuleName.TASKS,
   ydn.crm.su.ModuleName.OPPORTUNITIES
@@ -356,6 +357,10 @@ ydn.crm.su.fixSugarCrmModuleMeta = function(info) {
      * @type {SugarCrm.ModuleField}
      */
     var mf = info.module_fields[name];
+    if (!mf) {
+      continue;
+    }
+    name = mf.name;
 
     // fix calculated field
     if (['created_by', 'created_by_name', 'date_entered', 'date_modified',
