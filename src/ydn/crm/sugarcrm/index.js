@@ -199,6 +199,7 @@ ydn.crm.su.EDITABLE_MODULES = [ydn.crm.su.ModuleName.ACCOUNTS,
   ydn.crm.su.ModuleName.CONTACTS,
   ydn.crm.su.ModuleName.LEADS,
   ydn.crm.su.ModuleName.MEETINGS,
+  ydn.crm.su.ModuleName.OPPORTUNITIES,
   ydn.crm.su.ModuleName.NOTES,
   ydn.crm.su.ModuleName.TASKS];
 
