@@ -388,8 +388,13 @@ ydn.crm.su.Widget.prototype.handleLogin = function(e) {
 
   var model = this.model;
   var provider = root.querySelector('select[name="sugarcrm-auth"]').value;
+  var force = !!e.altKey;
   chrome.permissions.request(this.model.getPermissionObject(), function(grant) {
     // console.log('grant ' + grant);
+    if (!grant && !force) {
+      ele_msg.textContent = 'Access permission to ' + url + ' is required.';
+      return;
+    }
     model.login(url, username, password, provider).addCallbacks(function(info) {
       window.location.reload();
     }, function(e) {
