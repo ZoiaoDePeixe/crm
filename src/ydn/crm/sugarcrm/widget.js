@@ -122,6 +122,10 @@ ydn.crm.su.Widget.prototype.render = function(ele) {
 
   ele.appendChild(this.root);
 
+  var hp_btn = this.getHostPermissionBtn_();
+  hp_btn.style.display = 'none';
+  hp_btn.onclick = this.onHostPermissionBtnClick_.bind(this);
+
   this.refresh();
 };
 
@@ -177,19 +181,14 @@ ydn.crm.su.Widget.prototype.onDetailsClick_ = function(ev) {
 
 
 /**
- * Handle on domain blur.
- * @param {Event} e
+ * @param {string} domain
+ * @private
  */
-ydn.crm.su.Widget.prototype.onDomainBlur = function(e) {
+ydn.crm.su.Widget.prototype.sniffServerInfo_ = function(domain) {
   var input = this.root.querySelector('input[name="domain"]');
-  var ele_message = input.nextElementSibling;
+  var ele_message = this.root.querySelector('.domain .message');
   ele_message.textContent = '';
   ele_message.className = '';
-  var domain = input.value.trim();
-  if (!domain) {
-    return;
-  }
-
   this.model.getServerInfo(domain).addCallbacks(function(info) {
     var input_baseurl = this.root.querySelector('input[name=baseurl]');
     input_baseurl.value = '';
@@ -204,6 +203,65 @@ ydn.crm.su.Widget.prototype.onDomainBlur = function(e) {
     ele_message.className = 'error';
     ele_message.setAttribute('title', e.message || '');
   }, this);
+};
+
+
+/**
+ * @return {Element}
+ * @private
+ */
+ydn.crm.su.Widget.prototype.getHostPermissionBtn_ = function() {
+  return this.root.querySelector('#grant-host-permission');
+};
+
+
+/**
+ * @param {Event} e
+ * @private
+ */
+ydn.crm.su.Widget.prototype.onHostPermissionBtnClick_ = function(e) {
+  var btn = e.target;
+  var domain = btn.getAttribute('data-domain');
+  if (!domain) {
+    btn.style.display = 'none';
+    return;
+  }
+  var perm = {
+    origins: [domain]
+  };
+  chrome.permissions.request(perm, (function(grant) {
+    btn.setAttribute('data-domain', domain);
+    btn.style.display = grant ? 'none' : '';
+    if (grant) {
+      this.sniffServerInfo_(domain);
+    }
+  }).bind(this));
+};
+
+
+/**
+ * Handle on domain blur.
+ * @param {Event} e
+ */
+ydn.crm.su.Widget.prototype.onDomainBlur = function(e) {
+  var input = this.root.querySelector('input[name="domain"]');
+
+  var domain = input.value.trim();
+  if (!domain) {
+    return;
+  }
+
+  var perm = {
+    origins: [domain]
+  };
+  chrome.permissions.request(perm, (function(grant) {
+    this.sniffServerInfo_(domain);
+    var btn = this.getHostPermissionBtn_();
+    btn.setAttribute('data-domain', domain);
+    btn.style.display = grant ? 'none' : '';
+  }).bind(this));
+
+
 };
 
 
