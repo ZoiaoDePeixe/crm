@@ -158,9 +158,7 @@ ydn.crm.su.WidgetModel.prototype.getChannel = function() {
  * @return {boolean}
  */
 ydn.crm.su.WidgetModel.prototype.hasHostPermission = function(opt_cb, opt_scope) {
-  var permissions = {
-    origins: ['http://' + this.about.domain + '/*', 'https://' + this.about.domain + '/*']
-  };
+  var permissions = this.getPermissionObject();
   chrome.permissions.contains(permissions, function(grant) {
     // console.log(scope, grant);
     if (opt_cb) {
@@ -180,9 +178,7 @@ ydn.crm.su.WidgetModel.prototype.hasHostPermission = function(opt_cb, opt_scope)
 ydn.crm.su.WidgetModel.prototype.requestHostPermission = function(cb, scope) {
   var domain = this.getDomain();
   // console.assert(!!domain);
-  var permissions = {
-    origins: ['http://' + domain + '/*', 'https://' + domain + '/*']
-  };
+  var permissions = this.getPermissionObject();
   chrome.permissions.request(permissions, function(grant) {
     // console.log(permission, grant);
     cb.call(scope, grant);
