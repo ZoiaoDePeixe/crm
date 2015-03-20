@@ -1,0 +1,3885 @@
+[
+  {
+    "module_name": "Users",
+    "module_fields": [
+      {
+        "name": "id",
+        "type": "id",
+        "label": "ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "user_name",
+        "type": "user_name",
+        "label": "User Name",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "user_hash",
+        "type": "varchar",
+        "label": "LBL_USER_HASH",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "authenticate_id",
+        "type": "varchar",
+        "label": "LBL_AUTHENTICATE_ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "sugar_login",
+        "type": "bool",
+        "label": "Is Sugar User",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "first_name",
+        "type": "name",
+        "label": "First Name",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "last_name",
+        "type": "name",
+        "label": "Last Name",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "reports_to_id",
+        "type": "id",
+        "label": "LBL_REPORTS_ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "is_admin",
+        "type": "bool",
+        "label": "Is Administrator",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "receive_notifications",
+        "type": "bool",
+        "label": "Notify on Assignment",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "label": "Description",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_entered",
+        "type": "datetime",
+        "label": "Date Created:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_modified",
+        "type": "datetime",
+        "label": "Last Modified:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_user_id",
+        "type": "assigned_user_name",
+        "label": "Assigned to:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by",
+        "type": "assigned_user_name",
+        "label": "Assigned to:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "title",
+        "type": "varchar",
+        "label": "Title",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "department",
+        "type": "varchar",
+        "label": "Department",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_home",
+        "type": "varchar",
+        "label": "Home Phone",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_mobile",
+        "type": "varchar",
+        "label": "Mobile",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_work",
+        "type": "varchar",
+        "label": "Work Phone",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_other",
+        "type": "varchar",
+        "label": "Other Phone",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_fax",
+        "type": "varchar",
+        "label": "Fax",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "email1",
+        "type": "varchar",
+        "label": "Email address",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "email2",
+        "type": "varchar",
+        "label": "Other email address",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "status",
+        "type": "enum",
+        "label": "Status",
+        "required": "0",
+        "options": [
+          {
+            "name": "Active",
+            "value": "Active"
+          },
+          {
+            "name": "Inactive",
+            "value": "Inactive"
+          }
+        ]
+      },
+      {
+        "name": "address_street",
+        "type": "varchar",
+        "label": "Address Street",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "address_city",
+        "type": "varchar",
+        "label": "Address City",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "address_state",
+        "type": "varchar",
+        "label": "Address State",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "address_country",
+        "type": "varchar",
+        "label": "Address Country",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "address_postalcode",
+        "type": "varchar",
+        "label": "Address Postal Code",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "user_preferences",
+        "type": "text",
+        "label": "LBL_USER_PREFERENCES",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "deleted",
+        "type": "bool",
+        "label": "Deleted",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "portal_only",
+        "type": "bool",
+        "label": "Portal Only User",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "employee_status",
+        "type": "varchar",
+        "label": "Employee Status",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "messenger_id",
+        "type": "varchar",
+        "label": "IM Name",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "messenger_type",
+        "type": "varchar",
+        "label": "IM Type",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "is_group",
+        "type": "bool",
+        "label": "Group User",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "c_accept_status_fields",
+        "type": "relate",
+        "label": "Accept Status",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "m_accept_status_fields",
+        "type": "relate",
+        "label": "Accept Status",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_by_name",
+        "type": "assigned_user_name",
+        "label": "Assigned to:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by_name",
+        "type": "assigned_user_name",
+        "label": "Assigned to:",
+        "required": "0",
+        "options": {}
+      }
+    ],
+    "error": {
+      "number": {},
+      "name": {},
+      "description": {}
+    }
+  },
+  {
+    "module_name": "EmailTemplates",
+    "module_fields": [
+      {
+        "name": "id",
+        "type": "id",
+        "label": "Name:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_entered",
+        "type": "datetime",
+        "label": "Date Created:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_modified",
+        "type": "datetime",
+        "label": "Last Modified:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_user_id",
+        "type": "assigned_user_name",
+        "label": "Assigned to:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by",
+        "type": "varchar",
+        "label": "LBL_CREATED_BY",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "published",
+        "type": "varchar",
+        "label": "LBL_PUBLISHED",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "name",
+        "type": "varchar",
+        "label": "Name:",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "label": "Description:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "subject",
+        "type": "varchar",
+        "label": "Subject:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "body",
+        "type": "text",
+        "label": "Body:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "body_html",
+        "type": "text",
+        "label": "LBL_PLAIN_TEXT",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "deleted",
+        "type": "bool",
+        "label": "Deleted",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "text_only",
+        "type": "bool",
+        "label": "Text Only",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_by_name",
+        "type": "assigned_user_name",
+        "label": "Assigned to:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by_name",
+        "type": "varchar",
+        "label": "LBL_CREATED_BY",
+        "required": "0",
+        "options": {}
+      }
+    ],
+    "error": {}
+  },
+  {
+    "module_name": "Accounts",
+    "module_fields": [
+      {
+        "name": "id",
+        "type": "id",
+        "label": "ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_entered",
+        "type": "datetime",
+        "label": "Date Entered:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_modified",
+        "type": "datetime",
+        "label": "Date Modified:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_user_id",
+        "type": "assigned_user_name",
+        "label": "Modified by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "assigned_user_id",
+        "type": "assigned_user_name",
+        "label": "Assigned to:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "assigned_user_name",
+        "type": "relate",
+        "label": "Assigned User Name:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "name",
+        "type": "name",
+        "label": "Name:",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "parent_id",
+        "type": "id",
+        "label": "Parent Account ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "account_type",
+        "type": "enum",
+        "label": "Type:",
+        "required": "0",
+        "options": [
+          {
+            "name": {},
+            "value": {}
+          },
+          {
+            "name": "Analyst",
+            "value": "Analyst"
+          },
+          {
+            "name": "Competitor",
+            "value": "Competitor"
+          },
+          {
+            "name": "Customer",
+            "value": "Customer"
+          },
+          {
+            "name": "Integrator",
+            "value": "Integrator"
+          },
+          {
+            "name": "Investor",
+            "value": "Investor"
+          },
+          {
+            "name": "Partner",
+            "value": "Partner"
+          },
+          {
+            "name": "Press",
+            "value": "Press"
+          },
+          {
+            "name": "Prospect",
+            "value": "Prospect"
+          },
+          {
+            "name": "Reseller",
+            "value": "Reseller"
+          },
+          {
+            "name": "Other",
+            "value": "Other"
+          }
+        ]
+      },
+      {
+        "name": "industry",
+        "type": "enum",
+        "label": "Industry:",
+        "required": "0",
+        "options": [
+          {
+            "name": {},
+            "value": {}
+          },
+          {
+            "name": "Apparel",
+            "value": "Apparel"
+          },
+          {
+            "name": "Banking",
+            "value": "Banking"
+          },
+          {
+            "name": "Biotechnology",
+            "value": "Biotechnology"
+          },
+          {
+            "name": "Chemicals",
+            "value": "Chemicals"
+          },
+          {
+            "name": "Communications",
+            "value": "Communications"
+          },
+          {
+            "name": "Construction",
+            "value": "Construction"
+          },
+          {
+            "name": "Consulting",
+            "value": "Consulting"
+          },
+          {
+            "name": "Education",
+            "value": "Education"
+          },
+          {
+            "name": "Electronics",
+            "value": "Electronics"
+          },
+          {
+            "name": "Energy",
+            "value": "Energy"
+          },
+          {
+            "name": "Engineering",
+            "value": "Engineering"
+          },
+          {
+            "name": "Entertainment",
+            "value": "Entertainment"
+          },
+          {
+            "name": "Environmental",
+            "value": "Environmental"
+          },
+          {
+            "name": "Finance",
+            "value": "Finance"
+          },
+          {
+            "name": "Government",
+            "value": "Government"
+          },
+          {
+            "name": "Healthcare",
+            "value": "Healthcare"
+          },
+          {
+            "name": "Hospitality",
+            "value": "Hospitality"
+          },
+          {
+            "name": "Insurance",
+            "value": "Insurance"
+          },
+          {
+            "name": "Machinery",
+            "value": "Machinery"
+          },
+          {
+            "name": "Manufacturing",
+            "value": "Manufacturing"
+          },
+          {
+            "name": "Media",
+            "value": "Media"
+          },
+          {
+            "name": "Not For Profit",
+            "value": "Not For Profit"
+          },
+          {
+            "name": "Recreation",
+            "value": "Recreation"
+          },
+          {
+            "name": "Retail",
+            "value": "Retail"
+          },
+          {
+            "name": "Shipping",
+            "value": "Shipping"
+          },
+          {
+            "name": "Technology",
+            "value": "Technology"
+          },
+          {
+            "name": "Telecommunications",
+            "value": "Telecommunications"
+          },
+          {
+            "name": "Transportation",
+            "value": "Transportation"
+          },
+          {
+            "name": "Utilities",
+            "value": "Utilities"
+          },
+          {
+            "name": "Other",
+            "value": "Other"
+          }
+        ]
+      },
+      {
+        "name": "annual_revenue",
+        "type": "varchar",
+        "label": "Annual Revenue:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_fax",
+        "type": "phone",
+        "label": "Phone Fax:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "billing_address_street",
+        "type": "varchar",
+        "label": "Billing Address Street:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "billing_address_city",
+        "type": "varchar",
+        "label": "Billing Address City:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "billing_address_state",
+        "type": "varchar",
+        "label": "Billing Address State:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "billing_address_postalcode",
+        "type": "varchar",
+        "label": "Billing Address Postal Code:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "billing_address_country",
+        "type": "varchar",
+        "label": "Billing Address Country:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "label": "Description:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "rating",
+        "type": "varchar",
+        "label": "Rating:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_office",
+        "type": "phone",
+        "label": "Phone Office:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_alternate",
+        "type": "phone",
+        "label": "Alternate Phone:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "email1",
+        "type": "email",
+        "label": "Email:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "email2",
+        "type": "email",
+        "label": "Other Email:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "website",
+        "type": "varchar",
+        "label": "Website:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "ownership",
+        "type": "varchar",
+        "label": "Ownership:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "employees",
+        "type": "num",
+        "label": "Employees:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "sic_code",
+        "type": "varchar",
+        "label": "SIC Code:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "ticker_symbol",
+        "type": "varchar",
+        "label": "Ticker Symbol:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "shipping_address_street",
+        "type": "varchar",
+        "label": "Shipping Address Street:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "shipping_address_city",
+        "type": "varchar",
+        "label": "Shipping Address City:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "shipping_address_state",
+        "type": "varchar",
+        "label": "Shipping Address State:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "shipping_address_postalcode",
+        "type": "varchar",
+        "label": "Shipping Address Postal Code:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "shipping_address_country",
+        "type": "varchar",
+        "label": "Shipping Address Country:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "deleted",
+        "type": "bool",
+        "label": "Deleted",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "account_name",
+        "type": "relate",
+        "label": "Member of:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "campaign_id",
+        "type": "id",
+        "label": "Campaign ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_by_name",
+        "type": "assigned_user_name",
+        "label": "Modified by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by_name",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      }
+    ],
+    "error": {}
+  },
+  {
+    "module_name": "Contacts",
+    "module_fields": [
+      {
+        "name": "id",
+        "type": "id",
+        "label": "ID:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "deleted",
+        "type": "bool",
+        "label": "Deleted",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_entered",
+        "type": "datetime",
+        "label": "Date Created:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_modified",
+        "type": "datetime",
+        "label": "Date Modified:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_user_id",
+        "type": "assigned_user_name",
+        "label": "Modified By User ID:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "assigned_user_id",
+        "type": "assigned_user_name",
+        "label": "Assigned to:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "salutation",
+        "type": "enum",
+        "label": "Salutation:",
+        "required": "0",
+        "options": [
+          {
+            "name": {},
+            "value": {}
+          },
+          {
+            "name": "Mr.",
+            "value": "Mr."
+          },
+          {
+            "name": "Ms.",
+            "value": "Ms."
+          },
+          {
+            "name": "Mrs.",
+            "value": "Mrs."
+          },
+          {
+            "name": "Dr.",
+            "value": "Dr."
+          },
+          {
+            "name": "Prof.",
+            "value": "Prof."
+          }
+        ]
+      },
+      {
+        "name": "first_name",
+        "type": "varchar",
+        "label": "First Name:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "last_name",
+        "type": "varchar",
+        "label": "Last Name:",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "lead_source",
+        "type": "enum",
+        "label": "Lead Source:",
+        "required": "0",
+        "options": [
+          {
+            "name": {},
+            "value": {}
+          },
+          {
+            "name": "Cold Call",
+            "value": "Cold Call"
+          },
+          {
+            "name": "Existing Customer",
+            "value": "Existing Customer"
+          },
+          {
+            "name": "Self Generated",
+            "value": "Self Generated"
+          },
+          {
+            "name": "Employee",
+            "value": "Employee"
+          },
+          {
+            "name": "Partner",
+            "value": "Partner"
+          },
+          {
+            "name": "Public Relations",
+            "value": "Public Relations"
+          },
+          {
+            "name": "Direct Mail",
+            "value": "Direct Mail"
+          },
+          {
+            "name": "Conference",
+            "value": "Conference"
+          },
+          {
+            "name": "Trade Show",
+            "value": "Trade Show"
+          },
+          {
+            "name": "Web Site",
+            "value": "Web Site"
+          },
+          {
+            "name": "Word of mouth",
+            "value": "Word of mouth"
+          },
+          {
+            "name": "Email",
+            "value": "Email"
+          },
+          {
+            "name": "Campaign",
+            "value": "Campaign"
+          },
+          {
+            "name": "Other",
+            "value": "Other"
+          }
+        ]
+      },
+      {
+        "name": "title",
+        "type": "varchar",
+        "label": "Title:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "department",
+        "type": "varchar",
+        "label": "Department:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "account_name",
+        "type": "relate",
+        "label": "Account Name:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "account_id",
+        "type": "relate",
+        "label": "Account ID:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "opportunity_role_fields",
+        "type": "relate",
+        "label": "Account Name:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "reports_to_id",
+        "type": "id",
+        "label": "Reports to ID:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "report_to_name",
+        "type": "relate",
+        "label": "Reports To:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "birthdate",
+        "type": "date",
+        "label": "Birthdate:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "do_not_call",
+        "type": "bool",
+        "label": "Do Not Call:",
+        "required": "0",
+        "options": {
+          "name": "type",
+          "value": "varchar"
+        }
+      },
+      {
+        "name": "phone_home",
+        "type": "phone",
+        "label": "Home:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_mobile",
+        "type": "phone",
+        "label": "Mobile:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_work",
+        "type": "phone",
+        "label": "Office Phone:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_other",
+        "type": "phone",
+        "label": "Other Phone:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_fax",
+        "type": "phone",
+        "label": "Fax:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "email1",
+        "type": "email",
+        "label": "Email:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "email2",
+        "type": "email",
+        "label": "Other Email:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "assistant",
+        "type": "varchar",
+        "label": "Assistant:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "assistant_phone",
+        "type": "phone",
+        "label": "Assistant Phone:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "email_opt_out",
+        "type": "bool",
+        "label": "Email Opt Out:",
+        "required": "0",
+        "options": {
+          "name": "type",
+          "value": "varchar"
+        }
+      },
+      {
+        "name": "primary_address_street",
+        "type": "varchar",
+        "label": "Primary Address Street:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "primary_address_city",
+        "type": "varchar",
+        "label": "Primary Address City:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "primary_address_state",
+        "type": "varchar",
+        "label": "Primary Address State:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "primary_address_postalcode",
+        "type": "varchar",
+        "label": "Primary Address Postal Code:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "primary_address_country",
+        "type": "varchar",
+        "label": "Primary Address Country:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "alt_address_street",
+        "type": "varchar",
+        "label": "Alternate Address Street:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "alt_address_city",
+        "type": "varchar",
+        "label": "Alternate Address City:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "alt_address_state",
+        "type": "varchar",
+        "label": "Alternate Address State:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "alt_address_postalcode",
+        "type": "varchar",
+        "label": "Alternate Address Postal Code:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "alt_address_country",
+        "type": "varchar",
+        "label": "Alternate Address Country:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "label": "Description:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "portal_name",
+        "type": "varchar",
+        "label": "Portal Name:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "portal_active",
+        "type": "bool",
+        "label": "Portal Active:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "portal_app",
+        "type": "varchar",
+        "label": "Portal Application:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "invalid_email",
+        "type": "bool",
+        "label": "Invalid Email:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "campaign_id",
+        "type": "id",
+        "label": "Campaign ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "c_accept_status_fields",
+        "type": "relate",
+        "label": "Accept Status",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "m_accept_status_fields",
+        "type": "relate",
+        "label": "Accept Status",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_by_name",
+        "type": "assigned_user_name",
+        "label": "Modified By User ID:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by_name",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      }
+    ],
+    "error": {}
+  },
+  {
+    "module_name": "Documents",
+    "module_fields": [
+      {
+        "name": "id",
+        "type": "varchar",
+        "label": "Document Id",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "document_name",
+        "type": "varchar",
+        "label": "Document Name",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "active_date",
+        "type": "date",
+        "label": "Publish Date:",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "exp_date",
+        "type": "date",
+        "label": "Expiration Date:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "label": "Description",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "category_id",
+        "type": "enum",
+        "label": "Category:",
+        "required": "0",
+        "options": [
+          {
+            "name": {},
+            "value": {}
+          },
+          {
+            "name": "Marketing",
+            "value": "Marketing"
+          },
+          {
+            "name": "Knowledege Base",
+            "value": "Knowledge Base"
+          },
+          {
+            "name": "Sales",
+            "value": "Sales"
+          }
+        ]
+      },
+      {
+        "name": "subcategory_id",
+        "type": "enum",
+        "label": "Sub Category:",
+        "required": "0",
+        "options": [
+          {
+            "name": {},
+            "value": {}
+          },
+          {
+            "name": "Marketing Collateral",
+            "value": "Marketing Collateral"
+          },
+          {
+            "name": "Product Brochures",
+            "value": "Product Brochures"
+          },
+          {
+            "name": "FAQ",
+            "value": "FAQ"
+          }
+        ]
+      },
+      {
+        "name": "status_id",
+        "type": "enum",
+        "label": "Status:",
+        "required": "0",
+        "options": [
+          {
+            "name": "Active",
+            "value": "Active"
+          },
+          {
+            "name": "Draft",
+            "value": "Draft"
+          },
+          {
+            "name": "FAQ",
+            "value": "FAQ"
+          },
+          {
+            "name": "Expired",
+            "value": "Expired"
+          },
+          {
+            "name": "Under Review",
+            "value": "Under Review"
+          },
+          {
+            "name": "Pending",
+            "value": "Pending"
+          }
+        ]
+      },
+      {
+        "name": "date_entered",
+        "type": "datetime",
+        "label": "Date Entered",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_modified",
+        "type": "datetime",
+        "label": "Date Modified",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "deleted",
+        "type": "bool",
+        "label": "Deleted",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_user_id",
+        "type": "assigned_user_name",
+        "label": "Modified by id",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_user_name",
+        "type": "relate",
+        "label": "Modified by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "document_revision_id",
+        "type": "varchar",
+        "label": "Latest Revision",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "last_rev_create_date",
+        "type": "relate",
+        "label": "Last Revision Create Date",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "mail_merge_document",
+        "type": "bool",
+        "label": "Mail Merge Template:",
+        "required": "0",
+        "options": {
+          "name": "type",
+          "value": "varchar"
+        }
+      },
+      {
+        "name": "related_doc_id",
+        "type": "varchar",
+        "label": "Related Dcocument Id",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "related_doc_rev_id",
+        "type": "varchar",
+        "label": "Related Document Revision Id",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "is_template",
+        "type": "bool",
+        "label": "Is a Template",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "template_type",
+        "type": "enum",
+        "label": "Document Type",
+        "required": "0",
+        "options": [
+          {
+            "name": {},
+            "value": {}
+          },
+          {
+            "name": "mailmerge",
+            "value": "Mail Merge"
+          },
+          {
+            "name": "eula",
+            "value": "EULA"
+          },
+          {
+            "name": "nda",
+            "value": "NDA"
+          },
+          {
+            "name": "license",
+            "value": "License Agreement"
+          }
+        ]
+      },
+      {
+        "name": "modified_by_name",
+        "type": "assigned_user_name",
+        "label": "Modified by id",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by_name",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      }
+    ],
+    "error": {}
+  },
+  {
+    "module_name": "Leads",
+    "module_fields": [
+      {
+        "name": "id",
+        "type": "id",
+        "label": "ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "deleted",
+        "type": "bool",
+        "label": "Deleted",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "converted",
+        "type": "bool",
+        "label": "Converted",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_entered",
+        "type": "datetime",
+        "label": "Date Created:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_modified",
+        "type": "datetime",
+        "label": "Last Modified:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_user_id",
+        "type": "assigned_user_name",
+        "label": "Modified by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "assigned_user_id",
+        "type": "assigned_user_name",
+        "label": "Assigned to:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "salutation",
+        "type": "enum",
+        "label": "Salutation",
+        "required": "0",
+        "options": [
+          {
+            "name": {},
+            "value": {}
+          },
+          {
+            "name": "Mr.",
+            "value": "Mr."
+          },
+          {
+            "name": "Ms.",
+            "value": "Ms."
+          },
+          {
+            "name": "Mrs.",
+            "value": "Mrs."
+          },
+          {
+            "name": "Dr.",
+            "value": "Dr."
+          },
+          {
+            "name": "Prof.",
+            "value": "Prof."
+          }
+        ]
+      },
+      {
+        "name": "first_name",
+        "type": "name",
+        "label": "First Name:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "last_name",
+        "type": "name",
+        "label": "Last Name:",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "title",
+        "type": "varchar",
+        "label": "Title:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "refered_by",
+        "type": "varchar",
+        "label": "Referred By:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "lead_source",
+        "type": "enum",
+        "label": "Lead Source:",
+        "required": "0",
+        "options": [
+          {
+            "name": {},
+            "value": {}
+          },
+          {
+            "name": "Cold Call",
+            "value": "Cold Call"
+          },
+          {
+            "name": "Existing Customer",
+            "value": "Existing Customer"
+          },
+          {
+            "name": "Self Generated",
+            "value": "Self Generated"
+          },
+          {
+            "name": "Employee",
+            "value": "Employee"
+          },
+          {
+            "name": "Partner",
+            "value": "Partner"
+          },
+          {
+            "name": "Public Relations",
+            "value": "Public Relations"
+          },
+          {
+            "name": "Direct Mail",
+            "value": "Direct Mail"
+          },
+          {
+            "name": "Conference",
+            "value": "Conference"
+          },
+          {
+            "name": "Trade Show",
+            "value": "Trade Show"
+          },
+          {
+            "name": "Web Site",
+            "value": "Web Site"
+          },
+          {
+            "name": "Word of mouth",
+            "value": "Word of mouth"
+          },
+          {
+            "name": "Email",
+            "value": "Email"
+          },
+          {
+            "name": "Campaign",
+            "value": "Campaign"
+          },
+          {
+            "name": "Other",
+            "value": "Other"
+          }
+        ]
+      },
+      {
+        "name": "lead_source_description",
+        "type": "text",
+        "label": "Lead Source Description:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "status",
+        "type": "enum",
+        "label": "Status:",
+        "required": "0",
+        "options": [
+          {
+            "name": {},
+            "value": {}
+          },
+          {
+            "name": "New",
+            "value": "New"
+          },
+          {
+            "name": "Assigned",
+            "value": "Assigned"
+          },
+          {
+            "name": "In Process",
+            "value": "In Process"
+          },
+          {
+            "name": "Converted",
+            "value": "Converted"
+          },
+          {
+            "name": "Recycled",
+            "value": "Recycled"
+          },
+          {
+            "name": "Dead",
+            "value": "Dead"
+          }
+        ]
+      },
+      {
+        "name": "status_description",
+        "type": "text",
+        "label": "Status Description:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "department",
+        "type": "varchar",
+        "label": "Department:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "reports_to_id",
+        "type": "id",
+        "label": "Reports To ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "report_to_name",
+        "type": "relate",
+        "label": "Reports To:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "do_not_call",
+        "type": "bool",
+        "label": "Do Not Call:",
+        "required": "0",
+        "options": {
+          "name": "type",
+          "value": "varchar"
+        }
+      },
+      {
+        "name": "phone_home",
+        "type": "phone",
+        "label": "Home Phone:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_mobile",
+        "type": "phone",
+        "label": "Mobile:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_work",
+        "type": "phone",
+        "label": "Office Phone:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_other",
+        "type": "phone",
+        "label": "Other Phone:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_fax",
+        "type": "phone",
+        "label": "Fax:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "email1",
+        "type": "email",
+        "label": "Email:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "email2",
+        "type": "email",
+        "label": "Other Email:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "email_opt_out",
+        "type": "bool",
+        "label": "Email Opt Out:",
+        "required": "0",
+        "options": {
+          "name": "type",
+          "value": "varchar"
+        }
+      },
+      {
+        "name": "primary_address_street",
+        "type": "varchar",
+        "label": "Primary Address Street",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "primary_address_city",
+        "type": "varchar",
+        "label": "Primary Address City",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "primary_address_state",
+        "type": "varchar",
+        "label": "Primary Address State",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "primary_address_postalcode",
+        "type": "varchar",
+        "label": "Primary Address Postalcode",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "primary_address_country",
+        "type": "varchar",
+        "label": "Primary Address Country",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "alt_address_street",
+        "type": "varchar",
+        "label": "Alt Address Street",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "alt_address_city",
+        "type": "varchar",
+        "label": "Alt Address City",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "alt_address_state",
+        "type": "varchar",
+        "label": "Alt Address State",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "alt_address_postalcode",
+        "type": "varchar",
+        "label": "Alt Address Postalcode",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "alt_address_country",
+        "type": "varchar",
+        "label": "Alt Address Country",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "label": "Description:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "account_name",
+        "type": "varchar",
+        "label": "Account Name:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "account_description",
+        "type": "text",
+        "label": "Account Description",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "contact_id",
+        "type": "id",
+        "label": "Contact ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "account_id",
+        "type": "id",
+        "label": "Account ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "opportunity_id",
+        "type": "id",
+        "label": "Opportunity ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "opportunity_name",
+        "type": "varchar",
+        "label": "Opportunity Name:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "opportunity_amount",
+        "type": "varchar",
+        "label": "Opportunity Amount:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "campaign_id",
+        "type": "id",
+        "label": "Campaign Id",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "portal_name",
+        "type": "varchar",
+        "label": "Portal Name:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "portal_app",
+        "type": "varchar",
+        "label": "Portal Application",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "invalid_email",
+        "type": "bool",
+        "label": "Invalid Email:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_by_name",
+        "type": "assigned_user_name",
+        "label": "Modified by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by_name",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      }
+    ],
+    "error": {}
+  },
+  {
+    "module_name": "Notes",
+    "module_fields": [
+      {
+        "name": "id",
+        "type": "id",
+        "label": "Name",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_entered",
+        "type": "datetime",
+        "label": "Date Created:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_modified",
+        "type": "datetime",
+        "label": "Last Modified:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_user_id",
+        "type": "assigned_user_name",
+        "label": "Modified by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "name",
+        "type": "name",
+        "label": "Note Subject:",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "filename",
+        "type": "varchar",
+        "label": "Attachment:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "file_mime_type",
+        "type": "varchar",
+        "label": "Mime Type",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "parent_type",
+        "type": "varchar",
+        "label": "Parent Type",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "parent_id",
+        "type": "id",
+        "label": "Parent ID:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "contact_id",
+        "type": "id",
+        "label": "Contact ID:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "portal_flag",
+        "type": "bool",
+        "label": "Display in Portal?",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "embed_flag",
+        "type": "bool",
+        "label": "Embed in email?",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "label": "Description",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "deleted",
+        "type": "bool",
+        "label": "Deleted",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "contact_name",
+        "type": "relate",
+        "label": "Contact:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_by_name",
+        "type": "assigned_user_name",
+        "label": "Modified by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by_name",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      }
+    ],
+    "error": {}
+  },
+  {
+    "module_name": "Tasks",
+    "module_fields": [
+      {
+        "name": "id",
+        "type": "id",
+        "label": "ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_entered",
+        "type": "datetime",
+        "label": "Date Created:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_modified",
+        "type": "datetime",
+        "label": "Last Modified:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "assigned_user_id",
+        "type": "assigned_user_name",
+        "label": "Assigned to:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_user_id",
+        "type": "assigned_user_name",
+        "label": "Modified by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "name",
+        "type": "name",
+        "label": "Subject:",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "status",
+        "type": "enum",
+        "label": "Status:",
+        "required": "0",
+        "options": [
+          {
+            "name": "Not Started",
+            "value": "Not Started"
+          },
+          {
+            "name": "In Progress",
+            "value": "In Progress"
+          },
+          {
+            "name": "Completed",
+            "value": "Completed"
+          },
+          {
+            "name": "Pending Input",
+            "value": "Pending Input"
+          },
+          {
+            "name": "Deferred",
+            "value": "Deferred"
+          }
+        ]
+      },
+      {
+        "name": "date_due_flag",
+        "type": "bool",
+        "label": "No Due Date",
+        "required": "0",
+        "options": {
+          "name": "type",
+          "value": "enum"
+        }
+      },
+      {
+        "name": "date_due",
+        "type": "date",
+        "label": "Due Date:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "time_due",
+        "type": "time",
+        "label": "Due Time:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_start_flag",
+        "type": "bool",
+        "label": "No Start Date",
+        "required": "0",
+        "options": {
+          "name": "type",
+          "value": "enum"
+        }
+      },
+      {
+        "name": "date_start",
+        "type": "date",
+        "label": "Start Date:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "time_start",
+        "type": "time",
+        "label": "Start Time:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "parent_type",
+        "type": "varchar",
+        "label": "parent_type",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "parent_id",
+        "type": "id",
+        "label": "parent_id",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "contact_id",
+        "type": "id",
+        "label": "contact_id",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "contact_name",
+        "type": "relate",
+        "label": {},
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "priority",
+        "type": "enum",
+        "label": "Priority:",
+        "required": "0",
+        "options": [
+          {
+            "name": "High",
+            "value": "High"
+          },
+          {
+            "name": "Medium",
+            "value": "Medium"
+          },
+          {
+            "name": "Low",
+            "value": "Low"
+          }
+        ]
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "label": "Description:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "deleted",
+        "type": "bool",
+        "label": "Deleted",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_by_name",
+        "type": "assigned_user_name",
+        "label": "Modified by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by_name",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      }
+    ],
+    "error": {
+      "number": {},
+      "name": {},
+      "description": {}
+    }
+  },
+  {
+    "module_name": "Meetings",
+    "module_fields": [
+      {
+        "name": "id",
+        "type": "id",
+        "label": "Name",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_entered",
+        "type": "datetime",
+        "label": "Date Created:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_modified",
+        "type": "datetime",
+        "label": "Last Modified:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "assigned_user_id",
+        "type": "assigned_user_name",
+        "label": "Assigned to:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_user_id",
+        "type": "assigned_user_name",
+        "label": "Modified by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "name",
+        "type": "name",
+        "label": "Subject:",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "location",
+        "type": "varchar",
+        "label": "Location:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "duration_hours",
+        "type": "int",
+        "label": "Duration Hours:",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "duration_minutes",
+        "type": "int",
+        "label": "Duration Minutes:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_start",
+        "type": "date",
+        "label": "Start Date:",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "time_start",
+        "type": "time",
+        "label": "Start Time:",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "date_end",
+        "type": "date",
+        "label": "Date End",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "parent_type",
+        "type": "varchar",
+        "label": "Related to",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "status",
+        "type": "enum",
+        "label": "Status:",
+        "required": "0",
+        "options": [
+          {
+            "name": "Planned",
+            "value": "Planned"
+          },
+          {
+            "name": "Held",
+            "value": "Held"
+          },
+          {
+            "name": "Not Held",
+            "value": "Not Held"
+          }
+        ]
+      },
+      {
+        "name": "parent_id",
+        "type": "id",
+        "label": "Related to",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "label": "Description:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "deleted",
+        "type": "bool",
+        "label": "Deleted",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "reminder_time",
+        "type": "int",
+        "label": "Reminder Time",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "outlook_id",
+        "type": "varchar",
+        "label": "Outlook ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "contact_name",
+        "type": "relate",
+        "label": "Contact:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_by_name",
+        "type": "assigned_user_name",
+        "label": "Modified by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by_name",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      }
+    ],
+    "error": {}
+  },
+  {
+    "module_name": "Calls",
+    "module_fields": [
+      {
+        "name": "id",
+        "type": "id",
+        "label": "Name",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_entered",
+        "type": "datetime",
+        "label": "Date Created:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_modified",
+        "type": "datetime",
+        "label": "Last Modified:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "assigned_user_id",
+        "type": "assigned_user_name",
+        "label": "Assigned to:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_user_id",
+        "type": "assigned_user_name",
+        "label": "Modified by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "name",
+        "type": "name",
+        "label": "Subject:",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "duration_hours",
+        "type": "int",
+        "label": "Duration Hours:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "duration_minutes",
+        "type": "int",
+        "label": "Duration Minutes:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_start",
+        "type": "date",
+        "label": "Start Date:",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "time_start",
+        "type": "time",
+        "label": "Start Time:",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "date_end",
+        "type": "date",
+        "label": "Date End",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "parent_type",
+        "type": "varchar",
+        "label": "Related to",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "status",
+        "type": "enum",
+        "label": "Status:",
+        "required": "0",
+        "options": [
+          {
+            "name": "Planned",
+            "value": "Planned"
+          },
+          {
+            "name": "Held",
+            "value": "Held"
+          },
+          {
+            "name": "Not Held",
+            "value": "Not Held"
+          }
+        ]
+      },
+      {
+        "name": "direction",
+        "type": "enum",
+        "label": "Direction:",
+        "required": "0",
+        "options": [
+          {
+            "name": "Inbound",
+            "value": "Inbound"
+          },
+          {
+            "name": "Outbound",
+            "value": "Outbound"
+          }
+        ]
+      },
+      {
+        "name": "parent_id",
+        "type": "id",
+        "label": "Related to",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "label": "Description:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "deleted",
+        "type": "bool",
+        "label": "Deleted",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "reminder_time",
+        "type": "int",
+        "label": "Reminder Time",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "outlook_id",
+        "type": "varchar",
+        "label": "Outlook ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "contact_name",
+        "type": "relate",
+        "label": "Contact:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_by_name",
+        "type": "assigned_user_name",
+        "label": "Modified by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by_name",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      }
+    ],
+    "error": {}
+  },
+  {
+    "module_name": "Cases",
+    "module_fields": [
+      {
+        "name": "id",
+        "type": "id",
+        "label": "Name",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "case_number",
+        "type": "int",
+        "label": "Number:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_entered",
+        "type": "datetime",
+        "label": "Date Created:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_modified",
+        "type": "datetime",
+        "label": "Last Modified:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_user_id",
+        "type": "assigned_user_name",
+        "label": "Modified by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "assigned_user_id",
+        "type": "assigned_user_name",
+        "label": "Assigned to:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "deleted",
+        "type": "bool",
+        "label": "Deleted",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "name",
+        "type": "name",
+        "label": "Subject",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "account_name",
+        "type": "relate",
+        "label": "Account Name:",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "account_id",
+        "type": "id",
+        "label": "Account ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "status",
+        "type": "enum",
+        "label": "Status:",
+        "required": "0",
+        "options": [
+          {
+            "name": "New",
+            "value": "New"
+          },
+          {
+            "name": "Assigned",
+            "value": "Assigned"
+          },
+          {
+            "name": "Closed",
+            "value": "Closed"
+          },
+          {
+            "name": "Pending Input",
+            "value": "Pending Input"
+          },
+          {
+            "name": "Rejected",
+            "value": "Rejected"
+          },
+          {
+            "name": "Duplicate",
+            "value": "Duplicate"
+          }
+        ]
+      },
+      {
+        "name": "priority",
+        "type": "enum",
+        "label": "Priority:",
+        "required": "0",
+        "options": [
+          {
+            "name": "P1",
+            "value": "High"
+          },
+          {
+            "name": "P2",
+            "value": "Medium"
+          },
+          {
+            "name": "P3",
+            "value": "Low"
+          }
+        ]
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "label": "Description:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "resolution",
+        "type": "text",
+        "label": "Resolution:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_by_name",
+        "type": "assigned_user_name",
+        "label": "Modified by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by_name",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      }
+    ],
+    "error": {}
+  },
+  {
+    "module_name": "Opportunities",
+    "module_fields": [
+      {
+        "name": "id",
+        "type": "id",
+        "label": "ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_entered",
+        "type": "datetime",
+        "label": "Date Created:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_modified",
+        "type": "datetime",
+        "label": "Last Modified:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_user_id",
+        "type": "assigned_user_name",
+        "label": "Modified by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "assigned_user_id",
+        "type": "assigned_user_name",
+        "label": "Assigned to:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "deleted",
+        "type": "bool",
+        "label": "Deleted",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "name",
+        "type": "name",
+        "label": "Opportunity Name:",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "opportunity_type",
+        "type": "enum",
+        "label": "Type:",
+        "required": "0",
+        "options": [
+          {
+            "name": {},
+            "value": {}
+          },
+          {
+            "name": "Existing Business",
+            "value": "Existing Business"
+          },
+          {
+            "name": "New Business",
+            "value": "New Business"
+          }
+        ]
+      },
+      {
+        "name": "account_name",
+        "type": "relate",
+        "label": "Account Name:",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "campaign_id",
+        "type": "id",
+        "label": "campaign_id",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "lead_source",
+        "type": "enum",
+        "label": "Lead Source:",
+        "required": "0",
+        "options": [
+          {
+            "name": {},
+            "value": {}
+          },
+          {
+            "name": "Cold Call",
+            "value": "Cold Call"
+          },
+          {
+            "name": "Existing Customer",
+            "value": "Existing Customer"
+          },
+          {
+            "name": "Self Generated",
+            "value": "Self Generated"
+          },
+          {
+            "name": "Employee",
+            "value": "Employee"
+          },
+          {
+            "name": "Partner",
+            "value": "Partner"
+          },
+          {
+            "name": "Public Relations",
+            "value": "Public Relations"
+          },
+          {
+            "name": "Direct Mail",
+            "value": "Direct Mail"
+          },
+          {
+            "name": "Conference",
+            "value": "Conference"
+          },
+          {
+            "name": "Trade Show",
+            "value": "Trade Show"
+          },
+          {
+            "name": "Web Site",
+            "value": "Web Site"
+          },
+          {
+            "name": "Word of mouth",
+            "value": "Word of mouth"
+          },
+          {
+            "name": "Email",
+            "value": "Email"
+          },
+          {
+            "name": "Campaign",
+            "value": "Campaign"
+          },
+          {
+            "name": "Other",
+            "value": "Other"
+          }
+        ]
+      },
+      {
+        "name": "amount",
+        "type": "float",
+        "label": "Raw Amount",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "amount_backup",
+        "type": "varchar",
+        "label": "Amount Backup",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "amount_usdollar",
+        "type": "currency",
+        "label": "Amount:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "currency_id",
+        "type": "id",
+        "label": "Currency ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "currency_name",
+        "type": "relate",
+        "label": "Currency:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_closed",
+        "type": "date",
+        "label": "Expected Close Date:",
+        "required": "1",
+        "options": {}
+      },
+      {
+        "name": "next_step",
+        "type": "varchar",
+        "label": "Next Step:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "sales_stage",
+        "type": "enum",
+        "label": "Sales Stage:",
+        "required": "1",
+        "options": [
+          {
+            "name": "Prospecting",
+            "value": "Prospecting"
+          },
+          {
+            "name": "Qualification",
+            "value": "Qualification"
+          },
+          {
+            "name": "Needs Analysis",
+            "value": "Needs Analysis"
+          },
+          {
+            "name": "Value Proposition",
+            "value": "Value Proposition"
+          },
+          {
+            "name": "Id. Decision Makers",
+            "value": "Id. Decision Makers"
+          },
+          {
+            "name": "Perception Analysis",
+            "value": "Perception Analysis"
+          },
+          {
+            "name": "Proposal/Price Quote",
+            "value": "Proposal/Price Quote"
+          },
+          {
+            "name": "Negotiation/Review",
+            "value": "Negotiation/Review"
+          },
+          {
+            "name": "Closed Won",
+            "value": "Closed Won"
+          },
+          {
+            "name": "Closed Lost",
+            "value": "Closed Lost"
+          }
+        ]
+      },
+      {
+        "name": "probability",
+        "type": "int",
+        "label": "Probability (%):",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "label": "Description:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_by_name",
+        "type": "assigned_user_name",
+        "label": "Modified by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by_name",
+        "type": "assigned_user_name",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      }
+    ],
+    "error": {}
+  },
+  {
+    "module_name": "Emails",
+    "module_fields": [
+      {
+        "name": "id",
+        "type": "id",
+        "label": "ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_entered",
+        "type": "datetime",
+        "label": "Date Created:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_modified",
+        "type": "datetime",
+        "label": "Last Modified:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "assigned_user_id",
+        "type": "assigned_user_name",
+        "label": "Assigned To:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_user_id",
+        "type": "assigned_user_name",
+        "label": "Modified By",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by",
+        "type": "id",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "name",
+        "type": "varchar",
+        "label": "Subject:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_start",
+        "type": "date",
+        "label": "Date Sent:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "time_start",
+        "type": "time",
+        "label": "Time Sent:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "parent_type",
+        "type": "varchar",
+        "label": "parent_type",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "parent_id",
+        "type": "id",
+        "label": "parent_id",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "description",
+        "type": "longtext",
+        "label": "Text Body",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "description_html",
+        "type": "longtext",
+        "label": "HTML Body",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "from_addr",
+        "type": "varchar",
+        "label": "From:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "from_name",
+        "type": "varchar",
+        "label": "From Name",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "to_addrs",
+        "type": "text",
+        "label": "To: ",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "cc_addrs",
+        "type": "text",
+        "label": "Cc:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "bcc_addrs",
+        "type": "text",
+        "label": "Bcc:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "to_addrs_ids",
+        "type": "text",
+        "label": "to_addrs_ids",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "to_addrs_names",
+        "type": "text",
+        "label": "to_addrs_names",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "to_addrs_emails",
+        "type": "text",
+        "label": "to_addrs_emails",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "cc_addrs_ids",
+        "type": "text",
+        "label": "cc_addrs_ids",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "cc_addrs_names",
+        "type": "text",
+        "label": "cc_addrs_names",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "cc_addrs_emails",
+        "type": "text",
+        "label": "cc_addrs_emails",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "bcc_addrs_ids",
+        "type": "text",
+        "label": "bcc_addrs_ids",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "bcc_addrs_names",
+        "type": "text",
+        "label": "bcc_addrs_names",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "bcc_addrs_emails",
+        "type": "text",
+        "label": "bcc_addrs_emails",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "type",
+        "type": "enum",
+        "label": "Type",
+        "required": "0",
+        "options": [
+          {
+            "name": "out",
+            "value": "Sent"
+          },
+          {
+            "name": "archived",
+            "value": "Archived"
+          },
+          {
+            "name": "draft",
+            "value": "Draft"
+          },
+          {
+            "name": "inbound",
+            "value": "Inbound"
+          },
+          {
+            "name": "campaign",
+            "value": "Campaign"
+          }
+        ]
+      },
+      {
+        "name": "status",
+        "type": "enum",
+        "label": "Email Status:",
+        "required": "0",
+        "options": [
+          {
+            "name": "archived",
+            "value": "Archived"
+          },
+          {
+            "name": "closed",
+            "value": "Closed"
+          },
+          {
+            "name": "draft",
+            "value": "In Draft"
+          },
+          {
+            "name": "read",
+            "value": "Read"
+          },
+          {
+            "name": "replied",
+            "value": "Replied"
+          },
+          {
+            "name": "sent",
+            "value": "Sent"
+          },
+          {
+            "name": "send_error",
+            "value": "Send Error"
+          },
+          {
+            "name": "unread",
+            "value": "Unread"
+          }
+        ]
+      },
+      {
+        "name": "message_id",
+        "type": "varchar",
+        "label": "Message ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "reply_to_name",
+        "type": "varchar",
+        "label": "Reply-to Name",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "reply_to_addr",
+        "type": "varchar",
+        "label": "Reply-to Address",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "intent",
+        "type": "varchar",
+        "label": "Intent",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "mailbox_id",
+        "type": "id",
+        "label": "LBL_MAILBOX_ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "raw_source",
+        "type": "longtext",
+        "label": "Raw Email",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "deleted",
+        "type": "bool",
+        "label": "Deleted",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "first_name",
+        "type": "relate",
+        "label": "Contact First Name",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "last_name",
+        "type": "relate",
+        "label": "Contact Last Name",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "contact_name",
+        "type": "relate",
+        "label": "Contact:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_by_name",
+        "type": "assigned_user_name",
+        "label": "Modified By",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by_name",
+        "type": "id",
+        "label": "Created by",
+        "required": "0",
+        "options": {}
+      }
+    ],
+    "error": {
+      "number": {},
+      "name": {},
+      "description": {}
+    }
+  },
+  {
+    "module_name": "Users",
+    "module_fields": [
+      {
+        "name": "id",
+        "type": "id",
+        "label": "ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "user_name",
+        "type": "user_name",
+        "label": "User Name",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "user_hash",
+        "type": "varchar",
+        "label": "LBL_USER_HASH",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "authenticate_id",
+        "type": "varchar",
+        "label": "LBL_AUTHENTICATE_ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "sugar_login",
+        "type": "bool",
+        "label": "Is Sugar User",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "first_name",
+        "type": "name",
+        "label": "First Name",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "last_name",
+        "type": "name",
+        "label": "Last Name",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "reports_to_id",
+        "type": "id",
+        "label": "LBL_REPORTS_ID",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "is_admin",
+        "type": "bool",
+        "label": "Is Administrator",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "receive_notifications",
+        "type": "bool",
+        "label": "Notify on Assignment",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "label": "Description",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_entered",
+        "type": "datetime",
+        "label": "Date Created:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "date_modified",
+        "type": "datetime",
+        "label": "Last Modified:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_user_id",
+        "type": "assigned_user_name",
+        "label": "Assigned to:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by",
+        "type": "assigned_user_name",
+        "label": "Assigned to:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "title",
+        "type": "varchar",
+        "label": "Title",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "department",
+        "type": "varchar",
+        "label": "Department",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_home",
+        "type": "varchar",
+        "label": "Home Phone",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_mobile",
+        "type": "varchar",
+        "label": "Mobile",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_work",
+        "type": "varchar",
+        "label": "Work Phone",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_other",
+        "type": "varchar",
+        "label": "Other Phone",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "phone_fax",
+        "type": "varchar",
+        "label": "Fax",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "email1",
+        "type": "varchar",
+        "label": "Email address",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "email2",
+        "type": "varchar",
+        "label": "Other email address",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "status",
+        "type": "enum",
+        "label": "Status",
+        "required": "0",
+        "options": [
+          {
+            "name": "Active",
+            "value": "Active"
+          },
+          {
+            "name": "Inactive",
+            "value": "Inactive"
+          }
+        ]
+      },
+      {
+        "name": "address_street",
+        "type": "varchar",
+        "label": "Address Street",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "address_city",
+        "type": "varchar",
+        "label": "Address City",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "address_state",
+        "type": "varchar",
+        "label": "Address State",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "address_country",
+        "type": "varchar",
+        "label": "Address Country",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "address_postalcode",
+        "type": "varchar",
+        "label": "Address Postal Code",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "user_preferences",
+        "type": "text",
+        "label": "LBL_USER_PREFERENCES",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "deleted",
+        "type": "bool",
+        "label": "Deleted",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "portal_only",
+        "type": "bool",
+        "label": "Portal Only User",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "employee_status",
+        "type": "varchar",
+        "label": "Employee Status",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "messenger_id",
+        "type": "varchar",
+        "label": "IM Name",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "messenger_type",
+        "type": "varchar",
+        "label": "IM Type",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "is_group",
+        "type": "bool",
+        "label": "Group User",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "c_accept_status_fields",
+        "type": "relate",
+        "label": "Accept Status",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "m_accept_status_fields",
+        "type": "relate",
+        "label": "Accept Status",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "modified_by_name",
+        "type": "assigned_user_name",
+        "label": "Assigned to:",
+        "required": "0",
+        "options": {}
+      },
+      {
+        "name": "created_by_name",
+        "type": "assigned_user_name",
+        "label": "Assigned to:",
+        "required": "0",
+        "options": {}
+      }
+    ],
+    "error": {
+      "number": {},
+      "name": {},
+      "description": {}
+    }
+  }
+]

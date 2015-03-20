@@ -36,7 +36,7 @@ goog.require('ydn.msg.Pipe');
 
 /**
  * SugarCRM app.
- *  @param {ydn.crm.ui.UserSetting} us
+ * @param {ydn.crm.ui.UserSetting} us
  * @param {ydn.crm.gmail.MessageHeaderInjector} heading_injector
  * @param {ydn.crm.gmail.GmailObserver} gmail_observer
  * @param {ydn.crm.gmail.ComposeObserver} compose_observer
@@ -91,6 +91,13 @@ ydn.crm.inj.SugarCrmApp = function(us, heading_injector, gmail_observer,
   this.hud = hud;
 
   this.handler = new goog.events.EventHandler(this);
+
+  /**
+   * Current sugarcrm domain.
+   * @type {string}
+   * @private
+   */
+  this.domain_ = '';
 
 };
 
@@ -181,26 +188,27 @@ ydn.crm.inj.SugarCrmApp.prototype.refresh_ = function() {
 
 
 /**
- * @param {SugarCrm.About} about
+ * @param {SugarCrm.Details} details
  * @private
  */
-ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(about) {
+ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(details) {
 
   if (ydn.crm.inj.SugarCrmApp.DEBUG) {
-    window.console.info('Updating Sugar ' + (about ? about.domain : ''));
-  }
-  this.sidebar_panel.setSugarCrm(about);
-
-  if (!about) {
-    return;
+    window.console.info('Updating Sugar from ' + this.domain_, details);
   }
 
-  var ch = ydn.msg.getChannel(ydn.msg.Group.SUGAR, about.domain);
-  ch.send(ydn.crm.ch.SReq.DETAILS).addCallback(function(x) {
-    var details = /** @type {SugarCrm.Details} */ (x);
+  if (details) {
+    if (details.about.domain == this.domain_) {
+      return;
+    }
+    this.domain_ = details.about.domain;
+
     for (var i = 0; i < details.modulesInfo.length; i++) {
       ydn.crm.su.fixSugarCrmModuleMeta(details.modulesInfo[i]);
     }
+
+    this.sidebar_panel.setSugarCrm(details);
+
     var ac = this.us_.getLoginEmail();
     var sugar = new ydn.crm.su.model.GDataSugar(details.about,
         details.modulesInfo, ac, details.serverInfo);
@@ -221,7 +229,19 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(about) {
     var archiver = new ydn.crm.su.Archiver(this.us_, sugar, this.attacher_);
     this.heading_injector_.setSugar(archiver);
 
-  }, this);
+  } else {
+    this.domain_ = '';
+    this.context_panel.setSugarCrm(null);
+    this.sidebar_panel.setSugarCrm(null);
+    this.heading_injector_.setSugar(null);
+    if (this.attacher_) {
+      this.handler.unlisten(this.attacher_,
+          ydn.crm.su.events.EventType.VIEW_RECORD,
+          this.onViewRecord_);
+      this.attacher_.dispose();
+    }
+  }
+
 
 };
 
@@ -231,30 +251,13 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(about) {
  * @private
  */
 ydn.crm.inj.SugarCrmApp.prototype.updateSugarPanels_ = function() {
-  if (ydn.crm.inj.SugarCrmApp.DEBUG) {
-    window.console.info('preparing to update sugar panels');
-  }
-  ydn.msg.getChannel().send(ydn.crm.ch.Req.LIST_SUGAR).addCallback(
-      function(arr) {
-        if (ydn.crm.inj.SugarCrmApp.DEBUG) {
-          window.console.log(arr);
-        }
-        var sugars = /** @type {Array<SugarCrm.About>} */ (arr);
-        /**
-         * @type {SugarCrm.About}
-         */
-        var about;
-        for (var i = 0; i < sugars.length; i++) {
-          var obj = sugars[i];
-          if (obj.isLogin) {
-            this.updateSugarCrm_(obj);
-            return;
-          }
-        }
-        if (ydn.crm.inj.SugarCrmApp.DEBUG) {
-          window.console.info('no sugarcrm instance');
-        }
-        this.updateSugarCrm_(null);
+
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.GET_SUGAR).addCallbacks(
+      function(x) {
+        var details = /** @type {SugarCrm.Details} */ (x);
+        this.updateSugarCrm_(details);
+      }, function(e) {
+        window.console.error(e);
       }, this);
 };
 

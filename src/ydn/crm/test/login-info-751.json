@@ -1,0 +1,16 @@
+{
+  "user_id": "68792b39-91f1-273c-caa7-523cf941d004",
+  "user_name": "jane",
+  "user_language": "en_us",
+  "user_currency_id": "-99",
+  "user_is_admin": false,
+  "user_default_team_id": "1",
+  "user_default_dateformat": "m/d/Y",
+  "user_default_timeformat": "h:ia",
+  "user_number_seperator": ",",
+  "user_decimal_seperator": ".",
+  "mobile_max_list_entries": 10,
+  "mobile_max_subpanel_entries": 3,
+  "user_currency_name": "US Dollar",
+  "id": "ifosdioefddpfh303gu5qck363"
+}

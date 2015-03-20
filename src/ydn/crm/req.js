@@ -43,6 +43,11 @@ ydn.crm.ch.Req = {
    * @see ydn.ds.gapps.cal.create
    */
   GAPPS_NEW_CAL: 'ga-nc',
+  /**
+   * @desc Get sugar crm detail. This is entry to start sugarcrm app.
+   * @see ydn.crm.app.EventPage#getSugar
+   */
+  GET_SUGAR: 'get-sugar',
   GDATA_CONTACT_MERGE: 'gdcm', // merge contact data
   GDATA_COUNT: 'gdc', // count contact data
   /**

@@ -293,8 +293,9 @@ ydn.crm.su.WidgetModel.prototype.login = function(url, username, password, provi
  * @return {{origins: (Array.<string>|undefined), permissions: (Array.<string>|undefined)}}
  */
 ydn.crm.su.WidgetModel.prototype.getPermissionObject = function() {
-  return {'origins': ['http://' + this.about.domain + '/*',
-    'https://' + this.about.domain + '/*']};
+  var uri = new goog.Uri(this.about.baseUrl);
+  uri.setPath('/*');
+  return {'origins': [uri.toString()]};
 };
 
 

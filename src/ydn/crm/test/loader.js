@@ -248,6 +248,22 @@ ydn.crm.test.createGDataSugar = function() {
 
 
 /**
+ * @param {boolean=} opt_ver either '451', '650' or '751' (default)
+ * @return {SugarCrm.Details}
+ */
+ydn.crm.test.createDetails = function(opt_ver) {
+  var ver = opt_ver || '751';
+  return {
+    'loginInfo': ydn.crm.test.getData('login-info-' + ver),
+    'serverInfo': ydn.crm.test.getData('server-info-' + ver),
+    'availableModules': ydn.crm.test.getData('available-modules-' + ver),
+    'modulesInfo': ydn.crm.test.getData('module-fields-' + ver),
+    'about': ydn.crm.test.getData('about-' + ver)
+  };
+};
+
+
+/**
  * @param {string=} opt_account gmail, default: kyawtun@yathit.com
  * @param {string=} opt_id contact id, default: '1'
  * @return {{gd$etag: string, id: {$t: string}, updated: {$t: string}, app$edited: {xmlns$app: string, $t: string}, category: {scheme: string, term: string}[], title: {$t: string}, link: *[], gd$name: {gd$fullName: {$t: string}, gd$givenName: {$t: string}, gd$familyName: {$t: string}}, gd$email: {rel: string, address: string, primary: string}[], ydn$emails: string[], ydn$externalIds: Array}}
