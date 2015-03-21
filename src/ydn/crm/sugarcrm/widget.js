@@ -186,7 +186,7 @@ ydn.crm.su.Widget.prototype.onDetailsClick_ = function(ev) {
  */
 ydn.crm.su.Widget.prototype.sniffServerInfo_ = function(domain) {
   var input = this.root.querySelector('input[name="domain"]');
-  var ele_message = this.root.querySelector('.domain .message');
+  var ele_message = this.root.querySelector('.domain [name=message]');
   ele_message.textContent = '';
   ele_message.className = '';
   this.model.getServerInfo(domain).addCallbacks(function(info) {
@@ -240,6 +240,24 @@ ydn.crm.su.Widget.prototype.onHostPermissionBtnClick_ = function(e) {
 
 
 /**
+ * Normalize object.
+ * @param {string} url
+ * @return {?{origins: Array<string>}} return null if not valid.
+ */
+ydn.crm.su.Widget.prototype.getPermissionObject = function(url) {
+  var uri = new goog.Uri(url);
+  var sc = uri.getScheme();
+  if (['http', 'https'].indexOf(sc) == -1) {
+    return null;
+  }
+  uri.setPath('/*');
+  return {
+    'origins': [uri.toString()]
+  };
+};
+
+
+/**
  * Handle on domain blur.
  * @param {Event} e
  */
@@ -247,13 +265,11 @@ ydn.crm.su.Widget.prototype.onDomainBlur = function(e) {
   var input = this.root.querySelector('input[name="domain"]');
 
   var domain = input.value.trim();
-  if (!domain) {
+
+  var perm = this.getPermissionObject(domain);
+  if (!perm) {
     return;
   }
-
-  var perm = {
-    origins: [domain]
-  };
   chrome.permissions.request(perm, (function(grant) {
     this.sniffServerInfo_(domain);
     var btn = this.getHostPermissionBtn_();
@@ -290,7 +306,7 @@ ydn.crm.su.Widget.prototype.remove_ = function(e) {
   e.preventDefault();
   var a = e.target;
   var domain = this.model.getDomain();
-  ydn.msg.getChannel().send('remove-sugar', domain).addCallback(function(data) {
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.REMOVE_SUGAR, domain).addCallback(function(data) {
     this.root.style.display = 'none';
     window.location.reload();
   }, this);
@@ -322,7 +338,7 @@ ydn.crm.su.Widget.prototype.renderDetail_ = function(about) {
       this.model.getInfo().addCallback(function(info) {
         var info_div = info_panel.querySelector('span[name=instance-info]');
         if (info && !(info instanceof Error)) {
-          info_div.textContent = (info.version || '') + ' ' + (info.flavor || '');
+          info_div.textContent = 'SugarCRM ' + (info.version || '') + ' ' + (info.flavor || '');
         }
         var stats = this.root.querySelector('div[name=stats-panel]');
         goog.style.setElementShown(stats, true);
@@ -440,14 +456,19 @@ ydn.crm.su.Widget.prototype.handleLogin = function(e) {
     url = baseurl;
   }
 
-  var btn_new_sugar = this.root.querySelector('button');
-  btn_new_sugar.textContent = 'logging in...';
-  btn_new_sugar.setAttribute('disabled', 'disabled');
-
   var model = this.model;
   var provider = root.querySelector('select[name="sugarcrm-auth"]').value;
   var force = !!e.altKey;
-  chrome.permissions.request(this.model.getPermissionObject(), function(grant) {
+  var perm = this.getPermissionObject(url);
+  if (!perm) {
+    ele_msg.textContent = 'Invalid URL: ' + url;
+    return;
+  }
+
+  var btn_new_sugar = this.root.querySelector('button');
+  btn_new_sugar.textContent = 'logging in...';
+  btn_new_sugar.setAttribute('disabled', 'disabled');
+  chrome.permissions.request(perm, function(grant) {
     // console.log('grant ' + grant);
     if (!grant && !force) {
       ele_msg.textContent = 'Access permission to ' + url + ' is required.';
