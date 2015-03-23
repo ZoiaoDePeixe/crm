@@ -89,7 +89,7 @@ ydn.crm.su.Widget.prototype.render = function(ele) {
   var a_revoke = this.root.querySelector('a[name=remove]');
   a_revoke.addEventListener('click', this.remove_.bind(this), true);
 
-  var a_grant = this.root.querySelector('#grant-host-permission > button');
+  var a_grant = this.getHostPermissionBtn_();
   a_grant.onclick = this.handleHostPermissionRequest_.bind(this);
 
   var input_domain = this.root.querySelector('input[name=domain]');
@@ -211,7 +211,7 @@ ydn.crm.su.Widget.prototype.sniffServerInfo_ = function(domain) {
  * @private
  */
 ydn.crm.su.Widget.prototype.getHostPermissionBtn_ = function() {
-  return this.root.querySelector('#grant-host-permission');
+  return this.root.querySelector('[name=grant-host-permission] button');
 };
 
 
@@ -222,27 +222,30 @@ ydn.crm.su.Widget.prototype.getHostPermissionBtn_ = function() {
 ydn.crm.su.Widget.prototype.onHostPermissionBtnClick_ = function(e) {
   var btn = e.target;
   var domain = btn.getAttribute('data-domain');
-  if (!domain) {
+  var perm = domain ? this.getPermissionObject(domain) : this.model.getPermissionObject();
+
+  if (!perm) {
     btn.style.display = 'none';
     return;
   }
-  var perm = {
-    origins: [domain]
-  };
-  chrome.permissions.request(perm, (function(grant) {
+
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.REQUEST_HOST_PERMISSION,
+      perm).addBoth(function(x) {
+        console.log(x);
+    var grant = x === true;
     btn.setAttribute('data-domain', domain);
     btn.style.display = grant ? 'none' : '';
     if (grant) {
-      this.sniffServerInfo_(domain);
+      this.refresh();
     }
-  }).bind(this));
+  }, this);
 };
 
 
 /**
  * Normalize object.
  * @param {string} url
- * @return {?{origins: Array<string>}} return null if not valid.
+ * @return {?chrome.permissions.Permissions} return null if not valid.
  */
 ydn.crm.su.Widget.prototype.getPermissionObject = function(url) {
   var uri = new goog.Uri(url);
@@ -266,18 +269,20 @@ ydn.crm.su.Widget.prototype.onDomainBlur = function(e) {
 
   var domain = input.value.trim();
 
-  var perm = this.getPermissionObject(domain);
+  var perm = domain ? this.getPermissionObject(domain) : this.model.getPermissionObject();
   if (!perm) {
     return;
   }
-  chrome.permissions.request(perm, (function(grant) {
+  ydn.msg.getChannel().send(ydn.crm.ch.Req.REQUEST_HOST_PERMISSION,
+      perm).addBoth(function(x) {
+    var grant = x === true;
+
     this.sniffServerInfo_(domain);
     var btn = this.getHostPermissionBtn_();
     btn.setAttribute('data-domain', domain);
     btn.style.display = grant ? 'none' : '';
-  }).bind(this));
 
-
+  }, this);
 };
 
 
@@ -324,12 +329,23 @@ ydn.crm.su.Widget.prototype.renderDetail_ = function(about) {
   var login_panel = this.root.querySelector('div[name=login-panel]');
   var info_panel = this.root.querySelector('div[name=info-panel]');
   var remove_panel = this.root.querySelector('div[name=remove-panel]');
-  var permission_panel = this.root.querySelector('#grant-host-permission');
+  var permission_panel = this.root.querySelector('[name=grant-host-permission]');
   if (ydn.crm.su.Widget.DEBUG) {
     window.console.log('refreshing', about);
   }
   if (about) {
-    if (about.isLogin) {
+    if (!about.hostPermission) {
+      info_panel.querySelector('a[name=instance]').textContent = about.baseUrl;
+      info_panel.querySelector('span[name=user]').textContent = about.userName;
+      if (!about.isLogin) {
+        info_panel.querySelector('span[name=instance-info]').textContent = ' (Not login)';
+      }
+      this.getHostPermissionBtn_().style.display = '';
+      login_panel.style.display = 'none';
+      permission_panel.style.display = '';
+      info_panel.style.display = '';
+      remove_panel.style.display = 'none';
+    } else if (about.isLogin) {
       var a = info_panel.querySelector('a[name=instance]');
       a.textContent = about.baseUrl;
       a.href = about.baseUrl;
@@ -343,16 +359,14 @@ ydn.crm.su.Widget.prototype.renderDetail_ = function(about) {
         var stats = this.root.querySelector('div[name=stats-panel]');
         goog.style.setElementShown(stats, true);
       }, this);
-      this.model.hasHostPermission(function(grant) {
-        permission_panel.style.display = grant ? 'none' : '';
-      }, this);
+      permission_panel.style.display = about.hostPermission ? 'none' : '';
       login_panel.style.display = 'none';
       info_panel.style.display = '';
       remove_panel.style.display = '';
     } else {
       // baseUrl ?
-      login_panel.querySelector('#sugarcrm-domain').value = about.baseUrl;
-      login_panel.querySelector('#sugarcrm-username').value = about.userName;
+      login_panel.querySelector('.sugarcrm-domain').value = about.baseUrl;
+      login_panel.querySelector('.sugarcrm-username').value = about.userName;
       login_panel.style.display = '';
       permission_panel.style.display = 'none';
       info_panel.style.display = 'none';
@@ -468,7 +482,8 @@ ydn.crm.su.Widget.prototype.handleLogin = function(e) {
   var btn_new_sugar = this.root.querySelector('button');
   btn_new_sugar.textContent = 'logging in...';
   btn_new_sugar.setAttribute('disabled', 'disabled');
-  chrome.permissions.request(perm, function(grant) {
+
+  var doLogin = function(grant) {
     // console.log('grant ' + grant);
     if (!grant && !force) {
       ele_msg.textContent = 'Access permission to ' + url + ' is required.';
@@ -481,7 +496,19 @@ ydn.crm.su.Widget.prototype.handleLogin = function(e) {
       btn_new_sugar.textContent = 'Login';
       ele_msg.textContent = e.name + ': ' + e.message;
     }, this);
-  });
+  };
+
+  if (chrome.permissions) {
+    ydn.crm.shared.requestPermission(perm, function(grant) {
+      doLogin(grant);
+    });
+  } else {
+    ydn.msg.getChannel().send(ydn.crm.ch.Req.REQUEST_HOST_PERMISSION,
+        perm).addBoth(function(x) {
+      doLogin(x === true);
+    });
+  }
+
 
 
 };

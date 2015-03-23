@@ -331,3 +331,101 @@ ydn.crm.shared.isPaidLicense = function(lic) {
       lic.edition == ydn.crm.base.LicenseEdition.STANDARD);
 };
 
+
+/**
+ * @type {?boolean}
+ * @private
+ */
+ydn.crm.shared.has_all_origins_permission_ = null;
+
+
+/**
+ * @return {boolean} `true` if extension can have all origins permission
+ * without requesting to user.
+ */
+ydn.crm.shared.hasAllOriginsPermission = function() {
+  if (!goog.isBoolean(ydn.crm.shared.has_all_origins_permission_)) {
+    var manifest = chrome.runtime.getManifest();
+    ydn.crm.shared.has_all_origins_permission_ =
+        /http\:\/\/\*/.test(manifest['permissions'] || '');
+  }
+  return /** @type {boolean} */(ydn.crm.shared.has_all_origins_permission_);
+};
+
+
+/**
+ * @param {chrome.permissions.Permissions} perm
+ * @param {Function=} opt_cb callback.
+ * @return {goog.async.Deferred<boolean>} check host permission is obtained.
+ */
+ydn.crm.shared.containsPermission = function(perm, opt_cb) {
+  if (!chrome.permissions || ydn.crm.shared.hasAllOriginsPermission()) {
+    if (opt_cb) {
+      opt_cb(true);
+    }
+    return goog.async.Deferred.succeed(true);
+  } else {
+    var df = new goog.async.Deferred();
+    chrome.permissions.contains(perm, function(grant) {
+      if (opt_cb) {
+        opt_cb(grant);
+      }
+      df.callback(grant);
+    });
+    return df;
+  }
+};
+
+
+/**
+ * @param {string} url
+ * @param {Function=} opt_cb callback.
+ * @return {goog.async.Deferred<boolean>} check host permission is obtained.
+ */
+ydn.crm.shared.containsOriginPermission = function(url, opt_cb) {
+  var uri = new goog.Uri(url);
+  uri.setPath('/*'); // here we normalize url, see http://crbug.com/468572
+  var perm = {
+    'origins': [uri.toString()]
+  };
+  return ydn.crm.shared.containsPermission(perm, opt_cb);
+};
+
+
+/**
+ * @param {chrome.permissions.Permissions} perm
+ * @param {Function=} opt_cb callback.
+ * @return {goog.async.Deferred<boolean>} request optional permissions.
+ */
+ydn.crm.shared.requestPermission = function(perm, opt_cb) {
+  if (!chrome.permissions || ydn.crm.shared.hasAllOriginsPermission()) {
+    if (opt_cb) {
+      opt_cb(true);
+    }
+    return goog.async.Deferred.succeed(true);
+  } else {
+    var df = new goog.async.Deferred();
+    chrome.permissions.request(perm, function(grant) {
+      if (opt_cb) {
+        opt_cb(grant);
+      }
+      df.callback(grant);
+    });
+    return df;
+  }
+};
+
+
+/**
+ * @param {string} url
+ * @param {Function=} opt_cb callback.
+ * @return {goog.async.Deferred<boolean>} request optional permissions.
+ */
+ydn.crm.shared.requestOriginPermission = function(url, opt_cb) {
+  var uri = new goog.Uri(url);
+  uri.setPath('/*'); // here we normalize url, see http://crbug.com/468572
+  var perm = {
+    'origins': [uri.toString()]
+  };
+  return ydn.crm.shared.requestPermission(perm, opt_cb);
+};

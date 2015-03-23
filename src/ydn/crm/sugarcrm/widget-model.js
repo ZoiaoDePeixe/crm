@@ -244,6 +244,11 @@ ydn.crm.su.WidgetModel.prototype.getInfo = function() {
 };
 
 
+ydn.crm.su.WidgetModel.prototype.reLogin = function() {
+
+};
+
+
 /**
  * Login to sugarcrm.
  * @param {string} url
