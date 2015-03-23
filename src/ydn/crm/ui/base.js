@@ -135,6 +135,13 @@ ydn.crm.ui.CSS_CLASS_NORMALLY_HIDE = 'normally-hide';
 
 
 /**
+ * @const
+ * @type {string}
+ */
+ydn.crm.ui.CSS_CLASS_SIDEBAR_STATUS = 'sidebar-status';
+
+
+/**
  * Convert JSON to Element.
  * @param {Object} json
  * @return {Element}

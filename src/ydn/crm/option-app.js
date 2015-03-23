@@ -38,7 +38,6 @@ goog.require('ydn.crm.tracking.MsgModel');
 goog.require('ydn.crm.tracking.Panel');
 goog.require('ydn.crm.tracking.SettingPage');
 goog.require('ydn.crm.ui.HomePage');
-goog.require('ydn.crm.ui.SugarListPanel');
 goog.require('ydn.crm.ui.UserSetting');
 goog.require('ydn.msg.Pipe');
 goog.require('ydn.ui');
@@ -67,7 +66,7 @@ ydn.crm.OptionPageApp = function() {
    */
   this.pages_ = {};
 
-  var status_el = document.getElementById(ydn.crm.ui.SugarListPanel.CSS_CLASS_STATUS);
+  var status_el = document.getElementById(ydn.crm.ui.CSS_CLASS_SIDEBAR_STATUS);
   var status = new ydn.crm.msg.StatusBar(true);
   status.render(status_el);
   ydn.crm.msg.Manager.addConsumer(status);
