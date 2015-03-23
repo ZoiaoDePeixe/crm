@@ -41,6 +41,7 @@ goog.require('ydn.crm.ui.HomePage');
 goog.require('ydn.crm.ui.SugarListPanel');
 goog.require('ydn.crm.ui.UserSetting');
 goog.require('ydn.msg.Pipe');
+goog.require('ydn.ui');
 
 
 
@@ -439,7 +440,11 @@ ydn.crm.OptionPageApp.runOptionApp = function() {
 
   var app = new ydn.crm.OptionPageApp();
   app.process_user_page_setup_ = true;
-  app.run();
+  var tmp_url = chrome.extension.getURL(ydn.crm.base.INJ_TEMPLATE);
+  ydn.ui.setTemplateDocument(tmp_url, function() {
+    app.run();
+  });
+
   return app;
 };
 

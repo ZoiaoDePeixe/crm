@@ -213,15 +213,14 @@ ydn.crm.su.WidgetModel.prototype.setInstanceUrl = function(url) {
   }
   var domain = url.replace(/^https?:\/\//, '');
   domain = domain.replace(/\/.*/, ''); // remove after
-  if (!this.about) {
-    this.about = /** @type {SugarCrm.About} */ ({
-      domain: domain,
-      baseUrl: url,
-      isLogin: false
-    });
+  if (this.about && this.about.baseUrl == url) {
+    return;
   }
-  this.about.domain = domain;
-  this.about.baseUrl = url;
+  this.about = /** @type {SugarCrm.About} */ ({
+    domain: domain,
+    baseUrl: url,
+    isLogin: false
+  });
 
 };
 

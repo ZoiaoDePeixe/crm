@@ -81,16 +81,20 @@ ydn.crm.su.Widget.prototype.setModel = function(model) {
  * @param {Element} ele
  */
 ydn.crm.su.Widget.prototype.render = function(ele) {
+  goog.asserts.assert(!!ele, 'widget el');
   this.root = document.createElement('div');
 
   var template = ydn.ui.getTemplateById('sugarcrm-template').content;
   this.root.appendChild(template.cloneNode(true));
 
+  ele.appendChild(this.root);
+
   var a_revoke = this.root.querySelector('a[name=remove]');
   a_revoke.addEventListener('click', this.remove_.bind(this), true);
 
-  var a_grant = this.getHostPermissionBtn_();
-  a_grant.onclick = this.handleHostPermissionRequest_.bind(this);
+  var hp_btn = this.getHostPermissionBtn_();
+  hp_btn.style.display = 'none';
+  hp_btn.onclick = this.onHostPermissionBtnClick_.bind(this);
 
   var input_domain = this.root.querySelector('input[name=domain]');
   input_domain.onblur = this.onDomainBlur.bind(this);
@@ -119,12 +123,6 @@ ydn.crm.su.Widget.prototype.render = function(ele) {
 
   var update_now = this.root.querySelector('button[name=update-now]');
   update_now.onclick = this.onUpdateNow_.bind(this);
-
-  ele.appendChild(this.root);
-
-  var hp_btn = this.getHostPermissionBtn_();
-  hp_btn.style.display = 'none';
-  hp_btn.onclick = this.onHostPermissionBtnClick_.bind(this);
 
   this.refresh();
 };
@@ -211,7 +209,7 @@ ydn.crm.su.Widget.prototype.sniffServerInfo_ = function(domain) {
  * @private
  */
 ydn.crm.su.Widget.prototype.getHostPermissionBtn_ = function() {
-  return this.root.querySelector('[name=grant-host-permission] button');
+  return this.root.querySelector('[name="grant-host-permission"] button');
 };
 
 
@@ -231,7 +229,6 @@ ydn.crm.su.Widget.prototype.onHostPermissionBtnClick_ = function(e) {
 
   ydn.msg.getChannel().send(ydn.crm.ch.Req.REQUEST_HOST_PERMISSION,
       perm).addBoth(function(x) {
-        console.log(x);
     var grant = x === true;
     btn.setAttribute('data-domain', domain);
     btn.style.display = grant ? 'none' : '';
