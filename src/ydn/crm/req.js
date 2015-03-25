@@ -77,10 +77,15 @@ ydn.crm.ch.Req = {
   LOGIN_INFO: 'login-info', // google user info, email and id
   LOGGED_IN: 'logged-in', // has been logged to server.
   LOGGED_OUT: 'logged-out',
+  /**
+   * @desc update sugarcrm credential and login
+   * @see {ydn.crm.app.App#initSugarClient}
+   */
+  LOGIN_SUGAR: 'login-su',
   NEW_ENTRY: 'new-entry',
   /**
    * @desc create a new sugar channel, if not already exist.
-   * @see {ydn.crm.app.App#newSugar}
+   * @see {ydn.crm.app.App#initSugarClient}
    */
   NEW_SUGAR: 'new-sugarcrm',
   NUKE: 'nk', // clear db
@@ -216,8 +221,8 @@ ydn.crm.ch.SReq = {
    */
   LIST_NAME: 'list-name',
   /**
-   * @desc login to sugarcrm instance.
-   * @see ydn.crm.app.EventPage#initSugarClient
+   * @desc Do silence login with stored credentials.
+   * @see ydn.crm.su.Client#login
    */
   LOGIN: 'login',
   /**
