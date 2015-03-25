@@ -127,7 +127,12 @@ ydn.crm.inj.SugarCrmApp.prototype.onViewRecord_ = function(e) {
  * @protected
  */
 ydn.crm.inj.SugarCrmApp.prototype.handleSugarDomainChanges = function(e) {
-  this.updateSugarPanels_();
+  var me = this;
+  // wait sugarcrm to login.
+  setTimeout(function() {
+    me.updateSugarPanels_();
+  }, 1000);
+
 };
 
 
@@ -225,9 +230,9 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(details) {
         ydn.crm.su.events.EventType.VIEW_RECORD,
         this.onViewRecord_);
 
-    this.context_panel.setSugarCrm(sugar);
     var archiver = new ydn.crm.su.Archiver(this.us_, sugar, this.attacher_);
     this.heading_injector_.setSugar(archiver);
+    this.context_panel.setSugarCrm(sugar);
 
   } else {
     this.domain_ = '';

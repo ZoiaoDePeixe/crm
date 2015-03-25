@@ -165,7 +165,10 @@ ydn.crm.ch.BReq = {
  * @enum {string}
  */
 ydn.crm.ch.SReq = {
-  ABOUT: 'about', // return domain, username
+  /**
+   * @desc Inquery about domain, username, login, host permission
+   */
+  ABOUT: 'about',
   ACTIVITY_STREAM: 'activity-stream',
   ACTIVITY_UPCOMING: 'activity-upcoming',
   CLEAR_CACHE: 'clear-cache', // delete database

@@ -302,6 +302,7 @@ ydn.crm.inj.Hud.prototype.handleUserLogin_ = function(e) {
   } else {
     goog.style.setElementShown(content, true);
     goog.style.setElementShown(setup, true);
+    this.setDrawerOpen(true);
     goog.style.setElementShown(invalid_login_panel, false);
 
   }
