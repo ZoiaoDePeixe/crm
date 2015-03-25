@@ -72,6 +72,14 @@ ydn.crm.ui.CSS_CLASS_SVG_BUTTON = 'svg-button';
 
 
 /**
+ * @enum {string} DOM custom event type used in this app.
+ */
+ydn.crm.ui.EventType = {
+  DRAWER_REQUEST: 'drawer-request'
+};
+
+
+/**
  * @const
  * @type {string} icon with rounded border.
  */

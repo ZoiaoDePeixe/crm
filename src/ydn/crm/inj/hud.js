@@ -68,14 +68,24 @@ ydn.crm.inj.Hud.CSS_CLASS_SETUP = 'setup-panel';
  * @private
  */
 ydn.crm.inj.Hud.prototype.onClick_ = function(e) {
+  this.setDrawerOpen(!this.root_el_.classList.contains('open'));
+};
+
+
+/**
+ * Open or close drawer.
+ * @param {boolean} val
+ */
+ydn.crm.inj.Hud.prototype.setDrawerOpen = function(val) {
   this.root_el_.classList.toggle('open');
-  var arrow = this.root_el_.querySelector('.hud-button').children[1];
-  if (this.root_el_.classList.contains('open')) {
-    arrow.classList.remove('arrow-drop-left');
-    arrow.classList.add('arrow-drop-right');
+  var arrow = this.root_el_.querySelector('.arrow-box');
+  arrow.innerHTML = '';
+  if (val) {
+    this.root_el_.classList.add('open');
+    arrow.appendChild(ydn.crm.ui.createSvgIcon('arrow-drop-left'));
   } else {
-    arrow.classList.add('arrow-drop-left');
-    arrow.classList.remove('arrow-drop-right');
+    this.root_el_.classList.remove('open');
+    arrow.appendChild(ydn.crm.ui.createSvgIcon('arrow-drop-right'));
   }
 };
 
@@ -162,6 +172,20 @@ ydn.crm.inj.Hud.prototype.render = function() {
   this.handler.listen(resizer, goog.events.EventType.MOUSEDOWN, this.onRowDragStart_);
 
   this.loadPosition_();
+
+  this.handler.listen(document.body, ydn.crm.ui.EventType.DRAWER_REQUEST, this.onDrawerRequest_);
+};
+
+
+/**
+ * @param {goog.events.BrowserEvent} be
+ * @private
+ */
+ydn.crm.inj.Hud.prototype.onDrawerRequest_ = function(be) {
+  var ce = be.getBrowserEvent();
+  goog.asserts.assertObject(ce);
+  var open = goog.object.getValueByKeys(ce, 'detail', 'open');
+  this.setDrawerOpen(open == true);
 };
 
 

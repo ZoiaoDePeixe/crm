@@ -26,9 +26,28 @@ user.onReady().addCallbacks(function() {
   var div = document.createElement('div');
   div.textContent = 'Panel content';
   div.style.height = '100px';
-  div.style.backgroundColor = 'lightblue';
+  div.style.border = 'lightblue solid thin';
   el.appendChild(div);
 }, function(e) {
   window.console.error(e);
 });
+
+
+var btn_open = document.getElementById('open');
+btn_open.onclick = function(e) {
+  var evt = document.createEvent("CustomEvent");
+  evt.initCustomEvent(ydn.crm.ui.EventType.DRAWER_REQUEST, true, true, { open: true });
+  btn_open.dispatchEvent(evt);
+};
+
+
+var btn_close = document.getElementById('close');
+btn_close.onclick = function(e) {
+  var evt = document.createEvent("CustomEvent");
+  evt.initCustomEvent(ydn.crm.ui.EventType.DRAWER_REQUEST, true, true, { open: false });
+  btn_close.dispatchEvent(evt);
+};
+
+
+
 
