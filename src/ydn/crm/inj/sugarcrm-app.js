@@ -129,6 +129,7 @@ ydn.crm.inj.SugarCrmApp.prototype.onViewRecord_ = function(e) {
 ydn.crm.inj.SugarCrmApp.prototype.handleSugarDomainChanges = function(e) {
   var me = this;
   // wait sugarcrm to login.
+  var mid = ydn.crm.msg.Manager.addStatus('Updating SugarCRM instance changes.');
   setTimeout(function() {
     me.updateSugarPanels_();
   }, 1000);
