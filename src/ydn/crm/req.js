@@ -273,10 +273,15 @@ ydn.crm.ch.SReq = {
   QUERY_SIMILAR: 'query-similar',
   REST: 'rest', // SugarCRM REST request
   /**
-   * @desc free text query for full text search
+   * @desc client side free text query for full text search
    * @see {ydn.crm.su.Client#search}
    */
   SEARCH: 'search',
+  /**
+   * @desc server side search
+   * @see {ydn.crm.su.Client#searchByModule}
+   */
+  SEARCH_BY_MODULE: 'se-bm',
   SERVER_INFO: 'server-info',
   /**
    * @desc set relationship
