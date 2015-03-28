@@ -30,6 +30,7 @@ goog.require('goog.style');
 goog.require('ydn.crm.base');
 goog.require('ydn.crm.gmail.GmailObserver');
 goog.require('ydn.crm.inj.BackgroundLogger');
+goog.require('ydn.crm.inj.BugReporter');
 goog.require('ydn.crm.inj.GmailContextContainer');
 goog.require('ydn.crm.inj.SugarCrmApp');
 goog.require('ydn.crm.inj.TrackingApp');
@@ -40,7 +41,6 @@ goog.require('ydn.debug');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
 goog.require('ydn.social.ui.SocialWidget');
-goog.require('ydn.crm.inj.BugReporter');
 
 
 

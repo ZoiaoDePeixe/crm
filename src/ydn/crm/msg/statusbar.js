@@ -213,6 +213,8 @@ ydn.crm.msg.StatusBar.prototype.renderDetailPanel_ = function() {
       link.href = msg.linkHref;
       if (msg.linkTitle) {
         link.setAttribute('title', msg.linkTitle);
+      }
+      if (msg.linkHref) {
         link.setAttribute('target', '_blank');
       }
       item.appendChild(link);
@@ -237,13 +239,17 @@ ydn.crm.msg.StatusBar.prototype.renderDetailPanel_ = function() {
 ydn.crm.msg.StatusBar.prototype.setMessage = function(id, msg) {
   if (this.status_el_) {
     this.status_el_.children[0].textContent = msg.title + ' ';
+    var a = this.status_el_.children[1];
     if (msg.linkHref) {
-      this.status_el_.children[1].textContent = msg.linkText;
-      this.status_el_.children[1].href = msg.linkHref;
-      this.status_el_.children[1].title = msg.linkTitle;
-      this.status_el_.children[1].style.display = '';
+      a.textContent = msg.linkText;
+      a.href = msg.linkHref || '';
+      if (a.href) {
+        a.setAttribute('target', '_blank');
+      }
+      a.setAttribute('title', msg.linkTitle || '');
+      a.style.display = '';
     } else {
-      this.status_el_.children[1].style.display = 'none';
+      a.style.display = 'none';
     }
     this.status_el_.children[2].textContent = ' ' + (msg.update || '');
   }
