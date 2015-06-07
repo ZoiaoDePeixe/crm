@@ -252,11 +252,11 @@ ydn.crm.base.Feature = {
  */
 ydn.crm.base.BroadcastToken = {
   /**
-   * @desc A window want to close itself, since it jobs has finished.
+   * A window want to close itself, since it jobs has finished.
    */
   CLOSING: 'closing',
   /**
-   * @desc Command to close window.
+   * Command to close window.
    */
   CLOSE: 'close'
 };

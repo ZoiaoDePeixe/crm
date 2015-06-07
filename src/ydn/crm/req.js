@@ -17,7 +17,7 @@ ydn.crm.ch.Req = {
   BADGE_UPDATE: 'badge-update', // update browser action logo
   CLOSE: 'close',
   /**
-   * @desc setting user setting
+   * setting user setting
    * @see ydn.crm.AppSetting#setUserSettingOnServer
    */
   CHROME_LOCAL_KEY_WITH_SERVER: 'clkws',
@@ -29,29 +29,29 @@ ydn.crm.ch.Req = {
   FEED_LOG: 'feed-log', // list of log
   FEED_LOG_INFO: 'feed-log-info', // list of info log
   /**
-   * @desc send feedback.
+   * send feedback.
    * @see ydn.crm.app.App#sendFeedback
    */
   FEEDBACK: 'feedback',
   /**
-   * @desc Get list of calenders.
+   * Get list of calenders.
    * @see ydn.ds.gapps.cal.list
    */
   GAPPS_LIST_CAL: 'ga-lc',
   /**
-   * @desc Create a new calender.
+   * Create a new calender.
    * @see ydn.ds.gapps.cal.create
    */
   GAPPS_NEW_CAL: 'ga-nc',
   /**
-   * @desc Get sugar crm detail. This is entry to start sugarcrm app.
+   * Get sugar crm detail. This is entry to start sugarcrm app.
    * @see ydn.crm.app.EventPage#getSugar
    */
   GET_SUGAR: 'get-sugar',
   GDATA_CONTACT_MERGE: 'gdcm', // merge contact data
   GDATA_COUNT: 'gdc', // count contact data
   /**
-   * @desc list by 'email' or 'externalid'
+   * list by 'email' or 'externalid'
    * @see {ydn.crm.app.App#gdataQuery}
    */
   GDATA_LIST_CONTACT: 'gdata-list-contact',
@@ -59,18 +59,18 @@ ydn.crm.ch.Req = {
   LIST_SUGAR: 'list-sugarcrm', // list sugarcrm about
   LIST_SUGAR_DOMAIN: 'list-sugarcrm-domain', // list sugarcrm domain
   /**
-   * @desc Log message data in background page.
+   * Log message data in background page.
    * @see ydn.debug.ILogger.log
    */
   LOG: 'log',
   /**
-   * @desc Set logging preference for analytic.
+   * Set logging preference for analytic.
    * For getting preference, read directly from `chrome.storage.sync`.
    * @see ydn.crm.ui.UserSetting#handleRequest
    */
   LOGGING_PREF_ANALYTIC: 'lg-pref-qa',
   /**
-   * @desc Set logging preference for debug.
+   * Set logging preference for debug.
    * @see ydn.crm.ui.UserSetting#handleRequest
    */
   LOGGING_PREF_DEBUG: 'lg-pref-bg',
@@ -78,13 +78,13 @@ ydn.crm.ch.Req = {
   LOGGED_IN: 'logged-in', // has been logged to server.
   LOGGED_OUT: 'logged-out',
   /**
-   * @desc update sugarcrm credential and login
+   * update sugarcrm credential and login
    * @see {ydn.crm.app.App#initSugarClient}
    */
   LOGIN_SUGAR: 'login-su',
   NEW_ENTRY: 'new-entry',
   /**
-   * @desc create a new sugar channel, if not already exist.
+   * create a new sugar channel, if not already exist.
    * @see {ydn.crm.app.App#initSugarClient}
    */
   NEW_SUGAR: 'new-sugarcrm',
@@ -94,17 +94,17 @@ ydn.crm.ch.Req = {
   REQUEST_HOST_PERMISSION: 'request-host-permission',
   SERVER_AUDIT_LOG: 'server-audit-log',
   /**
-   * @desc get social activity feed.
+   * get social activity feed.
    * @see ydn.so.Loader#getFeed
    */
   SOCIAL_FEED: 'social-feed',
   /**
-   * @desc get social profile
+   * get social profile
    * @see ydn.so.MetaData#query
    */
   SOCIAL_PROFILE: 'social-profile',
   /**
-   * @desc get social profile
+   * get social profile
    * @see ydn.so.Loader#getProfileDetail
    */
   SOCIAL_PROFILE_DETAIL: 'social-profile-detail',
@@ -114,13 +114,13 @@ ydn.crm.ch.Req = {
   SUGAR_SERVER_INFO: 'sugar-server-info',
   SYNC: 'sync', // begin sync between gdata and record
   /**
-   * @desc sync a given sync record
+   * sync a given sync record
    * @see {ydn.crm.app.App#syncFor}
    */
   SYNC_FOR: 'sync-for',
   SYNC_GET_LAST: 'sync-gl', // get last sync time
   /**
-   * @desc query sync record data
+   * query sync record data
    * @see {ydn.crm.app.App#syncQuery}
    */
   SYNC_QUERY: 'sync-q',
@@ -131,7 +131,7 @@ ydn.crm.ch.Req = {
   TRACKING_QUERY: 'tracking-query',
   TRACKING_UPDATE: 'tracking-update',
   /**
-   * @desc user license.
+   * user license.
    * @see {ydn.crm.AppSetting#getUserLicense}
    */
   USER_LICENSE: 'user-license'
@@ -166,7 +166,7 @@ ydn.crm.ch.BReq = {
  */
 ydn.crm.ch.SReq = {
   /**
-   * @desc Inquery about domain, username, login, host permission
+   * Inquery about domain, username, login, host permission
    */
   ABOUT: 'about',
   ACTIVITY_STREAM: 'activity-stream',
@@ -175,7 +175,7 @@ ydn.crm.ch.SReq = {
   COUNT: 'count', // count number of record in a module
   DELETE_RECORD: 'delete-record', //
   /**
-   * @desc sugarcrm detail info
+   * sugarcrm detail info
    * @see {ydn.crm.su.Client#getDetails}
    */
   DETAILS: 'details',
@@ -185,7 +185,7 @@ ydn.crm.ch.SReq = {
    *   'id': '371f00e7-739a-eb65-3c2b-547fd5a2f235'
    * }
    * </pre>
-   * @desc fetch entry from server.
+   * fetch entry from server.
    * @see ydn.crm.su.Client#fetchEntry
    * @see QUERY_ENTRY
    * @see GET
@@ -198,7 +198,7 @@ ydn.crm.ch.SReq = {
    *   'module': 'Contacts',
    *   'id': '371f00e7-739a-eb65-3c2b-547fd5a2f235'
    * }</pre>
-   * @desc get module entry by id or index key.
+   * get module entry by id or index key.
    * @see ydn.crm.su.Client#getEntry
    * @see #FETCH
    * @see #QUERY_ENTRY
@@ -208,95 +208,95 @@ ydn.crm.ch.SReq = {
   INFO_MODULE: 'info-module', // list module field
   KEYS: 'keys', // list keys
   /**
-   * @desc link contact gdata with sugar record.
+   * link contact gdata with sugar record.
    * @see {ydn.crm.app.App#link}
    * @see #UNLINK
    */
   LINK: 'link',  // should be GDATA_LINK
   /**
-   * @desc list of available modules.
+   * list of available modules.
    * @see {ydn.crm.su.Client#getAvailableModules}
    */
   LIST_MODULE: 'list-module',
   /**
-   * @desc list all name and id in module.
+   * list all name and id in module.
    * @see {ydn.crm.su.Client#listName}
    */
   LIST_NAME: 'list-name',
   /**
-   * @desc Do silence login with stored credentials.
+   * Do silence login with stored credentials.
    * @see ydn.crm.su.Client#login
    */
   LOGIN: 'login',
   /**
-   * @desc current login user record (Users module)
+   * current login user record (Users module)
    * @see ydn.crm.su.Client#getLoginUser
    */
   LOGIN_USER: 'login-user',
   /**
-   * @desc login information or user setting in sugarcrm
+   * login information or user setting in sugarcrm
    * @see {ydn.crm.su.Client#login_info_}
    */
   LOGIN_INFO: 'login-info',
   /**
-   * @desc create a new record
+   * create a new record
    * @see ydn.crm.su.Client#putRecord
    */
   NEW_RECORD: 'new-record',
   PUT_RECORD: 'put-record', //
   /**
-   * @desc Generic query
+   * Generic query
    * @see {ydn.crm.su.Client#query}
    */
   QUERY: 'query',
   /**
-   * @desc List embedded records.
+   * List embedded records.
    * @see {ydn.crm.su.Client#queryEmbedded}
    */
   QUERY_EMBEDDED: 'query-embedded',
   /**
-   * @desc Get entry from database and then from server.
+   * Get entry from database and then from server.
    * @see {ydn.crm.su.Client#queryEntry}
    * @see #GET
    * @see #FETCH
    */
   QUERY_ENTRY: 'query-entry',
   /**
-   * @desc List related records.
+   * List related records.
    * @see {ydn.crm.su.Client#queryRelated}
    */
   QUERY_RELATED: 'query-related',
   /**
-   * @desc Query records similar to given gdata contact entry.
+   * Query records similar to given gdata contact entry.
    * @see {ydn.crm.su.Client#querySimilar}
    */
   QUERY_SIMILAR: 'query-similar',
   REST: 'rest', // SugarCRM REST request
   /**
-   * @desc client side free text query for full text search
+   * client side free text query for full text search
    * @see {ydn.crm.su.Client#search}
    */
   SEARCH: 'search',
   /**
-   * @desc server side search
+   * server side search
    * @see {ydn.crm.su.Client#searchByModule}
    */
   SEARCH_BY_MODULE: 'se-bm',
   SERVER_INFO: 'server-info',
   /**
-   * @desc set relationship
+   * set relationship
    * @see ydn.crm.su.Client#setRelationships
    */
   SET_REL: 'set-rel',
   STATS: 'stats', // statistic of cached data
   /**
-   * @desc remove sync record that link contact gdata with sugar record.
+   * remove sync record that link contact gdata with sugar record.
    * @see {ydn.crm.app.App#unlink}
    * @see #LINK
    */
   UNLINK: 'unlink',
   /**
-   * @desc upload document or note attachment.
+   * upload document or note attachment.
    * @see ydn.crm.su.Client#handleUpload_
    * @see ydn.crm.su.Client#upload
    */
