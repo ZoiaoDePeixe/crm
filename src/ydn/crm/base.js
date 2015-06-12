@@ -297,7 +297,7 @@ ydn.crm.base.analytic = {
 /**
  * @define {string} link/email tracking origin server.
  */
-ydn.crm.base.TRACKING_ORIGIN = 'https://imgsrv-dot-yathit-app.appspot.com';
+ydn.crm.base.TRACKING_ORIGIN = 'https://yathit-app.appspot.com';
 
 
 /**

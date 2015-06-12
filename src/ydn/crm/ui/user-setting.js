@@ -380,6 +380,7 @@ ydn.crm.ui.UserSetting.USER_SETTING_DEFAULT = {};
  * @param {...string} var_args
  * @return {*}
  * @see #getSugarCrmSetting
+ * @see ydn.crm.ui.UserSetting#getUserSetting for background page.
  */
 ydn.crm.ui.UserSetting.prototype.getSetting = function(key, var_args) {
   var obj = this.user_setting || ydn.crm.ui.UserSetting.USER_SETTING_DEFAULT;
