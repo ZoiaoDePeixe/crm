@@ -294,7 +294,8 @@ ydn.crm.inj.Hud.prototype.handleUserLogin_ = function(e) {
     } else {
       this.root_el_.classList.add(ydn.crm.inj.Hud.CSS_CLASS_INVALID);
       var data = {
-        ydn_login: us.getLoginEmail()
+        ydn_login: us.getLoginEmail(),
+        gmail: us.getGmail() || '?'
       };
       goog.soy.renderElement(invalid_login_panel, templ.ydn.crm.inj.wrongLogin, data);
       goog.style.setElementShown(invalid_login_panel, true);

@@ -248,7 +248,6 @@ ydn.crm.inj.App.runInjApp = function() {
     });
   });
 
-
   return app;
 };
 
