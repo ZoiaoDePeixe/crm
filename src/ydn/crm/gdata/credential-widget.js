@@ -90,6 +90,16 @@ ydn.crm.gdata.CredentialWidget.prototype.refresh = function(opt_cb, opt_scope) {
       scopes.textContent = token.Scopes.join(', ');
       display_panel.style.display = '';
       authorize_panel.style.display = 'none';
+      var admin_manage_token = token.type == 'ENT';
+      var el_provider = display_panel.querySelector('[name=auth-provider]');
+      var el_revoke = display_panel.querySelector('[name=gdata-token-revoke]');
+      if (admin_manage_token) {
+        el_provider.textContent = 'Your admin';
+        el_revoke.style.display = 'none';
+      } else {
+        el_provider.textContent = 'You';
+        el_revoke.style.display = '';
+      }
       if (opt_cb) {
         opt_cb.call(opt_scope, true);
       }
