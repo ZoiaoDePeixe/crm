@@ -154,7 +154,9 @@ ydn.crm.ui.UserSetting.prototype.isLogin = function() {
  * @return {boolean}
  */
 ydn.crm.ui.UserSetting.prototype.hasValidLogin = function() {
-  return this.isLogin() && (!this.gmail_ || this.gmail_ == this.login_info.email);
+  return this.isLogin() && (!this.gmail_ ||
+      ydn.string.normalizeEmail(this.gmail_) ==
+      ydn.string.normalizeEmail(this.login_info.email));
 };
 
 
