@@ -8,11 +8,11 @@
     <import file="${db-work.dir}/ydn/build.xml"/>
     <property name="crm-app-ver-major" value="3"/>
     <property name="crm-app-ver-minor" value="3"/>
-    <property name="crm-app-ver-patch" value="10"/>
+    <property name="crm-app-ver-patch" value="11"/>
     <property name="crm-app-ver" value="${crm-app-ver-major}.${crm-app-ver-minor}.${crm-app-ver-patch}"/>
     <property name="sugarcrm-ver-major" value="3"/>
     <property name="sugarcrm-ver-minor" value="3"/>
-    <property name="sugarcrm-ver-patch" value="10"/>
+    <property name="sugarcrm-ver-patch" value="11"/>
     <property name="sugarcrm-ver" value="${sugarcrm-ver-major}.${sugarcrm-ver-minor}.${sugarcrm-ver-patch}"/>
     <property name="out.fn" value="ydn.crm-${crm-app-ver}.js"/>
     <property name="flagfile" value="${ydn-base.dir}/flagfile.txt"/>
