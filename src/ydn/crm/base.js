@@ -124,7 +124,7 @@ ydn.crm.base.THEME_DEFAULT = ydn.crm.base.Theme.DESKTOP;
 /**
  * @define {string} login origin server.
  */
-ydn.crm.base.LOGIN_ORIGIN = 'http://localhost:8080'; // 'https://www.yathit.com'; //
+ydn.crm.base.LOGIN_ORIGIN = 'https://www.yathit.com'; //'http://localhost:8080'; //
 
 
 /**
