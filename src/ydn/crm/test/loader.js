@@ -319,6 +319,7 @@ ydn.crm.test.createSugar = function(opt_ce) {
  */
 ydn.crm.test.createContactSugarCrmRecord = function(opt_ce) {
   var obj = ydn.crm.test.getData('contact' + (opt_ce ? '' : '_v7'));
+  obj._module = 'Contacts';
   return JSON.parse(JSON.stringify(obj));
 };
 
