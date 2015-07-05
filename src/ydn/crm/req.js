@@ -250,6 +250,11 @@ ydn.crm.ch.SReq = {
    */
   QUERY: 'query',
   /**
+   * Query record by email on server.
+   * @see {ydn.crm.su.Client#queryByEmailOnServer}
+   */
+  QUERY_BY_EMAIL_ON_SERVER: 'query-by-email-on-server',
+  /**
    * List embedded records.
    * @see {ydn.crm.su.Client#queryEmbedded}
    */
