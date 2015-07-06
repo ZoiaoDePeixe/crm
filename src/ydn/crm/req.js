@@ -193,6 +193,11 @@ ydn.crm.ch.SReq = {
   FETCH: 'fetch',
   FETCH_MODULE: 'fetch-module', // fetch module entries
   /**
+   * Retrieve a list of upcoming activities including Calls, Meetings,Tasks and Opportunities
+   * @see ydn.crm.su.Client#fetchUpcomingActivities
+   */
+  FETCH_UPCOMING_ACTIVITIES: 'fetch-up-act',
+  /**
    * Get module entry in database and finally from server.
    * <pre>{
    *   'module': 'Contacts',

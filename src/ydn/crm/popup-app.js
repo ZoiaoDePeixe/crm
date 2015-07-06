@@ -169,9 +169,11 @@ ydn.crm.PopupPageApp.prototype.initSugarCrm_ = function() {
 
   this.initGDataToken_(); // SugarCRM require GData token.
 
-  ydn.crm.su.model.Sugar.list().addCallback(function(models) {
-    for (var i = 0; i < models.length; i++) {
-      var model = /** @type {ydn.crm.su.model.Sugar} */ (models[i]);
+  ydn.crm.su.model.Sugar.get().addCallback(function(x) {
+
+    var model = /** @type {ydn.crm.su.model.Sugar} */ (x);
+
+    if (model) {
       if (model.isLogin() && !model.hasHostPermission()) {
         var ul = document.querySelector('ul.host-permission');
         var li = document.createElement('li');
@@ -182,8 +184,7 @@ ydn.crm.PopupPageApp.prototype.initSugarCrm_ = function() {
         a.setAttribute('data-domain', model.getDomain());
         ul.appendChild(li);
       }
-    }
-    if (models.length == 0) {
+
       this.renderFeed([
         {
           tagName: 'A',
