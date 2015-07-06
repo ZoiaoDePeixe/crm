@@ -208,6 +208,18 @@ ydn.crm.ch.SReq = {
    * @see #FETCH
    * @see #QUERY_ENTRY
    */
+  FIND: 'find',
+  /**
+   * Get module entry in database and finally from server.
+   * <pre>{
+   *   'module': 'Contacts',
+   *   'id': '371f00e7-739a-eb65-3c2b-547fd5a2f235'
+   * }</pre>
+   * get module entry by id or index key.
+   * @see ydn.crm.su.Client#getEntry
+   * @see #FETCH
+   * @see #FIND
+   */
   GET: 'get',
   IMPORT_GDATA: 'import-gdata',
   INFO_MODULE: 'info-module', // list module field
