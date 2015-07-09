@@ -145,6 +145,12 @@ ydn.crm.inj.ContextContainer.CSS_CLASS_STATUS = 'sidebar-status';
 
 
 /**
+ * @define {boolean} show status message in context sidebar.
+ */
+ydn.crm.inj.ContextContainer.SHOW_STATUS_MESSAGE = false;
+
+
+/**
  * @return {Element}
  */
 ydn.crm.inj.ContextContainer.prototype.createDom = function() {
@@ -184,9 +190,11 @@ ydn.crm.inj.ContextContainer.prototype.createDom = function() {
   var status_el = document.createElement('div');
   status_el.classList.add(ydn.crm.inj.ContextContainer.CSS_CLASS_STATUS);
   footer.appendChild(status_el);
-  var status = new ydn.crm.msg.StatusBar(true);
-  status.render(status_el);
-  ydn.crm.msg.Manager.addConsumer(status);
+  if (ydn.crm.inj.ContextContainer.SHOW_STATUS_MESSAGE) {
+    var status = new ydn.crm.msg.StatusBar(true);
+    status.render(status_el);
+    ydn.crm.msg.Manager.addConsumer(status);
+  }
   ele_root.appendChild(footer);
 
   return ele_root;
