@@ -118,7 +118,7 @@ ydn.crm.su.assertModuleName = function(name) {
 
 
 /**
- * List of modules that sync. Synchronization will queue in this order.
+ * List of modules cache locally
  * @type {Array.<ydn.crm.su.ModuleName>}
  */
 ydn.crm.su.CacheModules = [ydn.crm.su.ModuleName.USERS,
@@ -135,6 +135,17 @@ ydn.crm.su.CacheModules = [ydn.crm.su.ModuleName.USERS,
   ydn.crm.su.ModuleName.CASES,
   ydn.crm.su.ModuleName.OPPORTUNITIES,
   ydn.crm.su.ModuleName.EMAILS
+];
+
+
+/**
+ * List of modules that sync. Synchronization will queue in this order.
+ * @type {Array.<ydn.crm.su.ModuleName>}
+ */
+ydn.crm.su.SyncModules = [ydn.crm.su.ModuleName.USERS,
+  // sync template first, so that it is appear immediately after login.
+  ydn.crm.su.ModuleName.EMAIL_TEMPLATES,
+  ydn.crm.su.ModuleName.CONTACTS
 ];
 
 
