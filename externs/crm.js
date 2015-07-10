@@ -569,3 +569,42 @@ YathitCrm.Product.Tracking = {};
 YathitCrm.Product.Social = {};
 
 
+/**
+ * amplitude
+ * @type {Object}
+ * @const
+ */
+var amplitude = {};
+
+
+/**
+ * @param {string} key
+ * @param {string=} user
+ */
+amplitude.init = function(key, user) {};
+
+
+/**
+ * @param {string} user
+ */
+amplitude.setUserId = function(user) {};
+
+
+/**
+ * @param {string} app_ver
+ */
+amplitude.setVersionName = function(app_ver) {};
+
+
+/**
+ * @param {string} event event identifier.
+ * @param {Object} properties key-value
+ */
+amplitude.logEvent = function(event, properties) {};
+
+
+/**
+ * @param {Object} properties key-value
+ */
+amplitude.setUserProperties = function(properties) {};
+
