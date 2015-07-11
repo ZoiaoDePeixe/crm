@@ -190,14 +190,22 @@ ydn.crm.inj.ContextContainer.prototype.createDom = function() {
   var status_el = document.createElement('div');
   status_el.classList.add(ydn.crm.inj.ContextContainer.CSS_CLASS_STATUS);
   footer.appendChild(status_el);
-  if (ydn.crm.inj.ContextContainer.SHOW_STATUS_MESSAGE) {
-    var status = new ydn.crm.msg.StatusBar(true);
-    status.render(status_el);
-    ydn.crm.msg.Manager.addConsumer(status);
-  }
+  var status = new ydn.crm.msg.StatusBar(true);
+  status.render(status_el);
+  ydn.crm.msg.Manager.addConsumer(status);
   ele_root.appendChild(footer);
 
   return ele_root;
+};
+
+
+/**
+ * Set status bar visible or hide.
+ * @param {boolean} val visibility status.
+ */
+ydn.crm.inj.ContextContainer.prototype.setStatusBarShown = function(val) {
+  var el = this.getElement().querySelector('.' + ydn.crm.inj.ContextContainer.CSS_CLASS_STATUS);
+  goog.style.setElementShown(el, val);
 };
 
 
