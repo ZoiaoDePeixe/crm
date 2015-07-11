@@ -223,7 +223,7 @@ ydn.crm.ui.UserSetting.prototype.onReady = function() {
       } else {
         msg = 'Error on figuring out Gmail username: ' + String(email);
         email = '';
-        ydn.crm.shared.logAnalyticValue('app', 'load-gmail-username', 'fail-sniffing', {
+        ydn.crm.shared.logAnalyticValue('app', 'gmail-fail-sniffing', 'fail-sniffing', {
           'error': String(email)
         });
       }
