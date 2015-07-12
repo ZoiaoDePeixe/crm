@@ -183,7 +183,7 @@ ydn.crm.gdata.SelectCalendarDialog.prototype.renderSelector_ = function() {
     }
   }
   if (!sync) {
-    select.selectedIndex = -1;
+    select.selectedIndex = 0;
   }
   return sync;
 };

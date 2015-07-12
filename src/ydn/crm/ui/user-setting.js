@@ -420,12 +420,11 @@ ydn.crm.ui.UserSetting.prototype.setSetting = function(val, key, var_args) {
  * @return {!goog.async.Deferred<Object>}
  */
 ydn.crm.ui.UserSetting.prototype.getSettingOnServer = function(key) {
-  var df = new goog.async.Deferred();
-  chrome.storage.local.get(key, function(obj) {
-    var json = obj[key];
-    df.callback(json);
-  });
-  return df;
+  var data = {
+    'key': key
+  };
+  return ydn.msg.getChannel().send(
+      ydn.crm.ch.Req.USER_SETTING_SERVER_GET, data);
 };
 
 
@@ -443,7 +442,7 @@ ydn.crm.ui.UserSetting.prototype.setSettingOnServer = function(key, value) {
     'value': value
   };
   return ydn.msg.getChannel().send(
-      ydn.crm.ch.Req.CHROME_LOCAL_KEY_WITH_SERVER, data);
+      ydn.crm.ch.Req.USER_SETTING_SERVER_SET, data);
 };
 
 

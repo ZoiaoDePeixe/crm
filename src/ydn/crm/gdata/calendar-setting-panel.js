@@ -196,18 +196,6 @@ ydn.crm.gdata.CalendarSettingPanel.prototype.getSelectedCalendar_ = function() {
 
 
 /**
- * Check selected calendar is valid.
- * @param {string=} opt_cal_id calendar id, default to existing one.
- * @return {boolean}
- * @private
- */
-ydn.crm.gdata.CalendarSettingPanel.prototype.isSelectedCalValid_ = function(opt_cal_id) {
-  var cal = this.getSelectedCalendar_(opt_cal_id || this.cal_id_);
-  return cal ? cal.accessRole == 'owner' : false;
-};
-
-
-/**
  * @private
  */
 ydn.crm.gdata.CalendarSettingPanel.prototype.refresh_ = function() {

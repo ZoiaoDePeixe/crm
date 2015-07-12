@@ -16,11 +16,6 @@ ydn.crm.ch.Req = {
   ACK: 'ack', // acknowledge message
   BADGE_UPDATE: 'badge-update', // update browser action logo
   CLOSE: 'close',
-  /**
-   * setting user setting
-   * @see ydn.crm.AppSetting#setUserSettingOnServer
-   */
-  CHROME_LOCAL_KEY_WITH_SERVER: 'clkws',
   DNT_ADD: 'dnt-add',
   DNT_QUERY: 'dnt-query',
   DNT_REMOVE: 'dnt-remove',
@@ -48,8 +43,8 @@ ydn.crm.ch.Req = {
    * @see ydn.crm.app.EventPage#getSugar
    */
   GET_SUGAR: 'get-sugar',
-  GDATA_CONTACT_MERGE: 'gdcm', // merge contact data
-  GDATA_COUNT: 'gdc', // count contact data
+  GDATA_CONTACT_MERGE: 'gdata-cm', // merge contact data
+  GDATA_COUNT: 'gdata-dc', // count contact data
   /**
    * list by 'email' or 'externalid'
    * @see {ydn.crm.app.App#gdataQuery}
@@ -134,7 +129,17 @@ ydn.crm.ch.Req = {
    * user license.
    * @see {ydn.crm.AppSetting#getUserLicense}
    */
-  USER_LICENSE: 'user-license'
+  USER_LICENSE: 'user-license',
+  /**
+   * setting user setting
+   * @see ydn.crm.AppSetting#getUserSettingOnServer
+   */
+  USER_SETTING_SERVER_GET: 'us-server-get',
+  /**
+   * setting user setting
+   * @see ydn.crm.AppSetting#setUserSettingOnServer
+   */
+  USER_SETTING_SERVER_SET: 'us-server-set'
 };
 
 
