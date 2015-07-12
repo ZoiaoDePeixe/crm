@@ -35,8 +35,7 @@ goog.require('ydn.ui.MessageDialog');
  */
 ydn.crm.gdata.SelectCalendarDialog = function(list, id) {
   goog.base(this, 'Select a Google calendar to Sync with SugarCRM Meetings events',
-      '', [ydn.ui.MessageDialog.Button.OK,
-        ydn.ui.MessageDialog.Button.CANCEL]);
+      '', ydn.ui.MessageDialog.createOKCancelButtonSet());
 
   /**
    * @type {GApps.CalendarList}
@@ -129,12 +128,9 @@ ydn.crm.gdata.SelectCalendarDialog.showModal = function(us, list, id) {
   var df = new goog.async.Deferred();
   var bar = dialog.dialog.querySelector('.button-bar');
   var default_btn = bar.querySelector('button.default');
-  default_btn.onclick = function(e) {
-    var select = dialog.getContentElement().querySelector('select');
-    dialog.dialog.close(select.value);
-  };
+
   dialog.dialog.onclose = function(event) {
-    var new_id = dialog.dialog.returnValue;
+    var new_id = dialog.dialog.querySelector('select').value;
     if (dialog.cal_id_ != new_id) {
       if (new_id) {
         ydn.crm.msg.Manager.addStatus('Setting sync calendar to "' +
@@ -173,17 +169,11 @@ ydn.crm.gdata.SelectCalendarDialog.prototype.renderSelector_ = function() {
   for (var i = 0; i < this.cal_list_.items.length; i++) {
     var cal = this.cal_list_.items[i];
     var option = document.createElement('option');
-    if (cal.primary) {
-      option.value = cal.summary;
-      option.textContent = 'Primary';
-      option.setAttribute('title', 'Primary calendar cannot be used for sync.');
-    } else {
-      option.value = cal.summary;
-      option.textContent = cal.summary;
-      option.setAttribute('title', cal.description);
-    }
+    option.value = cal.summary;
+    option.textContent = cal.summary;
+    option.setAttribute('title', cal.primary ? 'My Calendar' : cal.description);
 
-    if (cal.primary || cal.accessRole != 'owner') {
+    if (cal.accessRole != 'owner') {
       option.setAttribute('disabled', 'disabled');
     }
     select.appendChild(option);

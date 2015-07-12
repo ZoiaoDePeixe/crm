@@ -72,6 +72,12 @@ ydn.crm.gdata.CalendarSettingPanel = function(us) {
 
 
 /**
+ * @define {boolean} debug flag.
+ */
+ydn.crm.gdata.CalendarSettingPanel.DEBUG = true;
+
+
+/**
  * @param {Element} ele
  */
 ydn.crm.gdata.CalendarSettingPanel.prototype.render = function(ele) {
@@ -79,7 +85,6 @@ ydn.crm.gdata.CalendarSettingPanel.prototype.render = function(ele) {
   var temp = ydn.ui.getTemplateById('calendar-setting-panel-template').content;
   this.root.appendChild(temp.cloneNode(true));
   ele.appendChild(this.root);
-  goog.style.setElementShown(this.root, false);
 
   var detail = this.root.querySelector('details');
   this.handler.listen(detail, 'click', this.onDetailsClick_);
@@ -225,7 +230,9 @@ ydn.crm.gdata.CalendarSettingPanel.prototype.refresh = function() {
         this.cal_id_ = setting ? setting.syncCalId || null : null;
         ydn.msg.getChannel().send(ydn.crm.ch.Req.GAPPS_LIST_CAL)
             .addCallbacks(function(json) {
-              console.log(json);
+              if (ydn.crm.gdata.CalendarSettingPanel.DEBUG) {
+                window.console.log(obj, json);
+              }
               this.cal_list_ = json;
               this.refresh_();
             }, function(e) {
