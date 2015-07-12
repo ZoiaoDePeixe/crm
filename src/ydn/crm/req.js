@@ -50,7 +50,11 @@ ydn.crm.ch.Req = {
    * @see {ydn.crm.app.App#gdataQuery}
    */
   GDATA_LIST_CONTACT: 'gdata-list-contact',
-  GDATA_UPDATE: 'gdata-update',  // update from server
+  /**
+   * update calendar event from server
+   * @see ydn.crm.app.App#handleGDataRequest
+   */
+  GDATA_UPDATE: 'gdata-update',
   LIST_SUGAR: 'list-sugarcrm', // list sugarcrm about
   LIST_SUGAR_DOMAIN: 'list-sugarcrm-domain', // list sugarcrm domain
   /**

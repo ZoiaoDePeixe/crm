@@ -492,7 +492,6 @@ YdnCrm.UserSettingRecord = function() {};
 YdnCrm.UserSettingSugarCrm = function() {};
 
 
-
 /**
  * User setting for Google services.
  * @interface
@@ -501,10 +500,19 @@ YdnCrm.UserSettingSugarCrm = function() {};
 YdnCrm.UserSettingGoogle = function() {};
 
 
+
+/**
+ * User setting for Google services.
+ * @interface
+ * @extends {YdnCrm.UserSettingRecord}
+ */
+YdnCrm.UserSettingGDataCal = function() {};
+
+
 /**
  * @type {string|undefined} Google calendar id for sync with CRM.
  */
-YdnCrm.UserSettingGoogle.prototype.syncCalId;
+YdnCrm.UserSettingGDataCal.prototype.syncCalId;
 
 
 /**

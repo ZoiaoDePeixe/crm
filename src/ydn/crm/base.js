@@ -417,6 +417,10 @@ ydn.crm.base.KeyCLRecordOnServer = {
    */
   USER_SETTING_GOOGLE: 'ws-us-go',
   /**
+   * define in {@link YdnCrm.UserSettingGoogle}
+   */
+  USER_SETTING_GDATA_CAL: 'ws-us-gdata-cal',
+  /**
    * define in {@link YdnCrm.UserSettingSugarCrm}
    */
   USER_SETTING_SUGARCRM: 'ws-us-su'
@@ -429,5 +433,6 @@ ydn.crm.base.KeyCLRecordOnServer = {
  */
 ydn.crm.base.chromeLocalKeysWithServer = [
   ydn.crm.base.KeyCLRecordOnServer.USER_SETTING_GOOGLE,
+  ydn.crm.base.KeyCLRecordOnServer.USER_SETTING_GDATA_CAL,
   ydn.crm.base.KeyCLRecordOnServer.USER_SETTING_SUGARCRM];
 

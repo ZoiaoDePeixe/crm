@@ -230,10 +230,14 @@ ydn.crm.gdata.CalendarSettingPanel.prototype.refresh_ = function() {
 ydn.crm.gdata.CalendarSettingPanel.prototype.refresh = function() {
   var msg_el = this.root.querySelector('.message');
   msg_el.textContent = 'Loading data...';
-  this.us.getSettingOnServer(ydn.crm.base.KeyCLRecordOnServer.USER_SETTING_SUGARCRM)
+  this.us.getSettingOnServer(ydn.crm.base.KeyCLRecordOnServer.USER_SETTING_GDATA_CAL)
       .addCallbacks(function(obj) {
-        var setting = (/** @type {YdnCrm.UserSettingGoogle} */(obj));
+        var setting = (/** @type {YdnCrm.UserSettingGDataCal} */(obj));
         this.cal_id_ = setting ? setting.syncCalId || null : null;
+        if (this.cal_id_) {
+          ydn.msg.getChannel().send(ydn.crm.ch.Req.GDATA_UPDATE,
+              {'kind': ydn.gdata.Kind.CAL_EVENT});
+        }
         ydn.msg.getChannel().send(ydn.crm.ch.Req.GAPPS_LIST_CAL)
             .addCallbacks(function(json) {
               if (ydn.crm.gdata.CalendarSettingPanel.DEBUG) {
