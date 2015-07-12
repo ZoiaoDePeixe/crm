@@ -27,6 +27,7 @@ goog.require('goog.events.EventHandler');
 goog.require('goog.style');
 goog.require('ydn.crm.gdata.SelectCalendarDialog');
 goog.require('ydn.crm.msg.Manager');
+goog.require('ydn.ds.gapps.cal');
 goog.require('ydn.ui');
 
 
@@ -90,7 +91,7 @@ ydn.crm.gdata.CalendarSettingPanel.prototype.render = function(ele) {
   this.handler.listen(detail, 'click', this.onDetailsClick_);
 
   var sync_el = this.root.querySelector('#enable-calendar-sync');
-  var a_change = this.root.querySelector('a[name=sync-calender-name]');
+  var a_change = this.root.querySelector('button[name=change-sync-calender]');
   this.handler.listen(sync_el, 'click', this.onSyncClick_);
   this.handler.listen(a_change, 'click', this.onSelectBtnClick_);
 };
@@ -164,8 +165,30 @@ ydn.crm.gdata.CalendarSettingPanel.prototype.showCalSelectDialog = function() {
 ydn.crm.gdata.CalendarSettingPanel.prototype.findCandidateCal_ = function() {
   for (var i = 0; i < this.cal_list_.items.length; i++) {
     var cal = this.cal_list_.items[i];
-    if (cal.accessRole == 'owner' && !cal.primary) {
-      return cal.summary;
+    if (cal.primary) {
+      return cal.id;
+    }
+    if (cal.accessRole == 'owner') {
+      return cal.id;
+    }
+  }
+  return null;
+};
+
+
+/**
+ * Get selected calendar item.
+ * @return {GApps.CalendarListEntry}
+ * @private
+ */
+ydn.crm.gdata.CalendarSettingPanel.prototype.getSelectedCalendar_ = function() {
+  if (!this.cal_id_) {
+    return null;
+  }
+  for (var i = 0; i < this.cal_list_.items.length; i++) {
+    var cal = this.cal_list_.items[i];
+    if (cal.id == this.cal_id_) {
+      return this.cal_list_.items[i];
     }
   }
   return null;
@@ -179,17 +202,8 @@ ydn.crm.gdata.CalendarSettingPanel.prototype.findCandidateCal_ = function() {
  * @private
  */
 ydn.crm.gdata.CalendarSettingPanel.prototype.isSelectedCalValid_ = function(opt_cal_id) {
-  var cal_id = opt_cal_id || this.cal_id_;
-  if (!cal_id) {
-    return false;
-  }
-  for (var i = 0; i < this.cal_list_.items.length; i++) {
-    var cal = this.cal_list_.items[i];
-    if (cal.summary == cal_id && !cal.primary && cal.accessRole == 'owner') {
-      return true;
-    }
-  }
-  return false;
+  var cal = this.getSelectedCalendar_(opt_cal_id || this.cal_id_);
+  return cal ? cal.accessRole == 'owner' : false;
 };
 
 
@@ -205,16 +219,20 @@ ydn.crm.gdata.CalendarSettingPanel.prototype.refresh_ = function() {
   goog.style.setElementShown(panel, !!this.cal_id_);
   var cal_name = this.root.querySelector('a[name="sync-calender-name"]');
   cal_name.textContent = this.cal_id_ || '';
+  cal_name.href = '';
   goog.dom.forms.setValue(sync_el, !!this.cal_id_);
 
   if (this.cal_id_) {
-    if (!this.isSelectedCalValid_()) {
+    var cal = this.getSelectedCalendar_();
+    if (cal) {
+      cal_name.href = ydn.ds.gapps.cal.id2link(this.cal_id_);
+      cal_name.textContent = cal.summary || 'My Calendar';
+    } else {
       var msg = 'Sync Calendar "' + this.cal_id_ + '" not found.';
       msg_el.textContent = msg;
       ydn.crm.msg.Manager.addStatus(msg);
     }
   }
-  // goog.style.setElementShown(this.root, true);
 };
 
 

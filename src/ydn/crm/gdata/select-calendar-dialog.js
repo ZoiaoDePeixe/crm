@@ -169,7 +169,7 @@ ydn.crm.gdata.SelectCalendarDialog.prototype.renderSelector_ = function() {
   for (var i = 0; i < this.cal_list_.items.length; i++) {
     var cal = this.cal_list_.items[i];
     var option = document.createElement('option');
-    option.value = cal.summary;
+    option.value = cal.id;
     option.textContent = cal.summary;
     option.setAttribute('title', cal.primary ? 'My Calendar' : cal.description);
 
@@ -177,7 +177,7 @@ ydn.crm.gdata.SelectCalendarDialog.prototype.renderSelector_ = function() {
       option.setAttribute('disabled', 'disabled');
     }
     select.appendChild(option);
-    if (this.cal_id_ == cal.summary) {
+    if (this.cal_id_ == cal.id) {
       select.selectedIndex = i;
       sync = true;
     }
