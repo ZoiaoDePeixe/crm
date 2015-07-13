@@ -616,3 +616,31 @@ amplitude.logEvent = function(event, properties) {};
  */
 amplitude.setUserProperties = function(properties) {};
 
+
+
+/**
+ * Heap analytics
+ * @type {Object}
+ * @const
+ */
+var heap = {};
+
+
+/**
+ * @param {string} event event identifier.
+ * @param {Object} properties key-value
+ */
+heap.track = function(event, properties) {};
+
+
+/**
+ * @param {Object} user
+ */
+heap.identify = function(user) {};
+
+
+/**
+ * @param {Object} obj
+ */
+heap.setEventProperties = function(obj) {};
+
