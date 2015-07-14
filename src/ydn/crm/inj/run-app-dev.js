@@ -19,9 +19,9 @@ ydn.gmail.Utils.gmail_df_ = goog.async.Deferred.succeed('kyawtun@yathit.com');
 // ydn.crm.gmail.GmailObserver.DEBUG =  true;
 // ydn.crm.tracking.Tracker.DEBUG =  true;
 // ydn.cs.ReplyPanelManager.DEBUG =  true;
-ydn.crm.su.ui.record.Record.DEBUG =  true;
+// ydn.crm.su.ui.record.Record.DEBUG =  true;
 ydn.crm.su.Archiver.DEBUG =  true;
-ydn.msg.Pipe.dryRun();
+// ydn.msg.Pipe.dryRun();
 
 
 var perturb_data_tooltip = function() {
