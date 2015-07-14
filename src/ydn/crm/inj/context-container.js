@@ -277,10 +277,9 @@ ydn.crm.inj.ContextContainer.prototype.detach = function() {
 /**
  * Attach to Gmail right side bar.
  * @param {Element} contact_table right bar table
+ * @protected
  */
-ydn.crm.inj.ContextContainer.prototype.attachToGmailRightBar = function(contact_table) {
-
-};
+ydn.crm.inj.ContextContainer.prototype.attachToGmailRightBar = goog.abstractMethod;
 
 
 /**
