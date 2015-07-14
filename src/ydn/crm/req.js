@@ -301,7 +301,7 @@ ydn.crm.ch.SReq = {
    * List related records by emails.
    * @see {ydn.crm.su.Client#queryRelatedByEmail}
    */
-  QUERY_RELATED_BY_EMAIL: 'query-related-by-email', // todo: chagne to QUERY_RELATED
+  QUERY_RELATED: 'query-related',
   /**
    * Query records similar to given gdata contact entry.
    * @see {ydn.crm.su.Client#querySimilar}
