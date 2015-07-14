@@ -411,7 +411,7 @@ ydn.crm.su.fixSugarCrmModuleMeta = function(info) {
       mf.group = 'contact';
     } else if (['account_name', 'account_name1', 'account_id'].indexOf(name) >= 0) {
       mf.group = 'account';
-    } else if (['parent_name', 'parent_type', 'parentt_id'].indexOf(name) >= 0) {
+    } else if (['parent_name', 'parent_type', 'parent_id'].indexOf(name) >= 0) {
       mf.group = 'parent';
     } else if (/^email\d?$/.test(name)) {
       mf.group = 'email';
