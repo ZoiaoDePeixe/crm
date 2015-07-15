@@ -178,6 +178,9 @@ ydn.crm.ch.SReq = {
    * Inquery about domain, username, login, host permission
    */
   ABOUT: 'about',
+  /**
+   * @see ydn.crm.su.Client#listActivityStream
+   */
   ACTIVITY_STREAM: 'activity-stream',
   ACTIVITY_UPCOMING: 'activity-upcoming',
   CLEAR_CACHE: 'clear-cache', // delete database
