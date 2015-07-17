@@ -254,6 +254,13 @@ ydn.crm.shared.logs_ = {};
 
 
 /**
+ * Google analytic User id for tracking.
+ * @type {string}
+ */
+ydn.crm.shared.analytic_user_id = '';
+
+
+/**
  * Begin analytic logging. Logging will be end by calling {@link #logAnalyticEnd}
  * or timeout.
  * @param {string} category 'ui'
