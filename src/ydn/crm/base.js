@@ -283,10 +283,10 @@ ydn.crm.base.analytic = {
     stat: true
   },
   sugarcrm: {
-    databaseSyncUpdate: false
+    databaseSyncUpdate: true
   },
   sync: {
-    sync: true
+    sync: false
   },
   logging: {
     debugLogger: false
