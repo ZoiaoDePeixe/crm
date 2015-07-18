@@ -4,8 +4,9 @@
 
 
 goog.provide('ydn.crm.ui.CacheUpdateDisplay');
-goog.require('ydn.msg');
+goog.require('ydn.crm.shared');
 goog.require('ydn.crm.su');
+goog.require('ydn.msg');
 
 
 
@@ -73,21 +74,24 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.onBodyClick_ = function(e) {
     e.preventDefault();
     var a = e.target;
     var mn = a.getAttribute('data-module');
+    var val = 0;
     if (mn) {
       var ch = ydn.msg.getMain().findChannel(ydn.msg.Group.SUGAR);
       if (ch) {
+        val = 1;
         a.textContent = 'updating...';
         a.href = '';
         var data = {'module': mn};
         ch.send(ydn.crm.ch.SReq.UPDATE_NOW, data).addCallbacks(function(x) {
           a.textContent = 'updated';
-          a.href = '#update-now';
           this.showDetails_();
         }, function(e) {
           a.textContent = 'failed';
         }, this);
       }
     }
+    ydn.crm.shared.logAnalyticValue('ui.cache-update', 'updateNow.click', mn,
+        val);
   }
 };
 
@@ -163,7 +167,7 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.renderDetail_ = function(arr) {
   ul.innerHTML = '';
   for (var i = 0; i < arr.length; i++) {
     var li = document.createElement('LI');
-    ydn.crm.su.renderCacheStats(li, arr[i]);
+    ydn.crm.su.renderCacheStats(li, arr[i], true);
     ul.appendChild(li);
   }
 };

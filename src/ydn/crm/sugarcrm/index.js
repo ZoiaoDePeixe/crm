@@ -496,8 +496,9 @@ ydn.crm.su.getRelationshipCacheModule = function(info, opt_required) {
  * Reder cache static.
  * @param {Element} li
  * @param {Object} obj
+ * @param {boolean=} opt_update_now add update now button.
  */
-ydn.crm.su.renderCacheStats = function (li, obj) {
+ydn.crm.su.renderCacheStats = function (li, obj, opt_update_now) {
 
   var span = document.createElement('span');
   span.textContent = obj['count'] + ' ' + obj['module'];
@@ -527,13 +528,14 @@ ydn.crm.su.renderCacheStats = function (li, obj) {
     modify_span.setAttribute('title', 'Last modified timestamp in server');
     li.appendChild(modify_span);
   }
-
-  li.appendChild(document.createTextNode(' ['));
-  var a_now = document.createElement('A');
-  a_now.textContent = 'Update now';
-  a_now.setAttribute('data-module', obj['module']);
-  a_now.href = '#update-now';
-  li.appendChild(a_now);
-  li.appendChild(document.createTextNode(']'));
+  if (opt_update_now) {
+    li.appendChild(document.createTextNode(' ['));
+    var a_now = document.createElement('A');
+    a_now.textContent = 'Update now';
+    a_now.setAttribute('data-module', obj['module']);
+    a_now.href = '#update-now';
+    li.appendChild(a_now);
+    li.appendChild(document.createTextNode(']'));
+  }
 
 };
