@@ -60,6 +60,35 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.render = function(footer_el) {
   this.handler.listen(ydn.msg.getMain(), ydn.crm.ch.BReq.SUGARCRM_CACHE_UPDATE,
       this.onMessage_);
   this.handler.listen(this.head_, 'click', this.onBtnClick_);
+  this.handler.listen(this.body_, 'click', this.onBodyClick_);
+};
+
+
+/**
+ * @param {goog.events.BrowserEvent} e
+ * @private
+ */
+ydn.crm.ui.CacheUpdateDisplay.prototype.onBodyClick_ = function(e) {
+  if (e.target.tagName == 'A') {
+    e.preventDefault();
+    var a = e.target;
+    var mn = a.getAttribute('data-module');
+    if (mn) {
+      var ch = ydn.msg.getMain().findChannel(ydn.msg.Group.SUGAR);
+      if (ch) {
+        a.textContent = 'updating...';
+        a.href = '';
+        var data = {'module': mn};
+        ch.send(ydn.crm.ch.SReq.UPDATE_NOW, data).addCallbacks(function(x) {
+          a.textContent = 'updated';
+          a.href = '#update-now';
+          this.showDetails_();
+        }, function(e) {
+          a.textContent = 'failed';
+        }, this);
+      }
+    }
+  }
 };
 
 

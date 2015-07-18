@@ -345,7 +345,11 @@ ydn.crm.ch.SReq = {
    * @see ydn.crm.su.Client#upload
    */
   UPLOAD: 'upload',
-  UPDATE_NOW: 'update-now', // begin database update process
+  /**
+   * begin database update process
+   * @see ydn.crm.su.Client#updateNow_
+   */
+  UPDATE_NOW: 'update-now', //
   VALUES: 'values' // record values query
 };
 

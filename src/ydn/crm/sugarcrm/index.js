@@ -528,4 +528,12 @@ ydn.crm.su.renderCacheStats = function (li, obj) {
     li.appendChild(modify_span);
   }
 
+  li.appendChild(document.createTextNode(' ['));
+  var a_now = document.createElement('A');
+  a_now.textContent = 'Update now';
+  a_now.setAttribute('data-module', obj['module']);
+  a_now.href = '#update-now';
+  li.appendChild(a_now);
+  li.appendChild(document.createTextNode(']'));
+
 };
