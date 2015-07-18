@@ -55,8 +55,8 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.render = function(footer_el) {
 
   footer_el.appendChild(this.body_);
   this.body_.classList.add('cache-update-display-body');
-  var ul = document.createElement('UL');
-  this.body_.appendChild(ul);
+  this.body_.innerHTML = '<h3>Cache statistics in this browser</h3>' +
+      '<ul></ul>';
 
   this.handler.listen(ydn.msg.getMain(), ydn.crm.ch.BReq.SUGARCRM_CACHE_UPDATE,
       this.onMessage_);
@@ -147,7 +147,7 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.refreshHead_ = function(data) {
   this.head_.querySelector('.label').textContent = label;
   this.head_.querySelector('.sub').textContent = data['total'];
   this.head_.querySelector('.sup').textContent = data['count'];
-  var title = 'Module ' + data['module'];
+  var title = data['module'] + ' module';
   if (data['ok']) {
     title += ' updated on ' + new Date(data['end']).toLocaleTimeString();
   } else {
