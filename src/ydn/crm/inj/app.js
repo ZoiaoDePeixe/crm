@@ -41,6 +41,7 @@ goog.require('ydn.debug');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
 goog.require('ydn.social.ui.SocialWidget');
+goog.require('ydn.crm.ui.CacheUpdateDisplay');
 
 
 
@@ -167,6 +168,8 @@ ydn.crm.inj.App.prototype.init = function() {
   goog.log.fine(this.logger, 'initializing ' + this);
 
   this.hud.render();
+  var scd = new ydn.crm.ui.CacheUpdateDisplay();
+  scd.render(this.hud.getFooterElement());
   var us = ydn.crm.ui.UserSetting.getInstance();
 
   goog.events.listen(us,

@@ -422,24 +422,7 @@ ydn.crm.su.Widget.prototype.showStats = function(opt_val) {
       for (var i = 0; i < arr.length; i++) {
         var obj = arr[i];
         var li = document.createElement('li');
-        var span = document.createElement('span');
-        span.textContent = obj['count'] + ' ' + obj['module'];
-        li.appendChild(span);
-        var last = new Date(obj['updated']);
-        var last_time = last.getTime();
-        if (last_time) {
-          var last_span = document.createElement('span');
-          last_span.textContent = ', sync ' + goog.date.relative.format(last_time);
-          last_span.setAttribute('title', 'Last synchronized time');
-          li.appendChild(last_span);
-        }
-        var modified = new Date(obj['modified']);
-        if (modified.getTime()) {
-          var modify_span = document.createElement('span');
-          modify_span.textContent = ', last modified on ' + modified.toLocaleString();
-          modify_span.setAttribute('title', 'Last modified timestamp in server');
-          li.appendChild(modify_span);
-        }
+        ydn.crm.su.renderCacheStats(li, obj);
         ul.appendChild(li);
       }
     }, this);

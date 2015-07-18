@@ -163,6 +163,7 @@ ydn.crm.ch.BReq = {
    * @see ydn.crm.app.App#removeSugarClient
    */
   SUGARCRM: 'sugarcrm', // changes in sugarcrm instance. login, logout
+  SUGARCRM_CACHE_UPDATE: 'sugarcrm-ca-up',
   LOGGED_OUT: 'logout',
   LOGGED_IN: 'login',
   NEW_TRACKING_POINT: 'new-tracing-point'
