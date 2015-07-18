@@ -328,7 +328,11 @@ ydn.crm.ch.SReq = {
    * @see ydn.crm.su.Client#setRelationships
    */
   SET_REL: 'set-rel',
-  STATS: 'stats', // statistic of cached data
+  /**
+   * statistic of cached data
+   * @see ydn.crm.su.Client#getStats
+   */
+  STATS: 'stats',
   /**
    * remove sync record that link contact gdata with sugar record.
    * @see {ydn.crm.app.App#unlink}

@@ -31,13 +31,7 @@ ydn.crm.ui.CacheUpdateDisplay = function() {
    * @type {goog.events.EventHandler}
    */
   this.handler = new goog.events.EventHandler(this);
-  /**
-   * @final
-   * @type {Array<ydn.crm.ui.CacheUpdateDisplay.Item>}
-   */
-  this.items = ydn.crm.su.CacheModules.map(function(name) {
-    return new ydn.crm.ui.CacheUpdateDisplay.Item(name);
-  });
+
 };
 
 
@@ -62,9 +56,7 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.render = function(footer_el) {
   this.body_.classList.add('cache-update-display-body');
   var ul = document.createElement('UL');
   this.body_.appendChild(ul);
-  for (var i = 0; i < this.items.length; i++) {
-    this.items[i].render(ul);
-  }
+
   this.handler.listen(ydn.msg.getMain(), ydn.crm.ch.BReq.SUGARCRM_CACHE_UPDATE,
       this.onMessage_);
   this.handler.listen(this.head_, 'click', this.onBtnClick_);
@@ -78,6 +70,23 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.render = function(footer_el) {
 ydn.crm.ui.CacheUpdateDisplay.prototype.onBtnClick_ = function(e) {
   var showing = goog.style.isElementShown(this.body_);
   goog.style.setElementShown(this.body_, !showing);
+  if (!showing) {
+    this.showDetails_();
+  }
+};
+
+
+ydn.crm.ui.CacheUpdateDisplay.prototype.showDetails_ = function() {
+  var ch = ydn.msg.getMain().findChannel(ydn.msg.Group.SUGAR);
+  if (!ch) {
+    goog.style.setElementShown(this.body_, false);
+    this.head_.querySelector('.label').textContent = '';
+    this.head_.setAttribute('title', 'No SugarCRM instance.');
+    return;
+  }
+  return ch.send(ydn.crm.ch.SReq.STATS).addCallback(function(arr) {
+    this.renderDetail_(arr);
+  }, this);
 };
 
 
@@ -89,11 +98,7 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.onMessage_ = function(ev) {
   var data = ev.mesage ? ev.mesage['data'] : null;
   if (data) {
     this.refreshHead_(data);
-    for (var i = 0; i < this.items.length; i++) {
-      if (this.items[i].name == data['module']) {
-        this.items[i].refresh(data);
-      }
-    }
+
   }
 };
 
@@ -102,7 +107,6 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.onMessage_ = function(ev) {
  * @param {Object} data
  */
 ydn.crm.ui.CacheUpdateDisplay.prototype.refreshHead_ = function(data) {
-
   if (!data['end']) {
     return;
   }
@@ -121,55 +125,17 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.refreshHead_ = function(data) {
 
 
 /**
- * Panel representing a module.
- * @param {string} mn item name, module name.
- * @constructor
- * @struct
+ * @param {Array<Object>} arr
+ * @private
  */
-ydn.crm.ui.CacheUpdateDisplay.Item = function(mn) {
-  /**
-   * @final
-   * @type {string}
-   */
-  this.name = mn;
-  this.body_ = document.createElement('LI');
-};
-
-
-/**
- * Render UI.
- * @param {Element} body
- */
-ydn.crm.ui.CacheUpdateDisplay.Item.prototype.render = function(body) {
-
-  body.appendChild(this.body_);
-  this.body_.classList.add('item-body');
-  this.body_.innerHTML = `
-  <span name="total"></span> <span>${this.name} records in cache. </span>
-   <span name="status"></span>`;
-};
-
-
-/**
- * @param {Object} data
- */
-ydn.crm.ui.CacheUpdateDisplay.Item.prototype.refresh = function(data) {
-  console.log(data);
-  var el_status = this.body_.querySelector('[name=status]');
-  if (data['end']) {
-    if (data['ok']) {
-      el_status.textContent = data['count'] + ' records updated on ' +
-          new Date(data['end']).toLocaleTimeString();
-    } else {
-      el_status.textContent = 'update failed on ' +
-          new Date(data['end']).toLocaleTimeString();
-    }
-  } else {
-    el_status.textContent = 'begin updating on ' +
-        new Date(data['start']).toLocaleTimeString();
-  }
-  if (data['total']) {
-    this.body_.querySelector('[name=total]').textContent = data['total'];
+ydn.crm.ui.CacheUpdateDisplay.prototype.renderDetail_ = function(arr) {
+  console.log(arr);
+  var ul = this.body_.querySelector('UL');
+  ul.innerHTML = '';
+  for (var i = 0; i < arr.length; i++) {
+    var li = document.createElement('LI');
+    ydn.crm.su.renderCacheStats(li, arr[i]);
+    ul.appendChild(li);
   }
 };
 

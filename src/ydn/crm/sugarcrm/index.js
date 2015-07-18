@@ -151,6 +151,18 @@ ydn.crm.su.SyncModules = [ydn.crm.su.ModuleName.USERS,
 
 
 /**
+ * Cache only last fetch.
+ * @type {Array.<ydn.crm.su.ModuleName>}
+ */
+ydn.crm.su.PartialSyncModules = [ydn.crm.su.ModuleName.TASKS,
+  ydn.crm.su.ModuleName.MEETINGS,
+  ydn.crm.su.ModuleName.CALLS,
+  ydn.crm.su.ModuleName.CASES,
+  ydn.crm.su.ModuleName.OPPORTUNITIES
+];
+
+
+/**
  * Primary modules are those direct relationship with contact entry.
  * @const
  * @type {Array.<ydn.crm.su.ModuleName>}
@@ -494,14 +506,24 @@ ydn.crm.su.renderCacheStats = function (li, obj) {
   var last_time = last.getTime();
   if (last_time) {
     var last_span = document.createElement('span');
-    last_span.textContent = ', sync ' + goog.date.relative.format(last_time);
+    var up = obj['last-update-count'] || 0;
+    last_span.textContent = ', ' + up + ' records updated ' +
+        goog.date.relative.format(last_time);
     last_span.setAttribute('title', 'Last synchronized time');
     li.appendChild(last_span);
   }
-  var modified = new Date(obj['modified']);
-  if (modified.getTime()) {
+  if (obj['last_record']) {
+    var last_record = obj['last_record'];
+    var modified = new Date(last_record['date_modified']);
+    li.appendChild(document.createTextNode(', '));
+    var a_record = document.createElement('A');
+    a_record.textContent = 'last record';
+    a_record.href = last_record['$ydn_href'] || '';
+    a_record.setAttribute('title', last_record['name']);
+    a_record.setAttribute('target', '_blank');
+    li.appendChild(a_record);
     var modify_span = document.createElement('span');
-    modify_span.textContent = ', last modified on ' + modified.toLocaleString();
+    modify_span.textContent = ' modified on ' + modified.toLocaleString();
     modify_span.setAttribute('title', 'Last modified timestamp in server');
     li.appendChild(modify_span);
   }
