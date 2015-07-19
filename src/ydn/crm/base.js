@@ -59,6 +59,18 @@ ydn.crm.base.ChromeSyncKey = {
   LOGGING_ANALYTICS: 'lg-an',
   LOGGING_DEBUG: 'lg-db',
   USER_SETTING: 'user-setting',
+  /**
+   * SugarCRM module caching option
+   * Value format example:
+   * <pre>
+   *   {
+   *     'full': Array<ydn.crm.su.ModuleName>,
+   *     'partial': Array<ydn.crm.su.ModuleName>
+   *   }
+   * </pre>
+   * @see ydn.crm.su.RecordUpdater#update
+   */
+  SUGAR_CACHING_OPTION: 'su-ch-pro',
   SUGAR_SETTING: 'sugarcrm-setting'
 };
 

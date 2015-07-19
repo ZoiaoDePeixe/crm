@@ -500,9 +500,12 @@ ydn.crm.su.getRelationshipCacheModule = function(info, opt_required) {
  */
 ydn.crm.su.renderCacheStats = function (li, obj, opt_update_now) {
 
+  li.setAttribute('data-module', obj['module']);
   var span = document.createElement('span');
-  span.textContent = obj['count'] + ' ' + obj['module'];
+  span.setAttribute('name', 'count');
+  span.textContent = obj['count'];
   li.appendChild(span);
+  li.appendChild(document.createTextNode(' ' + obj['module']));
   var last = new Date(obj['updated']);
   var last_time = last.getTime();
   if (last_time) {

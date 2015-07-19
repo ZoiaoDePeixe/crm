@@ -56,12 +56,39 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.render = function(footer_el) {
   footer_el.appendChild(this.body_);
   this.body_.classList.add('cache-update-display-body');
   this.body_.innerHTML = '<h3>Cache statistics in this browser</h3>' +
-      '<ul></ul>';
+      '<ul></ul>' +
+      '<p>' +
+      '<button name="update-all">Update all</button>' +
+      '</p>';
 
   this.handler.listen(ydn.msg.getMain(), ydn.crm.ch.BReq.SUGARCRM_CACHE_UPDATE,
       this.onMessage_);
   this.handler.listen(this.head_, 'click', this.onBtnClick_);
   this.handler.listen(this.body_, 'click', this.onBodyClick_);
+  var ua_btn = this.body_.querySelector('button[name="update-all"]');
+  var op_btn = this.body_.querySelector('button[name="option"]');
+  this.handler.listen(ua_btn, 'click', this.onUpdateAll_);
+};
+
+
+/**
+ * @param {goog.events.BrowserEvent} ev
+ * @private
+ */
+ydn.crm.ui.CacheUpdateDisplay.prototype.onUpdateAll_ = function(ev) {
+  var btn = ev.currentTarget;
+  btn.setAttribute('disabled', 'disabled');
+  var me = this;
+  var ch = ydn.msg.getMain().findChannel(ydn.msg.Group.SUGAR);
+  ch.send(ydn.crm.ch.SReq.UPDATE_NOW)
+      .addBoth(function(e) {
+        me.showDetails_().addBoth(function() {
+          btn.removeAttribute('disabled');
+        });
+        if (e && e.message) {
+          alert(e.message);
+        }
+      }, this);
 };
 
 
@@ -131,7 +158,10 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.onMessage_ = function(ev) {
   var data = ev.mesage ? ev.mesage['data'] : null;
   if (data) {
     this.refreshHead_(data);
-
+    var showing = goog.style.isElementShown(this.body_);
+    if (showing) {
+      this.updateItem_(data);
+    }
   }
 };
 
@@ -162,7 +192,6 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.refreshHead_ = function(data) {
  * @private
  */
 ydn.crm.ui.CacheUpdateDisplay.prototype.renderDetail_ = function(arr) {
-  console.log(arr);
   var ul = this.body_.querySelector('UL');
   ul.innerHTML = '';
   for (var i = 0; i < arr.length; i++) {
@@ -170,6 +199,24 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.renderDetail_ = function(arr) {
     ydn.crm.su.renderCacheStats(li, arr[i], true);
     ul.appendChild(li);
   }
+};
+
+
+/**
+ * @param {Object} data
+ * @private
+ */
+ydn.crm.ui.CacheUpdateDisplay.prototype.updateItem_ = function(data) {
+  if (!data['end']) {
+    return;
+  }
+  var mn = data['module'];
+  var li = this.body_.querySelector('LI[data-module="' + mn + '"]');
+  li.innerHTML = '';
+  var ch = ydn.msg.getMain().findChannel(ydn.msg.Group.SUGAR);
+  return ch.send(ydn.crm.ch.SReq.STATS, mn).addCallback(function(obj) {
+    ydn.crm.su.renderCacheStats(li, obj, true);
+  }, this);
 };
 
 
