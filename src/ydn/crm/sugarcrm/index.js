@@ -533,11 +533,19 @@ ydn.crm.su.renderCacheStats = function (li, obj, opt_update_now) {
   }
   if (opt_update_now) {
     li.appendChild(document.createTextNode(' ['));
+
+    var a_detail = document.createElement('A');
+    a_detail.textContent = 'option';
+    a_detail.href = '#option';
+    li.appendChild(a_detail);
+
+    /*
+    li.appendChild(document.createTextNode(' | '));
     var a_now = document.createElement('A');
     a_now.textContent = 'Update now';
-    a_now.setAttribute('data-module', obj['module']);
     a_now.href = '#update-now';
     li.appendChild(a_now);
+    */
     li.appendChild(document.createTextNode(']'));
   }
 

@@ -6,6 +6,7 @@
 goog.provide('ydn.crm.ui.CacheUpdateDisplay');
 goog.require('ydn.crm.shared');
 goog.require('ydn.crm.su');
+goog.require('ydn.crm.su.ui.UpdateOptionDialog');
 goog.require('ydn.msg');
 
 
@@ -46,20 +47,18 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.render = function(footer_el) {
   button.appendChild(this.head_);
   this.head_.classList.add('cache-update-display');
   this.head_.setAttribute('title', 'Cache update process not observed.');
-  this.head_.innerHTML = `
-  <span class="label">-</span>
-  <div class="count">
-    <div class="sup"></div>
-    <div class="sub"></div>
-  </div>`;
+  this.head_.innerHTML = '<span class="label">-</span> ' +
+      '<div class="count"> <div class="sup"></div> ' +
+      '<div class="sub"></div> </div>';
 
   footer_el.appendChild(this.body_);
   this.body_.classList.add('cache-update-display-body');
   this.body_.innerHTML = '<h3>Cache statistics in this browser</h3>' +
       '<ul></ul>' +
-      '<p>' +
+      '<div class="footer-toolbar">' +
       '<button name="update-all">Update all</button>' +
-      '</p>';
+      '<button name="close">Close</button>' +
+      '</div>';
 
   this.handler.listen(ydn.msg.getMain(), ydn.crm.ch.BReq.SUGARCRM_CACHE_UPDATE,
       this.onMessage_);
@@ -67,7 +66,18 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.render = function(footer_el) {
   this.handler.listen(this.body_, 'click', this.onBodyClick_);
   var ua_btn = this.body_.querySelector('button[name="update-all"]');
   var op_btn = this.body_.querySelector('button[name="option"]');
+  var cl_btn = this.body_.querySelector('button[name="close"]');
   this.handler.listen(ua_btn, 'click', this.onUpdateAll_);
+  this.handler.listen(cl_btn, 'click', this.onClose_);
+};
+
+
+/**
+ * @param {goog.events.BrowserEvent} ev
+ * @private
+ */
+ydn.crm.ui.CacheUpdateDisplay.prototype.onClose_ = function(ev) {
+  goog.style.setElementShown(this.body_, false);
 };
 
 
@@ -98,27 +108,34 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.onUpdateAll_ = function(ev) {
  */
 ydn.crm.ui.CacheUpdateDisplay.prototype.onBodyClick_ = function(e) {
   if (e.target.tagName == 'A') {
-    e.preventDefault();
     var a = e.target;
-    var mn = a.getAttribute('data-module');
-    var val = 0;
-    if (mn) {
-      var ch = ydn.msg.getMain().findChannel(ydn.msg.Group.SUGAR);
-      if (ch) {
-        val = 1;
-        a.textContent = 'updating...';
-        a.href = '';
-        var data = {'module': mn};
-        ch.send(ydn.crm.ch.SReq.UPDATE_NOW, data).addCallbacks(function(x) {
-          a.textContent = 'updated';
-          this.showDetails_();
-        }, function(e) {
-          a.textContent = 'failed';
-        }, this);
+    var li = goog.dom.getAncestorByTagNameAndClass(a, 'LI');
+    var hash = a.getAttribute('href');
+    var mn = /** @type {ydn.crm.su.ModuleName} */(li.getAttribute('data-module'));
+    if (hash == '#update-now') {
+      e.preventDefault();
+      var val = 0;
+      if (mn) {
+        var ch = ydn.msg.getMain().findChannel(ydn.msg.Group.SUGAR);
+        if (ch) {
+          val = 1;
+          a.textContent = 'updating...';
+          a.href = '';
+          var data = {'module': mn};
+          ch.send(ydn.crm.ch.SReq.UPDATE_NOW, data).addCallbacks(function(x) {
+            a.textContent = 'updated';
+            this.showDetails_();
+          }, function(e) {
+            a.textContent = 'failed';
+          }, this);
+        }
       }
+    } else if (hash == '#option') {
+      e.preventDefault();
+      ydn.crm.su.ui.UpdateOptionDialog.showModel(mn);
     }
-    ydn.crm.shared.logAnalyticValue('ui.cache-update', 'updateNow.click', mn,
-        val);
+    ydn.crm.shared.logAnalyticValue('ui.cache-update',
+        'updateNow.click.' + hash, mn, val);
   }
 };
 

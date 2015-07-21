@@ -346,10 +346,25 @@ ydn.crm.ch.SReq = {
    */
   UPLOAD: 'upload',
   /**
+   * Show sugarcrm module sync information.
+   * @see ydn.crm.su.RecordUpdater#auditCheckPoint
+   */
+  UPDATE_AUDIT: 'update-audio',
+  /**
+   * Remove cached records.
+   * @see ydn.crm.su.Client#clearCache
+   */
+  UPDATE_CLEAR: 'update-clear', //
+  /**
    * begin database update process
    * @see ydn.crm.su.Client#updateNow_
    */
   UPDATE_NOW: 'update-now', //
+  /**
+   * Remove sync checkpoint.
+   * @see ydn.crm.su.RecordUpdater#resetCheckPoint
+   */
+  UPDATE_RESET_CHECKPOINT: 'update-reset',
   VALUES: 'values' // record values query
 };
 
