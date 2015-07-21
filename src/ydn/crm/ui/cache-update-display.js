@@ -133,6 +133,8 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.onBodyClick_ = function(e) {
     } else if (hash == '#option') {
       e.preventDefault();
       ydn.crm.su.ui.UpdateOptionDialog.showModel(mn);
+      ydn.crm.shared.logAnalyticValue('ui.cache-update',
+          'option.click.' + hash, mn, 0);
     }
     ydn.crm.shared.logAnalyticValue('ui.cache-update',
         'updateNow.click.' + hash, mn, val);
@@ -149,6 +151,8 @@ ydn.crm.ui.CacheUpdateDisplay.prototype.onBtnClick_ = function(e) {
   goog.style.setElementShown(this.body_, !showing);
   if (!showing) {
     this.showDetails_();
+    ydn.crm.shared.logAnalyticValue('ui.cache-update',
+        'click', 'open', 0);
   }
 };
 

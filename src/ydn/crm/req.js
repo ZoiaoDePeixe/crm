@@ -254,6 +254,11 @@ ydn.crm.ch.SReq = {
    */
   LIST_NAME: 'list-name',
   /**
+   * List upcoming activities.
+   * @see ydn.crm.su.Client#listUpcomingAsync_
+   */
+  LIST_UPCOMING_ASYNC: 'list-upcoming-async',
+  /**
    * Do silence login with stored credentials.
    * @see ydn.crm.su.Client#login
    */
