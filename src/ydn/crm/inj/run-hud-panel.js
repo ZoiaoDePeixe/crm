@@ -16,18 +16,18 @@ ydn.ui.setTemplateDocument('/inj-template.html');
 
 var hud = new ydn.crm.inj.Hud();
 hud.render();
+var panel = new goog.ui.Component();
+var panel_div = document.createElement('div');
+panel_div.textContent = 'Panel content';
+panel_div.style.overflowY = 'auto';
+panel_div.style.border = 'lightblue solid thin';
+
 
 user.onReady().addCallbacks(function() {
   document.getElementById('gmail-account').textContent = user.getLoginEmail();
 
-  var panel = new goog.ui.Component();
   hud.addPanel(panel);
-  var el = panel.getElement();
-  var div = document.createElement('div');
-  div.textContent = 'Panel content';
-  div.style.height = '100px';
-  div.style.border = 'lightblue solid thin';
-  el.appendChild(div);
+  panel.getElement().appendChild(panel_div);
 }, function(e) {
   window.console.error(e);
 });
@@ -49,5 +49,13 @@ btn_close.onclick = function(e) {
 };
 
 
+var btn_load = document.getElementById('load');
+btn_load.onclick = function(e) {
+  for (var i = 0; i < 5; i++) {
+    var p = document.createElement('p');
+    p.textContent = i + ' some data added on ' + new Date().toLocaleString();
+    panel_div.appendChild(p);
+  }
+};
 
 
