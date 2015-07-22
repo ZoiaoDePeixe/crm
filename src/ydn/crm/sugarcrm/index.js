@@ -146,7 +146,8 @@ ydn.crm.su.CacheModules = [ydn.crm.su.ModuleName.USERS,
 ydn.crm.su.SyncModules = [ydn.crm.su.ModuleName.USERS,
   // sync template first, so that it is appear immediately after login.
   ydn.crm.su.ModuleName.EMAIL_TEMPLATES,
-  ydn.crm.su.ModuleName.CONTACTS
+  ydn.crm.su.ModuleName.CONTACTS,
+  ydn.crm.su.ModuleName.EMPLOYEES
 ];
 
 
