@@ -212,6 +212,7 @@ ydn.crm.inj.Hud.prototype.savePosition_ = function() {
  */
 ydn.crm.inj.Hud.prototype.loadPosition_ = function() {
   var key = ydn.crm.base.ChromeLocalKey.POSITION_HUD_BASE;
+  var hud_base = document.getElementById('sticky-hud-base');
   chrome.storage.local.get(key, function(obj) {
     var size = obj[key];
     var top_px = 200; // default
@@ -221,13 +222,13 @@ ydn.crm.inj.Hud.prototype.loadPosition_ = function() {
         top_px = parseInt(top_px, 10);
       }
       if (top_px > 50 && top_px < 400) {
-        var hud_base = document.getElementById('sticky-hud-base');
         hud_base.style.top = top_px + 'px';
       }
     }
     // set max-height so that, container has scroll
     var container = hud_base.querySelector('.popup-content');
     container.style.maxHeight = 'calc(100vh - ' + (top_px + 40) + 'px)';
+    window.console.log('hud.loadPosition_');
   });
 };
 
