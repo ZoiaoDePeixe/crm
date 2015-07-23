@@ -337,5 +337,3 @@ ydn.crm.inj.Hud.prototype.addPanel = function(panel) {
 };
 
 
-
-

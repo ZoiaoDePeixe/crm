@@ -78,3 +78,11 @@ ydn.crm.templ.renderUpdateOptionDialog = function(mn) {
     <button name="update" title="Update records from server to cache">Update now</button>
   </div>`;
 };
+
+
+/**
+ * @return {string} HTML.
+ */
+ydn.crm.templ.renderDesktopFooterContent = function() {
+  return `<div name="back"></div>`;
+};

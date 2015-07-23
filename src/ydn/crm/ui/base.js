@@ -284,3 +284,23 @@ ydn.crm.ui.createSvgIconBySymbol = function(fileName, name) {
   return svg;
 };
 
+
+/**
+ * FIXME: for scrolling to work.
+ * @param {Element} el target scroll element.
+ */
+ydn.crm.ui.fixHeightForScrollbar = function(el) {
+  var base_el = goog.dom.getAncestorByClass(document.body, 'popup-content');
+  if (base_el) {
+    var max_height = base_el.style.maxHeight;
+    var gp = max_height.match(/100vh - (\d+)px/);
+    if (gp) {
+      var h = parseInt(gp[1], 10);
+      el.style.overflowY = 'auto';
+      el.style.maxHeight = 'calc(100vh - ' + (h + 150) + 'px)';
+    }
+  }
+};
+
+
+
