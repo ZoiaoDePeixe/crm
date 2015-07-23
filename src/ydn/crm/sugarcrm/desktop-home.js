@@ -3,10 +3,11 @@
  */
 
 goog.provide('ydn.crm.su.ui.DesktopHome');
-goog.require('goog.ui.Component');
 goog.require('goog.log');
+goog.require('goog.ui.Component');
 goog.require('ydn.crm.su.ui');
-goog.require('ydn.crm.su.ui.SugarPanel');
+goog.require('ydn.crm.su.ui.RecordTile');
+goog.require('ydn.crm.su.model.Sugar');
 
 
 
@@ -41,7 +42,7 @@ ydn.crm.su.ui.DesktopHome.prototype.logger =
  * @const
  * @type {string}
  */
-ydn.crm.su.ui.DesktopHome.CSS_CLASS = 'sidebar';
+ydn.crm.su.ui.DesktopHome.CSS_CLASS = 'sugarcrm-desktop';
 
 
 /**
@@ -115,8 +116,8 @@ ydn.crm.su.ui.DesktopHome.prototype.toString = function() {
 
 /**
  * Set SugarCRM.
- * @param {?SugarCrm.Details} details
- * @return {ydn.crm.su.model.GDataSugar}
+ * @param {SugarCrm.Details?} details
+ * @return {ydn.crm.su.model.Sugar} the model used.
  */
 ydn.crm.su.ui.DesktopHome.prototype.setSugarCrm = function(details) {
   var no_sugar = this.getHeaderElement().querySelector('.' +
@@ -140,7 +141,7 @@ ydn.crm.su.ui.DesktopHome.prototype.setSugarCrm = function(details) {
     var model = panel.getModel();
     if (model.getDomain() == about.domain) {
       goog.log.finer(this.logger, 'sugar panel ' + model.getDomain() + ' already exists.');
-      return null;
+      return model;
     }
     goog.log.fine(this.logger, 'disposing sugar panel ' + model.getDomain());
     this.removeChild(panel, true);
@@ -151,9 +152,9 @@ ydn.crm.su.ui.DesktopHome.prototype.setSugarCrm = function(details) {
   var us = ydn.crm.ui.UserSetting.getInstance();
 
   var ac = us.getLoginEmail();
-  var sugar = new ydn.crm.su.model.GDataSugar(details.about,
-      details.modulesInfo, ac, details.serverInfo);
-  panel = new ydn.crm.su.ui.SugarPanel(sugar, this.dom_);
+  var sugar = new ydn.crm.su.model.Sugar(details.about,
+      details.modulesInfo, details.serverInfo);
+  panel = new ydn.crm.su.ui.DesktopHome.Content(sugar, this.dom_);
   goog.log.fine(this.logger, 'sugar panel ' + about.domain + ' added.');
   this.addChild(panel, true);
 
@@ -175,19 +176,56 @@ ydn.crm.su.ui.DesktopHome.prototype.setVisible = function(val) {
  * @param {string} id
  */
 ydn.crm.su.ui.DesktopHome.prototype.showRecord = function(m_name, id) {
-  var panel = this.getSugarCrmPanel();
-  if (panel) {
-    panel.showRecord(m_name, id);
-  }
+
 };
 
 
 /**
- * @return {ydn.crm.su.ui.SugarPanel?}
+ * @return {ydn.crm.su.ui.DesktopHome.Content?}
  * @protected
  */
 ydn.crm.su.ui.DesktopHome.prototype.getSugarCrmPanel = function() {
-  return /** @type {ydn.crm.su.ui.SugarPanel} */ (this.getChildAt(0)) || null;
+  return /** @type {ydn.crm.su.ui.DesktopHome.Content} */ (this.getChildAt(0)) || null;
 };
 
+
+
+/**
+ * SugarCRM Home page content.
+ * @param {!ydn.crm.su.model.Sugar} sugar
+ * @param {goog.dom.DomHelper=} opt_dom
+ * @constructor
+ * @extends {goog.ui.Component}
+ */
+ydn.crm.su.ui.DesktopHome.Content = function(sugar, opt_dom) {
+  goog.base(this, opt_dom);
+  this.setModel(sugar);
+};
+goog.inherits(ydn.crm.su.ui.DesktopHome.Content, goog.ui.Component);
+
+
+/**
+ * @return {ydn.crm.su.model.Sugar}
+ * @override
+ */
+ydn.crm.su.ui.DesktopHome.Content.prototype.getModel;
+
+
+/**
+ * @inheritDoc
+ */
+ydn.crm.su.ui.DesktopHome.Content.prototype.createDom = function() {
+  goog.base(this, 'createDom');
+  var root = this.getElement();
+  var dom = this.getDomHelper();
+  /**
+   * @type {ydn.crm.su.model.Sugar}
+   */
+  var model = this.getModel();
+  var modules = model.listModules();
+  for (var i = 0; i < modules.length; i++) {
+    var child = new ydn.crm.su.ui.RecordTile(model, modules[i], dom);
+    this.addChild(child, true);
+  }
+};
 

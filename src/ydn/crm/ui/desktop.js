@@ -8,6 +8,7 @@ goog.require('goog.ui.Button');
 goog.require('goog.ui.Toolbar');
 goog.require('ydn.crm.ui');
 goog.require('ydn.crm.ui.DesktopHome');
+goog.require('ydn.crm.ui.events');
 
 
 
@@ -81,8 +82,20 @@ ydn.crm.ui.Desktop.prototype.enterDocument = function() {
   var root = this.getElement();
   // Listen events
   var hd = this.getHandler();
+  hd.listen(this, ydn.crm.ui.events.EventType.SHOW_PANEL, this.onShowPage_);
   ydn.crm.ui.fixHeightForScrollbar(root);
   this.showPage(ydn.crm.ui.DesktopHome.NAME);
+};
+
+
+/**
+ * @param {ydn.crm.ui.events.ShowPanelEvent} ev
+ * @private
+ */
+ydn.crm.ui.Desktop.prototype.onShowPage_ = function(ev) {
+  if (ydn.crm.ui.Desktop.DEBUG) {
+    window.console.log('show page: ' + ev.name, ev.data);
+  }
 };
 
 

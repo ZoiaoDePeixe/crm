@@ -81,8 +81,13 @@ ydn.crm.templ.renderUpdateOptionDialog = function(mn) {
 
 
 /**
+ * @param {string} symbol module symbol, e.g: 'Ac'
+ * @param {string} label module label, e.g: 'Accounts'
  * @return {string} HTML.
  */
-ydn.crm.templ.renderDesktopFooterContent = function() {
-  return `<div name="back"></div>`;
+ydn.crm.templ.renderSugarCrmRecordTile = function(symbol, label) {
+  return `<div class="record-tile bg-color">
+    <span class="symbol">${symbol}</span>
+  </div>
+  <div class="label">${label}</div>`;
 };

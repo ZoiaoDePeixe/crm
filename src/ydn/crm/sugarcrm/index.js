@@ -357,7 +357,19 @@ ydn.crm.su.parseViewLinkV7 = function(url) {
  * @return {string} module symbol.
  */
 ydn.crm.su.toModuleSymbol = function(m_name) {
-  return m_name ? m_name.substr(0, 2) : '';
+  if (!m_name) {
+    return '';
+  } else if (m_name == 'Employees') {
+    return 'Ep';
+  } else if (m_name == 'Cases') {
+    return 'Cs';
+  }
+  var caps = m_name.match(/[A-Z]/g);
+  if (caps && caps.length > 1) {
+    return caps.join('');
+  } else {
+    return m_name.substr(0, 2);
+  }
 };
 
 
