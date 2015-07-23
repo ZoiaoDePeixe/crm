@@ -13,19 +13,19 @@ goog.require('ydn.crm.ui.DesktopHome');
 
 /**
  * Home screen desktop responsible for icons layout and routing.
- * @param {goog.dom.DomHelper} dom
+ * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
  */
-ydn.crm.ui.Desktop = function(dom) {
-  goog.base(this, dom);
+ydn.crm.ui.Desktop = function(opt_dom) {
+  goog.base(this, opt_dom);
 
   /**
    * @type {goog.ui.Toolbar}
    * @private
    */
-  this.toolbar_ = new goog.ui.Toolbar(dom);
+  this.toolbar_ = new goog.ui.Toolbar(opt_dom);
 };
 goog.inherits(ydn.crm.ui.Desktop, goog.ui.Component);
 
@@ -60,7 +60,7 @@ ydn.crm.ui.Desktop.prototype.createDom = function() {
   this.toolbar_.addChild(home_btn, true);
   this.toolbar_.render(footer);
 
-  var home = new ydn.crm.ui.DesktopHome();
+  var home = new ydn.crm.ui.DesktopHome(dom);
   this.addChild(home, true);
 };
 
@@ -82,6 +82,7 @@ ydn.crm.ui.Desktop.prototype.enterDocument = function() {
   // Listen events
   var hd = this.getHandler();
   ydn.crm.ui.fixHeightForScrollbar(root);
+  this.showPage(ydn.crm.ui.DesktopHome.NAME);
 };
 
 
@@ -108,6 +109,18 @@ ydn.crm.ui.Desktop.prototype.showPage = function(name) {
 
 
 /**
+ * @override
+ */
+ydn.crm.ui.Desktop.prototype.addChild = function(child, opt_render) {
+  ydn.crm.ui.Desktop.base(this, 'addChild', child, opt_render);
+  var el = child.getElement();
+  if (el) {
+    goog.style.setElementShown(el, false);
+  }
+};
+
+
+/**
  * @param {string} name
  * @return {goog.ui.Component}
  */
@@ -122,7 +135,9 @@ ydn.crm.ui.Desktop.prototype.getPage = function(name) {
 };
 
 
-
+/**
+ * @return {ydn.crm.ui.DesktopHome}
+ */
 ydn.crm.ui.Desktop.prototype.getHomePage = function() {
-  return this.getPage('Home');
+  return /** @type {ydn.crm.ui.DesktopHome} */(this.getPage(ydn.crm.ui.DesktopHome.NAME));
 };

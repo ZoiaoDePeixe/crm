@@ -31,7 +31,7 @@ goog.require('ydn.crm.shared');
 goog.require('ydn.crm.su.Archiver');
 goog.require('ydn.crm.su.AttachButtonProvider');
 goog.require('ydn.crm.su.ContextWidget');
-goog.require('ydn.crm.ui.SidebarPanel');
+goog.require('ydn.crm.su.ui.DesktopHome');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
 
@@ -83,9 +83,9 @@ ydn.crm.inj.SugarCrmApp = function(us, heading_injector, gmail_observer,
 
   /**
    * @final
-   * @type {ydn.crm.ui.SidebarPanel}
+   * @type {ydn.crm.su.ui.DesktopHome}
    */
-  this.sidebar_panel = new ydn.crm.ui.SidebarPanel();
+  this.sidebar_panel = new ydn.crm.su.ui.DesktopHome();
 
   /**
    * @final

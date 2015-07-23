@@ -32,8 +32,15 @@ ydn.crm.ui.DesktopHome.prototype.createDom = function() {
 
 
 /**
+ * @const
+ * @type {string}
+ */
+ydn.crm.ui.DesktopHome.NAME = 'Home';
+
+
+/**
  * @inheritDoc
  */
 ydn.crm.ui.DesktopHome.prototype.toString = function() {
-  return 'Home';
+  return ydn.crm.ui.DesktopHome.NAME;
 };
