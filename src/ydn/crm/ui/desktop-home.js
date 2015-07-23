@@ -29,3 +29,11 @@ ydn.crm.ui.DesktopHome.prototype.createDom = function() {
   var root = this.getElement();
   root.textContent = 'Desktop home';
 };
+
+
+/**
+ * @inheritDoc
+ */
+ydn.crm.ui.DesktopHome.prototype.toString = function() {
+  return 'Home';
+};

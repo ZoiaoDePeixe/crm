@@ -16,6 +16,9 @@
 /**
  * @fileoverview SugarCRM app.
  *
+ * SugarCRM app is responsible for instantiating SugarCRM related root component
+ * and manage SugarCRM model that connect with the background page.
+ *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
 

@@ -7,6 +7,7 @@ goog.provide('ydn.crm.ui.Desktop');
 goog.require('goog.ui.Button');
 goog.require('goog.ui.Toolbar');
 goog.require('ydn.crm.ui');
+goog.require('ydn.crm.ui.DesktopHome');
 
 
 
@@ -58,6 +59,9 @@ ydn.crm.ui.Desktop.prototype.createDom = function() {
   var home_btn = new goog.ui.Button('Home', null, dom);
   this.toolbar_.addChild(home_btn, true);
   this.toolbar_.render(footer);
+
+  var home = new ydn.crm.ui.DesktopHome();
+  this.addChild(home, true);
 };
 
 
@@ -100,4 +104,25 @@ ydn.crm.ui.Desktop.prototype.showPage = function(name) {
       goog.style.setElementShown(child.getElement(), i == idx);
     }
   }
+};
+
+
+/**
+ * @param {string} name
+ * @return {goog.ui.Component}
+ */
+ydn.crm.ui.Desktop.prototype.getPage = function(name) {
+  for (var i = 0; i < this.getChildCount(); i++) {
+    var child = this.getChildAt(i);
+    if (child.toString() == name) {
+      return child;
+    }
+  }
+  return null;
+};
+
+
+
+ydn.crm.ui.Desktop.prototype.getHomePage = function() {
+  return this.getPage('Home');
 };

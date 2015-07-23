@@ -60,7 +60,8 @@ ydn.crm.su.WidgetModel = function(opt_about) {
 
   if (this.about && this.about.domain) {
     var pipe = ydn.msg.getMain();
-    this.handler.listen(pipe, [ydn.crm.ch.BReq.SUGARCRM, ydn.crm.ch.BReq.HOST_PERMISSION],
+    this.handler.listen(pipe, [ydn.crm.ch.BReq.SUGARCRM,
+          ydn.crm.ch.BReq.HOST_PERMISSION],
         this.handleMessage);
 
     this.getServerInfo(/** @type {string} */(this.about.baseUrl));
@@ -110,13 +111,15 @@ ydn.crm.su.WidgetModel.prototype.handleMessage = function(e) {
     if (data['type'] == 'login') {
       var about = /** @type {SugarCrm.About} */ (data['about']);
       this.about = about;
-      this.dispatchEvent(new goog.events.Event(ydn.crm.su.SugarEvent.LOGIN, this));
+      this.dispatchEvent(new goog.events.Event(
+          ydn.crm.su.SugarEvent.LOGIN, this));
     }
   } else if (e.type == ydn.crm.ch.BReq.HOST_PERMISSION && this.about) {
     var msg = e.getData();
     if (msg['grant'] && msg['grant'] == this.getDomain()) {
       this.about.hostPermission = true;
-      this.dispatchEvent(new goog.events.Event(ydn.crm.su.SugarEvent.HOST_ACCESS_GRANT, this));
+      this.dispatchEvent(new goog.events.Event(
+          ydn.crm.su.SugarEvent.HOST_ACCESS_GRANT, this));
     }
   }
 };
@@ -157,7 +160,8 @@ ydn.crm.su.WidgetModel.prototype.getChannel = function() {
  * @template T
  * @return {boolean}
  */
-ydn.crm.su.WidgetModel.prototype.hasHostPermission = function(opt_cb, opt_scope) {
+ydn.crm.su.WidgetModel.prototype.hasHostPermission = function(opt_cb,
+                                                              opt_scope) {
   var permissions = this.getPermissionObject();
   chrome.permissions.contains(permissions, function(grant) {
     // console.log(scope, grant);
@@ -243,11 +247,6 @@ ydn.crm.su.WidgetModel.prototype.getInfo = function() {
 };
 
 
-ydn.crm.su.WidgetModel.prototype.reLogin = function() {
-
-};
-
-
 /**
  * Login to sugarcrm.
  * @param {string} url
@@ -256,7 +255,8 @@ ydn.crm.su.WidgetModel.prototype.reLogin = function() {
  * @param {string} provider
  * @return {!goog.async.Deferred.<SugarCrm.About>} cb
  */
-ydn.crm.su.WidgetModel.prototype.login = function(url, username, password, provider) {
+ydn.crm.su.WidgetModel.prototype.login = function(url, username, password,
+                                                  provider) {
   this.setInstanceUrl(url);
   window.console.assert(!!this.about, 'Not initialized');
   if (username) {
@@ -294,7 +294,10 @@ ydn.crm.su.WidgetModel.prototype.login = function(url, username, password, provi
 
 /**
  * Chrome host permission request object.
- * @return {{origins: (Array.<string>|undefined), permissions: (Array.<string>|undefined)}}
+ * @return {{
+ *   origins: (Array.<string>|undefined),
+ *   permissions: (Array.<string>|undefined)
+ * }}
  */
 ydn.crm.su.WidgetModel.prototype.getPermissionObject = function() {
   var uri = new goog.Uri(this.about.baseUrl);
@@ -308,14 +311,15 @@ ydn.crm.su.WidgetModel.prototype.getPermissionObject = function() {
  * @return {!goog.async.Deferred.<Array.<ydn.crm.su.WidgetModel>>} cb
  */
 ydn.crm.su.WidgetModel.list = function() {
-  return ydn.msg.getChannel().send(ydn.crm.ch.Req.LIST_SUGAR).addCallback(function(abouts) {
-    var models = [];
-    for (var i = 0; i < abouts.length; i++) {
-      var about = /** @type {SugarCrm.About} */ (abouts[i]);
-      models[i] = new ydn.crm.su.WidgetModel(about);
-    }
-    return models;
-  });
+  return ydn.msg.getChannel().send(ydn.crm.ch.Req.LIST_SUGAR)
+      .addCallback(function(abouts) {
+        var models = [];
+        for (var i = 0; i < abouts.length; i++) {
+          var about = /** @type {SugarCrm.About} */ (abouts[i]);
+          models[i] = new ydn.crm.su.WidgetModel(about);
+        }
+        return models;
+      });
 };
 
 
