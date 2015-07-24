@@ -1,3 +1,19 @@
+// Copyright 2015 YDN Authors. All Rights Reserved.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
 /**
  * @fileoverview SugarCRM home content page.
  */
@@ -5,9 +21,9 @@
 goog.provide('ydn.crm.su.ui.DesktopHome');
 goog.require('goog.log');
 goog.require('goog.ui.Component');
+goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.crm.su.ui');
 goog.require('ydn.crm.su.ui.RecordTile');
-goog.require('ydn.crm.su.model.Sugar');
 
 
 
@@ -122,7 +138,6 @@ ydn.crm.su.ui.DesktopHome.prototype.toString = function() {
 ydn.crm.su.ui.DesktopHome.prototype.setSugarCrm = function(details) {
   var no_sugar = this.getHeaderElement().querySelector('.' +
       ydn.crm.su.ui.CSS_CLASS_NO_SUGAR_PANEL);
-  var q = no_sugar.querySelector('a');
   var panel = this.getSugarCrmPanel();
   var about = details ? details.about : null;
   if (!about) {
@@ -151,7 +166,6 @@ ydn.crm.su.ui.DesktopHome.prototype.setSugarCrm = function(details) {
 
   var us = ydn.crm.ui.UserSetting.getInstance();
 
-  var ac = us.getLoginEmail();
   var sugar = new ydn.crm.su.model.Sugar(details.about,
       details.modulesInfo, details.serverInfo);
   panel = new ydn.crm.su.ui.DesktopHome.Content(sugar, this.dom_);

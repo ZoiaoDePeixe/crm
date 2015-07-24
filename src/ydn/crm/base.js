@@ -3,8 +3,8 @@
  */
 
 goog.provide('ydn.crm.base');
-goog.require('goog.async.Deferred');
 goog.provide('ydn.crm.base.ContextPanelPosition');
+goog.require('goog.async.Deferred');
 
 
 /**

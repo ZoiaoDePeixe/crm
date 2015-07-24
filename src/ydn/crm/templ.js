@@ -91,3 +91,17 @@ ydn.crm.templ.renderSugarCrmRecordTile = function(symbol, label) {
   </div>
   <div class="label">${label}</div>`;
 };
+
+
+/**
+ * @param {string} symbol module symbol, e.g: 'Ac'
+ * @param {string} label module label, e.g: 'Accounts'
+ * @return {string} HTML.
+ */
+ydn.crm.templ.renderSugarCrmModule = function(symbol, label) {
+  return `<div class="head">
+    <span class="symbol">${symbol}</span>
+    <span name="filter"></span>
+  </div>
+  <div class="content"></div>`;
+};
