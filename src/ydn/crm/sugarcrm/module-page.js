@@ -32,6 +32,7 @@ goog.require('goog.ui.Css3MenuButtonRenderer');
 goog.require('goog.ui.CustomButton');
 goog.require('goog.ui.Menu');
 goog.require('goog.ui.MenuButton');
+goog.require('goog.ui.MenuSeparator');
 goog.require('goog.ui.Toolbar');
 goog.require('wgui.TextInput');
 goog.require('ydn.crm.ui.events');
@@ -60,7 +61,9 @@ ydn.crm.su.ui.ModulePage = function(sugar, name, opt_dom) {
    * @type {goog.ui.Toolbar}
    * @private
    */
-  this.toolbar_ = new goog.ui.Toolbar();
+  this.toolbar_ = new goog.ui.Toolbar(null,
+      goog.ui.Container.Orientation.HORIZONTAL, opt_dom);
+  this.menu_ = new goog.ui.Menu(opt_dom);
   this.setModel(sugar);
 };
 goog.inherits(ydn.crm.su.ui.ModulePage, goog.ui.Component);
@@ -78,6 +81,143 @@ ydn.crm.su.ui.ModulePage.prototype.getModel;
  */
 ydn.crm.su.ui.ModulePage.prototype.getContentElement = function() {
   return this.getElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_CONTENT);
+};
+
+
+/**
+ * Set of filter
+ * @enum {string}
+ */
+ydn.crm.su.ui.ModulePage.Filter = {
+  ALL: 'filter-all',
+  MY: 'filter-my',
+  FAVORITE: 'filter-fav',
+  CACHE: 'filter-cache'
+};
+
+
+/**
+ * Set of sort order
+ * @enum {string}
+ */
+ydn.crm.su.ui.ModulePage.Order = {
+  ID: 'order-id',
+  RECENT: 'order-rc',
+  NAME: 'order-na'
+};
+
+
+/**
+ * @private
+ */
+ydn.crm.su.ui.ModulePage.prototype.buildMenu_ = function() {
+  var dom = this.getDomHelper();
+  var s_menu = this.menu_;
+  s_menu.addChild(new goog.ui.CheckBoxMenuItem('All records',
+      ydn.crm.su.ui.ModulePage.Filter.ALL, dom), true);
+  var my_item = new goog.ui.CheckBoxMenuItem('My records',
+      ydn.crm.su.ui.ModulePage.Filter.MY, dom);
+  my_item.setChecked(true);
+  s_menu.addChild(my_item, true);
+  s_menu.addChild(new goog.ui.CheckBoxMenuItem('Favorites',
+      ydn.crm.su.ui.ModulePage.Filter.FAVORITE, dom), true);
+  s_menu.addChild(new goog.ui.CheckBoxMenuItem('Cache',
+      ydn.crm.su.ui.ModulePage.Filter.CACHE, dom), true);
+  s_menu.addChild(new goog.ui.MenuSeparator(dom), true);
+
+  s_menu.addChild(new goog.ui.CheckBoxMenuItem('Id',
+      ydn.crm.su.ui.ModulePage.Order.ID, dom), true);
+  var r_item = new goog.ui.CheckBoxMenuItem('Recent',
+      ydn.crm.su.ui.ModulePage.Order.RECENT, dom);
+  r_item.setChecked(true);
+  s_menu.addChild(r_item, true);
+  s_menu.addChild(new goog.ui.CheckBoxMenuItem('Name',
+      ydn.crm.su.ui.ModulePage.Order.NAME, dom), true);
+};
+
+
+/**
+ * Get active filter.
+ * @return {ydn.crm.su.ui.ModulePage.Filter} active filter.
+ */
+ydn.crm.su.ui.ModulePage.prototype.getFilter = function() {
+  for (var i = 0, n = this.menu_.getChildCount(); i < n; i++) {
+    var child = /** @type {goog.ui.Control} */(this.menu_.getChildAt(i));
+    if (!(child instanceof goog.ui.Control) || !child.isChecked()) {
+      continue;
+    }
+    var name = child.getModel() || '';
+    if (name == ydn.crm.su.ui.ModulePage.Filter.ALL) {
+      return ydn.crm.su.ui.ModulePage.Filter.ALL;
+    } else if (name == ydn.crm.su.ui.ModulePage.Filter.MY) {
+      return ydn.crm.su.ui.ModulePage.Filter.MY;
+    } else if (name == ydn.crm.su.ui.ModulePage.Filter.FAVORITE) {
+      return ydn.crm.su.ui.ModulePage.Filter.FAVORITE;
+    } else if (name == ydn.crm.su.ui.ModulePage.Filter.CACHE) {
+      return ydn.crm.su.ui.ModulePage.Filter.CACHE;
+    }
+  }
+  return ydn.crm.su.ui.ModulePage.Filter.ALL;
+};
+
+
+/**
+ * Set active filter.
+ * @param {ydn.crm.su.ui.ModulePage.Filter} filter
+ */
+ydn.crm.su.ui.ModulePage.prototype.setFilter = function(filter) {
+  for (var i = 0, n = this.menu_.getChildCount(); i < n; i++) {
+    var child = /** @type {goog.ui.Control} */(this.menu_.getChildAt(i));
+    if (!(child instanceof goog.ui.Control)) {
+      continue;
+    }
+    var name = /** @type {string} */(child.getModel()) || '';
+    if (goog.string.startsWith(name, 'filter-')) {
+      child.setChecked(filter == name);
+    }
+  }
+  this.updateSearchLabel_();
+};
+
+
+/**
+ * Set sort order.
+ * @param {ydn.crm.su.ui.ModulePage.Order} order
+ */
+ydn.crm.su.ui.ModulePage.prototype.setOrder = function(order) {
+  for (var i = 0, n = this.menu_.getChildCount(); i < n; i++) {
+    var child = /** @type {goog.ui.Control} */(this.menu_.getChildAt(i));
+    if (!(child instanceof goog.ui.Control)) {
+      continue;
+    }
+    var name = /** @type {string} */(child.getModel()) || '';
+    if (goog.string.startsWith(name, 'order-')) {
+      child.setChecked(order == name);
+    }
+  }
+};
+
+
+/**
+ * Get active sort order.
+ * @return {ydn.crm.su.ui.ModulePage.Order} active sort order.
+ */
+ydn.crm.su.ui.ModulePage.prototype.getSortOrder = function() {
+  for (var i = 0, n = this.menu_.getChildCount(); i < n; i++) {
+    var child = /** @type {goog.ui.Control} */(this.menu_.getChildAt(i));
+    if (!(child instanceof goog.ui.Control) || !child.isChecked()) {
+      continue;
+    }
+    var name = child.getModel() || '';
+    if (name == ydn.crm.su.ui.ModulePage.Order.ID) {
+      return ydn.crm.su.ui.ModulePage.Order.ID;
+    } else if (name == ydn.crm.su.ui.ModulePage.Order.NAME) {
+      return ydn.crm.su.ui.ModulePage.Order.NAME;
+    } else if (name == ydn.crm.su.ui.ModulePage.Order.RECENT) {
+      return ydn.crm.su.ui.ModulePage.Order.RECENT;
+    }
+  }
+  return ydn.crm.su.ui.ModulePage.Order.ID;
 };
 
 
@@ -133,13 +273,8 @@ ydn.crm.su.ui.ModulePage.prototype.createDom = function() {
   this.toolbar_.addChild(search_btn, false);
   search_btn.render(combo_el);
   search_btn.addClassName('goog-custom-button-collapse-right');
-  var s_menu = new goog.ui.Menu(dom);
-  s_menu.addChild(new goog.ui.CheckBoxMenuItem('Id', 'id', dom), true);
-  var r_item = new goog.ui.CheckBoxMenuItem('Recent', 'recent', dom);
-  r_item.setChecked(true);
-  s_menu.addChild(r_item, true);
-  s_menu.addChild(new goog.ui.CheckBoxMenuItem('Name', 'name', dom), true);
-  var sort = new goog.ui.MenuButton(null, s_menu, null, dom);
+  this.buildMenu_();
+  var sort = new goog.ui.MenuButton(null, this.menu_, null, dom);
   sort.setPositionElement(search_btn.getElement());
   sort.addClassName('goog-menu-button-collapse-left');
   this.toolbar_.addChild(sort, false);
@@ -147,6 +282,38 @@ ydn.crm.su.ui.ModulePage.prototype.createDom = function() {
   sort.setTooltip('Modify filter and sort order');
   this.toolbar_.render(head);
 
+  this.updateSearchLabel_();
+};
+
+
+/**
+ * @return {wgui.TextInput}
+ */
+ydn.crm.su.ui.ModulePage.prototype.getSearchCtrl = function() {
+  for (var i = 0, n = this.toolbar_.getChildCount(); i < n; i++) {
+    var child = this.toolbar_.getChildAt(i);
+    if (child instanceof wgui.TextInput) {
+      return child;
+    }
+  }
+};
+
+
+ydn.crm.su.ui.ModulePage.prototype.updateSearchLabel_ = function() {
+  var label = 'Search';
+  var filter = this.getFilter();
+  if (filter == ydn.crm.su.ui.ModulePage.Filter.ALL) {
+    label += ' All';
+  } else if (filter == ydn.crm.su.ui.ModulePage.Filter.MY) {
+    label += ' My';
+  } else if (filter == ydn.crm.su.ui.ModulePage.Filter.FAVORITE) {
+    label += ' Favorite';
+  } else if (filter == ydn.crm.su.ui.ModulePage.Filter.CACHE) {
+    label += ' Offline';
+  }
+  label += ' ' + this.name;
+  var input = this.getSearchCtrl().getElement().querySelector('input');
+  input.setAttribute('placeholder', label);
 };
 
 
@@ -155,7 +322,8 @@ ydn.crm.su.ui.ModulePage.prototype.createDom = function() {
  */
 ydn.crm.su.ui.ModulePage.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
-
+  var hd = this.getHandler();
+  hd.listen(this.menu_, goog.ui.Component.EventType.ACTION, this.onMenuAction_);
 };
 
 
@@ -165,6 +333,23 @@ ydn.crm.su.ui.ModulePage.prototype.enterDocument = function() {
  */
 ydn.crm.su.ui.ModulePage.prototype.onTileClick_ = function(ev) {
 
+};
+
+
+/**
+ * @param {goog.events.Event} ev
+ * @private
+ */
+ydn.crm.su.ui.ModulePage.prototype.onMenuAction_ = function(ev) {
+  if (ev.target instanceof goog.ui.CheckBoxMenuItem) {
+    var item = /** @type {goog.ui.CheckBoxMenuItem} */(ev.target);
+    var name = /** @type {string} */(item.getModel()) || '';
+    if (goog.string.startsWith(name, 'filter-')) {
+      this.setFilter(/** @type {ydn.crm.su.ui.ModulePage.Filter} */(name));
+    } else if (goog.string.startsWith(name, 'order-')) {
+      this.setOrder(/** @type {ydn.crm.su.ui.ModulePage.Order} */(name));
+    }
+  }
 };
 
 
