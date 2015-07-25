@@ -281,6 +281,7 @@ ydn.crm.ch.SReq = {
   PUT_RECORD: 'put-record', //
   /**
    * Generic query
+   * @see CrmApp.ReqQuery for query format.
    * @see {ydn.crm.su.Client#query}
    */
   QUERY: 'query',

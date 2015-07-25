@@ -58,6 +58,12 @@ ydn.crm.su.ui.ModulePage = function(sugar, name, opt_dom) {
   this.name = name;
 
   /**
+   * @type {number}
+   * @protected
+   */
+  this.offset = 0;
+
+  /**
    * @type {goog.ui.Toolbar}
    * @private
    */
@@ -74,6 +80,13 @@ goog.inherits(ydn.crm.su.ui.ModulePage, goog.ui.Component);
  * @override
  */
 ydn.crm.su.ui.ModulePage.prototype.getModel;
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ydn.crm.su.ui.ModulePage.CSS_CLASS_LIST = 'module-page-list';
 
 
 /**
@@ -241,6 +254,9 @@ ydn.crm.su.ui.ModulePage.prototype.createDom = function() {
   root.appendChild(content);
   root.appendChild(footer);
 
+  var ul = dom.createDom('ul', ydn.crm.su.ui.ModulePage.CSS_CLASS_LIST);
+  content.appendChild(ul);
+
   var symbol = ydn.crm.su.toModuleSymbol(this.name);
 
   var css_rdr = goog.ui.Css3ButtonRenderer.getInstance();
@@ -296,11 +312,37 @@ ydn.crm.su.ui.ModulePage.prototype.getSearchCtrl = function() {
       return child;
     }
   }
+  throw new Error('TextInput');
 };
 
 
+/**
+ * @param {Array<SugarCrm.Record>} arr
+ * @private
+ */
+ydn.crm.su.ui.ModulePage.prototype.addResult_ = function(arr) {
+
+};
+
+
+/**
+ * @private
+ */
 ydn.crm.su.ui.ModulePage.prototype.refresh_ = function() {
-  this.getModel().send(ydn.crm.ch.SReq.ABOUT, data);
+  var offset = this.offset;
+  var query = {
+    'store': this.name,
+    'limit': 25,
+    'offset': offset
+  };
+  var req = this.getModel().send(ydn.crm.ch.SReq.QUERY, [query]);
+  req.addCallback(function(arr) {
+    var qs = /** @type {CrmApp.QueryResult} */(arr[0]);
+    for (var i = 0; i < qs.result.length; i++) {
+      qs.result[i]['_index'] = offset + i;
+    }
+    this.addResult_(qs.result);
+  }, this);
 };
 
 
