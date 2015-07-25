@@ -299,6 +299,15 @@ ydn.crm.su.ui.ModulePage.prototype.getSearchCtrl = function() {
 };
 
 
+ydn.crm.su.ui.ModulePage.prototype.refresh_ = function() {
+  this.getModel().send(ydn.crm.ch.SReq.ABOUT, data);
+};
+
+
+/**
+ * Update search input placeholder text.
+ * @private
+ */
 ydn.crm.su.ui.ModulePage.prototype.updateSearchLabel_ = function() {
   var label = 'Search';
   var filter = this.getFilter();
