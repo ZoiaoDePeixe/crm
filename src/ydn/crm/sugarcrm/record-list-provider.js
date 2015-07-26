@@ -76,7 +76,8 @@ ydn.crm.su.ui.RecordListProvider.prototype.countRecords = function() {
 
 
 /**
- * Get list of recrods.
+ * Get list of records.
+ * The result has `ydn$index` field for respective index.
  * @param {number} limit number of results.
  * @param {number} offset offset.
  */

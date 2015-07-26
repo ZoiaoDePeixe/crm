@@ -44,6 +44,13 @@ goog.require('ydn.crm.su.ui.RecordListProvider');
 ydn.crm.su.ui.RecordList = function(model, opt_dom) {
   goog.base(this, opt_dom);
   this.setModel(model);
+
+  /**
+   * Current cursor position.
+   * @type {number}
+   * @private
+   */
+  this.position_ = 0.0;
 };
 goog.inherits(ydn.crm.su.ui.RecordList, goog.ui.Component);
 
@@ -110,13 +117,34 @@ ydn.crm.su.ui.RecordList.prototype.enterDocument = function() {
    */
   var model = this.getModel();
 
-  hd.listen(model, ydn.crm.su.events.EventType.READY, this.reset_);
-  model.init();
+  hd.listen(model, ydn.crm.su.events.EventType.READY, this.refresh_);
   this.reset_();
 };
 
 
+/**
+ * @private
+ */
 ydn.crm.su.ui.RecordList.prototype.reset_ = function() {
+  /**
+   * @type {ydn.crm.su.ui.RecordListProvider}
+   */
+  var model = this.getModel();
+  this.getUlElement().innerHTML = '';
+
+  var footer = this.getElement().querySelector(
+      '.' + ydn.crm.ui.CSS_CLASS_FOOTER);
+  footer.innerHTML = '';
+  model.onReady().addCallback(function() {
+    this.refresh_();
+  }, this);
+};
+
+
+/**
+ * @private
+ */
+ydn.crm.su.ui.RecordList.prototype.refresh_ = function() {
   /**
    * @type {ydn.crm.su.ui.RecordListProvider}
    */
@@ -133,6 +161,50 @@ ydn.crm.su.ui.RecordList.prototype.reset_ = function() {
   } else {
     footer.textContent = total + ' ' + model.getModuleName();
   }
+  this.refreshList_();
+};
+
+
+/**
+ * Render item.
+ * @param {SugarCrm.Record} r
+ * @private
+ */
+ydn.crm.su.ui.RecordList.prototype.renderItem_ = function(r) {
+  var li = document.createElement('LI');
+  li.innerHTML = ydn.crm.templ.renderRecordListItem(r._module, r.name, r.description);
+  var ul = this.getUlElement();
+  ul.appendChild(li);
+};
+
+
+/**
+ * Add result to UL.
+ * @param {Array<SugarCrm.Record>} arr results.
+ * @private
+ */
+ydn.crm.su.ui.RecordList.prototype.addResults_ = function(arr) {
+  for (var i = 0; i < arr.length; i++) {
+    var obj = arr[i];
+    this.renderItem_(obj);
+  }
+};
+
+
+/**
+ * Ensure that full items are renderred in the current position.
+ * @private
+ */
+ydn.crm.su.ui.RecordList.prototype.refreshList_ = function() {
+  /**
+   * @type {ydn.crm.su.ui.RecordListProvider}
+   */
+  var model = this.getModel();
+  model.list(10, 0).addCallbacks(function(arr) {
+    this.addResults_(arr);
+  }, function(e) {
+    window.console.error(e);
+  }, this);
 };
 
 

@@ -331,8 +331,6 @@ ydn.crm.su.ui.ModulePage.prototype.updateSearchLabel_ = function() {
     label += ' My';
   } else if (filter == ydn.crm.su.ui.ModulePage.Filter.FAVORITE) {
     label += ' Favorite';
-  } else if (filter == ydn.crm.su.ui.ModulePage.Filter.CACHE) {
-    label += ' Offline';
   }
   label += ' ' + this.name;
   var input = this.getSearchCtrl().getElement().querySelector('input');

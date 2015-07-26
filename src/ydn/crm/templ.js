@@ -105,3 +105,8 @@ ydn.crm.templ.renderSugarCrmModule = function(symbol, label) {
   </div>
   <div class="content"></div>`;
 };
+
+
+ydn.crm.templ.renderRecordListItem = function(mn, title, summary) {
+
+};
