@@ -185,7 +185,11 @@ ydn.crm.ch.SReq = {
   ACTIVITY_STREAM: 'activity-stream',
   ACTIVITY_UPCOMING: 'activity-upcoming',
   CLEAR_CACHE: 'clear-cache', // delete database
-  COUNT: 'count', // count number of record in a module
+  /**
+   * Count number of record in a module either from server or client.
+   * @see ydn.crm.su.Client#handleCount_
+   */
+  COUNT: 'count',
   DELETE_RECORD: 'delete-record', //
   /**
    * sugarcrm detail info
