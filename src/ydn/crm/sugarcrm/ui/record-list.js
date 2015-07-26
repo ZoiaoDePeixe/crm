@@ -29,6 +29,7 @@ goog.require('goog.ui.Component');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.su');
 goog.require('ydn.crm.su.ui.RecordListProvider');
+goog.require('ydn.crm.templ');
 
 
 
@@ -167,12 +168,19 @@ ydn.crm.su.ui.RecordList.prototype.refresh_ = function() {
 
 /**
  * Render item.
- * @param {SugarCrm.Record} r
+ * @param {SugarCrm.Record} rec
  * @private
  */
-ydn.crm.su.ui.RecordList.prototype.renderItem_ = function(r) {
+ydn.crm.su.ui.RecordList.prototype.renderItem_ = function(rec) {
   var li = document.createElement('LI');
-  li.innerHTML = ydn.crm.templ.renderRecordListItem(r._module, r.name, r.description);
+  /**
+   * @type {ydn.crm.su.ui.RecordListProvider}
+   */
+  var model = this.getModel();
+  var symbol = ydn.crm.su.toModuleSymbol(
+      /** @type {ydn.crm.su.ModuleName} */(rec._module));
+  li.innerHTML = ydn.crm.templ.renderRecordListItem(rec._module, symbol,
+      ydn.crm.su.Record.getLabel(rec), ydn.crm.su.Record.getSummary(rec));
   var ul = this.getUlElement();
   ul.appendChild(li);
 };

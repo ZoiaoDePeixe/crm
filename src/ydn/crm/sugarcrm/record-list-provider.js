@@ -33,7 +33,7 @@ ydn.crm.su.ui.RecordListProvider = function(sugar, name, order) {
    */
   this.name_ = name;
   /**
-   * @type {ydn.crm.su.ModuleName}
+   * @type {string}
    * @private
    */
   this.order_ = order;
@@ -80,9 +80,19 @@ ydn.crm.su.ui.RecordListProvider.prototype.countRecords = function() {
  * The result has `ydn$index` field for respective index.
  * @param {number} limit number of results.
  * @param {number} offset offset.
+ * @return {!goog.async.Deferred<Array<SugarCrm.Record>>}
  */
 ydn.crm.su.ui.RecordListProvider.prototype.list = function(limit, offset) {
-
+  var q = {
+    'store': 'Contacts',
+    'index': 'date_modified',
+    'limit': limit,
+    'offset': offset
+  };
+  return this.sugar_.getChannel().send(ydn.crm.ch.SReq.QUERY, [q]).addCallback(function(arr) {
+    var res = /** @type {CrmApp.QueryResult} */(arr[0]);
+    return res.result || [];
+  }, this);
 };
 
 
@@ -140,6 +150,7 @@ ydn.crm.su.ui.RecordListProvider.prototype.init = function() {
 ydn.crm.su.ui.RecordListProvider.prototype.onReady = function() {
   if (!this.ready_) {
     this.init_();
+    goog.asserts.assertObject(this.ready_);
     return this.ready_;
   } else {
     return this.ready_.branch();
@@ -152,4 +163,12 @@ ydn.crm.su.ui.RecordListProvider.prototype.onReady = function() {
  */
 ydn.crm.su.ui.RecordListProvider.prototype.getModuleName = function() {
   return this.name_;
+};
+
+
+/**
+ * @return {ydn.crm.su.Meta}
+ */
+ydn.crm.su.ui.RecordListProvider.prototype.getMeta = function() {
+  return this.sugar_;
 };

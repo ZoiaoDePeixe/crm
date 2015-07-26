@@ -34,6 +34,7 @@ goog.require('ydn.crm.su.AttachButtonProvider');
 goog.require('ydn.crm.su.ContextWidget');
 goog.require('ydn.crm.su.ui.DesktopHome');
 goog.require('ydn.crm.su.ui.ModulePage');
+goog.require('ydn.crm.su.ui.RecordList');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
 
