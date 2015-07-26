@@ -36,12 +36,13 @@ goog.require('ydn.crm.inj.SugarCrmApp');
 goog.require('ydn.crm.inj.TrackingApp');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
+goog.require('ydn.crm.ui.CacheUpdateDisplay');
+goog.require('ydn.crm.ui.Desktop');
 goog.require('ydn.cs.ReplyPanelManager');
 goog.require('ydn.debug');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
 goog.require('ydn.social.ui.SocialWidget');
-goog.require('ydn.crm.ui.CacheUpdateDisplay');
 
 
 
@@ -96,6 +97,12 @@ ydn.crm.inj.App = function() {
    * @type {ydn.crm.inj.Hud}
    */
   this.hud = new ydn.crm.inj.Hud();
+
+  /**
+   * @final
+   * @type {ydn.crm.ui.Desktop}
+   */
+  this.desktop = new ydn.crm.ui.Desktop();
 
   /**
    * @protected
@@ -171,6 +178,7 @@ ydn.crm.inj.App.prototype.init = function() {
   var scd = new ydn.crm.ui.CacheUpdateDisplay();
   scd.render(this.hud.getFooterElement());
   var us = ydn.crm.ui.UserSetting.getInstance();
+  this.hud.addPanel(this.desktop);
 
   goog.events.listen(us,
       [ydn.crm.ui.UserSetting.EventType.LOGOUT,
@@ -209,9 +217,9 @@ ydn.crm.inj.App.prototype.loadFeatures_ = function() {
 
   if (YathitCrm.Product.SugarCRM) {
     this.sugar_app = new ydn.crm.inj.SugarCrmApp(this.us, this.header_injector_,
-        this.gmail_observer, this.compose_observer, this.context_container, this.hud);
+        this.gmail_observer, this.compose_observer);
     goog.log.fine(this.logger, 'initializing sugarcrm app');
-    this.sugar_app.init();
+    this.sugar_app.init(this.desktop, this.context_container);
   }
 
   if (YathitCrm.Product.Social &&

@@ -43,7 +43,7 @@ ydn.crm.ui.Desktop = function(opt_dom) {
    * @type {goog.ui.Toolbar}
    * @private
    */
-  this.toolbar_ = new goog.ui.Toolbar(opt_dom);
+  this.toolbar_ = new goog.ui.Toolbar();
 };
 goog.inherits(ydn.crm.ui.Desktop, goog.ui.Component);
 

@@ -11,32 +11,30 @@ goog.require('ydn.crm.su.events');
 /**
  * Record list model provide records list as requested.
  * <pre>
- *   var rlp = ydn.crm.su.ui.RecordListProvider(sugar, 'Tasks', 'date_updated');
+ *   var rlp = ydn.crm.su.ui.RecordListProvider();
+ *   rlp.setSugar(sugar);
  *   rlp.onReady().done(function() {...
  * </pre>
- * @param {ydn.crm.su.Meta} sugar
- * @param {ydn.crm.su.ModuleName} name module name.
- * @param {string} order index order name.
  * @constructor
  * @extends {goog.events.EventTarget}
  */
-ydn.crm.su.ui.RecordListProvider = function(sugar, name, order) {
+ydn.crm.su.ui.RecordListProvider = function() {
   ydn.crm.su.ui.RecordListProvider.base(this, 'constructor');
   /**
    * @type {ydn.crm.su.Meta}
    * @private
    */
-  this.sugar_ = sugar;
+  this.sugar_ = null;
   /**
    * @type {ydn.crm.su.ModuleName}
    * @private
    */
-  this.name_ = name;
+  this.name_ = ydn.crm.su.ModuleName.CONTACTS;
   /**
    * @type {string}
    * @private
    */
-  this.order_ = order;
+  this.order_ = 'date_modified';
 
   /**
    * @type {number}
@@ -54,9 +52,55 @@ ydn.crm.su.ui.RecordListProvider = function(sugar, name, order) {
    * @type {goog.async.Deferred}
    * @private
    */
-  this.ready_ = null;
+  this.ready_ = goog.async.Deferred.fail('Not ready.');
 };
 goog.inherits(ydn.crm.su.ui.RecordListProvider, goog.events.EventTarget);
+
+
+/**
+ * @param {ydn.crm.su.Meta} meta sugarcrm provider.
+ */
+ydn.crm.su.ui.RecordListProvider.prototype.setSugar = function(meta) {
+  if (this.sugar_ == meta) {
+    return;
+  }
+  this.sugar_ = meta;
+  this.reset_();
+};
+
+
+/**
+ * @param {ydn.crm.su.ModuleName} mn target module name.
+ */
+ydn.crm.su.ui.RecordListProvider.prototype.setModule = function(mn) {
+  if (this.name_ == mn) {
+    return;
+  }
+  this.name_ = mn;
+  this.reset_();
+};
+
+
+/**
+ * @param {string} index set name of index for order.
+ */
+ydn.crm.su.ui.RecordListProvider.prototype.setOrder = function(index) {
+  if (this.order_ == index) {
+    return;
+  }
+  this.order_ = index || 'id';
+  this.reset_();
+};
+
+
+/**
+ * @private
+ */
+ydn.crm.su.ui.RecordListProvider.prototype.reset_ = function() {
+  this.ready_ = null;
+  this.total_ = -1;
+  this.count_ = -1;
+};
 
 
 /**
@@ -83,9 +127,10 @@ ydn.crm.su.ui.RecordListProvider.prototype.countRecords = function() {
  * @return {!goog.async.Deferred<Array<SugarCrm.Record>>}
  */
 ydn.crm.su.ui.RecordListProvider.prototype.list = function(limit, offset) {
+  var index = this.order_ || 'id';
   var q = {
-    'store': 'Contacts',
-    'index': 'date_modified',
+    'store': this.name_,
+    'index': index,
     'limit': limit,
     'offset': offset
   };
