@@ -64,5 +64,9 @@ goog.inherits(ydn.crm.su.events.RecordViewEvent, goog.events.Event);
  */
 ydn.crm.su.events.EventType = {
   VIEW_RECORD: 'vr',
-  NEW_RECORD: 'nr'
+  NEW_RECORD: 'nr',
+  /**
+   * @see ydn.crm.su.ui.RecordListProvider#init_
+   */
+  READY: 'rd'
 };

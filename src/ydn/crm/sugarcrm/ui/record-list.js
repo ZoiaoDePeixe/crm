@@ -110,6 +110,8 @@ ydn.crm.su.ui.RecordList.prototype.enterDocument = function() {
    */
   var model = this.getModel();
 
+  hd.listen(model, ydn.crm.su.events.EventType.READY, this.reset_);
+  model.init();
   this.reset_();
 };
 
@@ -129,7 +131,7 @@ ydn.crm.su.ui.RecordList.prototype.reset_ = function() {
     footer.textContent = count + ' of ' + total + ' ' + model.getModuleName() +
         ' cached.';
   } else {
-    footer.textContent = '';
+    footer.textContent = total + ' ' + model.getModuleName();
   }
 };
 
