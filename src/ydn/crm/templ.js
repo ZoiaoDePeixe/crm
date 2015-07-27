@@ -124,3 +124,12 @@ ydn.crm.templ.renderRecordListItem = function(mn, symbol) {
     </div>
   </div>`;
 };
+
+
+ydn.crm.templ.renderTrackingLauncher = function() {
+  return `<div>
+    <span class="opens" title="in last 24 hours">0</span> emails open,
+    <span class="clicks" title="in last 24 hours">0</span> links click
+    [<a href="#tracking-result" name="view">view</a>]
+  </div>`;
+}

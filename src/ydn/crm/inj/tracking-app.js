@@ -33,7 +33,9 @@ goog.require('ydn.crm.shared');
 goog.require('ydn.crm.tracking.GmailComposeTracker');
 goog.require('ydn.crm.tracking.GmailReplyTracker');
 goog.require('ydn.crm.tracking.result.ContextWidget');
-goog.require('ydn.crm.tracking.result.Sidebar');
+goog.require('ydn.crm.tracking.result.DesktopHome');
+goog.require('ydn.crm.tracking.result.Page');
+goog.require('ydn.crm.ui.Desktop');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
 
@@ -46,12 +48,11 @@ goog.require('ydn.msg.Pipe');
  * @param {ydn.crm.gmail.ComposeObserver} compose_observer
  * @param {ydn.crm.inj.ContextContainer} renderer
  * @param {ydn.cs.ReplyPanelManager} reply_panel_manager
- * @param {ydn.crm.inj.Hud} hud
  * @constructor
  * @struct
  */
 ydn.crm.inj.TrackingApp = function(heading_injector, gmail_observer,
-    compose_observer, renderer, reply_panel_manager, hud) {
+    compose_observer, renderer, reply_panel_manager) {
 
   /**
    * @final
@@ -88,13 +89,12 @@ ydn.crm.inj.TrackingApp = function(heading_injector, gmail_observer,
 
   this.reply_tracker_ = new ydn.crm.tracking.GmailReplyTracker();
 
-  var us = ydn.crm.ui.UserSetting.getInstance();
   /**
-   * @type {ydn.crm.tracking.result.Sidebar}
+   * @type {ydn.crm.tracking.result.Page}
    * @private
    */
-  this.sidebar_ = new ydn.crm.tracking.result.Sidebar(us);
-  hud.addPanel(this.sidebar_);
+  this.sidebar_ = null;
+
 };
 
 
@@ -105,15 +105,29 @@ ydn.crm.inj.TrackingApp.DEBUG = false;
 
 
 /**
- * Initialize UI.
+ * @return {ydn.crm.tracking.Model}
  */
-ydn.crm.inj.TrackingApp.prototype.init = function() {
+ydn.crm.inj.TrackingApp.prototype.getModel;
+
+
+/**
+ * Initialize UI.
+ * @param {ydn.crm.ui.Desktop} desktop parent element.
+ */
+ydn.crm.inj.TrackingApp.prototype.init = function(desktop) {
+
   var us = ydn.crm.ui.UserSetting.getInstance();
+  var model = new ydn.crm.tracking.MsgModel();
+  this.sidebar_ = new ydn.crm.tracking.result.Page(model, us);
+  var launcher = new ydn.crm.tracking.result.DesktopHome(model, us);
+  desktop.getHomePage().addChild(launcher, true);
+  desktop.addChild(this.sidebar_, true);
   goog.events.listen(us,
       [ydn.crm.ui.UserSetting.EventType.LOGIN,
         ydn.crm.ui.UserSetting.EventType.LOGOUT],
       this.onUserStatusChange, false, this);
   this.attachResultPanel_();
+
 };
 
 

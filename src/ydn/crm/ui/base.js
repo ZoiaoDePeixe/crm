@@ -297,7 +297,7 @@ ydn.crm.ui.getPopupContentHeight = function(opt_gap) {
     var gp = max_height.match(/100vh - (\d+)px/);
     if (gp) {
       var h = parseInt(gp[1], 10);
-      return 'calc(100vh - ' + (h + 150 + gap) + 'px)';
+      return 'calc(100vh - ' + (h + 130 + gap) + 'px)';
     }
   }
   return NaN;
@@ -323,6 +323,7 @@ ydn.crm.ui.fixHeightForScrollbar = function(el, opt_gap) {
  */
 ydn.crm.ui.PageName = {
   DESKTOP_HOME: 'DesktopHome',
+  TRACKING_PAGE: 'TrackingPage',
   RECORD_LIST: 'RecordList'
 };
 

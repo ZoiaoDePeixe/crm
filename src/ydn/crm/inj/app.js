@@ -206,20 +206,20 @@ ydn.crm.inj.App.prototype.loadFeatures_ = function() {
     return;
   }
 
-  if (YathitCrm.Product.Tracking &&
-      this.us.hasFeature(ydn.crm.base.Feature.TRACKING)) {
-    this.tracking_app = new ydn.crm.inj.TrackingApp(this.header_injector_,
-        this.gmail_observer, this.compose_observer, this.context_container,
-        this.reply_panel_manager, this.hud);
-    goog.log.fine(this.logger, 'initializing tracking app');
-    this.tracking_app.init();
-  }
-
   if (YathitCrm.Product.SugarCRM) {
     this.sugar_app = new ydn.crm.inj.SugarCrmApp(this.us, this.header_injector_,
         this.gmail_observer, this.compose_observer);
     goog.log.fine(this.logger, 'initializing sugarcrm app');
     this.sugar_app.init(this.desktop, this.context_container);
+  }
+
+  if (YathitCrm.Product.Tracking &&
+      this.us.hasFeature(ydn.crm.base.Feature.TRACKING)) {
+    this.tracking_app = new ydn.crm.inj.TrackingApp(this.header_injector_,
+        this.gmail_observer, this.compose_observer, this.context_container,
+        this.reply_panel_manager);
+    goog.log.fine(this.logger, 'initializing tracking app');
+    this.tracking_app.init(this.desktop);
   }
 
   if (YathitCrm.Product.Social &&
