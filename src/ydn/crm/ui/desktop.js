@@ -17,6 +17,9 @@
 
 /**
  * @fileoverview Home screen desktop
+ *
+ * All pages added to desktop must implement {@link ydn.crm.ui.IDesktopPage}
+ * interface.
  */
 
 
@@ -25,6 +28,7 @@ goog.require('goog.ui.Button');
 goog.require('goog.ui.Toolbar');
 goog.require('ydn.crm.ui');
 goog.require('ydn.crm.ui.DesktopHome');
+goog.require('ydn.crm.ui.IDesktopPage');
 goog.require('ydn.crm.ui.events');
 
 
@@ -37,7 +41,7 @@ goog.require('ydn.crm.ui.events');
  * @extends {goog.ui.Component}
  */
 ydn.crm.ui.Desktop = function(opt_dom) {
-  goog.base(this, opt_dom);
+  ydn.crm.ui.Desktop.base(this, 'constructor', opt_dom);
 
   /**
    * @type {goog.ui.Toolbar}
@@ -65,7 +69,7 @@ ydn.crm.ui.Desktop.CSS_CLASS = 'desktop';
  * @inheritDoc
  */
 ydn.crm.ui.Desktop.prototype.createDom = function() {
-  goog.base(this, 'createDom');
+  ydn.crm.ui.Desktop.base(this, 'createDom');
   var dom = this.dom_;
   var root = this.getElement();
   goog.dom.classlist.add(root, ydn.crm.ui.Desktop.CSS_CLASS);
@@ -75,6 +79,7 @@ ydn.crm.ui.Desktop.prototype.createDom = function() {
   root.appendChild(footer);
 
   var home_btn = new goog.ui.Button('Home', null, dom);
+  home_btn.setId('desktop-home');
   this.toolbar_.addChild(home_btn, true);
   this.toolbar_.render(footer);
 
@@ -95,13 +100,27 @@ ydn.crm.ui.Desktop.prototype.getContentElement = function() {
  * @inheritDoc
  */
 ydn.crm.ui.Desktop.prototype.enterDocument = function() {
-  goog.base(this, 'enterDocument');
+  ydn.crm.ui.Desktop.base(this, 'enterDocument');
   var root = this.getElement();
   // Listen events
   var hd = this.getHandler();
   hd.listen(this, ydn.crm.ui.events.EventType.SHOW_PANEL, this.onShowPage_);
+  hd.listen(this.toolbar_, goog.ui.Component.EventType.ACTION, this.onAction_);
   ydn.crm.ui.fixHeightForScrollbar(root);
-  this.showPage(ydn.crm.ui.DesktopHome.NAME);
+  this.showPage(ydn.crm.ui.PageName.DESKTOP_HOME);
+};
+
+
+ydn.crm.ui.Desktop.prototype.onAction_ = function(ev) {
+  if (ev.target instanceof goog.ui.Button) {
+    var btn = /** @type {goog.ui.Button} */(ev.target);
+    var id = btn.getId();
+    if (id == 'desktop-home') {
+      var se = new ydn.crm.ui.events.ShowPanelEvent(
+          ydn.crm.ui.PageName.DESKTOP_HOME, {}, this);
+      this.dispatchEvent(se);
+    }
+  }
 };
 
 
@@ -113,14 +132,16 @@ ydn.crm.ui.Desktop.prototype.onShowPage_ = function(ev) {
   if (ydn.crm.ui.Desktop.DEBUG) {
     window.console.log('show page: ' + ev.name, ev.data);
   }
+  this.showPage(ev.name, ev.data);
 };
 
 
 /**
  * Show child page. Only one page are shown at a time.
  * @param {string} name child name as query by  `getName`.
+ * @param {*=} data optional payload.
  */
-ydn.crm.ui.Desktop.prototype.showPage = function(name) {
+ydn.crm.ui.Desktop.prototype.showPage = function(name, data) {
   var idx = -1;
   for (var i = 0; i < this.getChildCount(); i++) {
     var child = this.getChildAt(i);
@@ -132,6 +153,8 @@ ydn.crm.ui.Desktop.prototype.showPage = function(name) {
   if (idx >= 0) {
     for (var i = 0; i < this.getChildCount(); i++) {
       var child = this.getChildAt(i);
+      var page = /** @type {ydn.crm.ui.IDesktopPage} */(child);
+      page.onPageShow(data);
       goog.style.setElementShown(child.getElement(), i == idx);
     }
   }
@@ -169,5 +192,6 @@ ydn.crm.ui.Desktop.prototype.getPage = function(name) {
  * @return {ydn.crm.ui.DesktopHome}
  */
 ydn.crm.ui.Desktop.prototype.getHomePage = function() {
-  return /** @type {ydn.crm.ui.DesktopHome} */(this.getPage(ydn.crm.ui.DesktopHome.NAME));
+  return /** @type {ydn.crm.ui.DesktopHome} */(
+      this.getPage(ydn.crm.ui.PageName.DESKTOP_HOME));
 };

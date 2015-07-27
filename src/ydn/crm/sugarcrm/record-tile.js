@@ -25,6 +25,7 @@
 
 goog.provide('ydn.crm.su.ui.RecordTile');
 goog.require('goog.ui.Component');
+goog.require('ydn.crm.su');
 goog.require('ydn.crm.templ');
 goog.require('ydn.crm.ui.events');
 
@@ -87,8 +88,11 @@ ydn.crm.su.ui.RecordTile.prototype.enterDocument = function() {
  * @private
  */
 ydn.crm.su.ui.RecordTile.prototype.onTileClick_ = function(ev) {
-  var data = {};
+  var data = {
+    'module': this.name
+  };
   ev.stopPropagation();
-  var se = new ydn.crm.ui.events.ShowPanelEvent(this.name, data, this);
+  var se = new ydn.crm.ui.events.ShowPanelEvent(
+      ydn.crm.ui.PageName.RECORD_LIST, data, this);
   this.dispatchEvent(se);
 };

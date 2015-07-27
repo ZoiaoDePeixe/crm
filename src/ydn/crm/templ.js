@@ -111,18 +111,16 @@ ydn.crm.templ.renderSugarCrmModule = function(symbol, label) {
  *
  * @param {string} mn module name, e.g: 'Accounts'
  * @param {string} symbol module symbol, e.g: 'Ac'
- * @param {string} title item title.
- * @param summary item summary
  * @return {string} HTML.
  */
-ydn.crm.templ.renderRecordListItem = function(mn, symbol, title, summary) {
+ydn.crm.templ.renderRecordListItem = function(mn, symbol) {
   return `<div class="record-item ${mn}">
     <div class="record-header flex-bar">
       <span class="icon">${symbol}</span>
-      <span class="center title">${title}</span>
+      <span class="center title"></span>
     </div>
     <div class="content">
-      <span class="center summary">${summary}</span>
+      <span class="center summary"></span>
     </div>
   </div>`;
 };

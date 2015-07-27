@@ -4,6 +4,7 @@
 
 goog.provide('ydn.crm.ui.DesktopHome');
 goog.require('goog.ui.Component');
+goog.require('ydn.crm.ui.IDesktopPage');
 
 
 
@@ -13,6 +14,7 @@ goog.require('goog.ui.Component');
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
+ * @implements {ydn.crm.ui.IDesktopPage}
  */
 ydn.crm.ui.DesktopHome = function(dom) {
   goog.base(this, dom);
@@ -32,15 +34,16 @@ ydn.crm.ui.DesktopHome.prototype.createDom = function() {
 
 
 /**
- * @const
- * @type {string}
- */
-ydn.crm.ui.DesktopHome.NAME = 'Home';
-
-
-/**
  * @inheritDoc
  */
 ydn.crm.ui.DesktopHome.prototype.toString = function() {
-  return ydn.crm.ui.DesktopHome.NAME;
+  return ydn.crm.ui.PageName.DESKTOP_HOME;
+};
+
+
+/**
+ * @override
+ */
+ydn.crm.ui.DesktopHome.prototype.onPageShow = function(obj) {
+
 };

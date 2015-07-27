@@ -40,7 +40,7 @@ goog.require('ydn.crm.templ');
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
+ * @implements {ydn.crm.ui.IDesktopPage}
  */
 ydn.crm.su.ui.RecordList = function(model, opt_dom) {
   goog.base(this, opt_dom);
@@ -143,6 +143,14 @@ ydn.crm.su.ui.RecordList.prototype.reset_ = function() {
 
 
 /**
+ * @override
+ */
+ydn.crm.su.ui.RecordList.prototype.toString = function() {
+  return ydn.crm.ui.PageName.RECORD_LIST;
+};
+
+
+/**
  * @private
  */
 ydn.crm.su.ui.RecordList.prototype.refresh_ = function() {
@@ -179,8 +187,9 @@ ydn.crm.su.ui.RecordList.prototype.renderItem_ = function(rec) {
   var model = this.getModel();
   var symbol = ydn.crm.su.toModuleSymbol(
       /** @type {ydn.crm.su.ModuleName} */(rec._module));
-  li.innerHTML = ydn.crm.templ.renderRecordListItem(rec._module, symbol,
-      ydn.crm.su.Record.getLabel(rec), ydn.crm.su.Record.getSummary(rec));
+  li.innerHTML = ydn.crm.templ.renderRecordListItem(rec._module, symbol);
+  li.querySelector('.title').textContent = ydn.crm.su.Record.getLabel(rec);
+  li.querySelector('.summary').textContent = ydn.crm.su.Record.getSummary(rec);
   var ul = this.getUlElement();
   ul.appendChild(li);
 };
@@ -192,6 +201,8 @@ ydn.crm.su.ui.RecordList.prototype.renderItem_ = function(rec) {
  * @private
  */
 ydn.crm.su.ui.RecordList.prototype.addResults_ = function(arr) {
+  var ul = this.getUlElement();
+  ul.innerHTML = '';
   for (var i = 0; i < arr.length; i++) {
     var obj = arr[i];
     this.renderItem_(obj);
@@ -208,7 +219,7 @@ ydn.crm.su.ui.RecordList.prototype.refreshList_ = function() {
    * @type {ydn.crm.su.ui.RecordListProvider}
    */
   var model = this.getModel();
-  model.list(10, 0).addCallbacks(function(arr) {
+  model.list(5, 0).addCallbacks(function(arr) {
     this.addResults_(arr);
   }, function(e) {
     window.console.error(e);
@@ -234,4 +245,15 @@ ydn.crm.su.ui.RecordList.prototype.getUlElement = function() {
 };
 
 
-
+/**
+ * @override
+ */
+ydn.crm.su.ui.RecordList.prototype.onPageShow = function(obj) {
+  console.log(obj);
+  /**
+   * @type {ydn.crm.su.ui.RecordListProvider}
+   */
+  var model = this.getModel();
+  model.setModule(obj['module']);
+  this.reset_();
+};

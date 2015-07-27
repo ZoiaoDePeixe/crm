@@ -303,4 +303,11 @@ ydn.crm.ui.fixHeightForScrollbar = function(el) {
 };
 
 
+/**
+ * @enum {string} page name.
+ */
+ydn.crm.ui.PageName = {
+  DESKTOP_HOME: 'DesktopHome',
+  RECORD_LIST: 'RecordList'
+};
 
