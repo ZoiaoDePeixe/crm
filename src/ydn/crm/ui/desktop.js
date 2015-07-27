@@ -25,12 +25,12 @@
 
 goog.provide('ydn.crm.ui.Desktop');
 goog.require('goog.ui.Button');
+goog.require('goog.ui.Css3ButtonRenderer');
 goog.require('goog.ui.Toolbar');
 goog.require('ydn.crm.ui');
 goog.require('ydn.crm.ui.DesktopHome');
 goog.require('ydn.crm.ui.IDesktopPage');
 goog.require('ydn.crm.ui.events');
-goog.require('goog.ui.Css3ButtonRenderer');
 
 
 
@@ -81,10 +81,9 @@ ydn.crm.ui.Desktop.prototype.createDom = function() {
 
   var css_rdr = goog.ui.Css3ButtonRenderer.getInstance();
   var home_svg = ydn.crm.ui.createSvgIcon('home');
-  var div = dom.createDom('div', null, home_svg);
-  // var search_svg = ydn.crm.ui.createSvgIcon('search');
-  var home_btn = new goog.ui.Button(div, null, dom);
-  var search_btn = new goog.ui.Button('Search', null, dom);
+  var search_svg = ydn.crm.ui.createSvgIcon('search');
+  var home_btn = new goog.ui.Button(home_svg, css_rdr, dom);
+  var search_btn = new goog.ui.Button(search_svg, css_rdr, dom);
   home_btn.setId(ydn.crm.ui.PageName.DESKTOP_HOME);
   search_btn.setId(ydn.crm.ui.PageName.SUGAR_SEARCH);
   this.toolbar_.addChild(home_btn, true);
