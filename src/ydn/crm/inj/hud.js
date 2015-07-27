@@ -92,8 +92,9 @@ ydn.crm.inj.Hud.prototype.setDrawerOpen = function(val) {
 
 /**
  * This will render side
+ * @param {Function=} opt_cb callback after positioning.
  */
-ydn.crm.inj.Hud.prototype.render = function() {
+ydn.crm.inj.Hud.prototype.render = function(opt_cb) {
 
   var temp = ydn.ui.getTemplateById('hub-template').content;
   var div = document.createElement('div');
@@ -171,7 +172,7 @@ ydn.crm.inj.Hud.prototype.render = function() {
   var resizer = this.root_el_.querySelector('.top-resizer');
   this.handler.listen(resizer, goog.events.EventType.MOUSEDOWN, this.onRowDragStart_);
 
-  this.loadPosition_();
+  this.loadPosition_(opt_cb);
 
   this.handler.listen(document.body, ydn.crm.ui.EventType.DRAWER_REQUEST, this.onDrawerRequest_);
 };
@@ -208,9 +209,10 @@ ydn.crm.inj.Hud.prototype.savePosition_ = function() {
 
 
 /**
+ * @param {Function=} opt_cb callback.
  * @private
  */
-ydn.crm.inj.Hud.prototype.loadPosition_ = function() {
+ydn.crm.inj.Hud.prototype.loadPosition_ = function(opt_cb) {
   var key = ydn.crm.base.ChromeLocalKey.POSITION_HUD_BASE;
   var hud_base = document.getElementById('sticky-hud-base');
   chrome.storage.local.get(key, function(obj) {
@@ -228,7 +230,9 @@ ydn.crm.inj.Hud.prototype.loadPosition_ = function() {
     // set max-height so that, container has scroll
     var container = hud_base.querySelector('.popup-content');
     container.style.maxHeight = 'calc(100vh - ' + (top_px + 40) + 'px)';
-    window.console.log('hud.loadPosition_');
+    if (opt_cb) {
+      opt_cb();
+    }
   });
 };
 

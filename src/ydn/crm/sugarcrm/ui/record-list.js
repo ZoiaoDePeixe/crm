@@ -112,6 +112,7 @@ ydn.crm.su.ui.RecordList.prototype.createDom = function() {
  */
 ydn.crm.su.ui.RecordList.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
+
   var hd = this.getHandler();
   /**
    * @type {ydn.crm.su.ui.RecordListProvider}
@@ -203,6 +204,12 @@ ydn.crm.su.ui.RecordList.prototype.renderItem_ = function(rec) {
 ydn.crm.su.ui.RecordList.prototype.addResults_ = function(arr) {
   var ul = this.getUlElement();
   ul.innerHTML = '';
+  if (!ul.style.height) {
+    var h = ydn.crm.ui.getPopupContentHeight(2);
+    if (h) {
+      ul.style.height = h;
+    }
+  }
   for (var i = 0; i < arr.length; i++) {
     var obj = arr[i];
     this.renderItem_(obj);
@@ -219,7 +226,7 @@ ydn.crm.su.ui.RecordList.prototype.refreshList_ = function() {
    * @type {ydn.crm.su.ui.RecordListProvider}
    */
   var model = this.getModel();
-  model.list(5, 0).addCallbacks(function(arr) {
+  model.list(15, 0).addCallbacks(function(arr) {
     this.addResults_(arr);
   }, function(e) {
     window.console.error(e);
