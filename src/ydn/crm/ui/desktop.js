@@ -30,6 +30,7 @@ goog.require('ydn.crm.ui');
 goog.require('ydn.crm.ui.DesktopHome');
 goog.require('ydn.crm.ui.IDesktopPage');
 goog.require('ydn.crm.ui.events');
+goog.require('goog.ui.Css3ButtonRenderer');
 
 
 
@@ -78,9 +79,11 @@ ydn.crm.ui.Desktop.prototype.createDom = function() {
   root.appendChild(content);
   root.appendChild(footer);
 
-  // var home_svg = ydn.crm.ui.createSvgIcon('home');
+  var css_rdr = goog.ui.Css3ButtonRenderer.getInstance();
+  var home_svg = ydn.crm.ui.createSvgIcon('home');
+  var div = dom.createDom('div', null, home_svg);
   // var search_svg = ydn.crm.ui.createSvgIcon('search');
-  var home_btn = new goog.ui.Button('Home', null, dom);
+  var home_btn = new goog.ui.Button(div, null, dom);
   var search_btn = new goog.ui.Button('Search', null, dom);
   home_btn.setId(ydn.crm.ui.PageName.DESKTOP_HOME);
   search_btn.setId(ydn.crm.ui.PageName.SUGAR_SEARCH);
