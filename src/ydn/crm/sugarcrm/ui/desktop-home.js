@@ -23,6 +23,7 @@ goog.require('goog.log');
 goog.require('goog.ui.Component');
 goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.crm.su.ui');
+goog.require('ydn.crm.su.ui.Header');
 goog.require('ydn.crm.su.ui.RecordTile');
 
 
@@ -92,6 +93,7 @@ ydn.crm.su.ui.DesktopHome.prototype.createDom = function() {
   var root = this.getElement();
   var dom = this.getDomHelper();
   root.classList.add(ydn.crm.su.ui.DesktopHome.CSS_CLASS);
+  root.classList.add('sugar-panel');
   var header = dom.createDom('div', ydn.crm.ui.CSS_CLASS_HEAD);
   var content = dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT);
   root.appendChild(header);
@@ -152,6 +154,7 @@ ydn.crm.su.ui.DesktopHome.prototype.setSugarCrm = function(details) {
   }
   goog.style.setElementShown(no_sugar, false);
 
+  var header = this.getHeaderPanel();
   if (panel) {
     var model = panel.getModel();
     if (model.getDomain() == about.domain) {
@@ -160,7 +163,9 @@ ydn.crm.su.ui.DesktopHome.prototype.setSugarCrm = function(details) {
     }
     goog.log.fine(this.logger, 'disposing sugar panel ' + model.getDomain());
     this.removeChild(panel, true);
+    this.removeChild(header, true);
     model.dispose();
+    header.dispose();
     panel.dispose();
   }
 
@@ -168,8 +173,10 @@ ydn.crm.su.ui.DesktopHome.prototype.setSugarCrm = function(details) {
 
   var sugar = new ydn.crm.su.model.Sugar(details.about,
       details.modulesInfo, details.serverInfo);
+  header = new ydn.crm.su.ui.Header(sugar, this.dom_);
   panel = new ydn.crm.su.ui.DesktopHome.Content(sugar, this.dom_);
   goog.log.fine(this.logger, 'sugar panel ' + about.domain + ' added.');
+  this.addChild(header, true);
   this.addChild(panel, true);
 
   return sugar;
@@ -199,7 +206,16 @@ ydn.crm.su.ui.DesktopHome.prototype.showRecord = function(m_name, id) {
  * @protected
  */
 ydn.crm.su.ui.DesktopHome.prototype.getSugarCrmPanel = function() {
-  return /** @type {ydn.crm.su.ui.DesktopHome.Content} */ (this.getChildAt(0)) || null;
+  return /** @type {ydn.crm.su.ui.DesktopHome.Content} */ (this.getChildAt(1)) || null;
+};
+
+
+/**
+ * @return {ydn.crm.su.ui.Header?}
+ * @protected
+ */
+ydn.crm.su.ui.DesktopHome.prototype.getHeaderPanel = function() {
+  return /** @type {ydn.crm.su.ui.Header} */ (this.getChildAt(0)) || null;
 };
 
 

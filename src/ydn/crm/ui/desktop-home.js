@@ -29,7 +29,6 @@ goog.inherits(ydn.crm.ui.DesktopHome, goog.ui.Component);
 ydn.crm.ui.DesktopHome.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var root = this.getElement();
-  root.textContent = 'Desktop home';
 };
 
 
