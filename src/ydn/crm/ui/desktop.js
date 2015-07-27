@@ -55,7 +55,7 @@ goog.inherits(ydn.crm.ui.Desktop, goog.ui.Component);
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.ui.Desktop.DEBUG = true;
+ydn.crm.ui.Desktop.DEBUG = false;
 
 
 /**
