@@ -35,6 +35,7 @@ goog.require('ydn.crm.su.ContextWidget');
 goog.require('ydn.crm.su.ui.DesktopHome');
 goog.require('ydn.crm.su.ui.ModulePage');
 goog.require('ydn.crm.su.ui.RecordList');
+goog.require('ydn.crm.su.ui.search.Page');
 goog.require('ydn.crm.ui.Desktop');
 goog.require('ydn.gmail.Utils.GmailViewState');
 goog.require('ydn.msg.Pipe');
@@ -97,6 +98,12 @@ ydn.crm.inj.SugarCrmApp = function(us, heading_injector, gmail_observer,
    */
   this.record_list_panel = new ydn.crm.su.ui.RecordList(this.provider);
 
+  /**
+   * @final
+   * @type {ydn.crm.su.ui.search.Page}
+   */
+  this.search_page = new ydn.crm.su.ui.search.Page();
+
   this.handler = new goog.events.EventHandler(this);
 
   /**
@@ -151,6 +158,7 @@ ydn.crm.inj.SugarCrmApp.prototype.init = function(desktop, renderer) {
 
   desktop.getHomePage().addChild(this.sidebar_panel, true);
   desktop.addChild(this.record_list_panel, true);
+  desktop.addChild(this.search_page, true);
 
   this.context_panel.render(renderer.getContentElement());
 
@@ -241,12 +249,14 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(details) {
     var archiver = new ydn.crm.su.Archiver(this.us_, sugar, this.attacher_);
     this.heading_injector_.setSugar(archiver);
     this.context_panel.setSugarCrm(sugar);
+    this.search_page.setSugarCrm(sugar);
 
   } else {
     this.domain_ = '';
     this.context_panel.setSugarCrm(null);
     this.sidebar_panel.setSugarCrm(null);
     this.heading_injector_.setSugar(null);
+    this.search_page.setSugarCrm(null);
     this.provider.setSugar(null);
     if (this.attacher_) {
       this.handler.unlisten(this.attacher_,

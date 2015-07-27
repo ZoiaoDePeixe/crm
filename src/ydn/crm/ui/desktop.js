@@ -78,9 +78,14 @@ ydn.crm.ui.Desktop.prototype.createDom = function() {
   root.appendChild(content);
   root.appendChild(footer);
 
+  // var home_svg = ydn.crm.ui.createSvgIcon('home');
+  // var search_svg = ydn.crm.ui.createSvgIcon('search');
   var home_btn = new goog.ui.Button('Home', null, dom);
-  home_btn.setId('desktop-home');
+  var search_btn = new goog.ui.Button('Search', null, dom);
+  home_btn.setId(ydn.crm.ui.PageName.DESKTOP_HOME);
+  search_btn.setId(ydn.crm.ui.PageName.SUGAR_SEARCH);
   this.toolbar_.addChild(home_btn, true);
+  this.toolbar_.addChild(search_btn, true);
   this.toolbar_.render(footer);
 
   var home = new ydn.crm.ui.DesktopHome(dom);
@@ -115,11 +120,8 @@ ydn.crm.ui.Desktop.prototype.onAction_ = function(ev) {
   if (ev.target instanceof goog.ui.Button) {
     var btn = /** @type {goog.ui.Button} */(ev.target);
     var id = btn.getId();
-    if (id == 'desktop-home') {
-      var se = new ydn.crm.ui.events.ShowPanelEvent(
-          ydn.crm.ui.PageName.DESKTOP_HOME, {}, this);
-      this.dispatchEvent(se);
-    }
+    var se = new ydn.crm.ui.events.ShowPanelEvent(id, {}, this);
+    this.dispatchEvent(se);
   }
 };
 
