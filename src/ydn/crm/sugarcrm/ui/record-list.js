@@ -45,12 +45,6 @@ ydn.crm.su.ui.RecordList = function(model, opt_dom) {
   goog.base(this, opt_dom);
   this.setModel(model);
 
-  /**
-   * Current cursor position.
-   * @type {number}
-   * @private
-   */
-  this.position_ = 0.0;
 
   /**
    * @type {goog.async.Deferred}
@@ -217,7 +211,7 @@ ydn.crm.su.ui.RecordList.prototype.loadForward_ = function(ul) {
  * @private
  */
 ydn.crm.su.ui.RecordList.prototype.loadBack_ = function(ul) {
-  console.log('loadBack_');
+
 };
 
 
@@ -380,7 +374,7 @@ ydn.crm.su.ui.RecordList.prototype.getProvider = function() {
 ydn.crm.su.ui.RecordList.prototype.setOrder = function(index, rev) {
   var changed = this.getProvider().setOrder(index, rev);
   if (changed) {
-    this.position_ = 0;
+    this.getUlElement().innerHTML = '';
     this.refreshList_();
   }
 };
@@ -392,7 +386,7 @@ ydn.crm.su.ui.RecordList.prototype.setOrder = function(index, rev) {
 ydn.crm.su.ui.RecordList.prototype.setFilter = function(filter) {
   var changed = this.getProvider().setFilter(filter);
   if (changed) {
-    this.position_ = 0;
+    this.getUlElement().innerHTML = '';
     this.refreshList_();
   }
 };
