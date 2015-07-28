@@ -238,6 +238,9 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(details) {
     if (details.about.domain == this.domain_) {
       return;
     }
+    for (var i = 0; i < details.modulesInfo.length; i++) {
+      ydn.crm.su.fixSugarCrmModuleMeta(details.modulesInfo[i]);
+    }
     this.domain_ = details.about.domain;
 
     this.sidebar_panel.setSugarCrm(details);

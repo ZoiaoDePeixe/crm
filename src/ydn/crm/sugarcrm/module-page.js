@@ -345,15 +345,6 @@ ydn.crm.su.ui.ModulePage.prototype.enterDocument = function() {
 
 
 /**
- * @param {goog.events.BrowserEvent} ev
- * @private
- */
-ydn.crm.su.ui.ModulePage.prototype.onTileClick_ = function(ev) {
-
-};
-
-
-/**
  * @param {goog.events.Event} ev
  * @private
  */

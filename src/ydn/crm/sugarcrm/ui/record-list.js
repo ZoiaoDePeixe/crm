@@ -51,6 +51,18 @@ ydn.crm.su.ui.RecordList = function(model, opt_dom) {
    * @private
    */
   this.position_ = 0.0;
+
+  /**
+   * @type {goog.async.Deferred}
+   * @private
+   */
+  this.df_load_forward_ = null;
+
+  /**
+   * @type {goog.async.Deferred}
+   * @private
+   */
+  this.df_load_back_ = null;
 };
 goog.inherits(ydn.crm.su.ui.RecordList, goog.ui.Component);
 
@@ -113,12 +125,99 @@ ydn.crm.su.ui.RecordList.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
 
   var hd = this.getHandler();
-  /**
-   * @type {ydn.crm.su.ui.RecordListProvider}
-   */
-  var model = this.getModel();
+  var ul = this.getUlElement();
+  hd.listen(ul, goog.events.EventType.WHEEL, this.onMouseWheel_);
 
   this.reset_();
+};
+
+
+/**
+ * @param {goog.events.BrowserEvent} ev
+ * @private
+ */
+ydn.crm.su.ui.RecordList.prototype.onMouseWheel_ = function(ev) {
+  // console.log(ev);
+  var we = /** @type {WheelEvent} */(ev.getBrowserEvent());
+  var ul = /** @type {Element} */(ev.currentTarget);
+  if (we.deltaY > 0) {
+    ul.scrollTop += we.deltaY;
+    var remaining = ul.scrollHeight - (ul.offsetHeight + ul.scrollTop);
+    if (remaining <= 0) {
+      this.loadForward_();
+    } else {
+      ev.stopPropagation();
+      ev.preventDefault();
+      var rem_items = remaining / ydn.crm.su.ui.RecordList.CSS_ITEM_HEIGHT;
+      if (rem_items < 5) {
+        this.loadForward_(ul);
+      }
+    }
+  } else if (we.deltaY < 0) {
+    ul.scrollTop += we.deltaY;
+    var rem_items = ul.scrollTop / ydn.crm.su.ui.RecordList.CSS_ITEM_HEIGHT;
+    if (ul.scrollTop > 0) {
+      ev.stopPropagation();
+      ev.preventDefault();
+    }
+    if (rem_items <= 5) {
+      this.loadBack_(ul);
+    }
+  }
+
+};
+
+
+/**
+ * Fix item size as specified in CSS
+ * .module-record-list > UL > LI
+ * @type {number} LI height in pixel.
+ */
+ydn.crm.su.ui.RecordList.CSS_ITEM_HEIGHT = 34;
+
+
+/**
+ * Prepare list items are available while scrolling.
+ * @param {Element=} ul the scroll element.
+ * @private
+ */
+ydn.crm.su.ui.RecordList.prototype.loadForward_ = function(ul) {
+
+  if (this.df_load_forward_) {
+    return;
+  }
+  var offset = 0;
+  ul = ul || this.getUlElement();
+  if (ul.lastElementChild) {
+    offset = parseInt(ul.lastElementChild.getAttribute('data-offset'), 10);
+  }
+  if (ydn.crm.su.ui.RecordList.DEBUG) {
+    console.log('loadForward from ' + offset);
+  }
+  this.df_load_forward_ = this.getProvider().list(15, offset);
+  this.df_load_forward_.addCallbacks(function(arr) {
+    for (var i = 0; i < arr.length; i++) {
+      arr[i]['ydn$offset'] = 1 + i + offset;
+    }
+    if (ydn.crm.su.ui.RecordList.DEBUG) {
+      console.log(arr.length + ' loaded');
+    }
+    this.addResults_(arr, true);
+    this.df_load_forward_ = null;
+  }, function(e) {
+    window.console.error(e);
+    this.df_load_forward_ = null;
+  }, this);
+};
+
+
+/**
+ * Prepare list items are available while scrolling.
+ * @param {Element=} ul the scroll element.
+ * @private
+ */
+ydn.crm.su.ui.RecordList.prototype.loadBack_ = function(ul) {
+  console.log('loadBack_');
 };
 
 
@@ -168,6 +267,7 @@ ydn.crm.su.ui.RecordList.prototype.refresh_ = function() {
 /**
  * Render item.
  * @param {SugarCrm.Record} rec
+ * @return {Element}
  * @private
  */
 ydn.crm.su.ui.RecordList.prototype.renderItem_ = function(rec) {
@@ -177,28 +277,54 @@ ydn.crm.su.ui.RecordList.prototype.renderItem_ = function(rec) {
   li.innerHTML = ydn.crm.templ.renderRecordListItem(rec._module, symbol);
   li.querySelector('.title').textContent = ydn.crm.su.Record.getLabel(rec);
   li.querySelector('.summary').textContent = ydn.crm.su.Record.getSummary(rec);
-  var ul = this.getUlElement();
-  ul.appendChild(li);
+  li.setAttribute('data-id', rec.id);
+  li.setAttribute('data-offset', rec['ydn$offset']);
+  return li;
 };
 
 
 /**
- * Add result to UL.
- * @param {Array<SugarCrm.Record>} arr results.
+ * @param {Element} ul
  * @private
  */
-ydn.crm.su.ui.RecordList.prototype.addResults_ = function(arr) {
-  var ul = this.getUlElement();
-  ul.innerHTML = '';
+ydn.crm.su.ui.RecordList.prototype.fixHeight_ = function(ul) {
+  ul = ul || this.getUlElement();
   if (!ul.style.height) {
     var h = ydn.crm.ui.getPopupContentHeight(2);
     if (h) {
       ul.style.height = h;
     }
   }
+};
+
+
+/**
+ * Add result to UL.
+ * @param {Array<SugarCrm.Record>} arr results.
+ * @param {boolean} forward true.
+ * @private
+ */
+ydn.crm.su.ui.RecordList.prototype.addResults_ = function(arr, forward) {
+  if (arr.length == 0) {
+    return;
+  }
+  var ul = this.getUlElement();
+  this.fixHeight_(ul);
+  if (forward && ul.lastElementChild) {
+    var prev_offset = ul.lastElementChild.getAttribute('data-offset');
+    var offset = arr[0]['ydn$offset'];
+    if (prev_offset != (offset - 1)) {
+      ul.innerHTML = '';
+    }
+  }
   for (var i = 0; i < arr.length; i++) {
     var obj = arr[i];
-    this.renderItem_(obj);
+    var li = this.renderItem_(obj);
+    if (forward || ul.childElementCount == 0) {
+      ul.appendChild(li);
+    } else {
+      ul.insertBefore(li, ul.firstElementChild);
+    }
   }
 };
 
@@ -208,11 +334,7 @@ ydn.crm.su.ui.RecordList.prototype.addResults_ = function(arr) {
  * @private
  */
 ydn.crm.su.ui.RecordList.prototype.refreshList_ = function() {
-  this.getProvider().list(15, 0).addCallbacks(function(arr) {
-    this.addResults_(arr);
-  }, function(e) {
-    window.console.error(e);
-  }, this);
+  this.loadForward_();
 };
 
 
