@@ -43,6 +43,12 @@ ydn.crm.su.ui.RecordListProvider = function() {
   this.rev_ = false;
 
   /**
+   * @type {ydn.crm.su.RecordFilter}
+   * @private
+   */
+  this.filter_ = ydn.crm.su.RecordFilter.ALL;
+
+  /**
    * @type {number}
    * @private
    */
@@ -93,11 +99,27 @@ ydn.crm.su.ui.RecordListProvider.prototype.setModule = function(mn) {
  * @return {boolean} true if it has changed.
  */
 ydn.crm.su.ui.RecordListProvider.prototype.setOrder = function(index, rev) {
+  goog.asserts.assert(['name', 'id', 'date_modified'].indexOf(index) >= 0,
+      'Invalid order ' + index);
   if (this.order_ == index && this.rev_ == rev) {
     return false;
   }
   this.order_ = index || 'id';
   this.rev_ = !!rev;
+  this.reset_();
+  return true;
+};
+
+
+/**
+ * @param {ydn.crm.su.RecordFilter} filter set name of filter.
+ * @return {boolean} true if it has changed.
+ */
+ydn.crm.su.ui.RecordListProvider.prototype.setFilter = function(filter) {
+  if (this.filter_ == filter) {
+    return false;
+  }
+  this.filter_ = filter;
   this.reset_();
   return true;
 };
@@ -138,10 +160,16 @@ ydn.crm.su.ui.RecordListProvider.prototype.countRecords = function() {
  */
 ydn.crm.su.ui.RecordListProvider.prototype.list = function(limit, offset) {
   var index = this.order_ || 'id';
+  var kr = null;
+  if (this.filter_ == ydn.crm.su.RecordFilter.MY) {
+    index = 'assigned_user_id, name';
+    kr = ydn.db.KeyRange.starts([this.sugar_.getUserRecordId()]);
+  }
   var q = {
     'store': this.name_,
     'index': index,
     'limit': limit,
+    'keyRange': kr,
     'offset': offset
   };
   return this.sugar_.getChannel().send(ydn.crm.ch.SReq.QUERY, [q]).addCallback(function(arr) {

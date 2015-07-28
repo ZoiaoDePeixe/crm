@@ -262,3 +262,15 @@ ydn.crm.su.ui.RecordList.prototype.setOrder = function(index, rev) {
     this.refreshList_();
   }
 };
+
+
+/**
+ * @param {ydn.crm.su.RecordFilter} filter set name of filter.
+ */
+ydn.crm.su.ui.RecordList.prototype.setFilter = function(filter) {
+  var changed = this.getProvider().setFilter(filter);
+  if (changed) {
+    this.position_ = 0;
+    this.refreshList_();
+  }
+};

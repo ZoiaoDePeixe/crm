@@ -563,3 +563,25 @@ ydn.crm.su.renderCacheStats = function (li, obj, opt_update_now) {
   }
 
 };
+
+
+/**
+ * Set of filter
+ * @enum {string}
+ */
+ydn.crm.su.RecordFilter = {
+  ALL: 'filter-all',
+  MY: 'filter-my',
+  FAVORITE: 'filter-fav'
+};
+
+
+/**
+ * Set of sort order
+ * @enum {string}
+ */
+ydn.crm.su.RecordOrder = {
+  ID: 'order-id',
+  RECENT: 'order-date_modified',
+  NAME: 'order-name'
+};

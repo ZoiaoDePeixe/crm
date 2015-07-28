@@ -94,28 +94,6 @@ ydn.crm.su.ui.ModulePage.prototype.getContentElement = function() {
 
 
 /**
- * Set of filter
- * @enum {string}
- */
-ydn.crm.su.ui.ModulePage.Filter = {
-  ALL: 'filter-all',
-  MY: 'filter-my',
-  FAVORITE: 'filter-fav'
-};
-
-
-/**
- * Set of sort order
- * @enum {string}
- */
-ydn.crm.su.ui.ModulePage.Order = {
-  ID: 'order-id',
-  RECENT: 'order-date_modified',
-  NAME: 'order-name'
-};
-
-
-/**
  * Change target module.
  * @param {ydn.crm.su.ModuleName} mn target module.
  */
@@ -135,7 +113,7 @@ ydn.crm.su.ui.ModulePage.prototype.getModule = function() {
 
 /**
  * Get active filter.
- * @return {ydn.crm.su.ui.ModulePage.Filter} active filter.
+ * @return {ydn.crm.su.RecordFilter} active filter.
  */
 ydn.crm.su.ui.ModulePage.prototype.getFilter = function() {
   for (var i = 0, n = this.menu_filter_.getChildCount(); i < n; i++) {
@@ -144,22 +122,44 @@ ydn.crm.su.ui.ModulePage.prototype.getFilter = function() {
       continue;
     }
     var name = child.getModel() || '';
-    if (name == ydn.crm.su.ui.ModulePage.Filter.ALL) {
-      return ydn.crm.su.ui.ModulePage.Filter.ALL;
-    } else if (name == ydn.crm.su.ui.ModulePage.Filter.MY) {
-      return ydn.crm.su.ui.ModulePage.Filter.MY;
-    } else if (name == ydn.crm.su.ui.ModulePage.Filter.FAVORITE) {
-      return ydn.crm.su.ui.ModulePage.Filter.FAVORITE;
+    if (name == ydn.crm.su.RecordFilter.ALL) {
+      return ydn.crm.su.RecordFilter.ALL;
+    } else if (name == ydn.crm.su.RecordFilter.MY) {
+      return ydn.crm.su.RecordFilter.MY;
+    } else if (name == ydn.crm.su.RecordFilter.FAVORITE) {
+      return ydn.crm.su.RecordFilter.FAVORITE;
     }
   }
-  return ydn.crm.su.ui.ModulePage.Filter.ALL;
+  return ydn.crm.su.RecordFilter.ALL;
+};
+
+
+/**
+ * @return {goog.ui.Button}
+ */
+ydn.crm.su.ui.ModulePage.prototype.getOrderButton = function() {
+  for (var i = 0, n = this.toolbar_.getChildCount(); i < n; i++) {
+    var child = this.toolbar_.getChildAt(i);
+    if (child.getId() == 'order-button') {
+      return /** @type {goog.ui.Button} */(child);
+    }
+  }
+  return null;
+};
+
+
+ydn.crm.su.ui.ModulePage.prototype.updateOrderOnFilter_ = function(filter) {
+  var is_all = filter == ydn.crm.su.RecordFilter.ALL;
+  var btn = this.getOrderButton();
+  btn.setVisible(is_all);
 };
 
 
 /**
  * Select active filter.
- * @param {ydn.crm.su.ui.ModulePage.Filter} filter
+ * @param {ydn.crm.su.RecordFilter} filter
  * @return {boolean} return true if active filter has changed.
+ * @protected
  */
 ydn.crm.su.ui.ModulePage.prototype.selectFilter = function(filter) {
   var updated = false;
@@ -170,11 +170,14 @@ ydn.crm.su.ui.ModulePage.prototype.selectFilter = function(filter) {
     }
     var name = /** @type {string} */(child.getModel()) || '';
     if (name == filter) {
-      updated = !child.isChecked();
+      updated = child.isChecked();
     }
     if (goog.string.startsWith(name, 'filter-')) {
       child.setChecked(filter == name);
     }
+  }
+  if (updated) {
+    this.updateOrderOnFilter_(filter);
   }
   return updated;
 };
@@ -182,8 +185,9 @@ ydn.crm.su.ui.ModulePage.prototype.selectFilter = function(filter) {
 
 /**
  * Set sort order.
- * @param {ydn.crm.su.ui.ModulePage.Order} order
- * @return {string} return a new order, empty string if not changed.
+ * @param {ydn.crm.su.RecordOrder} order
+ * @return {boolean} return true if active order has changed.
+ * @protected
  */
 ydn.crm.su.ui.ModulePage.prototype.selectOrder = function(order) {
   var updated = false;
@@ -200,16 +204,13 @@ ydn.crm.su.ui.ModulePage.prototype.selectOrder = function(order) {
       child.setChecked(order == name);
     }
   }
-  if (updated) {
-    return order.substr('order-'.length);
-  }
-  return '';
+  return updated;
 };
 
 
 /**
  * Get active sort order.
- * @return {ydn.crm.su.ui.ModulePage.Order} active sort order.
+ * @return {ydn.crm.su.RecordOrder} active sort order.
  */
 ydn.crm.su.ui.ModulePage.prototype.getSortOrder = function() {
   for (var i = 0, n = this.menu_order_.getChildCount(); i < n; i++) {
@@ -218,15 +219,15 @@ ydn.crm.su.ui.ModulePage.prototype.getSortOrder = function() {
       continue;
     }
     var name = child.getModel() || '';
-    if (name == ydn.crm.su.ui.ModulePage.Order.ID) {
-      return ydn.crm.su.ui.ModulePage.Order.ID;
-    } else if (name == ydn.crm.su.ui.ModulePage.Order.NAME) {
-      return ydn.crm.su.ui.ModulePage.Order.NAME;
-    } else if (name == ydn.crm.su.ui.ModulePage.Order.RECENT) {
-      return ydn.crm.su.ui.ModulePage.Order.RECENT;
+    if (name == ydn.crm.su.RecordOrder.ID) {
+      return ydn.crm.su.RecordOrder.ID;
+    } else if (name == ydn.crm.su.RecordOrder.NAME) {
+      return ydn.crm.su.RecordOrder.NAME;
+    } else if (name == ydn.crm.su.RecordOrder.RECENT) {
+      return ydn.crm.su.RecordOrder.RECENT;
     }
   }
-  return ydn.crm.su.ui.ModulePage.Order.ID;
+  return ydn.crm.su.RecordOrder.ID;
 };
 
 
@@ -259,24 +260,28 @@ ydn.crm.su.ui.ModulePage.prototype.createDom = function() {
   m_btn.setTooltip('Create a new record');
   this.toolbar_.addChild(m_btn, true);
 
-  this.menu_filter_.addChild(new goog.ui.CheckBoxMenuItem('All records',
-      ydn.crm.su.ui.ModulePage.Filter.ALL, dom), true);
+  var all_item = new goog.ui.CheckBoxMenuItem('All records',
+      ydn.crm.su.RecordFilter.ALL, dom);
+  all_item.setChecked(true);
+  this.menu_filter_.addChild(all_item, true);
   var my_item = new goog.ui.CheckBoxMenuItem('My records',
-      ydn.crm.su.ui.ModulePage.Filter.MY, dom);
-  my_item.setChecked(true);
+      ydn.crm.su.RecordFilter.MY, dom);
   this.menu_filter_.addChild(my_item, true);
+  /*
   this.menu_filter_.addChild(new goog.ui.CheckBoxMenuItem('Favorites',
-      ydn.crm.su.ui.ModulePage.Filter.FAVORITE, dom), true);
+      ydn.crm.su.RecordFilter.FAVORITE, dom), true);
+  */
   var filter = new goog.ui.MenuButton('Filter', this.menu_filter_, css_mbr, dom);
   this.toolbar_.addChild(filter, true);
 
   var r_item = new goog.ui.CheckBoxMenuItem('Recent',
-      ydn.crm.su.ui.ModulePage.Order.RECENT, dom);
+      ydn.crm.su.RecordOrder.RECENT, dom);
   r_item.setChecked(true);
   this.menu_order_.addChild(r_item, true);
   this.menu_order_.addChild(new goog.ui.CheckBoxMenuItem('Name',
-      ydn.crm.su.ui.ModulePage.Order.NAME, dom), true);
+      ydn.crm.su.RecordOrder.NAME, dom), true);
   var sort = new goog.ui.MenuButton('Order', this.menu_order_, css_mbr, dom);
+  sort.setId('order-button');
   this.toolbar_.addChild(sort, true);
 
   // var search = new wgui.TextInput('', null, dom);
@@ -310,11 +315,11 @@ ydn.crm.su.ui.ModulePage.prototype.getSearchCtrl = function() {
 ydn.crm.su.ui.ModulePage.prototype.updateSearchLabelOld_ = function() {
   var label = 'Search';
   var filter = this.getFilter();
-  if (filter == ydn.crm.su.ui.ModulePage.Filter.ALL) {
+  if (filter == ydn.crm.su.RecordFilter.ALL) {
     label += ' All';
-  } else if (filter == ydn.crm.su.ui.ModulePage.Filter.MY) {
+  } else if (filter == ydn.crm.su.RecordFilter.MY) {
     label += ' My';
-  } else if (filter == ydn.crm.su.ui.ModulePage.Filter.FAVORITE) {
+  } else if (filter == ydn.crm.su.RecordFilter.FAVORITE) {
     label += ' Favorite';
   }
   label += ' ' + this.getModule();
@@ -352,9 +357,12 @@ ydn.crm.su.ui.ModulePage.prototype.onTileClick_ = function(ev) {
 ydn.crm.su.ui.ModulePage.prototype.onFilterAction_ = function(ev) {
   if (ev.target instanceof goog.ui.CheckBoxMenuItem) {
     var item = /** @type {goog.ui.CheckBoxMenuItem} */(ev.target);
-    var name = /** @type {string} */(item.getModel()) || '';
+    var name = /** @type {ydn.crm.su.RecordFilter} */(item.getModel() || '');
     if (name) {
-      this.selectFilter(/** @type {ydn.crm.su.ui.ModulePage.Filter} */(name));
+      var updated = this.selectFilter(name);
+      if (updated) {
+        this.record_list_.setFilter(name);
+      }
     }
   }
 };
@@ -367,11 +375,11 @@ ydn.crm.su.ui.ModulePage.prototype.onFilterAction_ = function(ev) {
 ydn.crm.su.ui.ModulePage.prototype.onOrderAction_ = function(ev) {
   if (ev.target instanceof goog.ui.CheckBoxMenuItem) {
     var item = /** @type {goog.ui.CheckBoxMenuItem} */(ev.target);
-    var name = /** @type {ydn.crm.su.ui.ModulePage.Order} */(item.getModel() ||
-        '');
+    var name = /** @type {ydn.crm.su.RecordOrder} */(item.getModel() || '');
     if (name) {
-      var index = this.selectOrder(name);
-      if (index) {
+      var updated = this.selectOrder(name);
+      if (updated) {
+        var index = name.substr('order-'.length);
         var rev = index == 'date_modified';
         this.record_list_.setOrder(index, rev);
       }
