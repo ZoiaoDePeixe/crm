@@ -74,8 +74,10 @@ ydn.crm.ui.Desktop.prototype.createDom = function() {
   var dom = this.dom_;
   var root = this.getElement();
   goog.dom.classlist.add(root, ydn.crm.ui.Desktop.CSS_CLASS);
+  var header = dom.createDom('div', ydn.crm.ui.CSS_CLASS_HEAD);
   var content = dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT);
   var footer = dom.createDom('div', ydn.crm.ui.CSS_CLASS_FOOTER);
+  root.appendChild(header);
   root.appendChild(content);
   root.appendChild(footer);
 
@@ -88,7 +90,7 @@ ydn.crm.ui.Desktop.prototype.createDom = function() {
   search_btn.setId(ydn.crm.ui.PageName.SUGAR_SEARCH);
   this.toolbar_.addChild(home_btn, true);
   this.toolbar_.addChild(search_btn, true);
-  this.toolbar_.render(footer);
+  this.toolbar_.render(header);
 
   var home = new ydn.crm.ui.DesktopHome(dom);
   this.addChild(home, true);
