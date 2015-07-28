@@ -93,6 +93,6 @@ ydn.crm.su.ui.RecordTile.prototype.onTileClick_ = function(ev) {
   };
   ev.stopPropagation();
   var se = new ydn.crm.ui.events.ShowPanelEvent(
-      ydn.crm.ui.PageName.RECORD_LIST, data, this);
+      ydn.crm.ui.PageName.MODULE_HOME, data, this);
   this.dispatchEvent(se);
 };

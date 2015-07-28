@@ -94,9 +94,9 @@ ydn.crm.inj.SugarCrmApp = function(us, heading_injector, gmail_observer,
   this.provider = new ydn.crm.su.ui.RecordListProvider();
   /**
    * @final
-   * @type {ydn.crm.su.ui.RecordList}
+   * @type {ydn.crm.su.ui.ModulePage}
    */
-  this.record_list_panel = new ydn.crm.su.ui.RecordList(this.provider);
+  this.record_list_panel = new ydn.crm.su.ui.ModulePage(this.provider);
 
   /**
    * @final

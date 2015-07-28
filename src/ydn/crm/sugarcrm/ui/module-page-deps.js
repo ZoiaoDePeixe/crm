@@ -8,8 +8,6 @@ goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
 goog.require('ydn.crm.su.model.Sugar');
 goog.require('ydn.crm.su.ui.ModulePage');
-goog.require('ydn.crm.ui.Desktop');
-goog.require('ydn.crm.ui.DesktopHome');
 goog.require('ydn.crm.ui.UserSetting');
 goog.require('ydn.msg');
 goog.require('ydn.ui');

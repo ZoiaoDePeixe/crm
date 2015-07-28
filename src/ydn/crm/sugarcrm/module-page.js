@@ -36,32 +36,22 @@ goog.require('goog.ui.MenuSeparator');
 goog.require('goog.ui.Toolbar');
 goog.require('wgui.TextInput');
 goog.require('ydn.crm.ui.events');
+goog.require('ydn.crm.su.ui.RecordList');
+goog.require('ydn.crm.su.ui.RecordListProvider');
 
 
 
 /**
  * SugarCRM module page listing its records.
- * @param {!ydn.crm.su.model.Sugar} sugar
- * @param {ydn.crm.su.ModuleName} name module name.
+ * @param {ydn.crm.su.ui.RecordListProvider} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
+ * @implements {ydn.crm.ui.IDesktopPage}
  */
-ydn.crm.su.ui.ModulePage = function(sugar, name, opt_dom) {
+ydn.crm.su.ui.ModulePage = function(model, opt_dom) {
   goog.base(this, opt_dom);
-  /**
-   * @final
-   * @type {ydn.crm.su.ModuleName}
-   * @protected
-   */
-  this.name = name;
-
-  /**
-   * @type {number}
-   * @protected
-   */
-  this.offset = 0;
 
   /**
    * @type {goog.ui.Toolbar}
@@ -82,16 +72,10 @@ ydn.crm.su.ui.ModulePage = function(sugar, name, opt_dom) {
    */
   this.menu_order_ = new goog.ui.Menu(opt_dom);
 
-  this.setModel(sugar);
+  this.record_list_ = new ydn.crm.su.ui.RecordList(model, opt_dom);
+
 };
 goog.inherits(ydn.crm.su.ui.ModulePage, goog.ui.Component);
-
-
-/**
- * @return {ydn.crm.su.model.Sugar}
- * @override
- */
-ydn.crm.su.ui.ModulePage.prototype.getModel;
 
 
 /**
@@ -128,6 +112,24 @@ ydn.crm.su.ui.ModulePage.Order = {
   ID: 'order-id',
   RECENT: 'order-rc',
   NAME: 'order-na'
+};
+
+
+/**
+ * Change target module.
+ * @param {ydn.crm.su.ModuleName} mn target module.
+ */
+ydn.crm.su.ui.ModulePage.prototype.setModule = function(mn) {
+  this.record_list_.setModule(mn);
+};
+
+
+/**
+ * Get target module.
+ * @return {ydn.crm.su.ModuleName} target module.
+ */
+ydn.crm.su.ui.ModulePage.prototype.getModule = function() {
+  return this.record_list_.getModel().getModuleName();
 };
 
 
@@ -221,12 +223,10 @@ ydn.crm.su.ui.ModulePage.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var root = this.getElement();
   var dom = this.getDomHelper();
-  /**
-   * @type {ydn.crm.su.model.Sugar}
-   */
-  var model = this.getModel();
+
+  var mn = this.getModule();
   root.classList.add('module-page');
-  root.classList.add(this.name);
+  root.classList.add(mn);
   var head = dom.createDom('div', ydn.crm.ui.CSS_CLASS_HEAD);
   var content = dom.createDom('div', ydn.crm.ui.CSS_CLASS_CONTENT);
   var footer = dom.createDom('div', ydn.crm.ui.CSS_CLASS_FOOTER);
@@ -237,7 +237,7 @@ ydn.crm.su.ui.ModulePage.prototype.createDom = function() {
   var ul = dom.createDom('ul', ydn.crm.su.ui.ModulePage.CSS_CLASS_LIST);
   content.appendChild(ul);
 
-  var symbol = ydn.crm.su.toModuleSymbol(this.name);
+  var symbol = ydn.crm.su.toModuleSymbol(mn);
 
   var css_rdr = goog.ui.Css3ButtonRenderer.getInstance();
   var css_mbr = goog.ui.Css3MenuButtonRenderer.getInstance();
@@ -270,6 +270,8 @@ ydn.crm.su.ui.ModulePage.prototype.createDom = function() {
 
   this.toolbar_.render(head);
 
+  this.addChild(this.record_list_, true);
+
   // this.updateSearchLabel_();
 };
 
@@ -289,36 +291,6 @@ ydn.crm.su.ui.ModulePage.prototype.getSearchCtrl = function() {
 
 
 /**
- * @param {Array<SugarCrm.Record>} arr
- * @private
- */
-ydn.crm.su.ui.ModulePage.prototype.addResult_ = function(arr) {
-
-};
-
-
-/**
- * @private
- */
-ydn.crm.su.ui.ModulePage.prototype.refresh_ = function() {
-  var offset = this.offset;
-  var query = {
-    'store': this.name,
-    'limit': 25,
-    'offset': offset
-  };
-  var req = this.getModel().send(ydn.crm.ch.SReq.QUERY, [query]);
-  req.addCallback(function(arr) {
-    var qs = /** @type {CrmApp.QueryResult} */(arr[0]);
-    for (var i = 0; i < qs.result.length; i++) {
-      qs.result[i]['_index'] = offset + i;
-    }
-    this.addResult_(qs.result);
-  }, this);
-};
-
-
-/**
  * Update search input placeholder text.
  * @private
  */
@@ -332,7 +304,7 @@ ydn.crm.su.ui.ModulePage.prototype.updateSearchLabel_ = function() {
   } else if (filter == ydn.crm.su.ui.ModulePage.Filter.FAVORITE) {
     label += ' Favorite';
   }
-  label += ' ' + this.name;
+  label += ' ' + this.getModule();
   var input = this.getSearchCtrl().getElement().querySelector('input');
   input.setAttribute('placeholder', label);
 };
@@ -391,15 +363,18 @@ ydn.crm.su.ui.ModulePage.prototype.onOrderAction_ = function(ev) {
 
 
 /**
- * @const
- * @type {string}
- */
-ydn.crm.su.ui.ModulePage.NAME = 'Module';
-
-
-/**
  * @inheritDoc
  */
 ydn.crm.su.ui.ModulePage.prototype.toString = function() {
-  return ydn.crm.su.ui.ModulePage.NAME;
+  return ydn.crm.ui.PageName.MODULE_HOME;
+};
+
+
+/**
+ * @override
+ */
+ydn.crm.su.ui.ModulePage.prototype.onPageShow = function(obj) {
+  console.log(obj);
+
+  this.setModule(obj['module']);
 };

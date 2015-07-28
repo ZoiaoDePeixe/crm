@@ -40,7 +40,6 @@ goog.require('ydn.crm.templ');
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
- * @implements {ydn.crm.ui.IDesktopPage}
  */
 ydn.crm.su.ui.RecordList = function(model, opt_dom) {
   goog.base(this, opt_dom);
@@ -140,14 +139,6 @@ ydn.crm.su.ui.RecordList.prototype.reset_ = function() {
   model.onReady().addCallback(function() {
     this.refresh_();
   }, this);
-};
-
-
-/**
- * @override
- */
-ydn.crm.su.ui.RecordList.prototype.toString = function() {
-  return ydn.crm.ui.PageName.RECORD_LIST;
 };
 
 
@@ -253,14 +244,13 @@ ydn.crm.su.ui.RecordList.prototype.getUlElement = function() {
 
 
 /**
- * @override
+ * @param {ydn.crm.su.ModuleName} mn
  */
-ydn.crm.su.ui.RecordList.prototype.onPageShow = function(obj) {
-  console.log(obj);
+ydn.crm.su.ui.RecordList.prototype.setModule = function(mn) {
   /**
    * @type {ydn.crm.su.ui.RecordListProvider}
    */
   var model = this.getModel();
-  model.setModule(obj['module']);
+  model.setModule(mn);
   this.reset_();
 };
