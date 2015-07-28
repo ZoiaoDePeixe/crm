@@ -31,10 +31,16 @@ ydn.crm.su.ui.RecordListProvider = function() {
    */
   this.name_ = ydn.crm.su.ModuleName.CONTACTS;
   /**
-   * @type {string}
+   * @type {string} index name.
    * @private
    */
   this.order_ = 'date_modified';
+  /**
+   * In reverse ordering.
+   * @type {boolean}
+   * @private
+   */
+  this.rev_ = false;
 
   /**
    * @type {number}
@@ -83,13 +89,17 @@ ydn.crm.su.ui.RecordListProvider.prototype.setModule = function(mn) {
 
 /**
  * @param {string} index set name of index for order.
+ * @param {boolean} rev in reverse direction.
+ * @return {boolean} true if it has changed.
  */
-ydn.crm.su.ui.RecordListProvider.prototype.setOrder = function(index) {
-  if (this.order_ == index) {
-    return;
+ydn.crm.su.ui.RecordListProvider.prototype.setOrder = function(index, rev) {
+  if (this.order_ == index && this.rev_ == rev) {
+    return false;
   }
   this.order_ = index || 'id';
+  this.rev_ = !!rev;
   this.reset_();
+  return true;
 };
 
 
@@ -157,7 +167,6 @@ ydn.crm.su.ui.RecordListProvider.prototype.init_ = function() {
   this.sugar_.getChannel().send(ydn.crm.ch.SReq.COUNT, {
     'module': this.name_,
     'source': 'client'}).addCallback(function(cnt) {
-    console.log(cnt);
     this.count_ = cnt;
     if (this.total_ >= 0) {
       this.ready_.callback(null);
@@ -166,7 +175,6 @@ ydn.crm.su.ui.RecordListProvider.prototype.init_ = function() {
   this.sugar_.getChannel().send(ydn.crm.ch.SReq.COUNT, {
     'module': this.name_,
     'source': 'server'}).addCallback(function(cnt) {
-    console.log(cnt);
     this.total_ = cnt;
     if (this.count_ >= 0) {
       this.ready_.callback(null);

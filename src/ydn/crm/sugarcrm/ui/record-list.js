@@ -118,7 +118,6 @@ ydn.crm.su.ui.RecordList.prototype.enterDocument = function() {
    */
   var model = this.getModel();
 
-  hd.listen(model, ydn.crm.su.events.EventType.READY, this.refresh_);
   this.reset_();
 };
 
@@ -173,10 +172,6 @@ ydn.crm.su.ui.RecordList.prototype.refresh_ = function() {
  */
 ydn.crm.su.ui.RecordList.prototype.renderItem_ = function(rec) {
   var li = document.createElement('LI');
-  /**
-   * @type {ydn.crm.su.ui.RecordListProvider}
-   */
-  var model = this.getModel();
   var symbol = ydn.crm.su.toModuleSymbol(
       /** @type {ydn.crm.su.ModuleName} */(rec._module));
   li.innerHTML = ydn.crm.templ.renderRecordListItem(rec._module, symbol);
@@ -213,11 +208,7 @@ ydn.crm.su.ui.RecordList.prototype.addResults_ = function(arr) {
  * @private
  */
 ydn.crm.su.ui.RecordList.prototype.refreshList_ = function() {
-  /**
-   * @type {ydn.crm.su.ui.RecordListProvider}
-   */
-  var model = this.getModel();
-  model.list(15, 0).addCallbacks(function(arr) {
+  this.getProvider().list(15, 0).addCallbacks(function(arr) {
     this.addResults_(arr);
   }, function(e) {
     window.console.error(e);
@@ -247,10 +238,27 @@ ydn.crm.su.ui.RecordList.prototype.getUlElement = function() {
  * @param {ydn.crm.su.ModuleName} mn
  */
 ydn.crm.su.ui.RecordList.prototype.setModule = function(mn) {
-  /**
-   * @type {ydn.crm.su.ui.RecordListProvider}
-   */
-  var model = this.getModel();
-  model.setModule(mn);
+  this.getProvider().setModule(mn);
   this.reset_();
+};
+
+
+/**
+ * @return {ydn.crm.su.ui.RecordListProvider}
+ */
+ydn.crm.su.ui.RecordList.prototype.getProvider = function() {
+  return this.getModel();
+};
+
+
+/**
+ * @param {string} index set name of index for order.
+ * @param {boolean} rev in reverse direction.
+ */
+ydn.crm.su.ui.RecordList.prototype.setOrder = function(index, rev) {
+  var changed = this.getProvider().setOrder(index, rev);
+  if (changed) {
+    this.position_ = 0;
+    this.refreshList_();
+  }
 };

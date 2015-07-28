@@ -110,8 +110,8 @@ ydn.crm.su.ui.ModulePage.Filter = {
  */
 ydn.crm.su.ui.ModulePage.Order = {
   ID: 'order-id',
-  RECENT: 'order-rc',
-  NAME: 'order-na'
+  RECENT: 'order-date_modified',
+  NAME: 'order-name'
 };
 
 
@@ -157,39 +157,53 @@ ydn.crm.su.ui.ModulePage.prototype.getFilter = function() {
 
 
 /**
- * Set active filter.
+ * Select active filter.
  * @param {ydn.crm.su.ui.ModulePage.Filter} filter
+ * @return {boolean} return true if active filter has changed.
  */
-ydn.crm.su.ui.ModulePage.prototype.setFilter = function(filter) {
+ydn.crm.su.ui.ModulePage.prototype.selectFilter = function(filter) {
+  var updated = false;
   for (var i = 0, n = this.menu_filter_.getChildCount(); i < n; i++) {
     var child = /** @type {goog.ui.Control} */(this.menu_filter_.getChildAt(i));
     if (!(child instanceof goog.ui.Control)) {
       continue;
     }
     var name = /** @type {string} */(child.getModel()) || '';
+    if (name == filter) {
+      updated = !child.isChecked();
+    }
     if (goog.string.startsWith(name, 'filter-')) {
       child.setChecked(filter == name);
     }
   }
-  this.updateSearchLabel_();
+  return updated;
 };
 
 
 /**
  * Set sort order.
  * @param {ydn.crm.su.ui.ModulePage.Order} order
+ * @return {string} return a new order, empty string if not changed.
  */
-ydn.crm.su.ui.ModulePage.prototype.setOrder = function(order) {
+ydn.crm.su.ui.ModulePage.prototype.selectOrder = function(order) {
+  var updated = false;
   for (var i = 0, n = this.menu_order_.getChildCount(); i < n; i++) {
     var child = /** @type {goog.ui.Control} */(this.menu_order_.getChildAt(i));
     if (!(child instanceof goog.ui.Control)) {
       continue;
     }
     var name = /** @type {string} */(child.getModel()) || '';
+    if (name == order) {
+      updated = child.isChecked();
+    }
     if (goog.string.startsWith(name, 'order-')) {
       child.setChecked(order == name);
     }
   }
+  if (updated) {
+    return order.substr('order-'.length);
+  }
+  return '';
 };
 
 
@@ -272,7 +286,6 @@ ydn.crm.su.ui.ModulePage.prototype.createDom = function() {
 
   this.addChild(this.record_list_, true);
 
-  // this.updateSearchLabel_();
 };
 
 
@@ -294,7 +307,7 @@ ydn.crm.su.ui.ModulePage.prototype.getSearchCtrl = function() {
  * Update search input placeholder text.
  * @private
  */
-ydn.crm.su.ui.ModulePage.prototype.updateSearchLabel_ = function() {
+ydn.crm.su.ui.ModulePage.prototype.updateSearchLabelOld_ = function() {
   var label = 'Search';
   var filter = this.getFilter();
   if (filter == ydn.crm.su.ui.ModulePage.Filter.ALL) {
@@ -341,7 +354,7 @@ ydn.crm.su.ui.ModulePage.prototype.onFilterAction_ = function(ev) {
     var item = /** @type {goog.ui.CheckBoxMenuItem} */(ev.target);
     var name = /** @type {string} */(item.getModel()) || '';
     if (name) {
-      this.setFilter(/** @type {ydn.crm.su.ui.ModulePage.Filter} */(name));
+      this.selectFilter(/** @type {ydn.crm.su.ui.ModulePage.Filter} */(name));
     }
   }
 };
@@ -354,9 +367,14 @@ ydn.crm.su.ui.ModulePage.prototype.onFilterAction_ = function(ev) {
 ydn.crm.su.ui.ModulePage.prototype.onOrderAction_ = function(ev) {
   if (ev.target instanceof goog.ui.CheckBoxMenuItem) {
     var item = /** @type {goog.ui.CheckBoxMenuItem} */(ev.target);
-    var name = /** @type {string} */(item.getModel()) || '';
+    var name = /** @type {ydn.crm.su.ui.ModulePage.Order} */(item.getModel() ||
+        '');
     if (name) {
-      this.setOrder(/** @type {ydn.crm.su.ui.ModulePage.Order} */(name));
+      var index = this.selectOrder(name);
+      if (index) {
+        var rev = index == 'date_modified';
+        this.record_list_.setOrder(index, rev);
+      }
     }
   }
 };
