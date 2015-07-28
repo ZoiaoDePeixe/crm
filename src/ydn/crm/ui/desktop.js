@@ -158,8 +158,11 @@ ydn.crm.ui.Desktop.prototype.showPage = function(name, data) {
     for (var i = 0; i < this.getChildCount(); i++) {
       var child = this.getChildAt(i);
       var page = /** @type {ydn.crm.ui.IDesktopPage} */(child);
-      page.onPageShow(data);
-      goog.style.setElementShown(child.getElement(), i == idx);
+      var ok = i == idx;
+      goog.style.setElementShown(child.getElement(), ok);
+      if (ok) {
+        page.onPageShow(data);
+      }
     }
   }
 };

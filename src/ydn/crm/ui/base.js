@@ -324,6 +324,7 @@ ydn.crm.ui.fixHeightForScrollbar = function(el, opt_gap) {
 ydn.crm.ui.PageName = {
   DESKTOP_HOME: 'DesktopHome',
   DESKTOP_SEARCH: 'DesktopSearch',
+  NEW_RECORD: 'NewRecord',
   TRACKING_PAGE: 'TrackingPage',
   SUGAR_SEARCH: 'SugarSearch',
   MODULE_HOME: 'ModuleHome'

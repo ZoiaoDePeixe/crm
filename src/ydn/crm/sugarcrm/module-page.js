@@ -334,6 +334,9 @@ ydn.crm.su.ui.ModulePage.prototype.updateSearchLabelOld_ = function() {
 ydn.crm.su.ui.ModulePage.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var hd = this.getHandler();
+  var new_btn = this.toolbar_.getChildAt(0);
+  hd.listen(new_btn, goog.ui.Component.EventType.ACTION,
+      this.onNew_);
   hd.listen(this.menu_filter_, goog.ui.Component.EventType.ACTION, 
       this.onFilterAction_);
   hd.listen(this.menu_order_, goog.ui.Component.EventType.ACTION,
@@ -347,6 +350,20 @@ ydn.crm.su.ui.ModulePage.prototype.enterDocument = function() {
  */
 ydn.crm.su.ui.ModulePage.prototype.onTileClick_ = function(ev) {
 
+};
+
+
+/**
+ * @param {goog.events.Event} ev
+ * @private
+ */
+ydn.crm.su.ui.ModulePage.prototype.onNew_ = function(ev) {
+  var data = {
+    'module': this.getModule()
+  };
+  var se = new ydn.crm.ui.events.ShowPanelEvent(ydn.crm.ui.PageName.NEW_RECORD,
+      data, this);
+  this.dispatchEvent(se);
 };
 
 
@@ -400,7 +417,5 @@ ydn.crm.su.ui.ModulePage.prototype.toString = function() {
  * @override
  */
 ydn.crm.su.ui.ModulePage.prototype.onPageShow = function(obj) {
-  console.log(obj);
-
   this.setModule(obj['module']);
 };

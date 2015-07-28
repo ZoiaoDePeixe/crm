@@ -16,10 +16,8 @@ goog.require('ydn.crm.su.events');
  *   rlp.onReady().done(function() {...
  * </pre>
  * @constructor
- * @extends {goog.events.EventTarget}
  */
 ydn.crm.su.ui.RecordListProvider = function() {
-  ydn.crm.su.ui.RecordListProvider.base(this, 'constructor');
   /**
    * @type {ydn.crm.su.Meta}
    * @private
@@ -66,7 +64,6 @@ ydn.crm.su.ui.RecordListProvider = function() {
    */
   this.ready_ = goog.async.Deferred.fail('Not ready.');
 };
-goog.inherits(ydn.crm.su.ui.RecordListProvider, goog.events.EventTarget);
 
 
 /**
@@ -188,10 +185,6 @@ ydn.crm.su.ui.RecordListProvider.prototype.init_ = function() {
     return;
   }
   this.ready_ = new goog.async.Deferred();
-  this.ready_.addCallback(function() {
-    var ev = new goog.events.Event(ydn.crm.su.events.EventType.READY, this);
-    this.dispatchEvent(ev);
-  }, this);
   this.sugar_.getChannel().send(ydn.crm.ch.SReq.COUNT, {
     'module': this.name_,
     'source': 'client'}).addCallback(function(cnt) {
