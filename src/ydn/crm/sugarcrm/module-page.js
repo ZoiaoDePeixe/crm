@@ -36,21 +36,20 @@ goog.require('goog.ui.MenuSeparator');
 goog.require('goog.ui.Toolbar');
 goog.require('wgui.TextInput');
 goog.require('ydn.crm.ui.events');
-goog.require('ydn.crm.su.ui.RecordList');
+goog.require('ydn.crm.su.ui.HoverRecordList');
 goog.require('ydn.crm.su.ui.RecordListProvider');
 
 
 
 /**
  * SugarCRM module page listing its records.
- * @param {ydn.crm.su.ui.RecordListProvider} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
  * @implements {ydn.crm.ui.IDesktopPage}
  */
-ydn.crm.su.ui.ModulePage = function(model, opt_dom) {
+ydn.crm.su.ui.ModulePage = function(opt_dom) {
   goog.base(this, opt_dom);
 
   /**
@@ -72,7 +71,11 @@ ydn.crm.su.ui.ModulePage = function(model, opt_dom) {
    */
   this.menu_order_ = new goog.ui.Menu(opt_dom);
 
-  this.record_list_ = new ydn.crm.su.ui.RecordList(model, opt_dom);
+  /**
+   * @type {ydn.crm.su.ui.RecordList}
+   * @private
+   */
+  this.record_list_ = null;
 
 };
 goog.inherits(ydn.crm.su.ui.ModulePage, goog.ui.Component);
@@ -111,7 +114,8 @@ ydn.crm.su.ui.ModulePage.prototype.setModule = function(mn, opt_filter) {
  * @return {ydn.crm.su.ModuleName} target module.
  */
 ydn.crm.su.ui.ModulePage.prototype.getModule = function() {
-  return this.record_list_.getModel().getModuleName();
+  return this.record_list_ ? this.record_list_.getModel().getModuleName() :
+      ydn.crm.su.DEFAULT_MODULE;
 };
 
 
@@ -149,6 +153,24 @@ ydn.crm.su.ui.ModulePage.prototype.getOrderButton = function() {
     }
   }
   return null;
+};
+
+
+/**
+ * @param {ydn.crm.su.model.Sugar} sugar
+ */
+ydn.crm.su.ui.ModulePage.prototype.setSugar = function(sugar) {
+  var child = this.getChildAt(0);
+  if (child) {
+    this.removeChild(child, true);
+    child.dispose();
+  }
+  if (!sugar) {
+    return;
+  }
+  var p = new ydn.crm.su.ui.SugarRecordListProvider(sugar);
+  this.record_list_ = new ydn.crm.su.ui.HoverRecordList(p, this.getDomHelper());
+  this.addChild(this.record_list_, true);
 };
 
 
@@ -295,7 +317,7 @@ ydn.crm.su.ui.ModulePage.prototype.createDom = function() {
 
   this.toolbar_.render(head);
 
-  this.addChild(this.record_list_, true);
+  // this.addChild(this.record_list_, true);
 
 };
 

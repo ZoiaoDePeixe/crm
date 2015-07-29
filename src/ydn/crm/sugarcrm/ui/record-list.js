@@ -29,6 +29,7 @@ goog.require('goog.ui.Component');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.su');
 goog.require('ydn.crm.su.ui.RecordListProvider');
+goog.require('ydn.crm.su.ui.record.HoverCard');
 goog.require('ydn.crm.templ');
 
 
@@ -44,7 +45,6 @@ goog.require('ydn.crm.templ');
 ydn.crm.su.ui.RecordList = function(model, opt_dom) {
   goog.base(this, opt_dom);
   this.setModel(model);
-
 
   /**
    * @type {goog.async.Deferred}
@@ -105,7 +105,8 @@ ydn.crm.su.ui.RecordList.prototype.createDom = function() {
   var root = this.getElement();
   root.classList.add(this.getCssClass());
   var dom = this.getDomHelper();
-  root.appendChild(dom.createDom('ul'));
+  var ul = dom.createDom('ul');
+  root.appendChild(ul);
 
   var footer = dom.createDom('div', ydn.crm.ui.CSS_CLASS_FOOTER);
   root.appendChild(footer);
@@ -289,6 +290,7 @@ ydn.crm.su.ui.RecordList.prototype.renderItem_ = function(rec) {
   li.querySelector('.title').textContent = ydn.crm.su.Record.getLabel(rec);
   li.querySelector('.summary').textContent = ydn.crm.su.Record.getSummary(rec);
   li.setAttribute('data-id', rec.id);
+  li.setAttribute('data-module', rec._module);
   li.setAttribute('data-offset', rec['ydn$offset']);
   return li;
 };

@@ -102,18 +102,13 @@ ydn.crm.inj.SugarCrmApp = function(us, heading_injector, gmail_observer,
    * @protected
    */
   this.sidebar_panel = new ydn.crm.su.ui.DesktopHome();
-  /**
-   * @final
-   * @type {ydn.crm.su.ui.RecordListProvider}
-   * @protected
-   */
-  this.provider = new ydn.crm.su.ui.RecordListProvider();
+
   /**
    * @final
    * @type {ydn.crm.su.ui.ModulePage}
    * @protected
    */
-  this.record_list_panel = new ydn.crm.su.ui.ModulePage(this.provider);
+  this.record_list_panel = new ydn.crm.su.ui.ModulePage();
 
   /**
    * @final
@@ -261,7 +256,6 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(details) {
     var ac = this.us_.getLoginEmail();
     var sugar = new ydn.crm.su.model.GDataSugar(details.about,
         details.modulesInfo, ac, details.serverInfo);
-    this.provider.setSugar(sugar);
     if (this.attacher_) {
       this.handler.unlisten(this.attacher_,
           ydn.crm.su.events.EventType.VIEW_RECORD,
@@ -284,6 +278,7 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(details) {
     this.context_panel.setSugarCrm(sugar);
     this.search_page.setSugarCrm(sugar);
     this.new_record.setSugar(sugar);
+    this.record_list_panel.setSugar(sugar);
 
     if (this.us_.hasFeature(ydn.crm.base.Feature.TEMPLATE)) {
       this.gmail_template_ = new ydn.crm.gmail.Template(sugar);
@@ -297,7 +292,7 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(details) {
     this.heading_injector_.setSugar(null);
     this.search_page.setSugarCrm(null);
     this.new_record.setSugar(null);
-    this.provider.setSugar(null);
+    this.record_list_panel.setSugar(null);
     if (this.attacher_) {
       this.handler.unlisten(this.attacher_,
           ydn.crm.su.events.EventType.VIEW_RECORD,
