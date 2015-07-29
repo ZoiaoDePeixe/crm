@@ -29,16 +29,10 @@ ydn.crm.su.ui.RecordListProvider = function() {
    */
   this.name_ = ydn.crm.su.ModuleName.CONTACTS;
   /**
-   * @type {string} index name.
+   * @type {ydn.crm.su.RecordOrder} index name.
    * @private
    */
-  this.order_ = 'date_modified';
-  /**
-   * In reverse ordering.
-   * @type {boolean}
-   * @private
-   */
-  this.rev_ = false;
+  this.order_ = ydn.crm.su.RecordOrder.RECENT;
 
   /**
    * @type {ydn.crm.su.RecordFilter}
@@ -91,18 +85,14 @@ ydn.crm.su.ui.RecordListProvider.prototype.setModule = function(mn) {
 
 
 /**
- * @param {string} index set name of index for order.
- * @param {boolean} rev in reverse direction.
+ * @param {ydn.crm.su.RecordOrder} index set name of index for order.
  * @return {boolean} true if it has changed.
  */
-ydn.crm.su.ui.RecordListProvider.prototype.setOrder = function(index, rev) {
-  goog.asserts.assert(['name', 'id', 'date_modified'].indexOf(index) >= 0,
-      'Invalid order ' + index);
-  if (this.order_ == index && this.rev_ == rev) {
+ydn.crm.su.ui.RecordListProvider.prototype.setOrder = function(index) {
+  if (this.order_ == index) {
     return false;
   }
-  this.order_ = index || 'id';
-  this.rev_ = !!rev;
+  this.order_ = index;
   this.reset_();
   return true;
 };
@@ -149,23 +139,61 @@ ydn.crm.su.ui.RecordListProvider.prototype.countRecords = function() {
 
 
 /**
+ * Get list of records for async listing.
+ * @param {number=} opt_offset
+ * @return {!ydn.async.Deferred<Array<SugarCrm.Record>>}
+ * @see #list for others
+ */
+ydn.crm.su.ui.RecordListProvider.prototype.listAsync = function(opt_offset) {
+  goog.asserts.assert(this.isListAsync());
+  if (opt_offset) {
+    var df = new ydn.async.Deferred();
+    df.callback(null);
+    return df;
+  }
+  var data = {'module': this.name_};
+  return this.sugar_.getChannel().send(ydn.crm.ch.SReq.GET_FAVORITE_ASYNC, data);
+};
+
+
+/**
+ * To choose whether to use {@link #list} vs {@link #listAsync}.
+ * @return {boolean}
+ */
+ydn.crm.su.ui.RecordListProvider.prototype.isListAsync = function() {
+  return this.filter_ == ydn.crm.su.RecordFilter.FAVORITE;
+};
+
+
+/**
  * Get list of records.
  * The result has `ydn$index` field for respective index.
  * @param {number} limit number of results.
  * @param {number} offset offset.
  * @return {!goog.async.Deferred<Array<SugarCrm.Record>>}
+ * @see #listAsync for Favorite query.
  */
 ydn.crm.su.ui.RecordListProvider.prototype.list = function(limit, offset) {
-  var index = this.order_ || 'id';
+  goog.asserts.assert(!this.isListAsync());
+  var index = 'id';
+  var reverse = false;
   var kr = null;
+  if (this.order_ == ydn.crm.su.RecordOrder.RECENT) {
+    index = 'date_modified';
+    reverse = true;
+  } else if (this.order_ == ydn.crm.su.RecordOrder.NAME) {
+    index = 'name';
+  }
   if (this.filter_ == ydn.crm.su.RecordFilter.MY) {
     index = 'assigned_user_id, name';
+    reverse = false;
     kr = ydn.db.KeyRange.starts([this.sugar_.getUserRecordId()]);
   }
   var q = {
     'store': this.name_,
     'index': index,
     'limit': limit,
+    'reverse': reverse,
     'keyRange': kr,
     'offset': offset
   };
@@ -229,6 +257,14 @@ ydn.crm.su.ui.RecordListProvider.prototype.onReady = function() {
   } else {
     return this.ready_.branch();
   }
+};
+
+
+/**
+ * @return {ydn.crm.su.RecordFilter}
+ */
+ydn.crm.su.ui.RecordListProvider.prototype.getFilter = function() {
+  return this.filter_;
 };
 
 

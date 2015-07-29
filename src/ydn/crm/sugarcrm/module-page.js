@@ -267,10 +267,8 @@ ydn.crm.su.ui.ModulePage.prototype.createDom = function() {
   var my_item = new goog.ui.CheckBoxMenuItem('My records',
       ydn.crm.su.RecordFilter.MY, dom);
   this.menu_filter_.addChild(my_item, true);
-  /*
   this.menu_filter_.addChild(new goog.ui.CheckBoxMenuItem('Favorites',
       ydn.crm.su.RecordFilter.FAVORITE, dom), true);
-  */
   var filter = new goog.ui.MenuButton('Filter', this.menu_filter_, css_mbr, dom);
   this.toolbar_.addChild(filter, true);
 
@@ -383,13 +381,11 @@ ydn.crm.su.ui.ModulePage.prototype.onFilterAction_ = function(ev) {
 ydn.crm.su.ui.ModulePage.prototype.onOrderAction_ = function(ev) {
   if (ev.target instanceof goog.ui.CheckBoxMenuItem) {
     var item = /** @type {goog.ui.CheckBoxMenuItem} */(ev.target);
-    var name = /** @type {ydn.crm.su.RecordOrder} */(item.getModel() || '');
+    var name = /** @type {ydn.crm.su.RecordOrder} */(item.getModel());
     if (name) {
       var updated = this.selectOrder(name);
       if (updated) {
-        var index = name.substr('order-'.length);
-        var rev = index == 'date_modified';
-        this.record_list_.setOrder(index, rev);
+        this.record_list_.setOrder(name);
       }
     }
   }

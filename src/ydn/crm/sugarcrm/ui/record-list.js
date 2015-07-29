@@ -188,15 +188,32 @@ ydn.crm.su.ui.RecordList.prototype.loadForward_ = function(ul) {
   if (ydn.crm.su.ui.RecordList.DEBUG) {
     console.log('loadForward from ' + offset);
   }
-  this.df_load_forward_ = this.getProvider().list(15, offset);
+  if (this.getProvider().isListAsync()) {
+    var ydf = this.getProvider().listAsync(offset);
+    ydf.addProgback(function(arr) {
+      for (var i = 0; i < arr.length; i++) {
+        arr[i]['ydn$offset'] = 1 + i + offset;
+      }
+      if (ydn.crm.su.ui.RecordList.DEBUG) {
+        console.log(arr.length + ' loaded in prog');
+      }
+      this.addResults_(arr, true);
+    }, this);
+    this.df_load_forward_ = ydf;
+  } else {
+    this.df_load_forward_ = this.getProvider().list(15, offset);
+  }
+
   this.df_load_forward_.addCallbacks(function(arr) {
-    for (var i = 0; i < arr.length; i++) {
-      arr[i]['ydn$offset'] = 1 + i + offset;
+    if (arr) {
+      for (var i = 0; i < arr.length; i++) {
+        arr[i]['ydn$offset'] = 1 + i + offset;
+      }
+      if (ydn.crm.su.ui.RecordList.DEBUG) {
+        console.log(arr.length + ' loaded');
+      }
+      this.addResults_(arr, true);
     }
-    if (ydn.crm.su.ui.RecordList.DEBUG) {
-      console.log(arr.length + ' loaded');
-    }
-    this.addResults_(arr, true);
     this.df_load_forward_ = null;
   }, function(e) {
     window.console.error(e);
@@ -368,11 +385,10 @@ ydn.crm.su.ui.RecordList.prototype.getProvider = function() {
 
 
 /**
- * @param {string} index set name of index for order.
- * @param {boolean} rev in reverse direction.
+ * @param {ydn.crm.su.RecordOrder} index set name of index for order.
  */
-ydn.crm.su.ui.RecordList.prototype.setOrder = function(index, rev) {
-  var changed = this.getProvider().setOrder(index, rev);
+ydn.crm.su.ui.RecordList.prototype.setOrder = function(index) {
+  var changed = this.getProvider().setOrder(index);
   if (changed) {
     this.getUlElement().innerHTML = '';
     this.refreshList_();
