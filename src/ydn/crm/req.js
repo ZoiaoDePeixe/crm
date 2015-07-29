@@ -238,6 +238,10 @@ ydn.crm.ch.SReq = {
    * @see #FIND
    */
   GET: 'get',
+  /**
+   * @see ydn.crm.su.Client#getFavoritesAsync
+   */
+  GET_FAVORITE_ASYNC: 'get-favorite-async',
   IMPORT_GDATA: 'import-gdata',
   INFO_MODULE: 'info-module', // list module field
   KEYS: 'keys', // list keys
