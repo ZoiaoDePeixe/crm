@@ -14,14 +14,15 @@ goog.require('ydn.crm.su.events');
  *   rlp.setSugar(sugar);
  *   rlp.onReady().done(function() {...
  * </pre>
+ * @param {ydn.crm.su.model.Sugar=} opt_sugar
  * @constructor
  */
-ydn.crm.su.ui.RecordListProvider = function() {
+ydn.crm.su.ui.RecordListProvider = function(opt_sugar) {
   /**
-   * @type {ydn.crm.su.Meta}
+   * @type {ydn.crm.su.model.Sugar}
    * @protected
    */
-  this.sugar = null;
+  this.sugar = opt_sugar || null;
   /**
    * @type {ydn.crm.su.ModuleName}
    * @private
@@ -60,7 +61,7 @@ ydn.crm.su.ui.RecordListProvider = function() {
 
 
 /**
- * @param {ydn.crm.su.Meta} meta sugarcrm provider.
+ * @param {ydn.crm.su.model.Sugar} meta sugarcrm provider.
  */
 ydn.crm.su.ui.RecordListProvider.prototype.setSugar = function(meta) {
   if (this.sugar == meta) {
@@ -276,7 +277,7 @@ ydn.crm.su.ui.RecordListProvider.prototype.getModuleName = function() {
 
 
 /**
- * @return {ydn.crm.su.Meta}
+ * @return {ydn.crm.su.model.Sugar}
  */
 ydn.crm.su.ui.RecordListProvider.prototype.getMeta = function() {
   return this.sugar;

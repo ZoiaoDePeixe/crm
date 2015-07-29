@@ -28,13 +28,13 @@ goog.provide('ydn.crm.su.ui.HoverRecordList');
 goog.require('ydn.crm.su.ui.RecordList');
 goog.require('ydn.crm.su.ui.record.Record');
 goog.require('ydn.crm.su.ui.record.HoverCard');
-goog.require('ydn.crm.su.ui.SugarRecordListProvider');
+goog.require('ydn.crm.su.ui.RecordListProvider');
 
 
 
 /**
  * Record snippet shows a brief description of the record.
- * @param {ydn.crm.su.ui.SugarRecordListProvider} model
+ * @param {ydn.crm.su.ui.RecordListProvider} model
  * @param {goog.dom.DomHelper=} opt_dom
  * @constructor
  * @struct
@@ -67,8 +67,8 @@ ydn.crm.su.ui.HoverRecordList.prototype.createDom = function() {
 
   var dom = this.getDomHelper();
   var ul = this.getUlElement();
-  var provider = /** @type {ydn.crm.su.ui.SugarRecordListProvider} */(this.getProvider());
-  this.hover_ = new ydn.crm.su.ui.record.HoverCard(provider.getSugar(), ul, dom);
+  var provider = this.getProvider();
+  this.hover_ = new ydn.crm.su.ui.record.HoverCard(provider.getMeta(), ul, dom);
 };
 
 

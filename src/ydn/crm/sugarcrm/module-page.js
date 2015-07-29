@@ -168,7 +168,7 @@ ydn.crm.su.ui.ModulePage.prototype.setSugar = function(sugar) {
   if (!sugar) {
     return;
   }
-  var p = new ydn.crm.su.ui.SugarRecordListProvider(sugar);
+  var p = new ydn.crm.su.ui.RecordListProvider(sugar);
   this.record_list_ = new ydn.crm.su.ui.HoverRecordList(p, this.getDomHelper());
   this.addChild(this.record_list_, true);
 };
