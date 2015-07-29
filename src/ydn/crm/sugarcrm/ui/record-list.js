@@ -369,8 +369,12 @@ ydn.crm.su.ui.RecordList.prototype.getUlElement = function() {
 
 /**
  * @param {ydn.crm.su.ModuleName} mn
+ * @param {ydn.crm.su.RecordFilter=} opt_filter set name of filter.
  */
-ydn.crm.su.ui.RecordList.prototype.setModule = function(mn) {
+ydn.crm.su.ui.RecordList.prototype.setModule = function(mn, opt_filter) {
+  if (opt_filter) {
+    this.getProvider().setFilter(opt_filter);
+  }
   this.getProvider().setModule(mn);
   this.reset_();
 };

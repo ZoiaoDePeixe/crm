@@ -577,6 +577,15 @@ ydn.crm.su.RecordFilter = {
 
 
 /**
+ * List of all filters.
+ * @const
+ * @type {Array<ydn.crm.su.RecordFilter>}
+ */
+ydn.crm.su.recordFilters = [ydn.crm.su.RecordFilter.ALL,
+  ydn.crm.su.RecordFilter.MY, ydn.crm.su.RecordFilter.FAVORITE];
+
+
+/**
  * Set of sort order
  * @enum {string}
  */

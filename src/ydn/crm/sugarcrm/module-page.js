@@ -96,9 +96,13 @@ ydn.crm.su.ui.ModulePage.prototype.getContentElement = function() {
 /**
  * Change target module.
  * @param {ydn.crm.su.ModuleName} mn target module.
+ * @param {ydn.crm.su.RecordFilter=} opt_filter set name of filter.
  */
-ydn.crm.su.ui.ModulePage.prototype.setModule = function(mn) {
-  this.record_list_.setModule(mn);
+ydn.crm.su.ui.ModulePage.prototype.setModule = function(mn, opt_filter) {
+  if (opt_filter) {
+    this.selectFilter(opt_filter);
+  }
+  this.record_list_.setModule(mn, opt_filter);
 };
 
 
@@ -148,6 +152,10 @@ ydn.crm.su.ui.ModulePage.prototype.getOrderButton = function() {
 };
 
 
+/**
+ * @param {ydn.crm.su.RecordFilter} filter
+ * @private
+ */
 ydn.crm.su.ui.ModulePage.prototype.updateOrderOnFilter_ = function(filter) {
   var is_all = filter == ydn.crm.su.RecordFilter.ALL;
   var btn = this.getOrderButton();
@@ -176,9 +184,9 @@ ydn.crm.su.ui.ModulePage.prototype.selectFilter = function(filter) {
       child.setChecked(filter == name);
     }
   }
-  if (updated) {
-    this.updateOrderOnFilter_(filter);
-  }
+  // Note: we still need to update order button, even if not `updated` on the
+  // first time.
+  this.updateOrderOnFilter_(filter);
   return updated;
 };
 
@@ -404,5 +412,10 @@ ydn.crm.su.ui.ModulePage.prototype.toString = function() {
  * @override
  */
 ydn.crm.su.ui.ModulePage.prototype.onPageShow = function(obj) {
-  this.setModule(obj['module']);
+  var filter;
+  if (obj['filter']) {
+    filter = /** @type {ydn.crm.su.RecordFilter} */(obj['filter']);
+    goog.asserts.assert(ydn.crm.su.recordFilters.indexOf(filter) >= 0, filter);
+  }
+  this.setModule(obj['module'], filter);
 };

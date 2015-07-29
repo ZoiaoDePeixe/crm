@@ -86,10 +86,12 @@ ydn.crm.templ.renderUpdateOptionDialog = function(mn) {
  * @return {string} HTML.
  */
 ydn.crm.templ.renderSugarCrmRecordTile = function(symbol, label) {
-  return `<div class="record-tile bg-color">
-    <span class="symbol">${symbol}</span>
+  return `<div class="record-tile bg-color" title="View ${label}">
+    <span class="symbol" title="View My ${label}">${symbol}</span>
+    <div class="favorite" title="View My Favorite ${label}"><svg width="20px" height="20px" viewBox="0 0 24 24">
+    <polygon fill="gold" points="12,17.273 18.18,21 16.545,13.971 22,9.244 14.809,8.627 12,2 9.191,8.627 2,9.244 7.455,13.971 5.82,21 "/></svg></div>
   </div>
-  <div class="label">${label}</div>`;
+  <div class="label" title="View All ${label}">${label}</div>`;
 };
 
 
@@ -132,4 +134,4 @@ ydn.crm.templ.renderTrackingLauncher = function() {
     <span class="clicks" title="in last 24 hours">0</span> links click
     [<a href="#tracking-result" name="view">view</a>]
   </div>`;
-}
+};

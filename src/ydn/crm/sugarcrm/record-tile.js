@@ -79,7 +79,9 @@ ydn.crm.su.ui.RecordTile.prototype.createDom = function() {
 ydn.crm.su.ui.RecordTile.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var tile = this.getElement().querySelector('.record-tile');
+  var label = this.getElement().querySelector('.label');
   this.getHandler().listen(tile, 'click', this.onTileClick_);
+  this.getHandler().listen(label, 'click', this.onLabelClick_);
 };
 
 
@@ -88,8 +90,38 @@ ydn.crm.su.ui.RecordTile.prototype.enterDocument = function() {
  * @private
  */
 ydn.crm.su.ui.RecordTile.prototype.onTileClick_ = function(ev) {
+  ev.preventDefault();
+  var filter = '';
+  var el = ev.target;
+  if (el instanceof Element) {
+    if (el.tagName == 'svg' || el.tagName == 'polygon' ||
+        el.classList.contains('favorite')) {
+      filter = ydn.crm.su.RecordFilter.FAVORITE;
+    } else if (el.classList.contains('symbol')) {
+      filter = ydn.crm.su.RecordFilter.MY;
+    } else if (el.classList.contains('label')) {
+      filter = ydn.crm.su.RecordFilter.ALL;
+    }
+  }
   var data = {
-    'module': this.name
+    'module': this.name,
+    'filter': filter
+  };
+  ev.stopPropagation();
+  var se = new ydn.crm.ui.events.ShowPanelEvent(
+      ydn.crm.ui.PageName.MODULE_HOME, data, this);
+  this.dispatchEvent(se);
+};
+
+
+/**
+ * @param {goog.events.BrowserEvent} ev
+ * @private
+ */
+ydn.crm.su.ui.RecordTile.prototype.onLabelClick_ = function(ev) {
+  var data = {
+    'module': this.name,
+    'filter': ydn.crm.su.RecordFilter.ALL
   };
   ev.stopPropagation();
   var se = new ydn.crm.ui.events.ShowPanelEvent(
