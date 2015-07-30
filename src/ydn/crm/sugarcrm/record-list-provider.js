@@ -12,7 +12,6 @@ goog.require('ydn.crm.su.events');
  * <pre>
  *   var rlp = ydn.crm.su.ui.RecordListProvider();
  *   rlp.setSugar(sugar);
- *   rlp.onReady().done(function() {...
  * </pre>
  * @param {ydn.crm.su.model.Sugar=} opt_sugar
  * @constructor
@@ -22,7 +21,7 @@ ydn.crm.su.ui.RecordListProvider = function(opt_sugar) {
    * @type {ydn.crm.su.model.Sugar}
    * @protected
    */
-  this.sugar = opt_sugar || null;
+  this.sugar = null;
   /**
    * @type {ydn.crm.su.ModuleName}
    * @private
@@ -57,6 +56,9 @@ ydn.crm.su.ui.RecordListProvider = function(opt_sugar) {
    * @private
    */
   this.ready_ = goog.async.Deferred.fail('Not ready.');
+  if (opt_sugar) {
+    this.setSugar(opt_sugar);
+  }
 };
 
 

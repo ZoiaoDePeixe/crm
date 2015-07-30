@@ -325,6 +325,7 @@ ydn.crm.ui.PageName = {
   DESKTOP_HOME: 'DesktopHome',
   DESKTOP_SEARCH: 'DesktopSearch',
   NEW_RECORD: 'NewRecord',
+  RECORD_VIEW: 'RecordPage',
   TRACKING_PAGE: 'TrackingPage',
   SUGAR_SEARCH: 'SugarSearch',
   MODULE_HOME: 'ModuleHome'

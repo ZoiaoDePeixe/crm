@@ -122,8 +122,34 @@ ydn.crm.su.ui.RecordList.prototype.enterDocument = function() {
   var hd = this.getHandler();
   var ul = this.getUlElement();
   hd.listen(ul, goog.events.EventType.WHEEL, this.onMouseWheel_);
+  hd.listen(ul, goog.events.EventType.CLICK, this.onClick_);
 
   this.reset_();
+};
+
+
+/**
+ * @param {goog.events.BrowserEvent} ev
+ * @private
+ */
+ydn.crm.su.ui.RecordList.prototype.onClick_ = function(ev) {
+  if (ev.target instanceof Element) {
+    if (ev.target.classList.contains('title') ||
+        ev.target.classList.contains('summary')) {
+      return;
+    }
+  }
+
+  var li = goog.dom.getAncestorByTagNameAndClass(ev.target, 'LI');
+  if (li) {
+    var data = {
+      'id': li.getAttribute('data-id'),
+      'module': li.getAttribute('data-module')
+    };
+    var se = new ydn.crm.ui.events.ShowPanelEvent(
+        ydn.crm.ui.PageName.NEW_RECORD, data, this);
+    this.dispatchEvent(se);
+  }
 };
 
 

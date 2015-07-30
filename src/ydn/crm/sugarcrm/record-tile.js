@@ -69,7 +69,12 @@ ydn.crm.su.ui.RecordTile.prototype.createDom = function() {
   root.classList.add('tile-container');
   root.classList.add(this.name);
   var symbol = ydn.crm.su.toModuleSymbol(this.name);
+  var model = this.getModel();
   root.innerHTML = ydn.crm.templ.renderSugarCrmRecordTile(symbol, this.name);
+  if (!model.isVersion7()) {
+    var fav = root.querySelector('.favorite');
+    goog.style.setElementShown(fav, false);
+  }
 };
 
 
