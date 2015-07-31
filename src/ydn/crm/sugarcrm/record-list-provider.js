@@ -172,11 +172,14 @@ ydn.crm.su.ui.RecordListProvider.prototype.isListAsync = function() {
  * The result has `ydn$index` field for respective index.
  * @param {number} limit number of results.
  * @param {number} offset offset.
- * @return {!goog.async.Deferred<Array<SugarCrm.Record>>}
+ * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>}
  * @see #listAsync for Favorite query.
  */
 ydn.crm.su.ui.RecordListProvider.prototype.list = function(limit, offset) {
   goog.asserts.assert(!this.isListAsync());
+  if (this.filter_ == ydn.crm.su.RecordFilter.UPCOMING) {
+    return this.sugar.getUpcomingActivities(this.name_);
+  }
   var index = 'id';
   var reverse = false;
   var kr = null;

@@ -572,6 +572,7 @@ ydn.crm.su.renderCacheStats = function (li, obj, opt_update_now) {
 ydn.crm.su.RecordFilter = {
   ALL: 'filter-all',
   MY: 'filter-my',
+  UPCOMING: 'filter-upcoming',
   FAVORITE: 'filter-fav'
 };
 
@@ -582,7 +583,8 @@ ydn.crm.su.RecordFilter = {
  * @type {Array<ydn.crm.su.RecordFilter>}
  */
 ydn.crm.su.recordFilters = [ydn.crm.su.RecordFilter.ALL,
-  ydn.crm.su.RecordFilter.MY, ydn.crm.su.RecordFilter.FAVORITE];
+  ydn.crm.su.RecordFilter.MY, ydn.crm.su.RecordFilter.UPCOMING,
+  ydn.crm.su.RecordFilter.FAVORITE];
 
 
 /**

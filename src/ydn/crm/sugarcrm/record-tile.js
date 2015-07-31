@@ -87,6 +87,14 @@ ydn.crm.su.ui.RecordTile.prototype.enterDocument = function() {
   var label = this.getElement().querySelector('.label');
   this.getHandler().listen(tile, 'click', this.onTileClick_);
   this.getHandler().listen(label, 'click', this.onLabelClick_);
+
+  var act = ydn.crm.su.ACTIVITY_MODULES.indexOf(this.name) >= 0;
+  if (act) {
+    var delay = Math.random() * 1000;
+    setTimeout((function() {
+      this.updateUpcoming();
+    }).bind(this), delay);
+  }
 };
 
 
@@ -99,7 +107,9 @@ ydn.crm.su.ui.RecordTile.prototype.onTileClick_ = function(ev) {
   var filter = '';
   var el = ev.target;
   if (el instanceof Element) {
-    if (el.tagName == 'svg' || el.tagName == 'polygon' ||
+    if (el.classList.contains('count')) {
+      filter = ydn.crm.su.RecordFilter.UPCOMING;
+    } else if (el.tagName == 'svg' || el.tagName == 'polygon' ||
         el.classList.contains('favorite')) {
       filter = ydn.crm.su.RecordFilter.FAVORITE;
     } else if (el.classList.contains('symbol')) {
@@ -132,4 +142,54 @@ ydn.crm.su.ui.RecordTile.prototype.onLabelClick_ = function(ev) {
   var se = new ydn.crm.ui.events.ShowPanelEvent(
       ydn.crm.ui.PageName.MODULE_HOME, data, this);
   this.dispatchEvent(se);
+};
+
+
+/**
+ * Indicate upcoming count as notify number.
+ * @param {number} cnt
+ */
+ydn.crm.su.ui.RecordTile.prototype.dispCount = function(cnt) {
+  var count = cnt ? cnt + '' : 'No';
+
+  var root = this.getElement().querySelector('.record-tile');
+  var el = root.querySelector('.count');
+  if (cnt > 0) {
+    if (!el) {
+      el = document.createElement('span');
+      el.classList.add('count');
+      root.appendChild(el);
+    }
+    if (cnt > 9) {
+      el.textContent = '*';
+    } else {
+      el.textContent = cnt;
+    }
+    var label;
+    if (this.name == ydn.crm.su.ModuleName.CASES) {
+      label = chrome.i18n.getMessage('Cases_assign', [count]);
+    } else {
+      label = chrome.i18n.getMessage('Upcoming_count', [count, this.name]);
+    }
+    el.setAttribute('title', label);
+  } else {
+    if (el) {
+      root.removeChild(el);
+    }
+  }
+};
+
+
+/**
+ * Update upcoming activities count.
+ * This is applicable only for activities modules.
+ */
+ydn.crm.su.ui.RecordTile.prototype.updateUpcoming = function() {
+  goog.asserts.assert(ydn.crm.su.ACTIVITY_MODULES.indexOf(this.name) >= 0);
+  this.getModel().getUpcomingActivities(this.name).addCallbacks(function(ans) {
+    var query_result = /** @type {Array<!SugarCrm.Record>} */ (ans);
+    this.dispCount(query_result.length);
+  }, function(e) {
+    window.console.error(e);
+  }, this);
 };

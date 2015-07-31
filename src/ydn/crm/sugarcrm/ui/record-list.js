@@ -310,13 +310,14 @@ ydn.crm.su.ui.RecordList.prototype.refresh_ = function() {
  */
 ydn.crm.su.ui.RecordList.prototype.renderItem_ = function(rec) {
   var li = document.createElement('LI');
-  var symbol = ydn.crm.su.toModuleSymbol(
-      /** @type {ydn.crm.su.ModuleName} */(rec._module));
-  li.innerHTML = ydn.crm.templ.renderRecordListItem(rec._module, symbol);
+  var mn = /** @type {ydn.crm.su.ModuleName} */(rec._module) ||
+      this.getModel().getModuleName();
+  var symbol = ydn.crm.su.toModuleSymbol(mn);
+  li.innerHTML = ydn.crm.templ.renderRecordListItem(mn, symbol);
   li.querySelector('.title').textContent = ydn.crm.su.Record.getLabel(rec);
   li.querySelector('.summary').textContent = ydn.crm.su.Record.getSummary(rec);
   li.setAttribute('data-id', rec.id);
-  li.setAttribute('data-module', rec._module);
+  li.setAttribute('data-module', mn);
   li.setAttribute('data-offset', rec['ydn$offset']);
   return li;
 };

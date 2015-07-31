@@ -35,9 +35,9 @@ goog.require('goog.ui.MenuButton');
 goog.require('goog.ui.MenuSeparator');
 goog.require('goog.ui.Toolbar');
 goog.require('wgui.TextInput');
-goog.require('ydn.crm.ui.events');
 goog.require('ydn.crm.su.ui.HoverRecordList');
 goog.require('ydn.crm.su.ui.RecordListProvider');
+goog.require('ydn.crm.ui.events');
 
 
 
@@ -64,7 +64,7 @@ ydn.crm.su.ui.ModulePage = function(opt_dom) {
    * @private
    */
   this.menu_filter_ = new goog.ui.Menu(opt_dom);
-  
+
   /**
    * @type {goog.ui.Menu}
    * @private
@@ -130,12 +130,9 @@ ydn.crm.su.ui.ModulePage.prototype.getFilter = function() {
       continue;
     }
     var name = child.getModel() || '';
-    if (name == ydn.crm.su.RecordFilter.ALL) {
-      return ydn.crm.su.RecordFilter.ALL;
-    } else if (name == ydn.crm.su.RecordFilter.MY) {
-      return ydn.crm.su.RecordFilter.MY;
-    } else if (name == ydn.crm.su.RecordFilter.FAVORITE) {
-      return ydn.crm.su.RecordFilter.FAVORITE;
+    var idx = ydn.crm.su.recordFilters.indexOf(name);
+    if (idx >= 0) {
+      return ydn.crm.su.recordFilters[idx];
     }
   }
   return ydn.crm.su.RecordFilter.ALL;
@@ -182,6 +179,25 @@ ydn.crm.su.ui.ModulePage.prototype.updateOrderOnFilter_ = function(filter) {
   var is_all = filter == ydn.crm.su.RecordFilter.ALL;
   var btn = this.getOrderButton();
   btn.setVisible(is_all);
+};
+
+
+/**
+ * @param {ydn.crm.su.ModuleName} mn
+ * @private
+ */
+ydn.crm.su.ui.ModulePage.prototype.updateFilterOnModule_ = function(mn) {
+  for (var i = 0, n = this.menu_filter_.getChildCount(); i < n; i++) {
+    var child = /** @type {goog.ui.Control} */(this.menu_filter_.getChildAt(i));
+    if (!(child instanceof goog.ui.Control)) {
+      continue;
+    }
+    var name = /** @type {string} */(child.getModel()) || '';
+    if (name == ydn.crm.su.RecordFilter.UPCOMING) {
+      var act = ydn.crm.su.ACTIVITY_MODULES.indexOf(mn) >= 0;
+      child.setVisible(act);
+    }
+  }
 };
 
 
@@ -299,6 +315,8 @@ ydn.crm.su.ui.ModulePage.prototype.createDom = function() {
   this.menu_filter_.addChild(my_item, true);
   this.menu_filter_.addChild(new goog.ui.CheckBoxMenuItem('Favorites',
       ydn.crm.su.RecordFilter.FAVORITE, dom), true);
+  this.menu_filter_.addChild(new goog.ui.CheckBoxMenuItem('Upcoming',
+      ydn.crm.su.RecordFilter.UPCOMING, dom), true);
   var filter = new goog.ui.MenuButton('Filter', this.menu_filter_, css_mbr, dom);
   this.toolbar_.addChild(filter, true);
 
@@ -318,6 +336,7 @@ ydn.crm.su.ui.ModulePage.prototype.createDom = function() {
   this.toolbar_.render(head);
 
   // this.addChild(this.record_list_, true);
+  this.updateFilterOnModule_(ydn.crm.su.ModuleName.CONTACTS);
 
 };
 
@@ -365,7 +384,7 @@ ydn.crm.su.ui.ModulePage.prototype.enterDocument = function() {
   var new_btn = this.toolbar_.getChildAt(0);
   hd.listen(new_btn, goog.ui.Component.EventType.ACTION,
       this.onNew_);
-  hd.listen(this.menu_filter_, goog.ui.Component.EventType.ACTION, 
+  hd.listen(this.menu_filter_, goog.ui.Component.EventType.ACTION,
       this.onFilterAction_);
   hd.listen(this.menu_order_, goog.ui.Component.EventType.ACTION,
       this.onOrderAction_);
@@ -439,5 +458,7 @@ ydn.crm.su.ui.ModulePage.prototype.onPageShow = function(obj) {
     filter = /** @type {ydn.crm.su.RecordFilter} */(obj['filter']);
     goog.asserts.assert(ydn.crm.su.recordFilters.indexOf(filter) >= 0, filter);
   }
-  this.setModule(obj['module'], filter);
+  var mn = /** @type {ydn.crm.su.ModuleName} */(obj['module']);
+  this.setModule(mn, filter);
+  this.updateFilterOnModule_(mn);
 };
