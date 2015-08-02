@@ -33,6 +33,7 @@ goog.require('goog.ui.CustomButton');
 goog.require('goog.ui.Menu');
 goog.require('goog.ui.MenuButton');
 goog.require('goog.ui.MenuSeparator');
+goog.require('goog.ui.ToggleButton');
 goog.require('goog.ui.Toolbar');
 goog.require('wgui.TextInput');
 goog.require('ydn.crm.su.ui.HoverRecordList');
@@ -146,6 +147,20 @@ ydn.crm.su.ui.ModulePage.prototype.getOrderButton = function() {
   for (var i = 0, n = this.toolbar_.getChildCount(); i < n; i++) {
     var child = this.toolbar_.getChildAt(i);
     if (child.getId() == 'order-button') {
+      return /** @type {goog.ui.Button} */(child);
+    }
+  }
+  return null;
+};
+
+
+/**
+ * @return {goog.ui.Button}
+ */
+ydn.crm.su.ui.ModulePage.prototype.getFilterButton = function() {
+  for (var i = 0, n = this.toolbar_.getChildCount(); i < n; i++) {
+    var child = this.toolbar_.getChildAt(i);
+    if (child.getId() == 'filter-button') {
       return /** @type {goog.ui.Button} */(child);
     }
   }
@@ -318,6 +333,7 @@ ydn.crm.su.ui.ModulePage.prototype.createDom = function() {
   this.menu_filter_.addChild(new goog.ui.CheckBoxMenuItem('Upcoming',
       ydn.crm.su.RecordFilter.UPCOMING, dom), true);
   var filter = new goog.ui.MenuButton('Filter', this.menu_filter_, css_mbr, dom);
+  filter.setId('filter-button');
   this.toolbar_.addChild(filter, true);
 
   var r_item = new goog.ui.CheckBoxMenuItem('Recent',
@@ -330,8 +346,13 @@ ydn.crm.su.ui.ModulePage.prototype.createDom = function() {
   sort.setId('order-button');
   this.toolbar_.addChild(sort, true);
 
-  // var search = new wgui.TextInput('', null, dom);
-  // this.toolbar_.addChild(search, true);
+  var search = new wgui.TextInput('', null, dom);
+  this.toolbar_.addChild(search, true);
+  search.setVisible(false);
+  var search_svg = ydn.crm.ui.createSvgIcon('search');
+  var tgl_search = new goog.ui.ToggleButton(search_svg, css_rdr, dom);
+  this.toolbar_.addChild(tgl_search, true);
+
 
   this.toolbar_.render(head);
 
@@ -352,6 +373,20 @@ ydn.crm.su.ui.ModulePage.prototype.getSearchCtrl = function() {
     }
   }
   throw new Error('TextInput');
+};
+
+
+/**
+ * @return {goog.ui.ToggleButton}
+ */
+ydn.crm.su.ui.ModulePage.prototype.getSearchToggle = function() {
+  for (var i = 0, n = this.toolbar_.getChildCount(); i < n; i++) {
+    var child = this.toolbar_.getChildAt(i);
+    if (child instanceof goog.ui.ToggleButton) {
+      return child;
+    }
+  }
+  return null;
 };
 
 
@@ -388,6 +423,9 @@ ydn.crm.su.ui.ModulePage.prototype.enterDocument = function() {
       this.onFilterAction_);
   hd.listen(this.menu_order_, goog.ui.Component.EventType.ACTION,
       this.onOrderAction_);
+  var tgl = this.getSearchToggle();
+  hd.listen(tgl, goog.ui.Component.EventType.ACTION,
+      this.onSearchToggle_);
 };
 
 
@@ -438,6 +476,27 @@ ydn.crm.su.ui.ModulePage.prototype.onOrderAction_ = function(ev) {
       }
     }
   }
+};
+
+
+/**
+ * @param {goog.events.Event} ev
+ * @private
+ */
+ydn.crm.su.ui.ModulePage.prototype.onSearchToggle_ = function(ev) {
+  var toggle = /** @type {goog.ui.ToggleButton} */(ev.currentTarget);
+  this.selectSearch_(toggle.isChecked());
+};
+
+
+/**
+ * @param {boolean} val
+ * @private
+ */
+ydn.crm.su.ui.ModulePage.prototype.selectSearch_ = function(val) {
+  this.getSearchCtrl().setVisible(val);
+  this.getOrderButton().setVisible(!val);
+  this.getFilterButton().setVisible(!val);
 };
 
 
