@@ -199,16 +199,16 @@ ydn.crm.su.ui.RecordList.CSS_ITEM_HEIGHT = 34;
 
 /**
  * Prepare list items are available while scrolling.
- * @param {Element=} ul the scroll element.
+ * @param {Element=} opt_ul the scroll element.
  * @private
  */
-ydn.crm.su.ui.RecordList.prototype.loadForward_ = function(ul) {
+ydn.crm.su.ui.RecordList.prototype.loadForward_ = function(opt_ul) {
 
   if (this.df_load_forward_) {
     return;
   }
   var offset = 0;
-  ul = ul || this.getUlElement();
+  var ul = opt_ul || this.getUlElement();
   if (ul.lastElementChild) {
     offset = parseInt(ul.lastElementChild.getAttribute('data-offset'), 10);
   }
@@ -439,3 +439,14 @@ ydn.crm.su.ui.RecordList.prototype.setFilter = function(filter) {
     this.refreshList_();
   }
 };
+
+
+/**
+ * Set show or hide.
+ * @param {boolean} val
+ */
+ydn.crm.su.ui.RecordList.prototype.setVisible = function(val) {
+  goog.style.setElementShown(this.getElement(), val);
+};
+
+
