@@ -33,6 +33,7 @@ goog.require('goog.ui.CustomButton');
 goog.require('goog.ui.Menu');
 goog.require('goog.ui.MenuButton');
 goog.require('goog.ui.MenuSeparator');
+goog.require('goog.ui.ToggleButton');
 goog.require('goog.ui.Toolbar');
 goog.require('wgui.TextInput');
 goog.require('ydn.crm.su.ui.HoverRecordList');
@@ -329,6 +330,10 @@ ydn.crm.su.ui.ModulePage.prototype.createDom = function() {
   var sort = new goog.ui.MenuButton('Order', this.menu_order_, css_mbr, dom);
   sort.setId('order-button');
   this.toolbar_.addChild(sort, true);
+
+  var search_svg = ydn.crm.ui.createSvgIcon('search');
+  var tgl_search = new goog.ui.ToggleButton(search_svg, css_rdr, dom);
+  this.toolbar_.addChild(tgl_search, true);
 
   // var search = new wgui.TextInput('', null, dom);
   // this.toolbar_.addChild(search, true);
