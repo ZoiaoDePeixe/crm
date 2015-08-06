@@ -39,6 +39,7 @@ goog.require('ydn.crm.su.ui.RecordListProvider');
  * @constructor
  * @struct
  * @extends {ydn.crm.su.ui.RecordList}
+ * @see ydn.crm.su.ui.HoverResultList
  */
 ydn.crm.su.ui.HoverRecordList = function(model, opt_dom) {
   goog.base(this, model, opt_dom);

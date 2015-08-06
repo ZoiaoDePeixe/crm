@@ -36,7 +36,9 @@ goog.require('goog.ui.MenuSeparator');
 goog.require('goog.ui.ToggleButton');
 goog.require('goog.ui.Toolbar');
 goog.require('wgui.TextInput');
+goog.require('ydn.crm.su.model.Search');
 goog.require('ydn.crm.su.ui.HoverRecordList');
+goog.require('ydn.crm.su.ui.HoverResultList');
 goog.require('ydn.crm.su.ui.RecordListProvider');
 goog.require('ydn.crm.ui.events');
 
@@ -76,7 +78,12 @@ ydn.crm.su.ui.ModulePage = function(opt_dom) {
    * @type {ydn.crm.su.ui.RecordList}
    * @private
    */
-  this.record_list_ = null;
+  this.browse_panel_ = null;
+  /**
+   * @type {ydn.crm.su.ui.HoverResultList}
+   * @private
+   */
+  this.search_panel_ = null;
 
 };
 goog.inherits(ydn.crm.su.ui.ModulePage, goog.ui.Component);
@@ -106,7 +113,9 @@ ydn.crm.su.ui.ModulePage.prototype.setModule = function(mn, opt_filter) {
   if (opt_filter) {
     this.selectFilter(opt_filter);
   }
-  this.record_list_.setModule(mn, opt_filter);
+  this.browse_panel_.setModule(mn, opt_filter);
+  var search = this.search_panel_.getModel();
+  search.setTargetModule(mn);
 };
 
 
@@ -115,7 +124,7 @@ ydn.crm.su.ui.ModulePage.prototype.setModule = function(mn, opt_filter) {
  * @return {ydn.crm.su.ModuleName} target module.
  */
 ydn.crm.su.ui.ModulePage.prototype.getModule = function() {
-  return this.record_list_ ? this.record_list_.getModel().getModuleName() :
+  return this.browse_panel_ ? this.browse_panel_.getModel().getModuleName() :
       ydn.crm.su.DEFAULT_MODULE;
 };
 
@@ -155,20 +164,46 @@ ydn.crm.su.ui.ModulePage.prototype.getOrderButton = function() {
 
 
 /**
+ * @return {goog.ui.Button}
+ */
+ydn.crm.su.ui.ModulePage.prototype.getFilterButton = function() {
+  for (var i = 0, n = this.toolbar_.getChildCount(); i < n; i++) {
+    var child = this.toolbar_.getChildAt(i);
+    if (child.getId() == 'filter-button') {
+      return /** @type {goog.ui.Button} */(child);
+    }
+  }
+  return null;
+};
+
+
+/**
  * @param {ydn.crm.su.model.Sugar} sugar
  */
 ydn.crm.su.ui.ModulePage.prototype.setSugar = function(sugar) {
-  var child = this.getChildAt(0);
-  if (child) {
-    this.removeChild(child, true);
-    child.dispose();
+  var ch1 = this.getChildAt(0);
+  if (ch1) {
+    this.removeChild(ch1, true);
+    ch1.dispose();
+  }
+  var ch2 = this.getChildAt(1);
+  if (ch2) {
+    var model = ch2.getModel();
+    model.dispose();
+    this.removeChild(ch2, true);
+    ch2.dispose();
   }
   if (!sugar) {
     return;
   }
   var p = new ydn.crm.su.ui.RecordListProvider(sugar);
-  this.record_list_ = new ydn.crm.su.ui.HoverRecordList(p, this.getDomHelper());
-  this.addChild(this.record_list_, true);
+  this.browse_panel_ = new ydn.crm.su.ui.HoverRecordList(p, this.getDomHelper());
+  var search = new ydn.crm.su.model.Search(sugar);
+  search.setTargetModule(this.getModule());
+  this.search_panel_ = new ydn.crm.su.ui.HoverResultList(search);
+  this.addChild(this.browse_panel_, true);
+  this.addChild(this.search_panel_, true);
+  this.search_panel_.setVisible(false);
 };
 
 
@@ -319,6 +354,7 @@ ydn.crm.su.ui.ModulePage.prototype.createDom = function() {
   this.menu_filter_.addChild(new goog.ui.CheckBoxMenuItem('Upcoming',
       ydn.crm.su.RecordFilter.UPCOMING, dom), true);
   var filter = new goog.ui.MenuButton('Filter', this.menu_filter_, css_mbr, dom);
+  filter.setId('filter-button');
   this.toolbar_.addChild(filter, true);
 
   var r_item = new goog.ui.CheckBoxMenuItem('Recent',
@@ -331,16 +367,17 @@ ydn.crm.su.ui.ModulePage.prototype.createDom = function() {
   sort.setId('order-button');
   this.toolbar_.addChild(sort, true);
 
+  var search = new wgui.TextInput('', null, dom);
+  this.toolbar_.addChild(search, true);
+  search.setVisible(false);
   var search_svg = ydn.crm.ui.createSvgIcon('search');
   var tgl_search = new goog.ui.ToggleButton(search_svg, css_rdr, dom);
   this.toolbar_.addChild(tgl_search, true);
 
-  // var search = new wgui.TextInput('', null, dom);
-  // this.toolbar_.addChild(search, true);
 
   this.toolbar_.render(head);
 
-  // this.addChild(this.record_list_, true);
+  // this.addChild(this.browse_panel_, true);
   this.updateFilterOnModule_(ydn.crm.su.ModuleName.CONTACTS);
 
 };
@@ -357,6 +394,20 @@ ydn.crm.su.ui.ModulePage.prototype.getSearchCtrl = function() {
     }
   }
   throw new Error('TextInput');
+};
+
+
+/**
+ * @return {goog.ui.ToggleButton}
+ */
+ydn.crm.su.ui.ModulePage.prototype.getSearchToggle = function() {
+  for (var i = 0, n = this.toolbar_.getChildCount(); i < n; i++) {
+    var child = this.toolbar_.getChildAt(i);
+    if (child instanceof goog.ui.ToggleButton) {
+      return child;
+    }
+  }
+  return null;
 };
 
 
@@ -393,6 +444,11 @@ ydn.crm.su.ui.ModulePage.prototype.enterDocument = function() {
       this.onFilterAction_);
   hd.listen(this.menu_order_, goog.ui.Component.EventType.ACTION,
       this.onOrderAction_);
+  var tgl = this.getSearchToggle();
+  hd.listen(tgl, goog.ui.Component.EventType.ACTION,
+      this.onSearchToggle_);
+  hd.listen(this.getSearchCtrl(), goog.ui.Component.EventType.ACTION,
+      this.onSearch_);
 };
 
 
@@ -421,7 +477,7 @@ ydn.crm.su.ui.ModulePage.prototype.onFilterAction_ = function(ev) {
     if (name) {
       var updated = this.selectFilter(name);
       if (updated) {
-        this.record_list_.setFilter(name);
+        this.browse_panel_.setFilter(name);
       }
     }
   }
@@ -439,10 +495,44 @@ ydn.crm.su.ui.ModulePage.prototype.onOrderAction_ = function(ev) {
     if (name) {
       var updated = this.selectOrder(name);
       if (updated) {
-        this.record_list_.setOrder(name);
+        this.browse_panel_.setOrder(name);
       }
     }
   }
+};
+
+
+/**
+ * @param {goog.events.Event} ev
+ * @private
+ */
+ydn.crm.su.ui.ModulePage.prototype.onSearch_ = function(ev) {
+  var input = /** @type {wgui.TextInput} */(ev.currentTarget);
+  var q = input.getContent() || '';
+  this.search_panel_.getModel().search(q);
+};
+
+
+/**
+ * @param {goog.events.Event} ev
+ * @private
+ */
+ydn.crm.su.ui.ModulePage.prototype.onSearchToggle_ = function(ev) {
+  var toggle = /** @type {goog.ui.ToggleButton} */(ev.currentTarget);
+  this.selectSearch_(toggle.isChecked());
+};
+
+
+/**
+ * @param {boolean} val
+ * @private
+ */
+ydn.crm.su.ui.ModulePage.prototype.selectSearch_ = function(val) {
+  this.getSearchCtrl().setVisible(val);
+  this.getOrderButton().setVisible(!val);
+  this.getFilterButton().setVisible(!val);
+  this.browse_panel_.setVisible(!val);
+  this.search_panel_.setVisible(val);
 };
 
 
