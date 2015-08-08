@@ -97,6 +97,7 @@ ydn.crm.su.Modules = [ydn.crm.su.ModuleName.ACCOUNTS,
   ydn.crm.su.ModuleName.EMAILS,
   // Note: EMAIL_TEXT is not a separate module but part of EMAILS module
   ydn.crm.su.ModuleName.EMAIL_TEMPLATES,
+  // Note: Employees module use 'users' table instead.
   ydn.crm.su.ModuleName.EMPLOYEES,
   ydn.crm.su.ModuleName.LEADS,
   ydn.crm.su.ModuleName.NOTES,
@@ -130,7 +131,6 @@ ydn.crm.su.CacheModules = [ydn.crm.su.ModuleName.USERS,
   ydn.crm.su.ModuleName.LEADS,
   ydn.crm.su.ModuleName.NOTES,
   ydn.crm.su.ModuleName.TASKS,
-  ydn.crm.su.ModuleName.EMPLOYEES,
   ydn.crm.su.ModuleName.MEETINGS,
   ydn.crm.su.ModuleName.CALLS,
   ydn.crm.su.ModuleName.CASES,
@@ -146,8 +146,7 @@ ydn.crm.su.CacheModules = [ydn.crm.su.ModuleName.USERS,
 ydn.crm.su.SyncModules = [ydn.crm.su.ModuleName.USERS,
   // sync template first, so that it is appear immediately after login.
   ydn.crm.su.ModuleName.EMAIL_TEMPLATES,
-  ydn.crm.su.ModuleName.CONTACTS,
-  ydn.crm.su.ModuleName.EMPLOYEES
+  ydn.crm.su.ModuleName.CONTACTS
 ];
 
 
