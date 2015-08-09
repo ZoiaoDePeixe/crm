@@ -133,6 +133,12 @@ ydn.crm.inj.SugarCrmApp = function(us, heading_injector, gmail_observer,
    */
   this.domain_ = '';
 
+  /**
+   * @type {goog.async.Deferred}
+   * @private
+   */
+  this.df_update_ = null;
+
 };
 
 
@@ -161,11 +167,13 @@ ydn.crm.inj.SugarCrmApp.prototype.onViewRecord_ = function(e) {
  * @protected
  */
 ydn.crm.inj.SugarCrmApp.prototype.handleSugarDomainChanges = function(e) {
-  var me = this;
-  // wait sugarcrm to login.
-  var mid = ydn.crm.msg.Manager.addStatus('Updating SugarCRM instance changes.');
-  me.updateSugarPanels_();
-
+  if (!this.df_update_) {
+    ydn.crm.msg.Manager.addStatus('Updating SugarCRM instance changes.');
+    this.df_update_ = this.updateSugarPanels_();
+    this.df_update_.addBoth(function() {
+      this.df_update_ = null;
+    }, this);
+  }
 };
 
 
@@ -310,11 +318,12 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(details) {
 
 /**
  * Update sugar panels.
+ * @return {goog.async.Deferred}
  * @private
  */
 ydn.crm.inj.SugarCrmApp.prototype.updateSugarPanels_ = function() {
 
-  ydn.msg.getChannel().send(ydn.crm.ch.Req.GET_SUGAR).addCallbacks(
+  return ydn.msg.getChannel().send(ydn.crm.ch.Req.GET_SUGAR).addCallbacks(
       function(x) {
         var details = /** @type {SugarCrm.Details} */ (x);
         this.updateSugarCrm_(details);

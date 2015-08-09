@@ -74,8 +74,14 @@ ydn.crm.inj.GmailContextContainer.prototype.attachByTable_ = function(contact_ta
         root_container = document.createElement('div');
         if (is_ad && parent.parentElement.contains(last)) {
           // we want to insert above ad panel.
+          if (ydn.crm.inj.ContextContainer.DEBUG) {
+            window.console.warn('inserting containter in table');
+          }
           parent.insertBefore(root_container, last);
         } else {
+          if (ydn.crm.inj.ContextContainer.DEBUG) {
+            window.console.warn('appending containter in table');
+          }
           parent.appendChild(root_container);
         }
         break;
@@ -85,7 +91,12 @@ ydn.crm.inj.GmailContextContainer.prototype.attachByTable_ = function(contact_ta
   // root_container = null;
   if (!root_container) {
     // this technique is robust, but place in the table.
-    this.logger.warning('usual root position is not available, locating on second best position');
+    goog.log.warning(this.logger, 'usual root position is not available, ' +
+        'locating on second best position');
+    if (ydn.crm.inj.ContextContainer.DEBUG) {
+      window.console.warn('usual root position is not available, ' +
+          'locating on second best position');
+    }
     var doc = contact_table.ownerDocument;
     var td = doc.createElement('td');
     td.setAttribute('colspan', '2');
@@ -143,7 +154,9 @@ ydn.crm.inj.GmailContextContainer.prototype.attachToGmailRightBar = function(col
   var root = this.ele_root;
   if (root.parentElement) {
     root.parentElement.removeChild(root);
-    root_container.appendChild(root);
+  }
+  if (root_container.lastElementChild) {
+    root_container.insertBefore(root, root_container.lastElementChild);
   } else {
     root_container.appendChild(root);
   }
