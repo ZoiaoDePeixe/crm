@@ -157,6 +157,7 @@ ydn.crm.su.SyncModules = [ydn.crm.su.ModuleName.USERS,
  */
 ydn.crm.su.PartialSyncModules = [ydn.crm.su.ModuleName.TASKS,
   ydn.crm.su.ModuleName.MEETINGS,
+  ydn.crm.su.ModuleName.LEADS,
   ydn.crm.su.ModuleName.CALLS,
   ydn.crm.su.ModuleName.CASES,
   ydn.crm.su.ModuleName.OPPORTUNITIES
