@@ -403,37 +403,37 @@ YdnCrm.SyncRecord = function() {};
 /**
  * @type {string}
  */
-YdnCrm.SyncRecord.prototype.gmail;
+YdnCrm.SyncRecord.prototype.gmail = '';
 
 
 /**
  * @type {string}
  */
-YdnCrm.SyncRecord.prototype.key;
+YdnCrm.SyncRecord.prototype.key = '';
 
 
 /**
  * @type {string}
  */
-YdnCrm.SyncRecord.prototype.modified;
+YdnCrm.SyncRecord.prototype.modified = '';
 
 
 /**
  * @type {?Array<number>}
  */
-YdnCrm.SyncRecord.prototype.timestamps;
+YdnCrm.SyncRecord.prototype.timestamps = [];
 
 
 /**
  * @type {?Array<number>} previous timestamps for auditing purpose
  */
-YdnCrm.SyncRecord.prototype.timestamps_old;
+YdnCrm.SyncRecord.prototype.timestamps_old = [];
 
 
 /**
  * @type {boolean|undefined}
  */
-YdnCrm.SyncRecord.prototype.deleted;
+YdnCrm.SyncRecord.prototype.deleted = false;
 
 
 
