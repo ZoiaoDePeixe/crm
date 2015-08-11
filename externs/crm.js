@@ -395,7 +395,7 @@ YdnCrm.SocialCache.prototype.data;
 
 /**
  * Social cache record.
- * @interface
+ * @constructor
  */
 YdnCrm.SyncRecord = function() {};
 
