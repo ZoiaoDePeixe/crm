@@ -4,7 +4,10 @@
 
 goog.provide('ydn.crm.su.ui.SettingPage');
 goog.require('goog.ui.Component');
+goog.require('ydn.crm.base');
+goog.require('ydn.crm.templ');
 goog.require('ydn.crm.ui.IDesktopPage');
+goog.require('ydn.msg');
 
 
 
@@ -56,9 +59,46 @@ ydn.crm.su.ui.SettingPage.prototype.renderGroups_ = function(arr) {
 
 
 /**
+ * Render list of contact groups.
+ * @param {YdnCrm.UserSettingGDataM8} obj
+ * @private
+ */
+ydn.crm.su.ui.SettingPage.prototype.renderSync_ = function(obj) {
+  console.log(obj);
+  var div = this.getElement().querySelector('.sync-setting-panel');
+  if (!div) {
+    div = document.createElement('div');
+    div.className = 'sync-setting-panel';
+    this.getElement().appendChild(div);
+  }
+  div.innerHTML = ydn.crm.templ.renderSugarCrmSetting();
+
+};
+
+
+/**
+ * @type {YdnCrm.UserSettingGDataM8}
+ */
+ydn.crm.su.ui.SettingPage.DEFAULT = /** @type {YdnCrm.UserSettingGDataM8} */({});
+
+
+/**
  * @private
  */
 ydn.crm.su.ui.SettingPage.prototype.refreshSync_ = function() {
+  var root = this.getElement();
+  var q = {'key': ydn.crm.base.KeyRecordOnServer.USER_SETTING_GDATA_CONTACT};
+  var df = ydn.msg.getChannel().send(ydn.crm.ch.Req.USER_SETTING_SERVER_GET, q);
+  df.addCallback(function(obj) {
+    this.renderSync_(obj || ydn.crm.su.ui.SettingPage.DEFAULT);
+  }, this);
+};
+
+
+/**
+ * @private
+ */
+ydn.crm.su.ui.SettingPage.prototype.refreshGroups_ = function() {
   var root = this.getElement();
   var df = ydn.msg.getChannel().send(ydn.crm.ch.Req.GDATA_LIST_GROUP);
   df.addCallback(function(arr) {
@@ -71,7 +111,7 @@ ydn.crm.su.ui.SettingPage.prototype.refreshSync_ = function() {
  * @override
  */
 ydn.crm.su.ui.SettingPage.prototype.onPageShow = function(obj) {
-
+  this.refreshSync_();
 };
 
 

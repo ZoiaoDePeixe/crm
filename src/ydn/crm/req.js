@@ -141,6 +141,10 @@ ydn.crm.ch.Req = {
   USER_LICENSE: 'user-license',
   /**
    * setting user setting
+   * <pre>
+   *   // query data
+   *   {'key': ydn.crm.base.KeyRecordOnServer.USER_SETTING_GDATA_CAL}
+   * </pre>
    * @see ydn.crm.AppSetting#getUserSettingOnServer
    */
   USER_SETTING_SERVER_GET: 'us-server-get',

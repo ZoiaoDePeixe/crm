@@ -135,3 +135,31 @@ ydn.crm.templ.renderTrackingLauncher = function() {
     [<a href="#tracking-result" name="view">view</a>]
   </div>`;
 };
+
+
+/**
+ * Render SugarCRM setting.
+ */
+ydn.crm.templ.renderSugarCrmSetting = function() {
+  return `<h4>SugarCRM setting</h4>
+  <div>
+    <details>
+      <summary>Synchronization</summary>
+      <label><input type="checkbox" name="sync-by-group"/> Synchronize by a Gmail Contact Group</label>
+      <br/>
+      <select name="sync-group"></select>
+    </details>
+    <details>
+      <summary>Record context menu options</summary>
+      <label><input type="checkbox" name="export-to-sugarcrm" checked/> Show menu item for exporting Gmail Contacts to SugarCRM Contacts</label>
+      <br/>
+      <label><input type="checkbox" name="export-to-gdata" checked/> Show menu item for exporting to SugarCRM Contacts to Gmail Contacts</label>
+      <br/>
+      <button name="export-restore">Restore default</button>
+    </details>
+    <div>
+      <button name="save">Save</button>
+      <button name="cancel" title="Cancel current changes">Reset</button>
+    </div>
+  </div>`;
+};
