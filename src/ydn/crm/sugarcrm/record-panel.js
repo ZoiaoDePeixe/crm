@@ -15,7 +15,7 @@
 
 
 /**
- * @fileoverview Sugarcrm record sync panel.
+ * @fileoverview Panel for list of records to visualize synchronization.
  *
  * @author kyawtun@yathit.com (Kyaw Tun)
  */
