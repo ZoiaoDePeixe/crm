@@ -420,16 +420,20 @@ ydn.crm.base.GeneralStoreKey = {
 
 
 /**
- * Chrome local storage key for record store in server.
+ * Key for record store in server.
  * @enum {string}
  */
-ydn.crm.base.KeyCLRecordOnServer = {
+ydn.crm.base.KeyRecordOnServer = {
   /**
    * define in {@link YdnCrm.UserSettingGoogle}
    */
   USER_SETTING_GOOGLE: 'ws-us-go',
   /**
-   * define in {@link YdnCrm.UserSettingGoogle}
+   * define in {@link YdnCrm.UserSettingGDataM8}
+   */
+  USER_SETTING_GDATA_CONTACT: 'ws-us-gdata-m8',
+  /**
+   * define in {@link YdnCrm.UserSettingGDataCal}
    */
   USER_SETTING_GDATA_CAL: 'ws-us-gdata-cal',
   /**
@@ -441,11 +445,12 @@ ydn.crm.base.KeyCLRecordOnServer = {
 
 /**
  * @const
- * @type {!Array<ydn.crm.base.KeyCLRecordOnServer>}
+ * @type {!Array<ydn.crm.base.KeyRecordOnServer>}
  */
 ydn.crm.base.chromeLocalKeysWithServer = [
-  ydn.crm.base.KeyCLRecordOnServer.USER_SETTING_GOOGLE,
-  ydn.crm.base.KeyCLRecordOnServer.USER_SETTING_GDATA_CAL,
-  ydn.crm.base.KeyCLRecordOnServer.USER_SETTING_SUGARCRM];
+  ydn.crm.base.KeyRecordOnServer.USER_SETTING_GOOGLE,
+  ydn.crm.base.KeyRecordOnServer.USER_SETTING_GDATA_CONTACT,
+  ydn.crm.base.KeyRecordOnServer.USER_SETTING_GDATA_CAL,
+  ydn.crm.base.KeyRecordOnServer.USER_SETTING_SUGARCRM];
 
 

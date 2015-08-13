@@ -478,7 +478,7 @@ YdnCrm.UserLicense.prototype.edition;
 
 /**
  * User setting for Google services.
- * @interface
+ * @constructor
  */
 YdnCrm.UserSettingRecord = function() {};
 
@@ -486,15 +486,16 @@ YdnCrm.UserSettingRecord = function() {};
 
 /**
  * User setting for Google services.
- * @interface
+ * @constructor
  * @extends {YdnCrm.UserSettingRecord}
  */
 YdnCrm.UserSettingSugarCrm = function() {};
 
 
+
 /**
  * User setting for Google services.
- * @interface
+ * @constructor
  * @extends {YdnCrm.UserSettingRecord}
  */
 YdnCrm.UserSettingGoogle = function() {};
@@ -512,7 +513,16 @@ YdnCrm.UserSettingGDataCal = function() {};
 /**
  * @type {string|undefined} Google calendar id for sync with CRM.
  */
-YdnCrm.UserSettingGDataCal.prototype.syncCalId;
+YdnCrm.UserSettingGDataCal.prototype.syncCalId = '';
+
+
+
+/**
+ * User setting for contacts and sync.
+ * @interface
+ * @extends {YdnCrm.UserSettingRecord}
+ */
+YdnCrm.UserSettingGDataM8 = function() {};
 
 
 /**

@@ -141,7 +141,7 @@ ydn.crm.gdata.SelectCalendarDialog.showModal = function(us, list, id) {
       var patch = /** @type {YdnCrm.UserSettingGoogle} */({});
       patch.syncCalId = /** @type {string} */(new_id);
       us.patchSettingOnServer(
-          ydn.crm.base.KeyCLRecordOnServer.USER_SETTING_GDATA_CAL,
+          ydn.crm.base.KeyRecordOnServer.USER_SETTING_GDATA_CAL,
           patch).addCallbacks(function(x) {
         df.callback(new_id);
       }, function(e) {

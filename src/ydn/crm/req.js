@@ -51,6 +51,11 @@ ydn.crm.ch.Req = {
    */
   GDATA_LIST_CONTACT: 'gdata-list-contact',
   /**
+   * list by contact groups.
+   * @see {ydn.crm.app.App#gdataListGroup}
+   */
+  GDATA_LIST_GROUP: 'gdata-list-group',
+  /**
    * update calendar event from server
    * @see ydn.crm.app.App#handleGDataRequest
    */

@@ -416,7 +416,7 @@ ydn.crm.ui.UserSetting.prototype.setSetting = function(val, key, var_args) {
  * Get user setting store in server.
  * The record itself is cached locally in
  * chrome.storage.local.
- * @param {ydn.crm.base.KeyCLRecordOnServer} key
+ * @param {ydn.crm.base.KeyRecordOnServer} key
  * @return {!goog.async.Deferred<Object>}
  */
 ydn.crm.ui.UserSetting.prototype.getSettingOnServer = function(key) {
@@ -430,7 +430,7 @@ ydn.crm.ui.UserSetting.prototype.getSettingOnServer = function(key) {
 
 /**
  * Set user setting store in server.
- * @param {ydn.crm.base.KeyCLRecordOnServer} key
+ * @param {ydn.crm.base.KeyRecordOnServer} key
  * @param {Object} value
  * @return {!goog.async.Deferred}
  * @see #patchSettingOnServer for updating only one field.
@@ -448,7 +448,7 @@ ydn.crm.ui.UserSetting.prototype.setSettingOnServer = function(key, value) {
 
 /**
  * Update specific field value.
- * @param {ydn.crm.base.KeyCLRecordOnServer} key
+ * @param {ydn.crm.base.KeyRecordOnServer} key
  * @param {YdnCrm.UserSettingRecord} patch corresponding patch object. If field value is
  * undefined or null the field value will be deleted.
  * @return {!goog.async.Deferred}
