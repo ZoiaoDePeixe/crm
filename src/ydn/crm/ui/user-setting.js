@@ -449,8 +449,8 @@ ydn.crm.ui.UserSetting.prototype.setSettingOnServer = function(key, value) {
 /**
  * Update specific field value.
  * @param {ydn.crm.base.KeyRecordOnServer} key
- * @param {YdnCrm.UserSettingRecord} patch corresponding patch object. If field value is
- * undefined or null the field value will be deleted.
+ * @param {YdnCrm.UserSettingRecord} patch corresponding patch object. If field
+ * value is undefined or null the field value will be deleted.
  * @return {!goog.async.Deferred}
  */
 ydn.crm.ui.UserSetting.prototype.patchSettingOnServer = function(key, patch) {

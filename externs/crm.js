@@ -504,7 +504,7 @@ YdnCrm.UserSettingGoogle = function() {};
 
 /**
  * User setting for Google services.
- * @interface
+ * @constructor
  * @extends {YdnCrm.UserSettingRecord}
  */
 YdnCrm.UserSettingGDataCal = function() {};
@@ -519,10 +519,22 @@ YdnCrm.UserSettingGDataCal.prototype.syncCalId = '';
 
 /**
  * User setting for contacts and sync.
- * @interface
+ * @constructor
  * @extends {YdnCrm.UserSettingRecord}
  */
-YdnCrm.UserSettingGDataM8 = function() {};
+YdnCrm.UserSettingContactSync = function() {};
+
+
+/**
+ * @type {boolean}
+ */
+YdnCrm.UserSettingContactSync.prototype.syncByGroup = false;
+
+
+/**
+ * @type {string}
+ */
+YdnCrm.UserSettingContactSync.prototype.syncGroupId = '';
 
 
 /**

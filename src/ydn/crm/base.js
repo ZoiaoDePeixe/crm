@@ -429,9 +429,9 @@ ydn.crm.base.KeyRecordOnServer = {
    */
   USER_SETTING_GOOGLE: 'ws-us-go',
   /**
-   * define in {@link YdnCrm.UserSettingGDataM8}
+   * define in {@link YdnCrm.UserSettingContactSync}
    */
-  USER_SETTING_GDATA_CONTACT: 'ws-us-gdata-m8',
+  USER_SETTING_CONTACT_SYNC: 'ws-us-contact-save',
   /**
    * define in {@link YdnCrm.UserSettingGDataCal}
    */
@@ -449,7 +449,7 @@ ydn.crm.base.KeyRecordOnServer = {
  */
 ydn.crm.base.chromeLocalKeysWithServer = [
   ydn.crm.base.KeyRecordOnServer.USER_SETTING_GOOGLE,
-  ydn.crm.base.KeyRecordOnServer.USER_SETTING_GDATA_CONTACT,
+  ydn.crm.base.KeyRecordOnServer.USER_SETTING_CONTACT_SYNC,
   ydn.crm.base.KeyRecordOnServer.USER_SETTING_GDATA_CAL,
   ydn.crm.base.KeyRecordOnServer.USER_SETTING_SUGARCRM];
 

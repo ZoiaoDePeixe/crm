@@ -37,6 +37,7 @@ goog.require('ydn.crm.su.ui.DesktopHome');
 goog.require('ydn.crm.su.ui.ModulePage');
 goog.require('ydn.crm.su.ui.RecordList');
 goog.require('ydn.crm.su.ui.RecordPage');
+goog.require('ydn.crm.su.ui.SettingPage');
 goog.require('ydn.crm.su.ui.search.Page');
 goog.require('ydn.crm.ui.Desktop');
 goog.require('ydn.gmail.Utils.GmailViewState');
@@ -109,6 +110,12 @@ ydn.crm.inj.SugarCrmApp = function(us, heading_injector, gmail_observer,
    * @protected
    */
   this.record_list_panel = new ydn.crm.su.ui.ModulePage();
+  /**
+   * @final
+   * @type {ydn.crm.su.ui.SettingPage}
+   * @protected
+   */
+  this.setting_page = new ydn.crm.su.ui.SettingPage();
 
   /**
    * @final
@@ -188,6 +195,7 @@ ydn.crm.inj.SugarCrmApp.prototype.init = function(desktop, renderer) {
   desktop.addChild(this.record_list_panel, true);
   desktop.addChild(this.search_page, true);
   desktop.addChild(this.new_record, true);
+  desktop.addChild(this.setting_page, true);
 
   this.context_panel.render(renderer.getContentElement());
 
@@ -287,6 +295,7 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(details) {
     this.search_page.setSugarCrm(sugar);
     this.new_record.setSugar(sugar);
     this.record_list_panel.setSugar(sugar);
+    this.setting_page.setSugar(sugar);
 
     if (this.us_.hasFeature(ydn.crm.base.Feature.TEMPLATE)) {
       this.gmail_template_ = new ydn.crm.gmail.Template(sugar);
@@ -301,6 +310,7 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(details) {
     this.search_page.setSugarCrm(null);
     this.new_record.setSugar(null);
     this.record_list_panel.setSugar(null);
+    this.setting_page.setSugar(null);
     if (this.attacher_) {
       this.handler.unlisten(this.attacher_,
           ydn.crm.su.events.EventType.VIEW_RECORD,
