@@ -66,9 +66,12 @@ ydn.crm.sync.SyncPair.makeKey = function(domain, mn, rid, gmail, kind, eid) {
     throw new Error('Invalid module name: ' + mn);
   }
   gmail = gmail.replace('%40', '@');
+  // domain shared contacts has no email address in id.
+  /*
   if (gmail.indexOf('@') == -1) {
     throw new Error('Invalid gmail: ' + gmail);
   }
+  */
   if (kind != ydn.gdata.Kind.M8_CONTACT) {
     throw new Error('Unsupported kind: ' + kind);
   }

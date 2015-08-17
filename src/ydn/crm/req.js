@@ -251,6 +251,9 @@ ydn.crm.ch.SReq = {
    * @see ydn.crm.su.Client#getFavoritesAsync
    */
   GET_FAVORITE_ASYNC: 'get-favorite-async',
+  /**
+   * @see ydn.crm.app.App#importGData2Sugar
+   */
   IMPORT_GDATA: 'import-gdata',
   INFO_MODULE: 'info-module', // list module field
   KEYS: 'keys', // list keys
