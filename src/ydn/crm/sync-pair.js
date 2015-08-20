@@ -107,6 +107,17 @@ ydn.crm.sync.SyncPair.parseKey = function(key) {
 
 
 /**
+ * Get index key for GData full entry id.
+ * @param {string} entry_id
+ * @return {string} index key.
+ */
+ydn.crm.sync.SyncPair.getGDataIndex = function(entry_id) {
+  var parts = ydn.gdata.m8.utils.parseFeedUri(entry_id);
+  return parts.user_id + '/' + parts.kind + '/' + parts.id;
+};
+
+
+/**
  * @typedef {{
  *   sync: YdnCrm.SyncRecord,
  *   entry: ContactEntry,
