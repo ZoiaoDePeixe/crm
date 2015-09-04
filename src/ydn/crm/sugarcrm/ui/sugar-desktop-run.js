@@ -26,11 +26,6 @@ desktop.getHomePage().addChild(sugar_home, true);
 
 ydn.msg.getChannel().send(ydn.crm.ch.Req.GET_SUGAR).addCallback(function(x) {
   var details = /** @type {SugarCrm.Details} */ (x);
-  if (details) {
-    for (var i = 0; i < details.modulesInfo.length; i++) {
-      ydn.crm.su.fixSugarCrmModuleMeta(details.modulesInfo[i]);
-    }
-  }
   sugar_home.setSugarCrm(details);
 });
 

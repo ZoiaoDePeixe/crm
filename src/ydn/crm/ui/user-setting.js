@@ -335,18 +335,8 @@ ydn.crm.ui.UserSetting.prototype.getGmail = function() {
 ydn.crm.ui.UserSetting.prototype.getModuleInfo = function(name) {
   var channel = ydn.msg.getChannel(ydn.msg.Group.SUGAR, name);
   return this.onReady().branch().addCallback(function() {
-    return channel.send(ydn.crm.ch.SReq.INFO_MODULE).addCallback(function(x) {
-      if (goog.isArray(x)) {
-        for (var i = 0; i < x.length; i++) {
-          ydn.crm.su.fixSugarCrmModuleMeta(x[i]);
-        }
-      } else {
-        ydn.crm.su.fixSugarCrmModuleMeta(x);
-      }
-      return x;
-    }, this);
+    return channel.send(ydn.crm.ch.SReq.INFO_MODULE);
   }, this);
-
 };
 
 
