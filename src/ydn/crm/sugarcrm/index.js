@@ -482,7 +482,35 @@ ydn.crm.su.SugarEvent = {
  * @param {Array<ydn.crm.su.ModuleName>=} opt_required require module.
  * @return {Array<ydn.crm.su.ModuleName>}
  */
-ydn.crm.su.getRelationshipCacheModule = function(info, opt_required) {
+ydn.crm.su.getRelationshipModule = function(info, opt_required) {
+  var link_fields = info.link_fields || {};
+  var arr = [];
+  for (var name in link_fields) {
+    var link_field = link_fields[name];
+    var mn = link_field['module'];
+    if (arr.indexOf(mn) == -1) {
+      arr.push(mn);
+    }
+  }
+  if (opt_required) {
+    for (var i = 0; i < opt_required.length; i++) {
+      if (arr.indexOf(opt_required[i]) == -1) {
+        arr.push(opt_required[i]);
+      }
+    }
+  }
+  arr.sort();
+  return arr;
+};
+
+
+/**
+ * Get list of relationship modules, which is cached.
+ * @param {SugarCrm.ModuleInfo} info
+ * @param {Array<ydn.crm.su.ModuleName>=} opt_required require module.
+ * @return {Array<ydn.crm.su.ModuleName>}
+ */
+ydn.crm.su.getRelationshipCacheModule_ = function(info, opt_required) {
   var link_fields = info.link_fields || {};
   var arr = [];
   for (var name in link_fields) {
