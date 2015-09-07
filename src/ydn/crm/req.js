@@ -345,7 +345,7 @@ ydn.crm.ch.SReq = {
   SEARCH: 'search',
   /**
    * server side search
-   * @see {ydn.crm.su.Client#searchByModule}
+   * @see {ydn.crm.su.Client#searchByModule_}
    */
   SEARCH_BY_MODULE: 'se-bm',
   SERVER_INFO: 'server-info',
