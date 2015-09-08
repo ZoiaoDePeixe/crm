@@ -83,8 +83,9 @@ ydn.crm.su.ui.RecordTile.prototype.createDom = function() {
  */
 ydn.crm.su.ui.RecordTile.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
-  var tile = this.getElement().querySelector('.record-tile');
-  var label = this.getElement().querySelector('.label');
+  var el = this.getElement();
+  var tile = el.querySelector('.record-tile');
+  var label = el.querySelector('.label');
   this.getHandler().listen(tile, 'click', this.onTileClick_);
   this.getHandler().listen(label, 'click', this.onLabelClick_);
 
@@ -94,6 +95,19 @@ ydn.crm.su.ui.RecordTile.prototype.enterDocument = function() {
     setTimeout((function() {
       this.updateUpcoming();
     }).bind(this), delay);
+  }
+
+  /**
+   * @type {ydn.crm.su.model.Sugar}
+   */
+  var sugar = this.getModel();
+  var av = sugar.getAvailableModule(this.name);
+  var can_use = sugar.shouldUseFavoriteEnabled();
+  if (av && av.module_label) {
+    label.textContent = av.module_label;
+    if ((can_use && av.favorite_enabled === false) || sugar.isActionAllow(this.name, 'view') === false) {
+      goog.style.setElementShown(el, false);
+    }
   }
 };
 

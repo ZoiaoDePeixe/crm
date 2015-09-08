@@ -172,7 +172,7 @@ ydn.crm.su.ui.DesktopHome.prototype.setSugarCrm = function(details) {
   var us = ydn.crm.ui.UserSetting.getInstance();
 
   var sugar = new ydn.crm.su.model.Sugar(details.about,
-      details.modulesInfo, details.serverInfo);
+      details.modulesInfo, details.serverInfo, null, details.availableModules);
   header = new ydn.crm.su.ui.Header(sugar, this.dom_);
   panel = new ydn.crm.su.ui.DesktopHome.Content(sugar, this.dom_);
   goog.log.fine(this.logger, 'sugar panel ' + about.domain + ' added.');
