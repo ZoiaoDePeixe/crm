@@ -193,6 +193,9 @@ ydn.crm.ch.SReq = {
    */
   ACTIVITY_STREAM: 'activity-stream',
   ACTIVITY_UPCOMING: 'activity-upcoming',
+  /**
+   * @see ydn.crm.su.Client#deleteDatabase_
+   */
   CLEAR_CACHE: 'clear-cache', // delete database
   /**
    * Count number of record in a module either from server or client.
@@ -378,7 +381,7 @@ ydn.crm.ch.SReq = {
   UPDATE_AUDIT: 'update-audio',
   /**
    * Remove cached records.
-   * @see ydn.crm.su.Client#clearCache
+   * @see ydn.crm.su.RecordUpdater#clearCache
    */
   UPDATE_CLEAR: 'update-clear', //
   /**
