@@ -292,7 +292,7 @@ ydn.crm.base.analytic = {
     channelConnection: true
   },
   database: {
-    stat: true
+    stat: false
   },
   sugarcrm: {
     databaseSyncUpdate: true
