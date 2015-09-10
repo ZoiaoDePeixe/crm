@@ -143,11 +143,12 @@ ydn.crm.su.ui.RecordListProvider.prototype.countRecords = function() {
 
 /**
  * Get list of records for async listing.
+ * @param {number=} opt_limit
  * @param {number=} opt_offset
- * @return {!ydn.async.Deferred<Array<SugarCrm.Record>>}
+ * @return {!ydn.async.Deferred} result are returned in notification.
  * @see #list for others
  */
-ydn.crm.su.ui.RecordListProvider.prototype.listAsync = function(opt_offset) {
+ydn.crm.su.ui.RecordListProvider.prototype.listAsync = function(opt_limit, opt_offset) {
   goog.asserts.assert(this.isListAsync());
   if (opt_offset) {
     var df = new ydn.async.Deferred();
@@ -160,7 +161,9 @@ ydn.crm.su.ui.RecordListProvider.prototype.listAsync = function(opt_offset) {
 
 
 /**
- * To choose whether to use {@link #list} vs {@link #listAsync}.
+ * To choose whether to use {@link #list} vs {@link #listAsync}. Async method
+ * return result in progress event, whereas standard method return in resolve
+ * callback.
  * @return {boolean}
  */
 ydn.crm.su.ui.RecordListProvider.prototype.isListAsync = function() {
@@ -177,7 +180,20 @@ ydn.crm.su.ui.RecordListProvider.prototype.isListAsync = function() {
  * @see #listAsync for Favorite query.
  */
 ydn.crm.su.ui.RecordListProvider.prototype.list = function(limit, offset) {
-  goog.asserts.assert(!this.isListAsync());
+  if (this.isListAsync()) {
+    var out = [];
+    offset = offset || 0;
+    var ydf = this.listAsync(limit, offset);
+    ydf.addProgback(function(arr) {
+      for (var i = 0; i < arr.length; i++) {
+        arr[i]['ydn$offset'] = 1 + i + offset;
+        out.push(arr[i]);
+      }
+    });
+    return ydf.addCallback(function() {
+      return out;
+    });
+  }
   if (this.filter_ == ydn.crm.su.RecordFilter.UPCOMING) {
     return this.sugar.getUpcomingActivities(this.name_);
   }

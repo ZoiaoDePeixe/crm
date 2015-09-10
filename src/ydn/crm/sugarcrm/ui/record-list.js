@@ -185,7 +185,6 @@ ydn.crm.su.ui.RecordList.prototype.onMouseWheel_ = function(ev) {
       this.loadBack_(ul);
     }
   }
-
 };
 
 
@@ -215,21 +214,8 @@ ydn.crm.su.ui.RecordList.prototype.loadForward_ = function(opt_ul) {
   if (ydn.crm.su.ui.RecordList.DEBUG) {
     console.log('loadForward from ' + offset);
   }
-  if (this.getProvider().isListAsync()) {
-    var ydf = this.getProvider().listAsync(offset);
-    ydf.addProgback(function(arr) {
-      for (var i = 0; i < arr.length; i++) {
-        arr[i]['ydn$offset'] = 1 + i + offset;
-      }
-      if (ydn.crm.su.ui.RecordList.DEBUG) {
-        console.log(arr.length + ' loaded in prog');
-      }
-      this.addResults_(arr, true);
-    }, this);
-    this.df_load_forward_ = ydf;
-  } else {
-    this.df_load_forward_ = this.getProvider().list(15, offset);
-  }
+
+  this.df_load_forward_ = this.getProvider().list(15, offset);
 
   this.df_load_forward_.addCallbacks(function(arr) {
     if (arr) {
