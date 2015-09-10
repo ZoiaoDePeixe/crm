@@ -14,19 +14,20 @@ goog.require('ydn.crm.su.events');
  *   rlp.setSugar(sugar);
  * </pre>
  * @param {ydn.crm.su.model.Sugar=} opt_sugar
+ * @param {ydn.crm.su.ModuleName=} opt_mn module name.
  * @constructor
  */
-ydn.crm.su.ui.RecordListProvider = function(opt_sugar) {
+ydn.crm.su.ui.RecordListProvider = function(opt_sugar, opt_mn) {
   /**
    * @type {ydn.crm.su.model.Sugar}
    * @protected
    */
-  this.sugar = null;
+  this.sugar = opt_sugar || null;
   /**
    * @type {ydn.crm.su.ModuleName}
    * @private
    */
-  this.name_ = ydn.crm.su.ModuleName.CONTACTS;
+  this.name_ = opt_mn || ydn.crm.su.ModuleName.CONTACTS;
   /**
    * @type {ydn.crm.su.RecordOrder} index name.
    * @private
