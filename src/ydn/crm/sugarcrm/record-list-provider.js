@@ -146,7 +146,8 @@ ydn.crm.su.ui.RecordListProvider.prototype.countRecords = function() {
  * @param {number=} opt_limit
  * @param {number=} opt_offset
  * @return {!ydn.async.Deferred} result are returned in notification.
- * @see #list for others
+ * @see #listSync for sync.
+ * @see #list for general use
  */
 ydn.crm.su.ui.RecordListProvider.prototype.listAsync = function(opt_limit, opt_offset) {
   goog.asserts.assert(this.isListAsync());
@@ -157,6 +158,49 @@ ydn.crm.su.ui.RecordListProvider.prototype.listAsync = function(opt_limit, opt_o
   }
   var data = {'module': this.name_};
   return this.sugar.getChannel().send(ydn.crm.ch.SReq.GET_FAVORITE_ASYNC, data);
+};
+
+
+/**
+ * Get list of records.
+ * The result has `ydn$index` field for respective index.
+ * @param {number} limit number of results.
+ * @param {number} offset offset.
+ * @return {!goog.async.Deferred<!Array<!SugarCrm.Record>>}
+ * @see #listAsync for Favorite query.
+ */
+ydn.crm.su.ui.RecordListProvider.prototype.listSync = function(limit, offset) {
+  goog.asserts.assert(!this.isListAsync());
+
+  if (this.filter_ == ydn.crm.su.RecordFilter.UPCOMING) {
+    return this.sugar.getUpcomingActivities(this.name_);
+  }
+  var index = 'id';
+  var reverse = false;
+  var kr = null;
+  if (this.order_ == ydn.crm.su.RecordOrder.RECENT) {
+    index = 'date_modified';
+    reverse = true;
+  } else if (this.order_ == ydn.crm.su.RecordOrder.NAME) {
+    index = 'name';
+  }
+  if (this.filter_ == ydn.crm.su.RecordFilter.MY) {
+    index = 'assigned_user_id, name';
+    reverse = false;
+    kr = ydn.db.KeyRange.starts([this.sugar.getUserRecordId()]);
+  }
+  var q = {
+    'store': this.name_,
+    'index': index,
+    'limit': limit,
+    'reverse': reverse,
+    'keyRange': kr,
+    'offset': offset
+  };
+  return this.sugar.getChannel().send(ydn.crm.ch.SReq.QUERY, [q]).addCallback(function(arr) {
+    var res = /** @type {CrmApp.QueryResult} */(arr[0]);
+    return res.result || [];
+  }, this);
 };
 
 
@@ -193,36 +237,17 @@ ydn.crm.su.ui.RecordListProvider.prototype.list = function(limit, offset) {
     return ydf.addCallback(function() {
       return out;
     });
+  } else {
+    return this.listSync(limit, offset).addCallback(function(arr) {
+      // load from server if necessary
+      if (arr.length == 0 && (this.filter_ == ydn.crm.su.RecordFilter.ALL)) {
+        var d = {'module': this.getModuleName()};
+        return this.sugar.getChannel().send(ydn.crm.ch.SReq.UPDATE_NOW, d).addCallback(function() {
+          return this.listSync(limit, offset);
+        }, this);
+      }
+    }, this);
   }
-  if (this.filter_ == ydn.crm.su.RecordFilter.UPCOMING) {
-    return this.sugar.getUpcomingActivities(this.name_);
-  }
-  var index = 'id';
-  var reverse = false;
-  var kr = null;
-  if (this.order_ == ydn.crm.su.RecordOrder.RECENT) {
-    index = 'date_modified';
-    reverse = true;
-  } else if (this.order_ == ydn.crm.su.RecordOrder.NAME) {
-    index = 'name';
-  }
-  if (this.filter_ == ydn.crm.su.RecordFilter.MY) {
-    index = 'assigned_user_id, name';
-    reverse = false;
-    kr = ydn.db.KeyRange.starts([this.sugar.getUserRecordId()]);
-  }
-  var q = {
-    'store': this.name_,
-    'index': index,
-    'limit': limit,
-    'reverse': reverse,
-    'keyRange': kr,
-    'offset': offset
-  };
-  return this.sugar.getChannel().send(ydn.crm.ch.SReq.QUERY, [q]).addCallback(function(arr) {
-    var res = /** @type {CrmApp.QueryResult} */(arr[0]);
-    return res.result || [];
-  }, this);
 };
 
 
