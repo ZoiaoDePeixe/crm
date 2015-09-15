@@ -1,0 +1,560 @@
+[
+  {
+    "module_key": "Home",
+    "module_label": "Home",
+    "favorite_enabled": false,
+    "acls": [
+      {
+        "action": "edit",
+        "access": false
+      },
+      {
+        "action": "delete",
+        "access": false
+      },
+      {
+        "action": "list",
+        "access": false
+      },
+      {
+        "action": "view",
+        "access": false
+      },
+      {
+        "action": "import",
+        "access": false
+      },
+      {
+        "action": "export",
+        "access": false
+      }
+    ]
+  },
+  {
+    "module_key": "Accounts",
+    "module_label": "Accounts",
+    "favorite_enabled": false,
+    "acls": [
+      {
+        "action": "edit",
+        "access": true
+      },
+      {
+        "action": "delete",
+        "access": true
+      },
+      {
+        "action": "list",
+        "access": true
+      },
+      {
+        "action": "view",
+        "access": true
+      },
+      {
+        "action": "import",
+        "access": true
+      },
+      {
+        "action": "export",
+        "access": true
+      }
+    ]
+  },
+  {
+    "module_key": "Contacts",
+    "module_label": "Contacts",
+    "favorite_enabled": false,
+    "acls": [
+      {
+        "action": "edit",
+        "access": true
+      },
+      {
+        "action": "delete",
+        "access": true
+      },
+      {
+        "action": "list",
+        "access": true
+      },
+      {
+        "action": "view",
+        "access": true
+      },
+      {
+        "action": "import",
+        "access": true
+      },
+      {
+        "action": "export",
+        "access": true
+      }
+    ]
+  },
+  {
+    "module_key": "Opportunities",
+    "module_label": "Opportunities",
+    "favorite_enabled": false,
+    "acls": [
+      {
+        "action": "edit",
+        "access": true
+      },
+      {
+        "action": "delete",
+        "access": true
+      },
+      {
+        "action": "list",
+        "access": true
+      },
+      {
+        "action": "view",
+        "access": true
+      },
+      {
+        "action": "import",
+        "access": true
+      },
+      {
+        "action": "export",
+        "access": true
+      }
+    ]
+  },
+  {
+    "module_key": "Leads",
+    "module_label": "Leads",
+    "favorite_enabled": false,
+    "acls": [
+      {
+        "action": "edit",
+        "access": true
+      },
+      {
+        "action": "delete",
+        "access": true
+      },
+      {
+        "action": "list",
+        "access": true
+      },
+      {
+        "action": "view",
+        "access": true
+      },
+      {
+        "action": "import",
+        "access": true
+      },
+      {
+        "action": "export",
+        "access": true
+      }
+    ]
+  },
+  {
+    "module_key": "Calendar",
+    "module_label": "Calendar",
+    "favorite_enabled": false,
+    "acls": [
+      {
+        "action": "edit",
+        "access": true
+      },
+      {
+        "action": "delete",
+        "access": true
+      },
+      {
+        "action": "list",
+        "access": true
+      },
+      {
+        "action": "view",
+        "access": true
+      },
+      {
+        "action": "import",
+        "access": true
+      },
+      {
+        "action": "export",
+        "access": true
+      }
+    ]
+  },
+  {
+    "module_key": "Documents",
+    "module_label": "Documents",
+    "favorite_enabled": false,
+    "acls": [
+      {
+        "action": "edit",
+        "access": true
+      },
+      {
+        "action": "delete",
+        "access": true
+      },
+      {
+        "action": "list",
+        "access": true
+      },
+      {
+        "action": "view",
+        "access": true
+      },
+      {
+        "action": "import",
+        "access": true
+      },
+      {
+        "action": "export",
+        "access": true
+      }
+    ]
+  },
+  {
+    "module_key": "Emails",
+    "module_label": "Emails",
+    "favorite_enabled": false,
+    "acls": [
+      {
+        "action": "edit",
+        "access": true
+      },
+      {
+        "action": "delete",
+        "access": true
+      },
+      {
+        "action": "list",
+        "access": true
+      },
+      {
+        "action": "view",
+        "access": true
+      },
+      {
+        "action": "import",
+        "access": true
+      },
+      {
+        "action": "export",
+        "access": true
+      }
+    ]
+  },
+  {
+    "module_key": "Campaigns",
+    "module_label": "Campaigns",
+    "favorite_enabled": false,
+    "acls": [
+      {
+        "action": "edit",
+        "access": true
+      },
+      {
+        "action": "delete",
+        "access": true
+      },
+      {
+        "action": "list",
+        "access": true
+      },
+      {
+        "action": "view",
+        "access": true
+      },
+      {
+        "action": "import",
+        "access": true
+      },
+      {
+        "action": "export",
+        "access": true
+      }
+    ]
+  },
+  {
+    "module_key": "Calls",
+    "module_label": "Calls",
+    "favorite_enabled": false,
+    "acls": [
+      {
+        "action": "edit",
+        "access": true
+      },
+      {
+        "action": "delete",
+        "access": true
+      },
+      {
+        "action": "list",
+        "access": true
+      },
+      {
+        "action": "view",
+        "access": true
+      },
+      {
+        "action": "import",
+        "access": true
+      },
+      {
+        "action": "export",
+        "access": true
+      }
+    ]
+  },
+  {
+    "module_key": "Meetings",
+    "module_label": "Meetings",
+    "favorite_enabled": false,
+    "acls": [
+      {
+        "action": "edit",
+        "access": true
+      },
+      {
+        "action": "delete",
+        "access": true
+      },
+      {
+        "action": "list",
+        "access": true
+      },
+      {
+        "action": "view",
+        "access": true
+      },
+      {
+        "action": "import",
+        "access": true
+      },
+      {
+        "action": "export",
+        "access": true
+      }
+    ]
+  },
+  {
+    "module_key": "Tasks",
+    "module_label": "Tasks",
+    "favorite_enabled": false,
+    "acls": [
+      {
+        "action": "edit",
+        "access": true
+      },
+      {
+        "action": "delete",
+        "access": true
+      },
+      {
+        "action": "list",
+        "access": true
+      },
+      {
+        "action": "view",
+        "access": true
+      },
+      {
+        "action": "import",
+        "access": true
+      },
+      {
+        "action": "export",
+        "access": true
+      }
+    ]
+  },
+  {
+    "module_key": "Bugs",
+    "module_label": "Bugs",
+    "favorite_enabled": false,
+    "acls": [
+      {
+        "action": "edit",
+        "access": true
+      },
+      {
+        "action": "delete",
+        "access": true
+      },
+      {
+        "action": "list",
+        "access": true
+      },
+      {
+        "action": "view",
+        "access": true
+      },
+      {
+        "action": "import",
+        "access": true
+      },
+      {
+        "action": "export",
+        "access": true
+      }
+    ]
+  },
+  {
+    "module_key": "Notes",
+    "module_label": "Notes",
+    "favorite_enabled": false,
+    "acls": [
+      {
+        "action": "edit",
+        "access": true
+      },
+      {
+        "action": "delete",
+        "access": true
+      },
+      {
+        "action": "list",
+        "access": true
+      },
+      {
+        "action": "view",
+        "access": true
+      },
+      {
+        "action": "import",
+        "access": true
+      },
+      {
+        "action": "export",
+        "access": true
+      }
+    ]
+  },
+  {
+    "module_key": "Project",
+    "module_label": "Projects",
+    "favorite_enabled": false,
+    "acls": [
+      {
+        "action": "edit",
+        "access": true
+      },
+      {
+        "action": "delete",
+        "access": true
+      },
+      {
+        "action": "list",
+        "access": true
+      },
+      {
+        "action": "view",
+        "access": true
+      },
+      {
+        "action": "import",
+        "access": true
+      },
+      {
+        "action": "export",
+        "access": true
+      }
+    ]
+  },
+  {
+    "module_key": "Cases",
+    "module_label": "Cases",
+    "favorite_enabled": false,
+    "acls": [
+      {
+        "action": "edit",
+        "access": true
+      },
+      {
+        "action": "delete",
+        "access": true
+      },
+      {
+        "action": "list",
+        "access": true
+      },
+      {
+        "action": "view",
+        "access": true
+      },
+      {
+        "action": "import",
+        "access": true
+      },
+      {
+        "action": "export",
+        "access": true
+      }
+    ]
+  },
+  {
+    "module_key": "Prospects",
+    "module_label": "Targets",
+    "favorite_enabled": false,
+    "acls": [
+      {
+        "action": "edit",
+        "access": true
+      },
+      {
+        "action": "delete",
+        "access": true
+      },
+      {
+        "action": "list",
+        "access": true
+      },
+      {
+        "action": "view",
+        "access": true
+      },
+      {
+        "action": "import",
+        "access": true
+      },
+      {
+        "action": "export",
+        "access": true
+      }
+    ]
+  },
+  {
+    "module_key": "ProspectLists",
+    "module_label": "Target Lists",
+    "favorite_enabled": false,
+    "acls": [
+      {
+        "action": "edit",
+        "access": true
+      },
+      {
+        "action": "delete",
+        "access": true
+      },
+      {
+        "action": "list",
+        "access": true
+      },
+      {
+        "action": "view",
+        "access": true
+      },
+      {
+        "action": "import",
+        "access": true
+      },
+      {
+        "action": "export",
+        "access": true
+      }
+    ]
+  }
+]

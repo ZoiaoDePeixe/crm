@@ -1,0 +1,7 @@
+{
+  "baseUrl": "http://sugarcrm-dev.yathit.com/sugarcrm/",
+  "domain": "sugarcrm-dev.yathit.com",
+  "userName": "max",
+  "isLogin": true,
+  "hostPermission": true
+}
