@@ -301,7 +301,8 @@ ydn.crm.su.ui.RecordList.prototype.refresh_ = function() {
   var t2 = '] ';
   var a = this.getDomHelper().createDom('a', {
     'class': 'module-option',
-    'href': '#module-option'
+    'href': '#module-option',
+    'title': model.getModuleName() + ' Module option'
   }, 'Option');
   if (count < total) {
     t2 += count + ' of ' + total + ' ' + model.getModuleName() +
