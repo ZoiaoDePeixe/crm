@@ -29,6 +29,7 @@ goog.require('goog.ui.Component');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.su');
 goog.require('ydn.crm.su.ui.RecordListProvider');
+goog.require('ydn.crm.su.ui.UpdateOptionDialog');
 goog.require('ydn.crm.su.ui.record.HoverCard');
 goog.require('ydn.crm.templ');
 
@@ -121,10 +122,28 @@ ydn.crm.su.ui.RecordList.prototype.enterDocument = function() {
 
   var hd = this.getHandler();
   var ul = this.getUlElement();
+  var footer = this.getElement().querySelector('.' + ydn.crm.ui.CSS_CLASS_FOOTER);
   hd.listen(ul, goog.events.EventType.WHEEL, this.onMouseWheel_);
   hd.listen(ul, goog.events.EventType.CLICK, this.onClick_);
+  hd.listen(footer, goog.events.EventType.CLICK, this.onFooterClick_);
 
   this.reset_();
+};
+
+
+/**
+ * @param {goog.events.BrowserEvent} ev
+ * @private
+ */
+ydn.crm.su.ui.RecordList.prototype.onFooterClick_ = function(ev) {
+  if (ev.target.tagName == 'A' && ev.target.classList.contains('module-option')) {
+    ev.preventDefault();
+    var m = /** @type {ydn.crm.su.ui.RecordListProvider} */(this.getModel());
+    var mn = m.getModuleName();
+    ydn.crm.su.ui.UpdateOptionDialog.showModel(mn);
+    ydn.crm.shared.logAnalyticValue('ui.cache-update',
+        'option.click.module-option', mn, 0);
+  }
 };
 
 
@@ -278,12 +297,21 @@ ydn.crm.su.ui.RecordList.prototype.refresh_ = function() {
       '.' + ydn.crm.ui.CSS_CLASS_FOOTER);
   var total = model.getTotal();
   var count = model.countRecords();
+  var t1 = '[';
+  var t2 = '] ';
+  var a = this.getDomHelper().createDom('a', {
+    'class': 'module-option',
+    'href': '#module-option'
+  }, 'Option');
   if (count < total) {
-    footer.textContent = count + ' of ' + total + ' ' + model.getModuleName() +
+    t2 += count + ' of ' + total + ' ' + model.getModuleName() +
         ' cached.';
   } else {
-    footer.textContent = total + ' ' + model.getModuleName();
+    t2 += total + ' ' + model.getModuleName();
   }
+  footer.textContent = t1;
+  footer.appendChild(a);
+  footer.appendChild(document.createTextNode(t2));
   this.refreshList_();
 };
 
