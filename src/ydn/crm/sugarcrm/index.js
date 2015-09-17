@@ -271,6 +271,17 @@ ydn.crm.su.toModuleName = function(name) {
 
 
 /**
+ * @enum {string} cache option.
+ */
+ydn.crm.su.CacheOption = {
+  FULL: 'full',
+  PARTIAL: 'partial',
+  OPPORTUNISTIC: 'opportunistic',
+  NONE: 'none'
+};
+
+
+/**
  * Check support valid module name.
  * @param {string} name
  * @return {boolean}

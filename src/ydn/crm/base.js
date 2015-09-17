@@ -4,7 +4,6 @@
 
 goog.provide('ydn.crm.base');
 goog.provide('ydn.crm.base.ContextPanelPosition');
-goog.require('goog.async.Deferred');
 
 
 /**
