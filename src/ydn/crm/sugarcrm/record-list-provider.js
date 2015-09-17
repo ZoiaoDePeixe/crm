@@ -255,27 +255,23 @@ ydn.crm.su.ui.RecordListProvider.prototype.list = function(limit, offset) {
  * Initialize.
  * @private
  */
-ydn.crm.su.ui.RecordListProvider.prototype.init_ = function() {
+ydn.crm.su.ui.RecordListProvider.prototype.init_ = function () {
   if (this.ready_) {
     return;
   }
-  this.ready_ = new goog.async.Deferred();
-  this.sugar.getChannel().send(ydn.crm.ch.SReq.COUNT, {
-    'module': this.name_,
-    'source': 'client'}).addCallback(function(cnt) {
-    this.count_ = cnt;
-    if (this.total_ >= 0) {
-      this.ready_.callback(null);
-    }
-  }, this);
-  this.sugar.getChannel().send(ydn.crm.ch.SReq.COUNT, {
-    'module': this.name_,
-    'source': 'server'}).addCallback(function(cnt) {
-    this.total_ = cnt;
-    if (this.count_ >= 0) {
-      this.ready_.callback(null);
-    }
-  }, this);
+  this.ready_ = goog.async.DeferredList.gatherResults([
+    this.sugar.getChannel().send(ydn.crm.ch.SReq.COUNT, {
+      'module': this.name_,
+      'source': 'client'
+    }).addCallback(function (cnt) {
+      this.count_ = cnt;
+    }, this), this.sugar.getChannel().send(ydn.crm.ch.SReq.COUNT, {
+      'module': this.name_,
+      'source': 'server'
+    }).addCallback(function (cnt) {
+      this.total_ = cnt;
+    }, this)]);
+
 };
 
 

@@ -32,6 +32,7 @@ goog.require('ydn.crm.su.ui.RecordListProvider');
 goog.require('ydn.crm.su.ui.UpdateOptionDialog');
 goog.require('ydn.crm.su.ui.record.HoverCard');
 goog.require('ydn.crm.templ');
+goog.require('ydn.crm.ui.events');
 
 
 
