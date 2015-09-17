@@ -64,14 +64,24 @@ ydn.crm.templ.renderUpdateOptionDialog = function(mn) {
 
   return `
   <div>
-    <p>Record cache update strategy</p>
+    <p>Cache strategy</p>
     <div class="update-strategy">
-      <label title="All non-deleted records will be cached in browser."><input type="radio" name="strategy" value="full"/> Full</label>
+      <label title="All non-deleted records will be proactively
+          cached in browser.">
+        <input type="radio" name="strategy" value="full"/> Full
+      </label>
       <label title="Last 25 recently modified and downloaded records will be cached in browser."><input type="radio" name="strategy" value="partial"/> Recent only</label>
-      <label title="Records already downloaded are cached."><input type="radio" name="strategy" value="none"/> Opportunistic</label>
+      <label title="Records already downloaded are cached."><input type="radio" name="strategy" value="opportunistic"/> Opportunistic</label>
+      <label title="No cache."><input type="radio" name="strategy"
+        value="none"/>No cache
+      </label>
     </div>
   </div>
-  <div class="info">Getting info...</div>
+  <details class="audit">
+    <summary>More info</summary>
+    <div class="info">Getting info...</div>
+  </details>
+
   <div>
     <button name="clear" title="Removed downloaded records from cache">Clear cache</button>
     <button name="reset" title="Clear sync checkpoint">Reset checkpoint</button>

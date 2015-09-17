@@ -51,7 +51,7 @@ ydn.crm.su.option.setCacheOption = function(m_name, opt) {
 
   if ([ydn.crm.su.CacheOption.FULL, ydn.crm.su.CacheOption.PARTIAL,
         ydn.crm.su.CacheOption.OPPORTUNISTIC,
-        ydn.crm.su.CacheOption.NONE].indexOf(opt) >= 0) {
+        ydn.crm.su.CacheOption.NONE].indexOf(opt) == -1) {
     throw new Error('invalid option ' + opt);
   }
 
@@ -70,6 +70,8 @@ ydn.crm.su.option.setCacheOption = function(m_name, opt) {
     if (option[m_name] != opt) {
       if (to_def) {
         delete option[m_name];
+      } else {
+        option[m_name] = opt;
       }
       obj[key] = option;
       chrome.storage.sync.set(obj, function() {
@@ -78,6 +80,30 @@ ydn.crm.su.option.setCacheOption = function(m_name, opt) {
     } else {
       df.callback(false);
     }
+  });
+  return df;
+};
+
+
+/**
+ * Get list of cache modules.
+ * @return {goog.async.Deferred<Array<ydn.crm.su.ModuleName>>}
+ */
+ydn.crm.su.option.listCacheModule = function() {
+  var key = ydn.crm.base.ChromeSyncKey.SUGAR_CACHING_OPTION;
+  var df = new goog.async.Deferred();
+  chrome.storage.sync.get(key, function(obj) {
+    var option = !!obj[key] && typeof obj[key] == 'object' ? obj[key] : {};
+    var arr = ydn.crm.su.SyncModules.concat(ydn.crm.su.PartialSyncModules);
+    for (var mn in option) {
+      if (option[mn] == ydn.crm.su.CacheOption.FULL ||
+          option[mn] == ydn.crm.su.CacheOption.PARTIAL) {
+        if (arr.indexOf(mn) == -1) {
+          arr.push(mn);
+        }
+      }
+    }
+    df.callback(arr);
   });
   return df;
 };
