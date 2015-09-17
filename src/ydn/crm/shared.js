@@ -436,3 +436,8 @@ ydn.crm.shared.requestOriginPermission = function(url, opt_cb) {
   };
   return ydn.crm.shared.requestPermission(perm, opt_cb);
 };
+
+
+ydn.crm.shared.getSuCacheOption = function(m_name) {
+
+};
