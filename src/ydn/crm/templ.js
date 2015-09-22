@@ -70,7 +70,9 @@ ydn.crm.templ.renderUpdateOptionDialog = function(mn) {
           cached in browser.">
         <input type="radio" name="strategy" value="full"/> Full
       </label>
-      <label title="Last 25 recently modified and downloaded records will be cached in browser."><input type="radio" name="strategy" value="partial"/> Recent only</label>
+      <label title="Cache as necessary."><input type="radio"
+                 name="strategy"
+      value="partial"/> Adaptive</label>
       <label title="Records already downloaded are cached."><input type="radio" name="strategy" value="opportunistic"/> Opportunistic</label>
       <label title="No cache."><input type="radio" name="strategy"
         value="none"/>No cache
