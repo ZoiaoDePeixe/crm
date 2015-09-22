@@ -217,7 +217,9 @@ ydn.crm.test.getData = function(name, opt_base_path) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', base_path + '/crm/src/ydn/crm/test/' + name + '.json', false);
   xhr.onload = function() {
-    data = JSON.parse(xhr.responseText);
+    if (xhr.status != 404 && xhr.responseText) {
+      data = JSON.parse(xhr.responseText);
+    }
   };
   xhr.send(null);
   return data;
