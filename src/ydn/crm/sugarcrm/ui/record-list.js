@@ -150,7 +150,6 @@ ydn.crm.su.ui.RecordList.prototype.disposeInternal = function() {
 ydn.crm.su.ui.RecordList.prototype.onChannelMessage_ = function(ev) {
   if (ev.type == ydn.crm.ch.BReq.SUGARCRM_CACHE_FETCH) {
     var data = ev.getData();
-    console.log(data);
     if (data['module'] != this.getModel().getModuleName()) {
       return;
     }

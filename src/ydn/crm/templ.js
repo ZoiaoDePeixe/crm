@@ -150,7 +150,7 @@ ydn.crm.templ.renderRecordListFooter = function(mn, cnt, total) {
   var opt = `[<a href="#module-option" class="module-option"
     title="${mn} module option"
     >Option</a>]`;
-  var msg = (cnt > 0 && cnt != total) ? '<span name="count">' + cnt + '</span>' +
+  var msg = (cnt >= 0 && cnt < total) ? '<span name="count">' + cnt + '</span>' +
       ' of  <span name="total">' +
       total + '</span>  ' + mn + ' cached.' :
       '<span name="total">' + total + '</span> ' + mn;
