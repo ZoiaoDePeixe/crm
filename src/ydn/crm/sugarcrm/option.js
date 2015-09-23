@@ -96,10 +96,15 @@ ydn.crm.su.option.listCacheModule = function() {
     var option = !!obj[key] && typeof obj[key] == 'object' ? obj[key] : {};
     var arr = ydn.crm.su.SyncModules.concat(ydn.crm.su.PartialSyncModules);
     for (var mn in option) {
+      var idx = arr.indexOf(mn);
       if (option[mn] == ydn.crm.su.CacheOption.FULL ||
           option[mn] == ydn.crm.su.CacheOption.PARTIAL) {
-        if (arr.indexOf(mn) == -1) {
+        if (idx == -1) {
           arr.push(mn);
+        }
+      } else {
+        if (idx >= 0) {
+          goog.array.removeAt(arr, idx);
         }
       }
     }

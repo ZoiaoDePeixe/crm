@@ -116,12 +116,33 @@ ydn.crm.su.ui.RecordListProvider.prototype.setFilter = function(filter) {
 
 
 /**
+ * Reset counter and ready state.
  * @private
  */
 ydn.crm.su.ui.RecordListProvider.prototype.reset_ = function() {
   this.ready_ = null;
   this.total_ = -1;
   this.count_ = -1;
+};
+
+
+/**
+ * Update module count.
+ * @return {!goog.async.Deferred}
+ */
+ydn.crm.su.ui.RecordListProvider.prototype.updateCount = function() {
+  return goog.async.DeferredList.gatherResults([
+    this.sugar.getChannel().send(ydn.crm.ch.SReq.COUNT, {
+      'module': this.name_,
+      'source': 'client'
+    }).addCallback(function (cnt) {
+      this.count_ = cnt;
+    }, this), this.sugar.getChannel().send(ydn.crm.ch.SReq.COUNT, {
+      'module': this.name_,
+      'source': 'server'
+    }).addCallback(function (cnt) {
+      this.total_ = cnt;
+    }, this)]);
 };
 
 
@@ -197,6 +218,11 @@ ydn.crm.su.ui.RecordListProvider.prototype.listSync = function(limit, offset) {
     'keyRange': kr,
     'offset': offset
   };
+  ydn.crm.su.option.getCacheOption(this.name_).addCallback(function(option) {
+    if (option == ydn.crm.su.CacheOption.FULL || option == ydn.crm.su.CacheOption.PARTIAL) {
+      this.sugar.getChannel().send(ydn.crm.ch.SReq.UPDATE_NOW, {'module': this.name_});
+    }
+  }, this);
   return this.sugar.getChannel().send(ydn.crm.ch.SReq.QUERY, [q]).addCallback(function(arr) {
     var res = /** @type {CrmApp.QueryResult} */(arr[0]);
     return res.result || [];
@@ -259,18 +285,7 @@ ydn.crm.su.ui.RecordListProvider.prototype.init_ = function () {
   if (this.ready_) {
     return;
   }
-  this.ready_ = goog.async.DeferredList.gatherResults([
-    this.sugar.getChannel().send(ydn.crm.ch.SReq.COUNT, {
-      'module': this.name_,
-      'source': 'client'
-    }).addCallback(function (cnt) {
-      this.count_ = cnt;
-    }, this), this.sugar.getChannel().send(ydn.crm.ch.SReq.COUNT, {
-      'module': this.name_,
-      'source': 'server'
-    }).addCallback(function (cnt) {
-      this.total_ = cnt;
-    }, this)]);
+  this.ready_ = this.updateCount();
 
 };
 

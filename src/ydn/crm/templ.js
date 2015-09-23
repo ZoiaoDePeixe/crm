@@ -140,6 +140,24 @@ ydn.crm.templ.renderRecordListItem = function(mn, symbol) {
 };
 
 
+/**
+ * @param {string} mn
+ * @param {number} cnt
+ * @param {number} total
+ * @returns {string}
+ */
+ydn.crm.templ.renderRecordListFooter = function(mn, cnt, total) {
+  var opt = `[<a href="#module-option" class="module-option"
+    title="${mn} module option"
+    >Option</a>]`;
+  var msg = (cnt > 0 && cnt != total) ? '<span name="count">' + cnt + '</span>' +
+      ' of  <span name="total">' +
+      total + '</span>  ' + mn + ' cached.' :
+      '<span name="total">' + total + '</span> ' + mn;
+  return opt + ' ' + msg;
+};
+
+
 ydn.crm.templ.renderTrackingLauncher = function() {
   return `<div>
     <span class="opens" title="in last 24 hours">0</span> emails open,

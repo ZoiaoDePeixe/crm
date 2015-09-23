@@ -173,6 +173,13 @@ ydn.crm.ch.BReq = {
    */
   SUGARCRM: 'sugarcrm', // changes in sugarcrm instance. login, logout
   SUGARCRM_CACHE_UPDATE: 'sugarcrm-ca-up',
+  /**
+   * Attributes are
+   * module: module name
+   * state: state of fetching, either 'start' or 'end'
+   * count: number of record fetched
+   */
+  SUGARCRM_CACHE_FETCH: 'sugarcrm-ca-ft',
   LOGGED_OUT: 'logout',
   LOGGED_IN: 'login',
   NEW_TRACKING_POINT: 'new-tracing-point'
