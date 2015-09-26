@@ -413,7 +413,7 @@ ydn.crm.su.fixSugarCrmModuleMeta = function(info) {
     if (!mf) {
       continue;
     }
-    name = mf.name;
+    name = mf.name || name;
 
     // fix calculated field
     if (['created_by', 'created_by_name', 'date_entered', 'date_modified',
