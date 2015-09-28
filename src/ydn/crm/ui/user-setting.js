@@ -355,7 +355,8 @@ ydn.crm.ui.UserSetting.KEY_USER_SETTING = 'sugar-setting';
  */
 ydn.crm.ui.UserSetting.Key = {
   CRM_IN_INBOX: 'crmininbox',
-  TRACKING: 'tracking' // tracking setting
+  TRACKING: 'tracking', // tracking setting,
+  EMAIL_ARCHIVE: 'emailarchive'
 };
 
 

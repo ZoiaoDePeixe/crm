@@ -249,7 +249,9 @@ ydn.crm.OptionPageApp.prototype.processWithSugarSetup_ = function(sugar) {
     goog.style.setElementShown(sync, true);
   }
   var page = /** @type {ydn.crm.su.SyncPage} */ (this.pages_['sync']);
-  page.setModel(sugar);
+  if (page) {
+    page.setModel(sugar);
+  }
 };
 
 

@@ -75,7 +75,7 @@ ydn.crm.gdata.CalendarSettingPanel = function(us) {
 /**
  * @define {boolean} debug flag.
  */
-ydn.crm.gdata.CalendarSettingPanel.DEBUG = true;
+ydn.crm.gdata.CalendarSettingPanel.DEBUG = false;
 
 
 /**

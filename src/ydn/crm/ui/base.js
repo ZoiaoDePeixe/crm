@@ -332,3 +332,15 @@ ydn.crm.ui.PageName = {
   MODULE_HOME: 'ModuleHome'
 };
 
+
+/**
+ * User tracking preference.
+ * @enum {string}
+ */
+ydn.crm.ui.DefaultArchiving = {
+  ALWAYS: 'always',
+  DISABLE: 'disable',
+  DEFAULT: '',
+  NORMALLY_ARCHIVE: 'archive',
+  NORMALLY_DO_NOT_ARCHIVE: 'not-archive'
+};

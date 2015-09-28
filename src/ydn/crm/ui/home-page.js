@@ -26,6 +26,7 @@ goog.require('ydn.crm.gdata.CalendarSettingPanel');
 goog.require('ydn.crm.gdata.CredentialWidget');
 goog.require('ydn.crm.su.Widget');
 goog.require('ydn.crm.su.WidgetModel');
+goog.require('ydn.crm.ui.EmailArchiveSettingPanel');
 goog.require('ydn.crm.tracking.setting.Main');
 goog.require('ydn.crm.ui.LoggingPrefPanel');
 
@@ -71,6 +72,12 @@ ydn.crm.ui.HomePage = function(us) {
 
   /**
    * @protected
+   * @type {ydn.crm.ui.EmailArchiveSettingPanel}
+   */
+  this.archive_setting = new ydn.crm.ui.EmailArchiveSettingPanel(us);
+
+  /**
+   * @protected
    * @type {ydn.crm.ui.LoggingPrefPanel}
    */
   this.logging_pref = null;
@@ -98,6 +105,7 @@ ydn.crm.ui.HomePage.prototype.render = function(el) {
   this.sugar_widget.render(this.root_.querySelector('#sugarcrm-widget'));
   this.logging_pref = new ydn.crm.ui.LoggingPrefPanel();
   this.logging_pref.render(this.root_.querySelector('#logging-section'));
+  this.archive_setting.render(this.root_.querySelector('#email-archive'));
   el.appendChild(this.root_);
 };
 
