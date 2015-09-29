@@ -300,6 +300,7 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(details) {
         ydn.crm.su.events.EventType.VIEW_RECORD,
         this.onViewRecord_);
 
+    // todo: archiver is not release
     var archiver = new ydn.crm.su.Archiver(this.us_, sugar, this.attacher_);
     this.heading_injector_.setSugar(archiver);
     this.context_panel.setSugarCrm(sugar);
