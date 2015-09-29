@@ -28,6 +28,7 @@ goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.style');
 goog.require('ydn.crm.base');
+goog.require('ydn.crm.gmail.ArchiveCompose');
 goog.require('ydn.crm.gmail.Template');
 goog.require('ydn.crm.shared');
 goog.require('ydn.crm.su.Archiver');
@@ -130,6 +131,12 @@ ydn.crm.inj.SugarCrmApp = function(us, heading_injector, gmail_observer,
    * @protected
    */
   this.search_page = new ydn.crm.su.ui.search.Page();
+
+  /**
+   * @protected
+   * @type {ydn.crm.gmail.ArchiveCompose}
+   */
+  this.archive_compose = null;
 
   this.handler = new goog.events.EventHandler(this);
 
@@ -282,6 +289,10 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(details) {
       this.gmail_template_.dispose();
       this.gmail_template_ = null;
     }
+    if (this.archive_compose) {
+      this.archive_compose.dispose();
+      this.archive_compose = null;
+    }
 
     this.attacher_ = new ydn.crm.su.AttachButtonProvider(this.us_, sugar,
         this.gmail_observer_);
@@ -296,6 +307,7 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(details) {
     this.new_record.setSugar(sugar);
     this.record_list_panel.setSugar(sugar);
     this.setting_page.setSugar(sugar);
+    this.archive_compose = new ydn.crm.gmail.ArchiveCompose(sugar, this.compose_observer_);
 
     if (this.us_.hasFeature(ydn.crm.base.Feature.TEMPLATE)) {
       this.gmail_template_ = new ydn.crm.gmail.Template(sugar);
@@ -320,6 +332,10 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(details) {
     if (this.gmail_template_) {
       this.gmail_template_.dispose();
       this.gmail_template_ = null;
+    }
+    if (this.archive_compose) {
+      this.archive_compose.dispose();
+      this.archive_compose = null;
     }
   }
 
