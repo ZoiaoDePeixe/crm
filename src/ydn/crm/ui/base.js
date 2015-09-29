@@ -344,3 +344,12 @@ ydn.crm.ui.DefaultArchiving = {
   NORMALLY_ARCHIVE: 'archive',
   NORMALLY_DO_NOT_ARCHIVE: 'not-archive'
 };
+
+
+/**
+ * @enum {string}
+ */
+ydn.crm.ui.EmailArchiveSettingKey = {
+  USER_DEFAULT: 'user-default',
+  CURRENT: 'current'
+};

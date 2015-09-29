@@ -81,17 +81,9 @@ ydn.crm.ui.EmailArchiveSettingPanel.prototype.onDetailsClick_ = function(ev) {
 };
 
 
-/**
- * @enum {string}
- */
-ydn.crm.ui.EmailArchiveSettingPanel.SettingKey = {
-  PREFERENCE: 'pref'
-};
-
-
 ydn.crm.ui.EmailArchiveSettingPanel.prototype.refresh = function() {
   var status = this.us.getSetting(ydn.crm.ui.UserSetting.Key.EMAIL_ARCHIVE,
-      ydn.crm.ui.EmailArchiveSettingPanel.SettingKey.PREFERENCE);
+      ydn.crm.ui.EmailArchiveSettingKey.USER_DEFAULT);
 
   var item;
   if (status == ydn.crm.ui.DefaultArchiving.ALWAYS) {
@@ -153,5 +145,5 @@ ydn.crm.ui.EmailArchiveSettingPanel.prototype.setPref = function(val) {
     val = ydn.crm.ui.DefaultArchiving.DEFAULT;
   }
   this.us.setSetting(val, ydn.crm.ui.UserSetting.Key.EMAIL_ARCHIVE,
-      ydn.crm.ui.EmailArchiveSettingPanel.SettingKey.PREFERENCE);
+      ydn.crm.ui.EmailArchiveSettingKey.USER_DEFAULT);
 };

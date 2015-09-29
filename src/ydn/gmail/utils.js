@@ -636,4 +636,45 @@ ydn.gmail.Utils.parseDownloadUrl = function(download_url) {
 };
 
 
+/**
+ * Sniff message id in Gmail notification area (center top in yellow box).
+ * @return {string} gmail message id.
+ * @private
+ */
+ydn.gmail.Utils.sniffNotifiedMessageId_ = function() {
+  var link_vsm = document.getElementById('link_vsm');
+  return link_vsm ? link_vsm.getAttribute('param') : '';
+};
 
+
+/**
+ * @param {Function} cb
+ * @param {number} max
+ * @param {number} i
+ * @private
+ */
+ydn.gmail.Utils.getNotifiedMessageId_ = function(cb, max, i) {
+  var id = ydn.gmail.Utils.sniffNotifiedMessageId_();
+  if (id || i > max) {
+    cb(id);
+    return;
+  }
+  setTimeout(function() {
+    ydn.gmail.Utils.getNotifiedMessageId_(cb, max, ++i);
+  }, 100);
+};
+
+
+/**
+ * Get message id in Gmail notification area (center top in yellow box).
+ * This notification appear only after sending an email.
+ * @return {!goog.async.Deferred<string>} if no found in reasonable time,
+ * return empty string.
+ */
+ydn.gmail.Utils.getNotifiedMessageId = function() {
+  var df = new goog.async.Deferred();
+  ydn.gmail.Utils.getNotifiedMessageId_(function(id) {
+    df.callback(id);
+  }, 20, 0);
+  return df;
+};

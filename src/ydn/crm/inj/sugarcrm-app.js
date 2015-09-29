@@ -28,7 +28,7 @@ goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.style');
 goog.require('ydn.crm.base');
-goog.require('ydn.crm.gmail.ArchiveCompose');
+goog.require('ydn.crm.gmail.ComposeArchiver');
 goog.require('ydn.crm.gmail.Template');
 goog.require('ydn.crm.shared');
 goog.require('ydn.crm.su.Archiver');
@@ -134,7 +134,7 @@ ydn.crm.inj.SugarCrmApp = function(us, heading_injector, gmail_observer,
 
   /**
    * @protected
-   * @type {ydn.crm.gmail.ArchiveCompose}
+   * @type {ydn.crm.gmail.ComposeArchiver}
    */
   this.archive_compose = null;
 
@@ -307,7 +307,7 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(details) {
     this.new_record.setSugar(sugar);
     this.record_list_panel.setSugar(sugar);
     this.setting_page.setSugar(sugar);
-    this.archive_compose = new ydn.crm.gmail.ArchiveCompose(sugar, this.compose_observer_);
+    this.archive_compose = new ydn.crm.gmail.ComposeArchiver(this.us_, sugar, this.compose_observer_);
 
     if (this.us_.hasFeature(ydn.crm.base.Feature.TEMPLATE)) {
       this.gmail_template_ = new ydn.crm.gmail.Template(sugar);

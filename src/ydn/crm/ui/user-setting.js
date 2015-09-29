@@ -34,6 +34,7 @@ goog.require('ydn.crm.IUser');
 goog.require('ydn.crm.msg.Manager');
 goog.require('ydn.crm.shared');
 goog.require('ydn.crm.su');
+goog.require('ydn.db.utils');
 goog.require('ydn.gmail.Utils');
 goog.require('ydn.msg');
 goog.require('ydn.object');
