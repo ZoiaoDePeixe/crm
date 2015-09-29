@@ -87,7 +87,7 @@ ydn.crm.inj.TrackingApp = function(heading_injector, gmail_observer,
    */
   this.tracker_ = new ydn.crm.tracking.GmailComposeTracker(compose_observer);
 
-  this.reply_tracker_ = new ydn.crm.tracking.GmailReplyTracker();
+  this.reply_tracker_ = new ydn.crm.tracking.GmailReplyTracker(reply_panel_manager);
 
   /**
    * @type {ydn.crm.tracking.result.Page}
@@ -151,7 +151,7 @@ ydn.crm.inj.TrackingApp.prototype.attachResultPanel_ = function() {
     if (!this.track_result_) {
       this.track_result_ = new ydn.crm.tracking.result.ContextWidget(this.context_container_);
       this.heading_injector_.setTrackResult(this.track_result_);
-      this.reply_panel_manager_.subscribeReplyPanelService(this.reply_tracker_);
+
     }
   }
 };
