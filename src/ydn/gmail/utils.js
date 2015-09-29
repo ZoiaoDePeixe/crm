@@ -419,6 +419,7 @@ ydn.gmail.Utils.AttachmentParts;
  *   to_addrs: string,
  *   date_sent: Date,
  *   attachments: Array<ydn.gmail.Utils.AttachmentParts>,
+ *   text: string,
  *   html: string,
  *   subject: string,
  *   mailbox_id: string,
@@ -477,6 +478,7 @@ ydn.gmail.Utils.gatherEmailInfo = function(el) {
   var from_addr = '';
   var to_addrs = '';
   var date_sent;
+  var text = '';
   var html = '';
   var mail_id = '';
   var subject = '';
@@ -536,6 +538,7 @@ ydn.gmail.Utils.gatherEmailInfo = function(el) {
       var content_title = content.parentElement;
       mail_id = ydn.gmail.Utils.sniffMessageId(content_title);
       html = content.innerHTML;
+      text = content.innerText;
       if (mail_id) {
         break;
       } else {
@@ -582,6 +585,7 @@ ydn.gmail.Utils.gatherEmailInfo = function(el) {
     to_addrs: to_addrs,
     date_sent: date_sent,
     html: html,
+    text: text,
     mailbox_id: ydn.gmail.Utils.getUserEmail(),
     message_id: mail_id,
     subject: subject,
