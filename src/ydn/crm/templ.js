@@ -141,6 +141,23 @@ ydn.crm.templ.renderRecordListItem = function(mn, symbol) {
 
 
 /**
+ * @return {string}
+ */
+ydn.crm.templ.renderRecordFooter = function() {
+  return `<div class="footer-toolbar">
+  <span>
+    <button name="cancel" class="maia-button small cancel-button gray">Cancel</button>
+  </span><span>
+    <button name="save" class="ok-button maia-button small blue" data-tooltip="Save or Show changes (Alt+Click)">Save</button>
+  </span>
+  </div>
+  <div>
+    <div class="message"></div>
+  </div>`;
+};
+
+
+/**
  * @param {string} mn
  * @param {number} cnt
  * @param {number} total

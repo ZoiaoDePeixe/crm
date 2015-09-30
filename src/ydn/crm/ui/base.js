@@ -90,6 +90,13 @@ ydn.crm.ui.CSS_CLASS_BADGE_ICON = 'badge-icon';
  * @const
  * @type {string} error class
  */
+ydn.crm.ui.CSS_CLASS_CANCEL_BUTTON = 'cancel-button';
+
+
+/**
+ * @const
+ * @type {string} error class
+ */
 ydn.crm.ui.CSS_CLASS_OK_BUTTON = 'ok-button';
 
 
