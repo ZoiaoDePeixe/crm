@@ -15,7 +15,6 @@ goog.require('ydn.crm.su');
  * @extends {goog.events.Event}
  * @constructor
  * @struct
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.events.NewRecordEvent = function(m_name, event_target) {
   goog.base(this, ydn.crm.su.events.EventType.NEW_RECORD,
@@ -39,7 +38,6 @@ goog.inherits(ydn.crm.su.events.NewRecordEvent, goog.events.Event);
  * @extends {goog.events.Event}
  * @constructor
  * @struct
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.events.RecordViewEvent = function(m_name, id, opt_event_target) {
   goog.base(this, ydn.crm.su.events.EventType.VIEW_RECORD,

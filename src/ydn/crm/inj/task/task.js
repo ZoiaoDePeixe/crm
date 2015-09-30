@@ -15,7 +15,6 @@ goog.provide('ydn.crm.inj.Task');
  * @constructor
  * @struct
  * @extends {goog.Disposable}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.inj.Task = function() {
   goog.base(this);
