@@ -44,7 +44,6 @@ goog.require('ydn.ui.FlyoutMenu');
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.ui.HoverContextPanel = function(model, opt_dom) {
   goog.base(this, opt_dom);

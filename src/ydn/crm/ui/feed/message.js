@@ -37,7 +37,6 @@ goog.provide('ydn.crm.feed.Message');
  * @param {string=} opt_id message id.
  * @constructor
  * @extends {goog.Disposable}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  * @struct
  */
 ydn.crm.feed.Message = function(opt_title, opt_id) {

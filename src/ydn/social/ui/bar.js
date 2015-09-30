@@ -45,7 +45,6 @@ goog.require('ydn.social.ui.Twitter');
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.social.ui.Bar = function(opt_dom) {
   goog.base(this, opt_dom);

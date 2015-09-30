@@ -46,7 +46,6 @@ goog.require('ydn.ui.MessageBox');
  * Front end user setting.
  * @constructor
  * @extends {goog.events.EventTarget}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  * @struct
  * @implements {ydn.crm.IUser}
  */

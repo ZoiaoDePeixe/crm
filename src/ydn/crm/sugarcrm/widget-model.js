@@ -32,7 +32,6 @@ goog.require('goog.crypt.Md5');
  * @constructor
  * @extends {goog.events.EventTarget}
  * @struct
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.crm.su.WidgetModel = function(opt_about) {
   goog.base(this);

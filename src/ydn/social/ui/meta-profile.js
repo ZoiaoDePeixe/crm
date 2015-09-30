@@ -38,7 +38,6 @@ goog.require('ydn.crm.ui');
  * @constructor
  * @struct
  * @extends {goog.ui.Component}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.social.ui.MetaProfile = function(opt_dom) {
   goog.base(this, opt_dom);

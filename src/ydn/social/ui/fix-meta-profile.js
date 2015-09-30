@@ -39,7 +39,6 @@ goog.require('ydn.social.ui.MetaProfile');
  * @constructor
  * @struct
  * @extends {ydn.social.ui.MetaProfile}
- * @suppress {checkStructDictInheritance} suppress closure-library code.
  */
 ydn.social.ui.FixMetaProfile = function(network, opt_dom) {
   goog.base(this, opt_dom);
