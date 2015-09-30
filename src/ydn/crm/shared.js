@@ -150,7 +150,7 @@ ydn.crm.shared.setLogging = function(scope, level) {
 
 
 /**
- * Log to console.
+ * Log to console, this will make `ydn.crm` to 'fine' setting.
  * @param {boolean} enabled enable or disable logging on 'ydn.crm' namespace.
  * @see ydn.crm.shared.setLogging to log for specific namespace.
  */
