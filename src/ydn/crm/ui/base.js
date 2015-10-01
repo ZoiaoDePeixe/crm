@@ -137,6 +137,13 @@ ydn.crm.ui.CSS_CLASS_EDIT = 'edit';
 
 /**
  * @const
+ * @type {string} CSS class name for editing record.
+ */
+ydn.crm.ui.CSS_CLASS_DIRTY = 'dirty';
+
+
+/**
+ * @const
  * @type {string} CSS class name for viewing record.
  */
 ydn.crm.ui.CSS_CLASS_VIEW = 'view';
