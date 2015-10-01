@@ -183,11 +183,6 @@ ydn.crm.inj.ContextContainer.prototype.createDom = function() {
 
   // header
   var header = document.createElement('div');
-  var a = document.createElement('a');
-  a.textContent = 'Setup';
-  a.href = chrome.extension.getURL(ydn.crm.base.SETUP_PAGE);
-  a.className = 'setup-link';
-  header.appendChild(a);
   ele_root.firstElementChild.appendChild(header);
   goog.style.setElementShown(header, false);
 

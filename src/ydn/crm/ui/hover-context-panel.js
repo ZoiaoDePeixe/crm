@@ -82,6 +82,11 @@ ydn.crm.ui.HoverContextPanel = function(model, opt_dom) {
    * @private
    */
   this.context_ = null;
+  /**
+   * @private
+   * @type {ydn.gdata.m8.ContactEntry}
+   */
+  this.gdata_ = null;
 };
 goog.inherits(ydn.crm.ui.HoverContextPanel, goog.ui.Component);
 
@@ -160,6 +165,7 @@ ydn.crm.ui.HoverContextPanel.prototype.createDom = function() {
   goog.base(this, 'createDom');
   var dom = this.getDomHelper();
   var root = this.getElement();
+  root.classList.add(ydn.crm.ui.HoverContextPanel.CSS_CLASS);
   var t = ydn.ui.getTemplateById('hover-context-panel-template').content;
   root.appendChild(t.cloneNode(true));
   var menu_el = root.querySelector('.header .menu-holder');
@@ -168,6 +174,7 @@ ydn.crm.ui.HoverContextPanel.prototype.createDom = function() {
   goog.style.setElementShown(this.getContentElement(), false);
 
   var footer = root.querySelector('.footer');
+
   var btn_root = dom.createDom('div');
   footer.appendChild(btn_root);
 
@@ -404,7 +411,7 @@ ydn.crm.ui.HoverContextPanel.prototype.refresh_ = function() {
     } else {
       content.textContent = '';
     }
-    goog.style.setElementShown(content, !!name);
+    goog.style.setElementShown(content, !!email);
     goog.style.setElementShown(root, true);
   } else {
     goog.style.setElementShown(root, false);
