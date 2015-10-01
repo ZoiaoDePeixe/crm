@@ -103,7 +103,7 @@ ydn.crm.inj.SugarCrmApp = function(us, heading_injector, gmail_observer,
    * @type {ydn.crm.su.ui.DesktopHome}
    * @protected
    */
-  this.sidebar_panel = new ydn.crm.su.ui.DesktopHome();
+  this.sugar_home = new ydn.crm.su.ui.DesktopHome();
 
   /**
    * @final
@@ -171,7 +171,7 @@ ydn.crm.inj.SugarCrmApp.prototype.onViewRecord_ = function(e) {
   if (ydn.crm.inj.SugarCrmApp.DEBUG) {
     window.console.log('view record ' + e.module + ':' + e.id);
   }
-  // this.sidebar_panel.showRecord(e.module, e.id);
+  // this.sugar_home.showRecord(e.module, e.id);
 
 };
 
@@ -198,7 +198,7 @@ ydn.crm.inj.SugarCrmApp.prototype.handleSugarDomainChanges = function(e) {
  */
 ydn.crm.inj.SugarCrmApp.prototype.init = function(desktop, renderer) {
 
-  desktop.getHomePage().addChild(this.sidebar_panel, true);
+  desktop.getHomePage().addChild(this.sugar_home, true);
   desktop.addChild(this.record_list_panel, true);
   desktop.addChild(this.search_page, true);
   desktop.addChild(this.new_record, true);
@@ -243,13 +243,13 @@ ydn.crm.inj.SugarCrmApp.prototype.onUserStatusChange = function(e) {
  */
 ydn.crm.inj.SugarCrmApp.prototype.refresh_ = function() {
   if (this.us_.hasValidLogin()) {
-    this.sidebar_panel.setVisible(true);
+    this.sugar_home.setVisible(true);
     this.updateSugarPanels_();
   } else {
     // we are not showing any UI if user is not login.
     // user should use browser bandage to login and refresh the page.
     this.heading_injector_.setSugar(null);
-    this.sidebar_panel.setVisible(false);
+    this.sugar_home.setVisible(false);
     this.updateSugarPanels_();
   }
 };
@@ -274,7 +274,7 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(details) {
     }
     this.domain_ = details.about.domain;
 
-    this.sidebar_panel.setSugarCrm(details);
+    this.sugar_home.setSugarCrm(details);
 
     var ac = this.us_.getLoginEmail();
     var sugar = new ydn.crm.su.model.GDataSugar(details.about,
@@ -318,7 +318,7 @@ ydn.crm.inj.SugarCrmApp.prototype.updateSugarCrm_ = function(details) {
   } else {
     this.domain_ = '';
     this.context_panel.setSugarCrm(null);
-    this.sidebar_panel.setSugarCrm(null);
+    this.sugar_home.setSugarCrm(null);
     this.heading_injector_.setSugar(null);
     this.search_page.setSugarCrm(null);
     this.new_record.setSugar(null);

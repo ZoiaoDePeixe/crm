@@ -47,15 +47,6 @@ goog.inherits(ydn.crm.inj.GmailContextContainer, ydn.crm.inj.ContextContainer);
 
 
 /**
- * @inheritDoc
- */
-ydn.crm.inj.GmailContextContainer.prototype.attach = function() {
-  // this will attach when showing gmail inbox thread.
-
-};
-
-
-/**
  * Attach to Gmail right side bar.
  * @param {!HTMLTableElement} contact_table right bar table
  * @private

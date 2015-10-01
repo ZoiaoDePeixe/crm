@@ -40,11 +40,6 @@ goog.require('ydn.crm.ui');
 ydn.crm.inj.ContextContainer = function(gmail_observer, opt_root_ele) {
 
   /**
-   * @type {boolean}
-   * @private
-   */
-  this.has_attached_ = false;
-  /**
    * @type {ydn.crm.gmail.GmailObserver}
    * @private
    */
@@ -260,23 +255,6 @@ ydn.crm.inj.ContextContainer.prototype.getFooterElement = function() {
 
 
 /**
- * Attach the root panel to relevant location.
- */
-ydn.crm.inj.ContextContainer.prototype.attach = function() {
-  // it is OK to call render repeatedly.
-  this.has_attached_ = true;
-};
-
-
-/**
- * Detach.
- */
-ydn.crm.inj.ContextContainer.prototype.detach = function() {
-  this.has_attached_ = false;
-};
-
-
-/**
  * Attach to Gmail right side bar.
  * @param {Element} contact_table right bar table
  * @protected
@@ -304,11 +282,4 @@ ydn.crm.inj.ContextContainer.prototype.onGmailContextEvent_ = function(e) {
 
 };
 
-
-/**
- * @return {boolean}
- */
-ydn.crm.inj.ContextContainer.prototype.isAttached = function() {
-  return this.has_attached_;
-};
 
