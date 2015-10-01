@@ -25,7 +25,7 @@ goog.require('ydn.crm.msg.Consumer');
 
 
 /**
- * Console status bar to consume message.
+ * Status bar in top or bottom of a main panel to consume message.
  * @param {boolean=} opt_drop_up status message panel should open up.
  * @constructor
  * @implements {ydn.crm.msg.Consumer}

@@ -25,7 +25,7 @@ goog.provide('ydn.crm.inj.ContextContainer');
 goog.require('goog.Disposable');
 goog.require('ydn.crm.gmail.ComposeObserver');
 goog.require('ydn.crm.gmail.GmailObserver');
-goog.require('ydn.crm.msg.StatusBar');
+goog.require('ydn.crm.msg.SimpleStatusBar');
 goog.require('ydn.crm.ui');
 
 
@@ -38,7 +38,6 @@ goog.require('ydn.crm.ui');
  * @struct
  */
 ydn.crm.inj.ContextContainer = function(gmail_observer, opt_root_ele) {
-  this.ele_root = opt_root_ele || this.createDom();
 
   /**
    * @type {boolean}
@@ -55,11 +54,19 @@ ydn.crm.inj.ContextContainer = function(gmail_observer, opt_root_ele) {
    * @type {goog.events.EventHandler}
    */
   this.handler = new goog.events.EventHandler(this);
+
+  /**
+   * @protected
+   * @type {ydn.crm.msg.SimpleStatusBar}
+   */
+  this.status_bar = new ydn.crm.msg.SimpleStatusBar();
   /**
    * @type {boolean}
    * @private
    */
   this.enabled_ = false;
+
+  this.ele_root = opt_root_ele || this.createDom();
 
   goog.style.setElementShown(this.ele_root, false);
 };
@@ -190,9 +197,9 @@ ydn.crm.inj.ContextContainer.prototype.createDom = function() {
   var status_el = document.createElement('div');
   status_el.classList.add(ydn.crm.inj.ContextContainer.CSS_CLASS_STATUS);
   footer.appendChild(status_el);
-  var status = new ydn.crm.msg.StatusBar(true);
-  status.render(status_el);
-  ydn.crm.msg.Manager.addConsumer(status);
+
+  this.status_bar.render(status_el);
+  ydn.crm.msg.Manager.addConsumer(this.status_bar);
   ele_root.appendChild(footer);
 
   return ele_root;
@@ -287,6 +294,7 @@ ydn.crm.inj.ContextContainer.prototype.attachToGmailRightBar = goog.abstractMeth
  */
 ydn.crm.inj.ContextContainer.prototype.onGmailPageChanged = function(e) {
   // remove previous attachment
+  this.status_bar.reset();
   this.attachToGmailRightBar(null);
 };
 
@@ -297,7 +305,6 @@ ydn.crm.inj.ContextContainer.prototype.onGmailPageChanged = function(e) {
  * @private
  */
 ydn.crm.inj.ContextContainer.prototype.onGmailContextEvent_ = function(e) {
-
   this.attachToGmailRightBar(e.col);
 
 };

@@ -25,7 +25,7 @@ goog.require('ydn.crm.msg.Consumer');
 
 
 /**
- * Console status bar to consume message.
+ * Simple status bar displays the last message.
  * @constructor
  * @implements {ydn.crm.msg.Consumer}
  */
@@ -73,6 +73,15 @@ ydn.crm.msg.SimpleStatusBar.prototype.setMessage = function(id, msg) {
     }
     this.root.children[2].textContent = ' ' + (msg.update || '');
   }
+};
+
+
+/**
+ * Reset message.
+ */
+ydn.crm.msg.SimpleStatusBar.prototype.reset = function() {
+  var msg = /** @type {ydn.crm.msg.Message} */({title: ''});
+  this.setMessage(0, msg);
 };
 
 
